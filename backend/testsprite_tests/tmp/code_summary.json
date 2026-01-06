@@ -1,0 +1,65 @@
+{
+  "tech_stack": ["Python", "Flask", "SQLAlchemy", "PostgreSQL", "Selenium"],
+  "features": [
+    {
+      "name": "User Management",
+      "description": "Handles user registration, login, and profile management",
+      "files": ["app.py"]
+    },
+    {
+      "name": "Vehicle Management",
+      "description": "Manages vehicle records including creation, updates, and inquiries",
+      "files": ["app.py"]
+    },
+    {
+      "name": "Finance Records",
+      "description": "Manages financial records for vehicles including EMI and disbursements",
+      "files": ["app.py"]
+    },
+    {
+      "name": "File Uploads",
+      "description": "Handles file uploads for vehicle documents",
+      "files": ["app.py"]
+    },
+    {
+      "name": "Authentication",
+      "description": "User authentication and session management",
+      "files": ["tests/selenium/test_auth.py", "tests/selenium/test_advanced_auth.py", "tests/selenium/utils.py"]
+    },
+    {
+      "name": "Dashboard",
+      "description": "Main dashboard displaying statistics and charts",
+      "files": ["tests/selenium/test_dashboard.py", "tests/selenium/test_advanced_dashboard.py", "tests/selenium/pages/dashboard_page.py"]
+    },
+    {
+      "name": "Inventory Management",
+      "description": "Vehicle inventory management interface",
+      "files": ["tests/selenium/test_inventory.py", "tests/selenium/pages/inventory_page.py"]
+    },
+    {
+      "name": "Purchase Flow",
+      "description": "End-to-end purchase process for vehicles",
+      "files": ["tests/selenium/test_e2e_purchase_flow.py", "tests/selenium/pages/purchase_page.py"]
+    },
+    {
+      "name": "Notifications",
+      "description": "User notifications system",
+      "files": ["tests/selenium/test_advanced_notifications.py", "tests/selenium/pages/notifications_page.py"]
+    },
+    {
+      "name": "Profile Management",
+      "description": "User profile settings and updates",
+      "files": ["tests/selenium/test_advanced_profile.py", "tests/selenium/test_settings_profile.py", "tests/selenium/pages/profile_page.py"]
+    },
+    {
+      "name": "KYC Process",
+      "description": "Know Your Customer verification",
+      "files": ["tests/selenium/test_kyc.py"]
+    },
+    {
+      "name": "Finance Interface",
+      "description": "Financial management interface",
+      "files": ["tests/selenium/test_finance.py"]
+    }
+  ]
+}

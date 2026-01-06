@@ -1,0 +1,20 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "loginUser": "admin@lyrcon.com",
+  "loginPassword": "password",
+  "executionArgs": {
+    "projectName": "lyrcon-replica",
+    "projectPath": "c:\\Users\\DELL\\.gemini\\antigravity\\scratch\\lyrcon-replica\\backend",
+    "testIds": [
+      "TC004"
+    ],
+    "additionalInstruction": "Perform visual regression testing on the Dashboard page, specifically checking for layout breaks on mobile screens. Take screenshots in different mobile viewport sizes and compare layouts to ensure responsiveness.",
+    "envs": {
+      "API_KEY": "sk-user-6U-BC_Yq6u_WSEGTUKZcpEwTHlYYWLupTseOGk00Xt5mBXQgEgbnovQiW_qDuJPwBgrYvewt1W6m7ktEwDYMECVPyQ0o-ANUglYs6_iddkGhEQ7oHgjjzrvAF_bZwCNqrDk"
+    }
+  },
+  "proxy": "http://98237d0b-9cf0-4269-8e53-75aaa8767221:Q8TLCVEbOyoHOPnLQQXL5T2jfRwwzlph@tun.testsprite.com:8080"
+}

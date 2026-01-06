@@ -1,0 +1,555 @@
+[
+  {
+    "id": "TC001",
+    "title": "User Registration Success",
+    "description": "Verify that a new user can register successfully with valid details.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to user registration page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid registration data including role selection"
+      },
+      {
+        "type": "action",
+        "description": "Submit registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Check registration success message is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that user account is created in the database"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "User Login with Role-Based Access",
+    "description": "Verify that user login succeeds with valid credentials and correct role-based modules are accessible.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid username and password"
+      },
+      {
+        "type": "action",
+        "description": "Click the login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login is successful and landing on dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify accessible modules based on user role (Admin, Sales Executive, Field Agent)"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Login Failure with Incorrect Credentials",
+    "description": "Verify that login fails with invalid username or password.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input invalid username and/or password"
+      },
+      {
+        "type": "action",
+        "description": "Click login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Check error message indicating login failure"
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure user is not redirected to dashboard"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Dashboard Displays Real-Time Metrics and Forecasts",
+    "description": "Verify the dashboard loads accurate real-time data and sales forecasts under varying data loads.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Check display of real-time sales metrics with correct values"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sales forecasting charts render correctly and update dynamically"
+      },
+      {
+        "type": "action",
+        "description": "Simulate high data load and verify dashboard performance and correctness"
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure no data inconsistencies or crashes under load"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Add New Vehicle to Inventory with VIN Decoding",
+    "description": "Verify that new vehicle entry form accepts VIN, decodes vehicle details automatically, and saves inventory record with uploaded documents.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Inventory Management module"
+      },
+      {
+        "type": "action",
+        "description": "Start new vehicle addition flow"
+      },
+      {
+        "type": "action",
+        "description": "Input valid VIN number"
+      },
+      {
+        "type": "assertion",
+        "description": "Check vehicle details are auto-populated from VIN decoding"
+      },
+      {
+        "type": "action",
+        "description": "Upload required vehicle documents in multipart format"
+      },
+      {
+        "type": "action",
+        "description": "Submit new vehicle entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify new vehicle is added to inventory with correct details and documents"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Add Used Car Purchase with Document Upload",
+    "description": "Verify used vehicle purchase flow allowing data input, document uploads, and inventory update.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Inventory Management -> Used Car Section"
+      },
+      {
+        "type": "action",
+        "description": "Enter vehicle and seller information"
+      },
+      {
+        "type": "action",
+        "description": "Upload purchase-related documents"
+      },
+      {
+        "type": "action",
+        "description": "Submit used car purchase form"
+      },
+      {
+        "type": "assertion",
+        "description": "Vehicle record is created with correct data and documents saved"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Vehicle Sale Process with Auto-filled Buyer Information",
+    "description": "Verify vehicle sale transaction flow auto-fills buyer information when buyer exists and processes sale successfully.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Select vehicle from inventory for sale"
+      },
+      {
+        "type": "action",
+        "description": "Enter buyer information for existing customer"
+      },
+      {
+        "type": "assertion",
+        "description": "Check buyer information fields are auto-filled from CRM"
+      },
+      {
+        "type": "action",
+        "description": "Complete sale transaction and submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sale record is created and vehicle status updated"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Finance Module EMI Schedule Management",
+    "description": "Verify creation, editing, and retrieval of EMI schedules and loan disbursements for vehicles.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Admin"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Finance & Loan Management module"
+      },
+      {
+        "type": "action",
+        "description": "Create new loan record with EMI schedule"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify EMI schedule is correctly calculated and displayed"
+      },
+      {
+        "type": "action",
+        "description": "Edit EMI schedule"
+      },
+      {
+        "type": "assertion",
+        "description": "Check updates are saved and reflected correctly"
+      },
+      {
+        "type": "action",
+        "description": "Retrieve loan and EMI records"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify accurate retrieval with no data loss"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "CRM Lead Tracking and Status Workflow",
+    "description": "Verify leads can be created, status updated through defined workflows, and all transitions enforce business rules.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to CRM module and create new lead"
+      },
+      {
+        "type": "action",
+        "description": "Update inquiry status through predefined workflow steps"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify lead status transitions are valid and correctly reflected"
+      },
+      {
+        "type": "action",
+        "description": "Attempt invalid status transition"
+      },
+      {
+        "type": "assertion",
+        "description": "Check system prevents invalid status changes and shows appropriate error"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Mobile KYC Workflow with On-site Validation",
+    "description": "Verify Mobile KYC workflows with step-by-step verification including camera integration for identity validation.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Field Agent using mobile-optimized UI"
+      },
+      {
+        "type": "action",
+        "description": "Start KYC process for a customer"
+      },
+      {
+        "type": "action",
+        "description": "Perform each verification step sequentially"
+      },
+      {
+        "type": "action",
+        "description": "Use camera integration to capture ID documents and customer photos"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify captured data is stored correctly and linked to customer profile"
+      },
+      {
+        "type": "assertion",
+        "description": "Complete KYC workflow and confirm status updated"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "File Uploads for Vehicle Documentation",
+    "description": "Verify that file uploads for vehicle-related documents handle various types, multipart submissions, and no data corruption occurs.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to document upload section in Inventory Management"
+      },
+      {
+        "type": "action",
+        "description": "Upload multiple document types in a multipart request (PDF, images, text files)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all files are uploaded successfully without data loss or corruption"
+      },
+      {
+        "type": "action",
+        "description": "Attempt upload of unsupported file format"
+      },
+      {
+        "type": "assertion",
+        "description": "Check system rejects unsupported format with appropriate error message"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Role-Based Access Control Enforcement",
+    "description": "Verify that users cannot access modules or perform actions outside their assigned roles.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access Admin-only modules such as User Management and Finance Records"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access is denied and user is shown an authorization error"
+      },
+      {
+        "type": "action",
+        "description": "Login as Field Agent"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access sales transaction modules"
+      },
+      {
+        "type": "assertion",
+        "description": "Access denied and proper message shown"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Concurrent Multi-User Session Data Consistency",
+    "description": "Verify system maintains data integrity and consistent views during concurrent access by multiple users.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate multiple users logged in concurrently performing inventory updates and sales transactions"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no data conflicts or overwrites occur during concurrent operations"
+      },
+      {
+        "type": "assertion",
+        "description": "Check system performance remains acceptable under load"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "End-to-End Purchase Flow Validation",
+    "description": "Verify the full vehicle purchase process from selection, validation, financing, to completion functions without errors.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive"
+      },
+      {
+        "type": "action",
+        "description": "Select a vehicle from inventory for purchase"
+      },
+      {
+        "type": "action",
+        "description": "Complete buyer information and financing details"
+      },
+      {
+        "type": "action",
+        "description": "Upload required purchase documents"
+      },
+      {
+        "type": "action",
+        "description": "Submit purchase transaction"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify purchase transaction completes successfully with valid status updates across modules"
+      },
+      {
+        "type": "assertion",
+        "description": "Check no failures or data inconsistencies in the workflow"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Profile Management Updates",
+    "description": "Verify user can update profile settings, change password, and preferences like Dark/Light mode with persistence.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as any user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to profile management page"
+      },
+      {
+        "type": "action",
+        "description": "Update profile fields such as name, email, phone"
+      },
+      {
+        "type": "action",
+        "description": "Change user password correctly"
+      },
+      {
+        "type": "action",
+        "description": "Toggle UI mode between Dark and Light"
+      },
+      {
+        "type": "action",
+        "description": "Save changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify updates are saved and persisted after page reload and new login"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "RTO Management Process Tracking",
+    "description": "Verify that Regional Transport Office related processes are tracked, updated, and status changes are reflected.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as Sales Executive or Admin"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to RTO Management module"
+      },
+      {
+        "type": "action",
+        "description": "Create and update RTO process entries for vehicle registrations"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify status changes propagate correctly and are viewable in related dashboards"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Authentication Session Management and Security",
+    "description": "Verify that session handling prevents unauthorized access, enforces logout, and maintains session security.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as valid user"
+      },
+      {
+        "type": "action",
+        "description": "Perform actions within authenticated session"
+      },
+      {
+        "type": "action",
+        "description": "Logout from the system"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access authenticated pages post logout"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access is denied and user is redirected to login"
+      },
+      {
+        "type": "action",
+        "description": "Test session timeout by inactivity"
+      },
+      {
+        "type": "assertion",
+        "description": "Session expires correctly and requires re-authentication"
+      }
+    ]
+  }
+]
