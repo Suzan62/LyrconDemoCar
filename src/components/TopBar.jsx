@@ -135,9 +135,8 @@ export default function TopBar({ onMenuClick, isMobile }) {
                         )}
                     </Button>
 
-                    {/* Notification Dropdown */}
                     {isNotificationsOpen && (
-                        <div className="absolute right-0 top-12 w-[85vw] md:w-80 bg-white border rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
+                        <div className="fixed right-2 top-16 w-[90vw] max-w-sm md:absolute md:right-0 md:top-12 md:w-80 bg-white border rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
                             <div className="flex items-center justify-between p-3 border-b bg-slate-50">
                                 <span className="font-semibold text-sm">Notifications ({unreadCount})</span>
                                 {unreadCount > 0 && (

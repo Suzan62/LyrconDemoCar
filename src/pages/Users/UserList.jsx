@@ -71,7 +71,7 @@ export default function UserList() {
         <div className="space-y-6 animate-in fade-in zoom-in duration-300">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-800">Users</h1>
-                <Link to="/users/create">
+                <Link to="/users/create" className="hidden md:block">
                     <Button className="bg-blue-600 hover:bg-blue-700">
                         <Plus className="mr-2 h-4 w-4" /> Add New User
                     </Button>
@@ -191,6 +191,13 @@ export default function UserList() {
                     <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={confirmDelete}>Delete User</Button>
                 </ModalFooter>
             </Modal>
+
+            {/* Mobile Floating Action Button */}
+            <Link to="/users/create" className="md:hidden fixed bottom-6 right-6 z-50 shadow-xl">
+                <Button className="rounded-full h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg flex items-center gap-2">
+                    <Plus className="h-5 w-5" /> Add New User
+                </Button>
+            </Link>
         </div>
     );
 }
