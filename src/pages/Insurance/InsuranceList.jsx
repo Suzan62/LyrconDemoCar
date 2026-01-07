@@ -87,7 +87,7 @@ export default function InsuranceList() {
                     <h2 className="text-3xl font-bold tracking-tight">Insurance Records</h2>
                     <p className="text-muted-foreground">Manage customer vehicle insurance details.</p>
                 </div>
-                <Link to="/insurances/add" className="hidden md:block">
+                <Link to="/insurances/add" className="hidden lg:block">
                     <Button><Plus className="mr-2 h-4 w-4" /> Add Insurance</Button>
                 </Link>
             </div>
@@ -165,7 +165,7 @@ export default function InsuranceList() {
             </Card>
 
             {/* Mobile Floating Action Button */}
-            <Link to="/insurances/add" className="md:hidden fixed bottom-6 right-6 z-50 shadow-xl">
+            <Link to="/insurances/add" className="lg:hidden fixed bottom-6 right-6 z-50 shadow-xl">
                 <Button className="rounded-full h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg flex items-center gap-2">
                     <Plus className="h-5 w-5" /> Add Insurance
                 </Button>

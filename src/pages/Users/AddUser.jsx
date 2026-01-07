@@ -92,7 +92,7 @@ export default function AddUser() {
     return (
         <div className="max-w-3xl mx-auto space-y-6 animate-in slide-in-from-bottom-4 duration-500">
             <div className="flex items-center gap-4 mb-2">
-                <Button variant="ghost" size="icon" onClick={() => navigate('/users')} className="shrink-0">
+                <Button variant="ghost" size="icon" onClick={() => navigate('/users', { replace: true })} className="shrink-0">
                     <ArrowLeft size={20} />
                 </Button>
                 <div>

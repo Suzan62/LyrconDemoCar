@@ -93,7 +93,7 @@ export default function AddFinance() {
     return (
         <div className="space-y-6 max-w-5xl mx-auto pb-10">
             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" onClick={() => navigate('/finance')} className="mr-2">
+                <Button variant="ghost" size="icon" onClick={() => navigate('/finance', { replace: true })} className="mr-2">
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>

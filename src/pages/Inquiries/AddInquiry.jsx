@@ -65,7 +65,7 @@ export default function AddInquiry() {
     return (
         <div className="space-y-6 max-w-5xl mx-auto">
             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="mr-2">
+                <Button variant="ghost" size="icon" onClick={() => navigate('/inquiries', { replace: true })} className="mr-2">
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>

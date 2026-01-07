@@ -55,7 +55,7 @@ export default function InquiriesList() {
                     <h2 className="text-3xl font-bold tracking-tight">Inquiries</h2>
                     <p className="text-muted-foreground">Manage customer interest and follow-ups.</p>
                 </div>
-                <Button onClick={() => navigate('/inquiries/create')} className="gap-2 hidden md:flex">
+                <Button onClick={() => navigate('/inquiries/create')} className="gap-2 hidden lg:flex">
                     <PlusCircle size={18} /> New Inquiry
                 </Button>
             </div>
@@ -220,7 +220,7 @@ export default function InquiriesList() {
             </Modal>
 
             {/* Mobile Floating Action Button */}
-            <div className="md:hidden fixed bottom-6 right-6 z-50 shadow-xl">
+            <div className="lg:hidden fixed bottom-6 right-6 z-50 shadow-xl">
                 <Button
                     onClick={() => navigate('/inquiries/create')}
                     className="rounded-full h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg flex items-center gap-2"

@@ -52,7 +52,7 @@ export default function FinanceList() {
                 </div>
                 <div className="flex gap-2">
 
-                    <Button onClick={() => navigate('/finance/create')} className="gap-2 hidden md:flex">
+                    <Button onClick={() => navigate('/finance/create')} className="gap-2 hidden lg:flex">
                         <PlusCircle size={18} /> Add Finance
                     </Button>
                 </div>
@@ -169,7 +169,7 @@ export default function FinanceList() {
             </Modal>
 
             {/* Mobile Floating Action Button */}
-            <div className="md:hidden fixed bottom-6 right-6 z-50 shadow-xl">
+            <div className="lg:hidden fixed bottom-6 right-6 z-50 shadow-xl">
                 <Button
                     onClick={() => navigate('/finance/create')}
                     className="rounded-full h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg flex items-center gap-2"
