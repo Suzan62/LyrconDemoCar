@@ -96,7 +96,7 @@ export default function AddUser() {
                     <ArrowLeft size={20} />
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-slate-800">{isEditMode ? 'Edit User' : 'Add New User'}</h1>
+                    <h1 className="text-xl md:text-3xl font-bold tracking-tight text-slate-800">{isEditMode ? 'Edit User' : 'Add New User'}</h1>
                     <p className="text-sm text-slate-500">{isEditMode ? 'Update user details and permissions.' : 'Create a new user account with specific permissions.'}</p>
                 </div>
             </div>

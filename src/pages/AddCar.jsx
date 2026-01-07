@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { addVehicle, updateVehicle } from '../store/slices/inventorySlice';
 import { jsPDF } from "jspdf";
 
-export default function AddCar({ carToEdit, onClose, initialMode = 'New' }) {
+export default function AddCar(props) {
+    const { carToEdit, onClose, initialMode = 'New' } = props;
     const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
@@ -324,23 +325,28 @@ export default function AddCar({ carToEdit, onClose, initialMode = 'New' }) {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {['New', 'Purchase', 'Sale'].map(type => (
-                        <button
-                            key={type}
-                            onClick={() => handleTypeChange(type)}
-                            className={`p-6 rounded-xl border-2 flex flex-col items-center gap-3 transition-all ${transactionType === type
-                                ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
-                                : 'border-slate-100 hover:border-slate-300 text-slate-500 bg-slate-50/50'
-                                }`}
-                        >
-                            {type === 'New' && <Car size={28} />}
-                            {type === 'Purchase' && <FileText size={28} />}
-                            {type === 'Sale' && <DollarSign size={28} />}
-                            <span className="font-bold text-lg">{type === 'New' ? 'Add New Car' : type === 'Purchase' ? 'Purchase Old Car' : 'Sell Old Car'}</span>
-                        </button>
-                    ))}
-                </div>
+                {!props.hideTypeSwitcher && (
+                    <div className="grid grid-cols-3 gap-2 md:gap-6 mb-8">
+                        {['New', 'Purchase', 'Sale'].map(type => (
+                            <button
+                                key={type}
+                                onClick={() => !props.lockMode && handleTypeChange(type)}
+                                className={`p-2 md:p-6 rounded-xl border-2 flex flex-col items-center justify-center gap-1 md:gap-3 transition-all ${transactionType === type
+                                    ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
+                                    : 'border-slate-100 hover:border-slate-300 text-slate-500 bg-slate-50/50'
+                                    } ${props.lockMode ? 'cursor-default opacity-100' : 'cursor-pointer'}`}
+                            >
+                                {type === 'New' && <Car className="w-5 h-5 md:w-7 md:h-7" />}
+                                {type === 'Purchase' && <FileText className="w-5 h-5 md:w-7 md:h-7" />}
+                                {type === 'Sale' && <DollarSign className="w-5 h-5 md:w-7 md:h-7" />}
+                                <span className="font-bold text-xs md:text-lg text-center leading-tight">
+                                    {type === 'New' ? 'Add New' : type === 'Purchase' ? 'Purchase' : 'Sell Car'}
+                                    <span className="hidden md:inline"> {type === 'New' ? 'Car' : type === 'Purchase' ? 'Old Car' : ''}</span>
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 {transactionType === 'Sale' && (
                     <div className="mb-8 p-6 bg-indigo-50/50 rounded-xl border border-indigo-100">

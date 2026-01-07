@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, ArrowUpRight, ArrowDownRight, Eye, Edit, Trash, PlusCircle, MoreVertical } from 'lucide-react';
+import { Search, Filter, Eye, Edit, Trash, PlusCircle, Car, DollarSign, FileText, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
 import { Badge } from '../components/ui/Badge';
 import { Input } from '../components/ui/Input';
 import { Modal, ModalFooter } from '../components/ui/Modal';
+import AddCar from './AddCar';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteVehicle, setVehicles } from '../store/slices/inventorySlice';
@@ -16,6 +17,9 @@ export default function Inventory() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inventory = useSelector(state => state.inventory.items);
+
+    const [activeTab, setActiveTab] = useState('New'); // 'New', 'Purchase', 'Sale'
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
     // Fetch Inventory on Mount
     React.useEffect(() => {
@@ -27,10 +31,8 @@ export default function Inventory() {
                     if (Array.isArray(data)) {
                         dispatch(setVehicles(data));
                     } else if (data && data.vehicles) {
-                        // Fallback for wrapped responses
                         dispatch(setVehicles(data.vehicles));
                     } else {
-                        console.error("Invalid vehicle data format:", data);
                         dispatch(setVehicles([]));
                     }
                 }
@@ -44,14 +46,18 @@ export default function Inventory() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
-    const [filterType, setFilterType] = useState('All');
-    const [showFilters, setShowFilters] = useState(false); // Toggle for filter section
+    const [showFilters, setShowFilters] = useState(false);
 
     // Delete Modal State
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [vehicleToDelete, setVehicleToDelete] = useState(null);
 
     const filteredInventory = (inventory || []).filter(car => {
+        // Tab Filter
+        if (activeTab === 'New' && car.transaction_type !== 'New') return false;
+        if (activeTab === 'Purchase' && car.transaction_type !== 'Purchase') return false;
+        if (activeTab === 'Sale' && car.transaction_type !== 'Sale') return false;
+
         const make = car.manufacturer || car.make || '';
         const model = car.model || '';
         const idStr = String(car.id || '');
@@ -61,8 +67,7 @@ export default function Inventory() {
             idStr.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesStatus = filterStatus === 'All' || car.status === filterStatus;
-        const matchesType = filterType === 'All' || car.transaction_type === filterType;
-        return matchesSearch && matchesStatus && matchesType;
+        return matchesSearch && matchesStatus;
     });
 
     const triggerDelete = (id) => {
@@ -72,7 +77,6 @@ export default function Inventory() {
 
     const confirmDelete = async () => {
         if (!vehicleToDelete) return;
-
         try {
             const response = await fetch(`/api/vehicles/${vehicleToDelete}`, { method: 'DELETE' });
             if (response.ok) {
@@ -81,35 +85,71 @@ export default function Inventory() {
                 setVehicleToDelete(null);
                 toast.success("Vehicle deleted successfully");
             } else {
-                toast.error("Failed to delete vehicle from server.");
+                toast.error("Failed to delete from server.");
             }
         } catch (error) {
-            console.error("Delete failed", error);
             toast.error("Error deleting vehicle.");
         }
     };
 
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setIsFormOpen(false); // Close form when switching tabs
+        setSearchTerm('');
+    };
+
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-6 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Inventory</h2>
-                    <p className="text-muted-foreground">Manage your vehicle fleet and status.</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Inventory Management</h2>
+                    <p className="text-slate-500 text-sm sm:text-base">Manage your fleet, purchases, and sales.</p>
                 </div>
-                <Button onClick={() => navigate('/add-car')} className="gap-2">
-                    <PlusCircle size={18} /> Add New Car
-                </Button>
             </div>
 
-            <Card>
+            {/* Tab Navigation */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 bg-slate-100 p-1.5 rounded-xl">
+                <button
+                    onClick={() => handleTabChange('New')}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-lg text-sm sm:text-base font-semibold transition-all ${activeTab === 'New' ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700'
+                        }`}
+                >
+                    <Car className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">New Cars</span>
+                    <span className="sm:hidden">New</span>
+                </button>
+                <button
+                    onClick={() => handleTabChange('Purchase')}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-lg text-sm sm:text-base font-semibold transition-all ${activeTab === 'Purchase' ? 'bg-white text-amber-600 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700'
+                        }`}
+                >
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">Purchased Cars</span>
+                    <span className="sm:hidden">Purchased</span>
+                </button>
+                <button
+                    onClick={() => handleTabChange('Sale')}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-lg text-sm sm:text-base font-semibold transition-all ${activeTab === 'Sale' ? 'bg-white text-green-600 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700'
+                        }`}
+                >
+                    <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">Sold Cars</span>
+                    <span className="sm:hidden">Sold</span>
+                </button>
+            </div>
+
+            {/* Collapsible Form Section Removed as per request */}
+
+            {/* Main Content Area */}
+            <Card className="border-slate-200 shadow-sm">
                 <CardHeader>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col md:flex-row gap-4 justify-between">
-                            <div className="relative w-full md:w-64">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <div className="relative w-full md:w-72">
+                                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                                 <Input
                                     placeholder="Search make, model, VIN..."
-                                    className="pl-9"
+                                    className="pl-10 h-10 w-full"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -117,44 +157,42 @@ export default function Inventory() {
                             <Button
                                 variant={showFilters ? "secondary" : "outline"}
                                 onClick={() => setShowFilters(!showFilters)}
-                                className="gap-2"
+                                className="gap-2 h-10"
                             >
                                 <Filter size={16} /> Filters
                             </Button>
                         </div>
 
-                        {/* Collapsible Filter Section */}
                         {showFilters && (
-                            <div className="p-4 bg-slate-50 border rounded-lg grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2">
+                            <div className="p-4 bg-slate-50 border rounded-lg animate-in fade-in slide-in-from-top-2">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-slate-700">Transaction Type</label>
-                                    <div className="flex gap-2 flex-wrap">
-                                        <Button variant="outline" size="sm" onClick={() => setFilterType('All')} className={filterType === 'All' ? 'bg-slate-200 border-slate-300' : ''}>All</Button>
-                                        <Button variant="outline" size="sm" onClick={() => setFilterType('New')} className={filterType === 'New' ? 'bg-blue-100 text-blue-700 border-blue-200' : ''}>New</Button>
-                                        <Button variant="outline" size="sm" onClick={() => setFilterType('Purchase')} className={filterType === 'Purchase' ? 'bg-amber-100 text-amber-700 border-amber-200' : ''}>Purchase</Button>
-                                        <Button variant="outline" size="sm" onClick={() => setFilterType('Sale')} className={filterType === 'Sale' ? 'bg-green-100 text-green-700 border-green-200' : ''}>Sale</Button>
-                                    </div>
-                                </div>
-                                <div className="border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6 space-y-2">
                                     <label className="text-sm font-medium text-slate-700">Vehicle Status</label>
                                     <div className="flex gap-2 flex-wrap">
-                                        <Button variant="outline" size="sm" onClick={() => setFilterStatus('All')} className={filterStatus === 'All' ? 'bg-slate-200 border-slate-300' : ''}>All</Button>
-                                        <Button variant="outline" size="sm" onClick={() => setFilterStatus('Available')} className={filterStatus === 'Available' ? 'bg-green-100 text-green-800 border-green-200' : ''}>Available</Button>
-                                        <Button variant="outline" size="sm" onClick={() => setFilterStatus('Sold')} className={filterStatus === 'Sold' ? 'bg-slate-100 text-slate-800' : ''}>Sold</Button>
+                                        {['All', 'Available', 'Sold', 'Reserved'].map(status => (
+                                            <Button
+                                                key={status}
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => setFilterStatus(status)}
+                                                className={filterStatus === status ? 'bg-slate-800 text-white border-slate-800' : 'bg-white hover:bg-slate-50'}
+                                            >
+                                                {status}
+                                            </Button>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                         )}
                     </div>
                 </CardHeader>
-                <CardContent>
-                    <div className="rounded-md border overflow-x-auto">
+                <CardContent className="p-0 sm:p-6">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block rounded-md border overflow-x-auto">
                         <Table>
                             <TableHeader>
-                                <TableRow>
+                                <TableRow className="bg-slate-50/50">
                                     <TableHead>Vehicle ID</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead>Make & Model</TableHead>
+                                    <TableHead>Details</TableHead>
                                     <TableHead>Year</TableHead>
                                     <TableHead>Price</TableHead>
                                     <TableHead>Status</TableHead>
@@ -164,49 +202,43 @@ export default function Inventory() {
                             <TableBody>
                                 {filteredInventory.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={7} className="text-center h-24 text-muted-foreground">
-                                            No vehicles found.
+                                        <TableCell colSpan={6} className="text-center h-32 text-muted-foreground">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <Car className="w-8 h-8 text-slate-300" />
+                                                <p>No vehicles found in {activeTab} section.</p>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
                                     filteredInventory.map((car) => (
-                                        <TableRow key={car.id}>
-                                            <TableCell className="font-medium whitespace-nowrap">{car.id}</TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline" className={
-                                                    car.transaction_type === 'New' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                                                        car.transaction_type === 'Purchase' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                            car.transaction_type === 'Sale' ? 'bg-green-50 text-green-700 border-green-200' : ''
-                                                }>
-                                                    {car.transaction_type || 'New'}
-                                                </Badge>
-                                            </TableCell>
+                                        <TableRow key={car.id} className="group">
+                                            <TableCell className="font-mono text-xs text-slate-500">{car.id}</TableCell>
                                             <TableCell>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium whitespace-nowrap">{car.manufacturer || car.make} {car.model}</span>
-                                                    <span className="text-xs text-muted-foreground">{car.mileage ? `${car.mileage} miles` : '0 miles'}</span>
+                                                    <span className="font-semibold text-slate-900">{car.manufacturer || car.make} {car.model}</span>
+                                                    <span className="text-xs text-slate-500">{car.mileage ? `${car.mileage} km` : '0 km'} • {car.fuel_type || 'Petrol'}</span>
                                                 </div>
                                             </TableCell>
                                             <TableCell>{car.year}</TableCell>
-                                            <TableCell>${(car.price || 0).toLocaleString()}</TableCell>
+                                            <TableCell className="font-medium">${(car.price || 0).toLocaleString()}</TableCell>
                                             <TableCell>
                                                 <Badge variant={
                                                     car.status === 'Available' ? 'default' :
                                                         car.status === 'Sold' ? 'secondary' : 'outline'
-                                                }>
+                                                } className={car.status === 'Available' ? 'bg-green-100 text-green-700 hover:bg-green-200' : ''}>
                                                     {car.status}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
-                                                    <Button variant="ghost" size="icon" onClick={() => navigate(`/vehicle/${car.id}`)}>
-                                                        <Eye size={16} />
+                                                <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/vehicle/${car.id}`)}>
+                                                        <Eye size={16} className="text-slate-500" />
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" onClick={() => navigate(`/inventory/${car.id}/edit`)}>
-                                                        <Edit size={16} />
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/inventory/${car.id}/edit`)}>
+                                                        <Edit size={16} className="text-blue-500" />
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600 hover:bg-red-50" onClick={() => triggerDelete(car.id)}>
-                                                        <Trash size={16} />
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50" onClick={() => triggerDelete(car.id)}>
+                                                        <Trash size={16} className="text-red-500" />
                                                     </Button>
                                                 </div>
                                             </TableCell>
@@ -215,6 +247,43 @@ export default function Inventory() {
                                 )}
                             </TableBody>
                         </Table>
+                    </div>
+
+                    {/* Mobile Card Grid View */}
+                    <div className="md:hidden grid grid-cols-1 gap-4 p-4">
+                        {filteredInventory.length === 0 ? (
+                            <div className="text-center py-10 text-slate-500 bg-slate-50 rounded-lg border border-dashed border-slate-200">
+                                <Car className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                                <p>No vehicles found.</p>
+                            </div>
+                        ) : (
+                            filteredInventory.map((car) => (
+                                <div key={car.id} className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm flex flex-col gap-3 active:scale-[0.99] transition-transform">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h3 className="font-bold text-lg text-slate-900">{car.manufacturer || car.make} {car.model}</h3>
+                                            <p className="text-sm text-slate-500">{car.year} • {car.fuel_type}</p>
+                                        </div>
+                                        <Badge variant={car.status === 'Available' ? 'default' : 'secondary'}>
+                                            {car.status}
+                                        </Badge>
+                                    </div>
+
+                                    <div className="flex justify-between items-end border-t border-slate-100 pt-3 mt-1">
+                                        <div>
+                                            <p className="text-xs text-slate-400">Price</p>
+                                            <p className="font-bold text-xl text-blue-600">${(car.price || 0).toLocaleString()}</p>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Button size="sm" variant="outline" onClick={() => navigate(`/vehicle/${car.id}`)}>View</Button>
+                                            <Button size="sm" variant="ghost" className="text-red-500 h-9 w-9 p-0" onClick={() => triggerDelete(car.id)}>
+                                                <Trash size={16} />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </CardContent>
             </Card>
@@ -231,7 +300,7 @@ export default function Inventory() {
                     </div>
                     <div>
                         <h4 className="text-lg font-semibold text-gray-900">Delete this vehicle?</h4>
-                        <p className="text-sm text-gray-500 mt-1">This action cannot be undone. This will permanently remove the vehicle from your inventory.</p>
+                        <p className="text-sm text-gray-500 mt-1">This action cannot be undone.</p>
                     </div>
                 </div>
                 <ModalFooter>
@@ -243,7 +312,7 @@ export default function Inventory() {
                         onClick={confirmDelete}
                         className="bg-red-600 hover:bg-red-700 text-white"
                     >
-                        Delete Vehicle
+                        Delete
                     </Button>
                 </ModalFooter>
             </Modal>

@@ -100,7 +100,7 @@ export default function AddInsurance() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Create Insurance Record</h2>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Create Insurance Record</h2>
                     <p className="text-muted-foreground">Add a new insurance policy for a customer.</p>
                 </div>
             </div>

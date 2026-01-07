@@ -100,12 +100,13 @@ export default function Dashboard() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-                <div className="flex items-center gap-2 relative">
+                <div className="flex flex-wrap items-center gap-2 relative">
                     <Button
                         variant="outline"
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        className="text-sm px-3 md:px-4"
                     >
                         Custom Range
                     </Button>
@@ -138,8 +139,10 @@ export default function Dashboard() {
                             </div>
                         </div>
                     )}
-                    <Button className="gap-2" onClick={() => downloadCSV(salesData)}>
-                        <Download size={16} /> Download Report
+                    <Button className="gap-2 text-sm px-3 md:px-4" onClick={() => downloadCSV(salesData)}>
+                        <Download size={16} />
+                        <span className="hidden sm:inline">Download Report</span>
+                        <span className="sm:hidden">Download</span>
                     </Button>
                 </div>
             </div>

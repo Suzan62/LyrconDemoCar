@@ -82,7 +82,7 @@ export default function InsuranceList() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Insurance Records</h2>
                     <p className="text-muted-foreground">Manage customer vehicle insurance details.</p>
@@ -93,9 +93,9 @@ export default function InsuranceList() {
             </div>
 
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <CardTitle>All Insurances</CardTitle>
-                    <div className="relative w-64">
+                    <div className="relative w-full md:w-64">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <input
                             type="text"
@@ -107,7 +107,7 @@ export default function InsuranceList() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="rounded-md border">
+                    <div className="rounded-md border overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead className="bg-muted/50">
                                 <tr className="text-left border-b">

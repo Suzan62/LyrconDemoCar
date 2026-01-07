@@ -736,7 +736,29 @@ def dashboard_stats():
         print(f"Error in dashboard stats: {e}")
         return jsonify({"success": False, "message": str(e)}), 500
 
+def seed_admin_user():
+    try:
+        admin_email = "admin@lyrcon.com"
+        # Check if admin exists
+        admin = db.session.execute(db.select(User).filter_by(email=admin_email)).scalar_one_or_none()
+        if not admin:
+            print(f"[-] Admin user {admin_email} not found. Seeding...")
+            new_admin = User(
+                name="Admin User",
+                email=admin_email,
+                password="password123", # Default password
+                role="Manager",
+                phone="9876543210",
+                location="Headquarters, NY"
+            )
+            db.session.add(new_admin)
+            db.session.commit()
+            print(f"[+] Admin user seeded successfully.")
+    except Exception as e:
+        print(f"[!] Failed to seed admin user: {e}")
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        seed_admin_user()
     app.run(debug=True, port=5000)

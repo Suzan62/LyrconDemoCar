@@ -69,7 +69,7 @@ export default function UserList() {
 
     return (
         <div className="space-y-6 animate-in fade-in zoom-in duration-300">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-800">Users</h1>
                 <Link to="/users/create">
                     <Button className="bg-blue-600 hover:bg-blue-700">
@@ -80,12 +80,12 @@ export default function UserList() {
 
             <Card className="border-slate-200 shadow-sm">
                 <CardHeader className="bg-slate-50 border-b border-slate-100 pb-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div className="flex items-center gap-2">
                             <User className="h-5 w-5 text-slate-500" />
                             <CardTitle className="text-lg font-semibold text-slate-700">All Users</CardTitle>
                         </div>
-                        <div className="relative w-64">
+                        <div className="relative w-full md:w-64">
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
                             <input
                                 type="text"
@@ -125,8 +125,8 @@ export default function UserList() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${user.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
-                                                        user.role === 'Manager' ? 'bg-blue-100 text-blue-800' :
-                                                            'bg-slate-100 text-slate-800'
+                                                    user.role === 'Manager' ? 'bg-blue-100 text-blue-800' :
+                                                        'bg-slate-100 text-slate-800'
                                                     }`}>
                                                     {user.role}
                                                 </span>

@@ -69,7 +69,7 @@ export default function AddInquiry() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">ADD NEW INQUIRY</h2>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Add New Inquiry</h2>
                     <div className="text-sm text-muted-foreground">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</div>
                 </div>
             </div>

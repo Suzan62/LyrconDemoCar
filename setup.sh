@@ -21,6 +21,7 @@ echo "[3/6] Setting up PostgreSQL..."
 sudo -u postgres psql -c "CREATE DATABASE lyrcon;" || echo "Database lyrcon already exists."
 sudo -u postgres psql -c "CREATE USER myuser WITH PASSWORD 'mypassword';" || echo "User myuser already exists."
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE lyrcon TO myuser;"
+sudo -u postgres psql -d lyrcon -c "GRANT ALL ON SCHEMA public TO myuser;"
 
 # 4. Setup Backend
 echo "[4/6] Setting up Backend..."

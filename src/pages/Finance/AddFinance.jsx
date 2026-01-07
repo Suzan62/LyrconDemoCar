@@ -92,19 +92,14 @@ export default function AddFinance() {
 
     return (
         <div className="space-y-6 max-w-5xl mx-auto pb-10">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => navigate('/finance')}>
-                        <ArrowLeft size={20} />
-                    </Button>
-                    <div>
-                        <h2 className="text-3xl font-bold tracking-tight">Create Finance Record</h2>
-                        <p className="text-muted-foreground">Add a new loan or finance entry.</p>
-                    </div>
-                </div>
-                <Button className="gap-2" onClick={handleSubmit} disabled={loading}>
-                    <Save size={18} /> {loading ? 'Saving...' : 'Save Record'}
+            <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon" onClick={() => navigate('/finance')} className="mr-2">
+                    <ArrowLeft className="h-6 w-6" />
                 </Button>
+                <div>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Create Finance Record</h2>
+                    <p className="text-muted-foreground">Add a new loan or finance entry.</p>
+                </div>
             </div>
 
             <Card className="border-none shadow-md">
@@ -266,6 +261,13 @@ export default function AddFinance() {
                                 )}
                             </div>
                         </section>
+
+                        <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-100">
+                            <Button variant="ghost" onClick={() => navigate('/finance')}>Cancel</Button>
+                            <Button onClick={handleSubmit} disabled={loading} className="w-32">
+                                {loading ? "Saving..." : "Save Record"}
+                            </Button>
+                        </div>
                     </div>
                 </CardContent>
             </Card>

@@ -5,9 +5,25 @@ import TopBar from './TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../store/slices/userSlice';
 
+import { Menu } from 'lucide-react';
+import { Button } from './ui/Button';
+
 export default function Layout() {
     const dispatch = useDispatch();
     const { currentUser } = useSelector(state => state.auth);
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+    const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+            if (window.innerWidth >= 768) {
+                setSidebarOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Hydrate user profile on mount / auth change
     useEffect(() => {
@@ -34,10 +50,11 @@ export default function Layout() {
 
     return (
         <div className="flex h-screen w-full bg-[#f4f7f6] overflow-hidden">
-            <Sidebar />
-            <div className="flex-1 flex flex-col h-full overflow-hidden">
-                <TopBar />
-                <main className="flex-1 overflow-auto p-6 scroll-smooth">
+            <Sidebar isMobile={isMobile} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+            <div className="flex-1 flex flex-col h-full overflow-hidden relative w-full">
+                <TopBar onMenuClick={() => setSidebarOpen(true)} isMobile={isMobile} />
+                <main className="flex-1 overflow-auto p-4 md:p-6 scroll-smooth w-full">
                     <Outlet />
                 </main>
             </div>

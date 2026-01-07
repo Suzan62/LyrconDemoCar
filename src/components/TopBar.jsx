@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Bell, Search, User, ChevronRight, X, Check } from 'lucide-react';
+import { Bell, Search, User, ChevronRight, X, Check, Menu } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useLocation, Link } from 'react-router-dom';
 import { Card } from './ui/Card';
 import { useSelector } from 'react-redux';
 
-export default function TopBar() {
+export default function TopBar({ onMenuClick, isMobile }) {
     const location = useLocation();
     const { profile } = useSelector(state => state.user);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [notifications, setNotifications] = useState([
         { id: 1, title: 'New Inquiry', message: 'Customer John Doe requested a quote.', time: '2 min ago', read: false },
         { id: 2, title: 'Vehicle Sold', message: 'Honda Civic (INV-004) marked as sold.', time: '1 hour ago', read: false },
@@ -66,8 +67,30 @@ export default function TopBar() {
     const breadcrumbs = getBreadcrumbs(location.pathname);
 
     return (
-        <header className="h-16 bg-white border-b border-border flex items-center justify-between px-6 relative z-10 w-full box-border">
+        <header className="h-16 bg-white border-b border-border flex items-center justify-between px-4 md:px-6 relative z-10 w-full box-border">
+            {/* Mobile Search Overlay */}
+            {isSearchOpen && (
+                <div className="absolute inset-0 bg-white z-50 flex items-center px-4 gap-2 border-b">
+                    <Search className="h-4 w-4 text-muted-foreground" />
+                    <input
+                        type="text"
+                        placeholder="Search global..."
+                        className="flex-1 h-9 rounded-md border-none bg-transparent text-sm focus:outline-none"
+                        autoFocus
+                    />
+                    <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
+                        <X size={20} />
+                    </Button>
+                </div>
+            )}
+
             <div className="flex items-center gap-2 text-sm text-muted-foreground overflow-hidden whitespace-nowrap">
+                {isMobile && (
+                    <Button variant="ghost" size="icon" className="-ml-2 mr-1 text-foreground" onClick={onMenuClick}>
+                        <Menu size={24} />
+                    </Button>
+                )}
+
                 {breadcrumbs.map((crumb, index) => (
                     <div key={index} className="flex items-center gap-2">
                         {index > 0 && <ChevronRight size={14} />}
@@ -78,7 +101,8 @@ export default function TopBar() {
                 ))}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
+                {/* Desktop Search */}
                 <div className="relative w-64 hidden md:block">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <input
@@ -87,6 +111,16 @@ export default function TopBar() {
                         className="w-full h-9 pl-9 pr-4 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                     />
                 </div>
+
+                {/* Mobile Search Toggle */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden"
+                    onClick={() => setIsSearchOpen(true)}
+                >
+                    <Search size={20} />
+                </Button>
 
                 <div className="relative">
                     <Button
@@ -103,7 +137,7 @@ export default function TopBar() {
 
                     {/* Notification Dropdown */}
                     {isNotificationsOpen && (
-                        <div className="absolute right-0 top-12 w-80 bg-white border rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
+                        <div className="absolute right-0 top-12 w-[85vw] md:w-80 bg-white border rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
                             <div className="flex items-center justify-between p-3 border-b bg-slate-50">
                                 <span className="font-semibold text-sm">Notifications ({unreadCount})</span>
                                 {unreadCount > 0 && (
@@ -138,15 +172,15 @@ export default function TopBar() {
                     )}
                 </div>
                 {/* User Profile */}
-                <Link to="/profile" className="flex items-center gap-3 pl-4 border-l cursor-pointer hover:bg-slate-50 p-1 rounded-md transition-colors">
-                    <div className={`h-9 w-9 rounded-full ${profile?.profilePic ? '' : 'bg-blue-100'} flex items-center justify-center text-blue-600 overflow-hidden`}>
+                <Link to="/profile" className="flex items-center gap-3 pl-2 md:pl-4 border-l cursor-pointer hover:bg-slate-50 p-1 rounded-md transition-colors">
+                    <div className={`h-8 w-8 md:h-9 md:w-9 rounded-full ${profile?.profilePic ? '' : 'bg-blue-100'} flex items-center justify-center text-blue-600 overflow-hidden`}>
                         {profile?.profilePic ? (
                             <img src={profile.profilePic} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
                             <User size={18} />
                         )}
                     </div>
-                    <div>
+                    <div className="hidden md:block">
                         <p className="text-sm font-medium text-slate-700">{profile?.name || "Admin User"}</p>
                         <p className="text-xs text-slate-500">{profile?.role || "Manager"}</p>
                     </div>
