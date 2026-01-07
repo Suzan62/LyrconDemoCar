@@ -187,7 +187,7 @@ export default function Dashboard() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-7">
-                <Card className="col-span-4">
+                <Card className="md:col-span-4">
                     <CardHeader>
                         <CardTitle>Sales Forecasting</CardTitle>
                         <CardDescription>
@@ -218,7 +218,7 @@ export default function Dashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="col-span-3">
+                <Card className="md:col-span-3">
                     <CardHeader>
                         <CardTitle>Recent Sales Performance</CardTitle>
                         <CardDescription>
