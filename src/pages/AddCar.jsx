@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft } from 'lucide-react';
+import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft, FilePlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/Button';
 import { useDispatch } from 'react-redux';
@@ -25,57 +25,90 @@ export default function AddCar(props) {
     const [formData, setFormData] = useState({
         docket_number: '',
         transaction_type: 'New',
-        vin: '',
+        entry_type: '',
+        booking_date: '',
+        delivery_date: '',
+
+        // Customer Details
+        customer_name: '',
+        customer_phone: '',
+        customer_address_line1: '',
+        customer_address_line2: '',
+        customer_city: '',
+        customer_pincode: '',
+        customer_email: '',
+        customer_dob: '',
+
+        // Nominee Details
+        nominee_relation: '',
+        nominee_name: '',
+        nominee_dob: '',
+
+        // Vehicle Information
         manufacturer: '',
         model: '',
-        year: '',
         color: '',
+        year: '',
         fuel_type: '',
-        engine_number: '',
         registration_number: '',
+        vin: '',
+        engine_number: '',
+        hp: '',
         running_km: '',
-        rto_code: '',
-        rto_name: '',
-        rto_passing_status: 'Pending',
-        plate_type: 'Normal',
 
         // Additional Details
-        executive_branch: '',
+        dealer: '',
+        location: '',
         executive_name: '',
         executive_number: '',
+        executive_branch: '',
+        choice_number: '',
         insurance_company: '',
-
-        // Dates
-        delivery_date: '',
         insurance_expiry: '',
+        rto_name: '',
+        rto_code: '',
+        rto_passing_status: 'Pending',
+        plate_type: 'Normal',
+        scheme: '',
+        broker_name: '',
+        broker_number: '',
+        brokerage_amount: '',
+        other_remarks: '',
 
-        // Sale Details
+        // Sale Details (for Sale mode)
         buyer_name: '',
         buyer_address: '',
         buyer_email: '',
         buyer_dob: '',
-        nominee_name: '',
-        nominee_relation: '',
-        nominee_dob: '',
-        broker_name: '',
-        broker_number: '',
-        brokerage_amount: ''
+
+        // Pricing
+        price: ''
     });
 
     const [files, setFiles] = useState({});
     const [errors, setErrors] = useState({});
     const [multipartDocs, setMultipartDocs] = useState({});
 
-    // Configuration for Documents
-    const DOCUMENT_CONFIG = [
+    // Configuration for Documents - New Cars
+    const NEW_CAR_DOCUMENTS = [
+        { key: 'KYC', label: 'KYC', dualSided: true },
+        { key: 'Deal_Agreement', label: 'Deal Agreement', dualSided: false },
+    ];
+
+    // Configuration for Documents - Purchase/Sale Old Cars
+    const OLD_CAR_DOCUMENTS = [
         { key: 'RC_Book', label: 'RC Book', dualSided: true },
+        { key: 'Owner_ID_Proof', label: 'Owner ID Proof', dualSided: true },
+        { key: 'Insurance_Policy', label: 'Insurance', dualSided: false },
+        { key: 'PAN_Card', label: 'Pan Card', dualSided: true },
         { key: 'Aadhar_Card', label: 'Aadhar Card', dualSided: true },
-        { key: 'PAN_Card', label: 'PAN Card', dualSided: true },
-        { key: 'Insurance_Policy', label: 'Insurance Policy', dualSided: false },
         { key: 'NOC', label: 'NOC', dualSided: false },
         { key: 'Form_35', label: 'Form 35', dualSided: false },
         { key: 'Purchase_Agreement', label: 'Purchase Agreement', dualSided: false },
     ];
+
+    // Select appropriate document config based on transaction type
+    const DOCUMENT_CONFIG = transactionType === 'New' ? NEW_CAR_DOCUMENTS : OLD_CAR_DOCUMENTS;
 
     // Helper: Fetch Vehicle if editing via URL
     useEffect(() => {
@@ -89,16 +122,33 @@ export default function AddCar(props) {
                         setInitialCarData(data);
                         setIsEditMode(true);
 
-                        // Populate form
+                        // Populate form safely, ensuring no null values leak into state
+                        const safeData = {};
+                        Object.keys(data).forEach(key => {
+                            if (data[key] === null) {
+                                safeData[key] = '';
+                            } else if (key.includes('date') || key.includes('dob') || key.includes('expiry')) {
+                                // Format dates as YYYY-MM-DD for inputs
+                                try {
+                                    safeData[key] = data[key].split('T')[0];
+                                } catch (e) {
+                                    safeData[key] = data[key];
+                                }
+                            } else {
+                                safeData[key] = data[key];
+                            }
+                        });
+
                         setFormData(prev => ({
                             ...prev,
-                            ...data,
-                            manufacturer: data.manufacturer || data.make || '',
-                            running_km: data.running_km || data.mileage || '',
-                            vin: data.id || data.vin || '',
-                            transaction_type: data.transaction_type || 'New'
+                            ...safeData,
+                            manufacturer: safeData.manufacturer || safeData.make || '',
+                            docket_number: safeData.docket_number || '',
+                            running_km: safeData.running_km || safeData.mileage || '',
+                            vin: safeData.chassis_number || safeData.id || safeData.vin || '',
+                            transaction_type: initialMode === 'New' ? (safeData.transaction_type || 'New') : initialMode
                         }));
-                        setTransactionType(data.transaction_type || 'New');
+                        setTransactionType(initialMode === 'New' ? (safeData.transaction_type || 'New') : initialMode);
                     } else {
                         toast.error("Vehicle not found");
                         navigate('/inventory');
@@ -117,16 +167,38 @@ export default function AddCar(props) {
     // Helper: Initialize form from props/state if available immediately
     useEffect(() => {
         if (initialCarData) {
+            const safeCarData = {};
+            Object.keys(initialCarData).forEach(key => {
+                if (initialCarData[key] === null) {
+                    safeCarData[key] = '';
+                } else if (key.includes('date') || key.includes('dob') || key.includes('expiry')) {
+                    // Format dates as YYYY-MM-DD for inputs
+                    try {
+                        safeCarData[key] = initialCarData[key].split('T')[0];
+                    } catch (e) {
+                        safeCarData[key] = initialCarData[key];
+                    }
+                } else {
+                    safeCarData[key] = initialCarData[key];
+                }
+            });
+
             setFormData(prev => ({
                 ...prev,
-                ...initialCarData,
-                manufacturer: initialCarData.manufacturer || initialCarData.make || '',
-                running_km: initialCarData.running_km || initialCarData.mileage || '',
-                vin: initialCarData.id || initialCarData.vin || '',
-                transaction_type: initialCarData.transaction_type || 'New'
+                ...safeCarData,
+                manufacturer: safeCarData.manufacturer || safeCarData.make || '',
+                docket_number: safeCarData.docket_number || '',
+                running_km: safeCarData.running_km || safeCarData.mileage || '',
+                vin: safeCarData.chassis_number || safeCarData.id || safeCarData.vin || '',
+                transaction_type: initialMode === 'New' ? (safeCarData.transaction_type || 'New') : initialMode
             }));
-            setTransactionType(initialCarData.transaction_type || 'New');
+            setTransactionType(initialMode === 'New' ? (safeCarData.transaction_type || 'New') : initialMode);
         } else if (!isEditMode) {
+            // Ensure formData stays in sync with the current mode for new records
+            setFormData(prev => ({
+                ...prev,
+                transaction_type: initialMode
+            }));
             setTransactionType(initialMode);
         }
     }, [initialCarData, isEditMode, initialMode]);
@@ -140,8 +212,18 @@ export default function AddCar(props) {
     }, []);
 
     const handleCancel = () => {
-        if (onClose) onClose();
-        else navigate('/inventory');
+        if (onClose) {
+            onClose();
+        } else {
+            // Redirect based on transaction type for better navigation flow
+            if (transactionType === 'Purchase') {
+                navigate('/purchase-old-car');
+            } else if (transactionType === 'Sale') {
+                navigate('/sell-old-car');
+            } else {
+                navigate('/inventory');
+            }
+        }
     };
 
     const convertImagesToPDF = async (frontFile, backFile) => {
@@ -180,18 +262,36 @@ export default function AddCar(props) {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.docket_number) newErrors.docket_number = "Docket Number is required";
+        if (!formData.docket_number && transactionType === 'New') newErrors.docket_number = "Docket Number is required";
         if (transactionType === 'New' || transactionType === 'Purchase') {
             if (!formData.vin) newErrors.vin = "VIN/Chassis Number is required";
-            else if (formData.vin.length !== 17) newErrors.vin = "VIN must be exactly 17 characters";
+            // Relaxed VIN length validation for old/purchase cars as they may not follow standard 17-char formats
+            else if (transactionType === 'New' && formData.vin.length !== 17) {
+                newErrors.vin = "VIN must be exactly 17 characters for new cars";
+            }
         }
-        if (!formData.manufacturer) newErrors.manufacturer = "Manufacturer is required";
+        if (!formData.manufacturer && transactionType !== 'Sale') newErrors.manufacturer = "Manufacturer is required";
         if (!formData.model) newErrors.model = "Model is required";
         if (!formData.year) newErrors.year = "Year is required";
+        if (!formData.registration_number) newErrors.registration_number = "Registration Number is required";
         if (transactionType === 'Sale') {
-            if (!formData.buyer_name) newErrors.buyer_name = "Buyer Name is required";
-            if (!formData.buyer_email) newErrors.buyer_email = "Buyer Email is required";
+            if (!formData.customer_name) newErrors.customer_name = "Customer Name is required";
+            if (!formData.customer_email) newErrors.customer_email = "Customer Email is required";
         }
+
+        // Debug logging
+        if (Object.keys(newErrors).length > 0) {
+            console.log('Validation failed with errors:', newErrors);
+            console.log('Current formData:', {
+                model: formData.model,
+                year: formData.year,
+                registration_number: formData.registration_number,
+                customer_name: formData.customer_name,
+                customer_email: formData.customer_email,
+                transactionType: transactionType
+            });
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -205,6 +305,39 @@ export default function AddCar(props) {
             return { ...prev, [name]: value };
         });
     };
+
+    // VIN Auto-Fill Functionality
+    const handleVinAutoFill = async () => {
+        if (!formData.vin) {
+            toast.error('Please enter a VIN/Chassis Number first');
+            return;
+        }
+
+        try {
+            toast.info('Fetching vehicle details...');
+            const response = await fetch(`/api/decode-vin/${formData.vin}`);
+
+            if (!response.ok) {
+                throw new Error('Failed to decode VIN');
+            }
+
+            const data = await response.json();
+
+            setFormData(prev => ({
+                ...prev,
+                manufacturer: data.Make || prev.manufacturer,
+                model: data.Model || prev.model,
+                year: data.ModelYear || prev.year,
+                fuel_type: data.FuelTypePrimary || prev.fuel_type
+            }));
+
+            toast.success('Vehicle details auto-filled successfully!');
+        } catch (error) {
+            console.error('Auto-fill error:', error);
+            toast.error('Could not auto-fill vehicle details. Please enter manually.');
+        }
+    };
+
 
     const handleFileChange = (e, docType) => {
         if (e.target.files && e.target.files[0]) {
@@ -240,16 +373,34 @@ export default function AddCar(props) {
 
     const handleAutoFill = (e) => {
         const selectedId = e.target.value;
-        const selectedCar = existingVehicles.find(v => v.id.toString() === selectedId);
+        const selectedCar = existingVehicles.find(v => (v.id).toString() === selectedId);
         if (selectedCar) {
+            // When selecting an existing car for Sale, we switch to Edit Mode
+            // so that the submission maps to a PUT request (updating the vehicle to 'Sold')
+            // instead of a POST request (which would fail with 'VIN already exists')
+            setIsEditMode(true);
+            setInitialCarData(selectedCar);
+
             setFormData(prev => ({
                 ...prev,
-                manufacturer: selectedCar.make || '',
+                manufacturer: selectedCar.manufacturer || selectedCar.make || '',
+                docket_number: selectedCar.docket_number || '',
                 model: selectedCar.model || '',
                 year: selectedCar.year || '',
                 color: selectedCar.color || '',
-                vin: selectedCar.id || '',
+                vin: selectedCar.chassis_number || selectedCar.vin || selectedCar.id || '',
+                registration_number: selectedCar.registration_number || '',
+                engine_number: selectedCar.engine_number || '',
+                fuel_type: selectedCar.fuel_type || '',
+                running_km: selectedCar.running_km || '',
+                hp: selectedCar.hp || selectedCar.hp_name || '',
+                insurance_company: selectedCar.insurance_company || '',
+                insurance_expiry: selectedCar.insurance_expiry || '',
+                // Preserve customer/buyer fields that user may have already entered
+                customer_name: prev.customer_name || '',
+                customer_email: prev.customer_email || ''
             }));
+            toast.success("Vehicle details loaded. Form is now in Update mode.");
         }
     };
 
@@ -280,19 +431,13 @@ export default function AddCar(props) {
             const result = await response.json();
 
             if (response.ok) {
-                const vehiclePayload = {
+                const vehiclePayload = result.vehicle || {
                     id: result.id || formData.vin || `INV-${Date.now()}`,
-                    make: formData.manufacturer,
-                    model: formData.model,
-                    year: formData.year,
-                    price: 0,
-                    mileage: formData.running_km,
-                    status: 'Available',
                     ...formData
                 };
 
                 if (targetId) {
-                    dispatch(updateVehicle({ id: targetId, ...vehiclePayload }));
+                    dispatch(updateVehicle(vehiclePayload));
                 } else {
                     dispatch(addVehicle(vehiclePayload));
                 }
@@ -319,8 +464,22 @@ export default function AddCar(props) {
                             <ArrowLeft size={20} />
                         </Button>
                         <div>
-                            <h2 className="text-3xl font-bold tracking-tight text-slate-900">{isEditMode ? 'Edit Vehicle' : 'Vehicle Transaction'}</h2>
-                            <p className="text-slate-500 mt-1">Full-width management for inventory and sales.</p>
+                            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                                {isEditMode
+                                    ? 'Edit Vehicle'
+                                    : transactionType === 'New'
+                                        ? 'Add New Car'
+                                        : transactionType === 'Purchase'
+                                            ? 'Add Old Car'
+                                            : 'Sell Old Car'}
+                            </h2>
+                            <p className="text-slate-500 mt-1">
+                                {transactionType === 'New'
+                                    ? 'Enter details for new inventory.'
+                                    : transactionType === 'Purchase'
+                                        ? 'Record details for purchasing an old vehicle.'
+                                        : 'Process a sale for an existing vehicle.'}
+                            </p>
                         </div>
                     </div>
                 )}
@@ -365,148 +524,1070 @@ export default function AddCar(props) {
                 )}
 
                 <div className="space-y-10">
-                    <section>
-                        <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <Car className="text-slate-400" /> Vehicle Details
-                        </h3>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Docket Number</label>
-                                <input name="docket_number" value={formData.docket_number} onChange={handleChange} className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${errors.docket_number ? 'border-red-500' : 'border-slate-300'}`} placeholder="e.g. D12345" />
-                                {errors.docket_number && <p className="text-xs text-red-500">{errors.docket_number}</p>}
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Chassis Number / VIN</label>
-                                <div className="flex flex-col gap-1">
-                                    <div className="flex gap-2">
-                                        <input name="vin" value={formData.vin} onChange={handleChange} className={`w-full min-w-0 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${errors.vin ? 'border-red-500' : 'border-slate-300'}`} placeholder="Unique 17-char ID" />
-                                        <Button
-                                            type="button"
-                                            onClick={async () => {
-                                                if (!formData.vin || formData.vin.length < 17) {
-                                                    toast.error("Please enter a valid 17-digit VIN first.");
-                                                    return;
-                                                }
-                                                try {
-                                                    setLoading(true);
-                                                    const res = await fetch(`/api/decode-vin/${formData.vin}`);
-                                                    const data = await res.json();
-                                                    if (data.success) {
-                                                        const { manufacturer, model, year, fuel_type } = data.data;
-                                                        setFormData(prev => ({
-                                                            ...prev,
-                                                            manufacturer: manufacturer || prev.manufacturer,
-                                                            model: model || prev.model,
-                                                            year: year || prev.year,
-                                                            fuel_type: fuel_type || prev.fuel_type
-                                                        }));
-                                                        toast.success("Vehicle details auto-filled!");
-                                                    } else {
-                                                        toast.error(data.message || "Failed to decode VIN");
-                                                    }
-                                                } catch (err) {
-                                                    toast.error("Error connecting to VIN service");
-                                                } finally {
-                                                    setLoading(false);
-                                                }
-                                            }}
-                                            variant="outline"
-                                            className="shrink-0 flex items-center gap-1 px-4 border-slate-300"
-                                            title="Auto-fill details from VIN"
-                                        >
-                                            <Wand2 size={16} /> Auto-Fill
-                                        </Button>
-                                    </div>
-                                    {errors.vin && <p className="text-xs text-red-500">{errors.vin}</p>}
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Manufacturer</label>
-                                <input name="manufacturer" value={formData.manufacturer} onChange={handleChange} className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${errors.manufacturer ? 'border-red-500' : 'border-slate-300'}`} />
-                                {errors.manufacturer && <p className="text-xs text-red-500">{errors.manufacturer}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Model</label>
-                                <input name="model" value={formData.model} onChange={handleChange} className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${errors.model ? 'border-red-500' : 'border-slate-300'}`} />
-                                {errors.model && <p className="text-xs text-red-500">{errors.model}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Year</label>
-                                <input name="year" type="number" value={formData.year} onChange={handleChange} className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${errors.year ? 'border-red-500' : 'border-slate-300'}`} />
-                                {errors.year && <p className="text-xs text-red-500">{errors.year}</p>}
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Color</label>
-                                <input name="color" value={formData.color} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Fuel Type</label>
-                                <input name="fuel_type" value={formData.fuel_type} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
-                            </div>
-                            {transactionType !== 'New' && (
+                    {/* Basic Information */}
+                    {transactionType === 'New' && (
+                        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                <FileText className="text-blue-500" /> Basic Information
+                            </h3>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700">Running Kilometers</label>
-                                    <input name="running_km" type="number" value={formData.running_km} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
+                                    <label className="text-sm font-semibold text-slate-700">Docket Number *</label>
+                                    <input
+                                        name="docket_number"
+                                        value={formData.docket_number}
+                                        onChange={handleChange}
+                                        className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.docket_number ? 'border-red-500' : 'border-slate-300'}`}
+                                        placeholder="e.g. 427856"
+                                    />
+                                    {errors.docket_number && <p className="text-xs text-red-500">{errors.docket_number}</p>}
                                 </div>
-                            )}
-                        </div>
-                    </section>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Entry Type *</label>
+                                    <select
+                                        name="entry_type"
+                                        value={formData.entry_type}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                    >
+                                        <option value="">Select Entry Type</option>
+                                        <option>Stock</option>
+                                        <option>Retail</option>
+                                        <option>Corporate</option>
+                                        <option>Exchange</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Booking Date *</label>
+                                    <input
+                                        name="booking_date"
+                                        type="date"
+                                        value={formData.booking_date}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Delivery Date *</label>
+                                    <input
+                                        name="delivery_date"
+                                        type="date"
+                                        value={formData.delivery_date}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                            </div>
+                        </section>
+                    )}
 
-                    <div className="border-t border-slate-100"></div>
+                    {/* Customer Details */}
+                    {transactionType === 'New' && (
+                        <>
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <UserCheck className="text-green-500" /> Customer Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Name</label>
+                                        <input
+                                            name="customer_name"
+                                            value={formData.customer_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Customer Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Phone</label>
+                                        <input
+                                            name="customer_phone"
+                                            value={formData.customer_phone}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Customer Phone"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 1</label>
+                                        <input
+                                            name="customer_address_line1"
+                                            value={formData.customer_address_line1}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 1"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 2</label>
+                                        <input
+                                            name="customer_address_line2"
+                                            value={formData.customer_address_line2}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 2"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">City</label>
+                                        <input
+                                            name="customer_city"
+                                            value={formData.customer_city}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter City Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Pincode</label>
+                                        <input
+                                            name="customer_pincode"
+                                            value={formData.customer_pincode}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Pincode"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Email</label>
+                                        <input
+                                            name="customer_email"
+                                            type="email"
+                                            value={formData.customer_email}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Email"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Date of Birth</label>
+                                        <input
+                                            name="customer_dob"
+                                            type="date"
+                                            value={formData.customer_dob}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
 
-                    <section>
-                        <h3 className="text-xl font-bold text-slate-800 mb-6">Additional Details</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Executive Name</label>
-                                <input name="executive_name" value={formData.executive_name} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Parsing Status</label>
-                                <select name="rto_passing_status" value={formData.rto_passing_status} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-shadow">
-                                    <option>Pending</option>
-                                    <option>In-Progress</option>
-                                    <option>Completed</option>
-                                    <option>Rejected</option>
-                                    <option>Document Error</option>
-                                </select>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Plate Type</label>
-                                <select name="plate_type" value={formData.plate_type} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-shadow">
-                                    <option>Normal</option>
-                                    <option>Choice (VIP)</option>
-                                    <option>High-Security (HSRP)</option>
-                                    <option>Temporary</option>
-                                </select>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-700">Insurance Company</label>
-                                <input name="insurance_company" value={formData.insurance_company} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
-                            </div>
-                        </div>
-                    </section>
+                            {/* Nominee Details */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <UserCheck className="text-teal-500" /> Nominee Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Nominee Relation *</label>
+                                        <select
+                                            name="nominee_relation"
+                                            value={formData.nominee_relation}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Nominee Relation</option>
+                                            <option>Spouse</option>
+                                            <option>Father</option>
+                                            <option>Mother</option>
+                                            <option>Son</option>
+                                            <option>Daughter</option>
+                                            <option>Brother</option>
+                                            <option>Sister</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Nominee Name *</label>
+                                        <input
+                                            name="nominee_name"
+                                            value={formData.nominee_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Nominee Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Nominee Date of Birth *</label>
+                                        <input
+                                            name="nominee_dob"
+                                            type="date"
+                                            value={formData.nominee_dob}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
 
+                        </>
+                    )}
+
+                    {/* Vehicle Information */}
+                    {transactionType === 'New' && (
+                        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                <Car className="text-indigo-500" /> Vehicle Information
+                            </h3>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                {transactionType === 'New' && (
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
+                                        <div className="flex gap-2">
+                                            <input
+                                                name="vin"
+                                                value={formData.vin}
+                                                onChange={handleChange}
+                                                className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.vin ? 'border-red-500' : 'border-slate-300'}`}
+                                                placeholder="Enter Chassis Number"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={handleVinAutoFill}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap"
+                                            >
+                                                Auto-Fill
+                                            </button>
+                                        </div>
+                                        {errors.vin && <p className="text-xs text-red-500">{errors.vin}</p>}
+                                    </div>
+                                )}
+                                {transactionType === 'New' && (
+                                    <>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Manufacturer *</label>
+                                            <input
+                                                name="manufacturer"
+                                                value={formData.manufacturer}
+                                                onChange={handleChange}
+                                                className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.manufacturer ? 'border-red-500' : 'border-slate-300'}`}
+                                                placeholder="Enter Manufacturer Name"
+                                            />
+                                            {errors.manufacturer && <p className="text-xs text-red-500">{errors.manufacturer}</p>}
+                                        </div>
+                                    </>
+                                )}
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Model</label>
+                                    <input
+                                        name="model"
+                                        value={formData.model}
+                                        onChange={handleChange}
+                                        className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.model ? 'border-red-500' : 'border-slate-300'}`}
+                                        placeholder="Enter Model Name"
+                                    />
+                                    {errors.model && <p className="text-xs text-red-500">{errors.model}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Color</label>
+                                    <input
+                                        name="color"
+                                        value={formData.color}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="Enter Color"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Manufacture Year *</label>
+                                    <input
+                                        name="year"
+                                        type="number"
+                                        value={formData.year}
+                                        onChange={handleChange}
+                                        className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.year ? 'border-red-500' : 'border-slate-300'}`}
+                                        placeholder="Enter Manufacture Year"
+                                    />
+                                    {errors.year && <p className="text-xs text-red-500">{errors.year}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700">Fuel Type</label>
+                                    <input
+                                        name="fuel_type"
+                                        value={formData.fuel_type}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="Enter Fuel Type"
+                                    />
+                                </div>
+                                {transactionType === 'New' && (
+                                    <>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Registration Number *</label>
+                                            <input
+                                                name="registration_number"
+                                                value={formData.registration_number}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter Registration Number"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Engine Number</label>
+                                            <input
+                                                name="engine_number"
+                                                value={formData.engine_number}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter Engine Number"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Insurance Expiry Date *</label>
+                                            <input
+                                                name="insurance_expiry"
+                                                type="date"
+                                                value={formData.insurance_expiry}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">HP</label>
+                                            <input
+                                                name="hp"
+                                                value={formData.hp}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter HP Name"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Running Kilometer</label>
+                                            <input
+                                                name="running_km"
+                                                type="number"
+                                                value={formData.running_km}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter running kilometer"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Additional Details */}
+                    {transactionType === 'New' && (
+                        <>
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <FilePlus className="text-orange-500" /> Additional Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Dealer *</label>
+                                        <input
+                                            name="dealer"
+                                            value={formData.dealer}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Dealer Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Location *</label>
+                                        <input
+                                            name="location"
+                                            value={formData.location}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Location"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Parivar's Executive name *</label>
+                                        <input
+                                            name="executive_name"
+                                            value={formData.executive_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Parivar's Executive Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Number *</label>
+                                        <input
+                                            name="executive_number"
+                                            value={formData.executive_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Branch *</label>
+                                        <input
+                                            name="executive_branch"
+                                            value={formData.executive_branch}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Branch Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Choice Number</label>
+                                        <input
+                                            name="choice_number"
+                                            value={formData.choice_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Choice Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Insurance Company *</label>
+                                        <input
+                                            name="insurance_company"
+                                            value={formData.insurance_company}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Insurance Company Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO *</label>
+                                        <input
+                                            name="rto_name"
+                                            value={formData.rto_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO Code *</label>
+                                        <input
+                                            name="rto_code"
+                                            value={formData.rto_code}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Code"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Parsing Status *</label>
+                                        <select
+                                            name="rto_passing_status"
+                                            value={formData.rto_passing_status}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Parsing Status</option>
+                                            <option>Pending</option>
+                                            <option>In-Progress</option>
+                                            <option>Completed</option>
+                                            <option>Rejected</option>
+                                            <option>Document Error</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Number Plate Type *</label>
+                                        <select
+                                            name="plate_type"
+                                            value={formData.plate_type}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Number Plate Type</option>
+                                            <option>Normal</option>
+                                            <option>Choice (VIP)</option>
+                                            <option>High-Security (HSRP)</option>
+                                            <option>Temporary</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Scheme</label>
+                                        <input
+                                            name="scheme"
+                                            value={formData.scheme}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Scheme"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker Name</label>
+                                        <input
+                                            name="broker_name"
+                                            value={formData.broker_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker Name"
+                                        />
+                                    </div>
+                                    {transactionType === 'Purchase' && (
+                                        <>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-semibold text-slate-700">Broker number</label>
+                                                <input
+                                                    name="broker_number"
+                                                    value={formData.broker_number}
+                                                    onChange={handleChange}
+                                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                    placeholder="Enter Broker number"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-semibold text-slate-700">Broker Brokerage</label>
+                                                <input
+                                                    name="brokerage_amount"
+                                                    type="number"
+                                                    value={formData.brokerage_amount}
+                                                    onChange={handleChange}
+                                                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                    placeholder="Enter Broker Brokerage"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                    <div className="space-y-2 lg:col-span-2">
+                                        <label className="text-sm font-semibold text-slate-700">Other Remarks</label>
+                                        <textarea
+                                            name="other_remarks"
+                                            value={formData.other_remarks}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Other Remarks"
+                                            rows="3"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div className="border-t border-slate-100"></div>
+                        </>
+                    )}
+
+                    {/* Documents Section for New Cars */}
+                    {transactionType === 'New' && (
+                        <section className="bg-blue-50/30 p-6 rounded-lg border border-blue-100">
+                            <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+                                <FileText className="text-blue-600" /> Documents
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {DOCUMENT_CONFIG.map((doc) => {
+                                    if (doc.dualSided) {
+                                        return (
+                                            <div key={doc.key} className={`space-y-4 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-blue-200'} transition-all hover:shadow-md md:col-span-2 lg:col-span-3`}>
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <label className="text-sm font-bold text-slate-700">{doc.label} (Front & Back)</label>
+                                                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Merged to PDF</span>
+                                                    </div>
+                                                    {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <span className="text-xs font-semibold text-slate-500 uppercase">Front Side</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            capture="environment"
+                                                            onChange={(e) => handleMultipartChange(e, doc.key, 'front')}
+                                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <span className="text-xs font-semibold text-slate-500 uppercase">Back Side</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            capture="environment"
+                                                            onChange={(e) => handleMultipartChange(e, doc.key, 'back')}
+                                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="text-xs text-slate-400 italic mt-2">
+                                                    * Uploading both sides will automatically merge them into a single PDF document.
+                                                </div>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div key={doc.key} className={`space-y-2 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-blue-200'} transition-all hover:shadow-md`}>
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <label className="text-sm font-bold text-slate-700">{doc.label}</label>
+                                                    {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                </div>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*,application/pdf"
+                                                    capture="environment"
+                                                    onChange={(e) => handleFileChange(e, doc.key)}
+                                                    className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 transition-colors"
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Car Images Section for New Cars */}
                     {transactionType === 'New' && (
                         <>
                             <div className="border-t border-slate-100"></div>
-                            <section className="bg-blue-50/30 p-6 rounded-lg border border-blue-100">
-                                <h3 className="text-xl font-bold text-blue-900 mb-6">New Car Specifics</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-700">Delivery/Arrival Date</label>
-                                        <input type="date" name="delivery_date" value={formData.delivery_date} onChange={handleChange} className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" />
+                            <section className="bg-purple-50/30 p-6 rounded-lg border border-purple-100">
+                                <h3 className="text-xl font-bold text-purple-900 mb-6 flex items-center gap-2">
+                                    <Upload className="text-purple-600" /> Car Images
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Main Image</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            onChange={(e) => handleFileChange(e, 'Main_Image')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Additional Images</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            multiple
+                                            onChange={(e) => handleFileChange(e, 'Additional_Images')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
                                     </div>
                                 </div>
                             </section>
                         </>
                     )}
 
+                    {/* Purchase Old Car Form */}
                     {transactionType === 'Purchase' && (
                         <>
+                            {/* Basic Information */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <FileText className="text-blue-500" /> Basic Information
+                                </h3>
+                                <div className="grid grid-cols-1 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Docket Number</label>
+                                        <input
+                                            name="docket_number"
+                                            value={formData.docket_number}
+                                            onChange={handleChange}
+                                            className={`w-full p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all ${errors.docket_number ? 'border-red-500 bg-red-50' : 'border-slate-300 hover:border-blue-400'}`}
+                                            placeholder="e.g. 559789"
+                                        />
+                                        {errors.docket_number && <p className="text-xs text-red-500 font-medium ml-1">{errors.docket_number}</p>}
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Customer Details */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <UserCheck className="text-green-500" /> Customer Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Name</label>
+                                        <input
+                                            name="customer_name"
+                                            value={formData.customer_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Customer Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Phone</label>
+                                        <input
+                                            name="customer_phone"
+                                            value={formData.customer_phone}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Customer Phone"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 1</label>
+                                        <input
+                                            name="customer_address_line1"
+                                            value={formData.customer_address_line1}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 1"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 2</label>
+                                        <input
+                                            name="customer_address_line2"
+                                            value={formData.customer_address_line2}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 2"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">City</label>
+                                        <input
+                                            name="customer_city"
+                                            value={formData.customer_city}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter City Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Pincode</label>
+                                        <input
+                                            name="customer_pincode"
+                                            value={formData.customer_pincode}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Pincode"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Email</label>
+                                        <input
+                                            name="customer_email"
+                                            type="email"
+                                            value={formData.customer_email}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Email"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Date of Birth</label>
+                                        <input
+                                            name="customer_dob"
+                                            type="date"
+                                            value={formData.customer_dob}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Vehicle Information */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <Car className="text-indigo-500" /> Vehicle Information
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Manufacturer</label>
+                                        <input
+                                            name="manufacturer"
+                                            value={formData.manufacturer}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Manufacturer Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Model</label>
+                                        <input
+                                            name="model"
+                                            value={formData.model}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Model Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Color</label>
+                                        <input
+                                            name="color"
+                                            value={formData.color}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Color"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Manufacture Year *</label>
+                                        <input
+                                            name="year"
+                                            type="number"
+                                            value={formData.year}
+                                            onChange={handleChange}
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.year ? 'border-red-500' : 'border-slate-300'}`}
+                                            placeholder="Enter Manufacture Year"
+                                        />
+                                        {errors.year && <p className="text-xs text-red-500">{errors.year}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Fuel Type</label>
+                                        <input
+                                            name="fuel_type"
+                                            value={formData.fuel_type}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Fuel Type"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Registration Number *</label>
+                                        <input
+                                            name="registration_number"
+                                            value={formData.registration_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Registration Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
+                                        <div className="flex gap-2">
+                                            <input
+                                                name="vin"
+                                                value={formData.vin}
+                                                onChange={handleChange}
+                                                className="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter Chassis Number"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={handleVinAutoFill}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap"
+                                            >
+                                                Auto-Fill
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {/* <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
+                                        <input
+                                            name="vin"
+                                            value={formData.vin}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Chassis Number"
+                                        />
+                                    </div> */}
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Engine Number</label>
+                                        <input
+                                            name="engine_number"
+                                            value={formData.engine_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Engine Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Insurance Expiry Date *</label>
+                                        <input
+                                            name="insurance_expiry"
+                                            type="date"
+                                            value={formData.insurance_expiry}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">HP</label>
+                                        <input
+                                            name="hp"
+                                            value={formData.hp}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter HP Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Running Kilometer</label>
+                                        <input
+                                            name="running_km"
+                                            type="number"
+                                            value={formData.running_km}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Running Kilometer"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Vehicle Price / Cost Price</label>
+                                        <input
+                                            name="price"
+                                            type="number"
+                                            value={formData.price}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Vehicle Price"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Additional Details */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <FilePlus className="text-orange-500" /> Additional Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Branch *</label>
+                                        <input
+                                            name="executive_branch"
+                                            value={formData.executive_branch}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Branch Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive name</label>
+                                        <input
+                                            name="executive_name"
+                                            value={formData.executive_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Number</label>
+                                        <input
+                                            name="executive_number"
+                                            value={formData.executive_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Insurance Company *</label>
+                                        <input
+                                            name="insurance_company"
+                                            value={formData.insurance_company}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Insurance Company Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO Code</label>
+                                        <input
+                                            name="rto_code"
+                                            value={formData.rto_code}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Code"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO</label>
+                                        <input
+                                            name="rto_name"
+                                            value={formData.rto_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Parsing Status</label>
+                                        <select
+                                            name="rto_passing_status"
+                                            value={formData.rto_passing_status}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Parsing Status</option>
+                                            <option>Pending</option>
+                                            <option>In-Progress</option>
+                                            <option>Completed</option>
+                                            <option>Rejected</option>
+                                            <option>Document Error</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Number Plate Type</label>
+                                        <select
+                                            name="plate_type"
+                                            value={formData.plate_type}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Number Plate Type</option>
+                                            <option>Normal</option>
+                                            <option>Choice (VIP)</option>
+                                            <option>High-Security (HSRP)</option>
+                                            <option>Temporary</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Scheme</label>
+                                        <input
+                                            name="scheme"
+                                            value={formData.scheme}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Scheme"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker Name</label>
+                                        <input
+                                            name="broker_name"
+                                            value={formData.broker_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker number</label>
+                                        <input
+                                            name="broker_number"
+                                            value={formData.broker_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker Brokerage</label>
+                                        <input
+                                            name="brokerage_amount"
+                                            type="number"
+                                            value={formData.brokerage_amount}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker Brokerage"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 lg:col-span-2">
+                                        <label className="text-sm font-semibold text-slate-700">Other Remarks</label>
+                                        <textarea
+                                            name="other_remarks"
+                                            value={formData.other_remarks}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Other Remarks"
+                                            rows="3"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
                             <div className="border-t border-slate-100"></div>
+                        </>
+                    )}
+
+                    {transactionType === 'Purchase' && (
+                        <>
                             <section className="bg-amber-50/30 p-6 rounded-lg border border-amber-100">
                                 <h3 className="text-xl font-bold text-amber-900 mb-6">Purchase Documents</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -552,48 +1633,520 @@ export default function AddCar(props) {
                                     })}
                                 </div>
                             </section>
+
+                            {/* Car Images Section for Purchase */}
+                            <section className="bg-purple-50/30 p-6 rounded-lg border border-purple-100">
+                                <h3 className="text-xl font-bold text-purple-900 mb-6 flex items-center gap-2">
+                                    <Upload className="text-purple-600" /> Car Images
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Main Image</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            onChange={(e) => handleFileChange(e, 'Main_Image')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Additional Images</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            multiple
+                                            onChange={(e) => handleFileChange(e, 'Additional_Images')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
                         </>
                     )}
 
+                    {/* Sell Old Car Form */}
                     {transactionType === 'Sale' && (
                         <>
-                            <div className="border-t border-slate-100"></div>
+                            {/* Basic Information */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <FileText className="text-blue-500" /> Basic Information
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Docket Number</label>
+                                        <input
+                                            name="docket_number"
+                                            value={formData.docket_number}
+                                            onChange={handleChange}
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.docket_number ? 'border-red-500' : 'border-slate-300'}`}
+                                            placeholder="e.g. 735365"
+                                        />
+                                        {errors.docket_number && <p className="text-xs text-red-500">{errors.docket_number}</p>}
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Customer Details */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <UserCheck className="text-green-500" /> Customer Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Name</label>
+                                        <input
+                                            name="customer_name"
+                                            value={formData.customer_name}
+                                            onChange={handleChange}
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.customer_name ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
+                                            placeholder="Enter Customer Name"
+                                        />
+                                        {errors.customer_name && <p className="text-xs text-red-500 ml-1">{errors.customer_name}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Customer Phone</label>
+                                        <input
+                                            name="customer_phone"
+                                            value={formData.customer_phone}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Customer Phone"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 1</label>
+                                        <input
+                                            name="customer_address_line1"
+                                            value={formData.customer_address_line1}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 1"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Address Line 2</label>
+                                        <input
+                                            name="customer_address_line2"
+                                            value={formData.customer_address_line2}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Address Line 2"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">City</label>
+                                        <input
+                                            name="customer_city"
+                                            value={formData.customer_city}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter City Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Pincode</label>
+                                        <input
+                                            name="customer_pincode"
+                                            value={formData.customer_pincode}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Pincode"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Email</label>
+                                        <input
+                                            name="customer_email"
+                                            type="email"
+                                            value={formData.customer_email}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Email"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Date of Birth</label>
+                                        <input
+                                            name="customer_dob"
+                                            type="date"
+                                            value={formData.customer_dob}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Vehicle Information */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <Car className="text-indigo-500" /> Vehicle Information
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Manufacturer *</label>
+                                        <input
+                                            name="manufacturer"
+                                            value={formData.manufacturer}
+                                            onChange={handleChange}
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.manufacturer ? 'border-red-500' : 'border-slate-300'}`}
+                                            placeholder="Enter Manufacturer Name"
+                                        />
+                                        {errors.manufacturer && <p className="text-xs text-red-500">{errors.manufacturer}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Model</label>
+                                        <input
+                                            name="model"
+                                            value={formData.model}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Model Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Color</label>
+                                        <input
+                                            name="color"
+                                            value={formData.color}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Color"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Manufacture Year *</label>
+                                        <input
+                                            name="year"
+                                            type="number"
+                                            value={formData.year}
+                                            onChange={handleChange}
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.year ? 'border-red-500' : 'border-slate-300'}`}
+                                            placeholder="Enter Manufacture Year"
+                                        />
+                                        {errors.year && <p className="text-xs text-red-500">{errors.year}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Fuel Type</label>
+                                        <input
+                                            name="fuel_type"
+                                            value={formData.fuel_type}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Fuel Type"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Registration Number *</label>
+                                        <input
+                                            name="registration_number"
+                                            value={formData.registration_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Registration Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
+                                        <input
+                                            name="vin"
+                                            value={formData.vin}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Chassis Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Engine Number</label>
+                                        <input
+                                            name="engine_number"
+                                            value={formData.engine_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Engine Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Insurance Expiry Date *</label>
+                                        <input
+                                            name="insurance_expiry"
+                                            type="date"
+                                            value={formData.insurance_expiry}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">HP</label>
+                                        <input
+                                            name="hp"
+                                            value={formData.hp}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter HP Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Running Kilometer</label>
+                                        <input
+                                            name="running_km"
+                                            type="number"
+                                            value={formData.running_km}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter running kilometer"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Additional Details */}
+                            <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <FilePlus className="text-orange-500" /> Additional Details
+                                </h3>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Branch *</label>
+                                        <input
+                                            name="executive_branch"
+                                            value={formData.executive_branch}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Branch Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">parivar's Executive name</label>
+                                        <input
+                                            name="executive_name"
+                                            value={formData.executive_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter parivar's Executive Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Executive Number</label>
+                                        <input
+                                            name="executive_number"
+                                            value={formData.executive_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Executive Number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Insurance Company *</label>
+                                        <input
+                                            name="insurance_company"
+                                            value={formData.insurance_company}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Insurance Company Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO Code</label>
+                                        <input
+                                            name="rto_code"
+                                            value={formData.rto_code}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Code"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">RTO</label>
+                                        <input
+                                            name="rto_name"
+                                            value={formData.rto_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter RTO Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Parsing Status</label>
+                                        <select
+                                            name="rto_passing_status"
+                                            value={formData.rto_passing_status}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Parsing Status</option>
+                                            <option>Pending</option>
+                                            <option>In-Progress</option>
+                                            <option>Completed</option>
+                                            <option>Rejected</option>
+                                            <option>Document Error</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Number Plate Type</label>
+                                        <select
+                                            name="plate_type"
+                                            value={formData.plate_type}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                        >
+                                            <option value="">Select Number Plate Type</option>
+                                            <option>Normal</option>
+                                            <option>Choice (VIP)</option>
+                                            <option>High-Security (HSRP)</option>
+                                            <option>Temporary</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Scheme</label>
+                                        <input
+                                            name="scheme"
+                                            value={formData.scheme}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Scheme"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker Name</label>
+                                        <input
+                                            name="broker_name"
+                                            value={formData.broker_name}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker number</label>
+                                        <input
+                                            name="broker_number"
+                                            value={formData.broker_number}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker number"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-semibold text-slate-700">Broker Brokerage</label>
+                                        <input
+                                            name="brokerage_amount"
+                                            type="number"
+                                            value={formData.brokerage_amount}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Broker Brokerage"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 lg:col-span-2">
+                                        <label className="text-sm font-semibold text-slate-700">Other Remarks</label>
+                                        <textarea
+                                            name="other_remarks"
+                                            value={formData.other_remarks}
+                                            onChange={handleChange}
+                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            placeholder="Enter Other Remarks"
+                                            rows="3"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Documents Section for Sale */}
                             <section className="bg-green-50/30 p-6 rounded-lg border border-green-100">
-                                <h3 className="text-xl font-bold text-green-900 mb-6">Buyer & Broker Details</h3>
-                                <div className="space-y-8">
-                                    <div>
-                                        <h4 className="font-bold text-green-800 mb-4 flex items-center gap-2 text-lg"><UserCheck size={20} /> Customer Details</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                            <input name="buyer_name" placeholder="Name" value={formData.buyer_name} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <input name="buyer_email" placeholder="Email" value={formData.buyer_email} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <input name="buyer_dob" type="date" placeholder="DOB" value={formData.buyer_dob} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <input name="buyer_address" placeholder="Address" value={formData.buyer_address} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                        </div>
+                                <h3 className="text-xl font-bold text-green-900 mb-6 flex items-center gap-2">
+                                    <FileText className="text-green-600" /> Documents
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {DOCUMENT_CONFIG.map((doc) => {
+                                        if (doc.dualSided) {
+                                            return (
+                                                <div key={doc.key} className={`space-y-4 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-green-200'} transition-all hover:shadow-md md:col-span-2 lg:col-span-3`}>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <label className="text-sm font-bold text-slate-700">{doc.label} (Front & Back)</label>
+                                                            <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Merged to PDF</span>
+                                                        </div>
+                                                        {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <div className="space-y-2">
+                                                            <span className="text-xs font-semibold text-slate-500 uppercase">Front Side</span>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                capture="environment"
+                                                                onChange={(e) => handleMultipartChange(e, doc.key, 'front')}
+                                                                className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 transition-colors"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <span className="text-xs font-semibold text-slate-500 uppercase">Back Side</span>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                capture="environment"
+                                                                onChange={(e) => handleMultipartChange(e, doc.key, 'back')}
+                                                                className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 transition-colors"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-xs text-slate-400 italic mt-2">
+                                                        * Uploading both sides will automatically merge them into a single PDF document.
+                                                    </div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={doc.key} className={`space-y-2 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-green-200'} transition-all hover:shadow-md`}>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <label className="text-sm font-bold text-slate-700">{doc.label}</label>
+                                                        {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                    </div>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*,application/pdf"
+                                                        capture="environment"
+                                                        onChange={(e) => handleFileChange(e, doc.key)}
+                                                        className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 transition-colors"
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
+                            </section>
+
+                            {/* Car Images Section for Sale */}
+                            <section className="bg-purple-50/30 p-6 rounded-lg border border-purple-100">
+                                <h3 className="text-xl font-bold text-purple-900 mb-6 flex items-center gap-2">
+                                    <Upload className="text-purple-600" /> Car Images
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Main Image</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            onChange={(e) => handleFileChange(e, 'Main_Image')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
                                     </div>
-                                    <div>
-                                        <h4 className="font-bold text-green-800 mb-4 text-lg">Nominee Details</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            <input name="nominee_name" placeholder="Nominee Name" value={formData.nominee_name} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <select name="nominee_relation" value={formData.nominee_relation} onChange={handleChange} className="p-3 border rounded-lg bg-white focus:ring-2 focus:ring-green-500 outline-none">
-                                                <option value="">Select Relation</option>
-                                                <option>Spouse</option>
-                                                <option>Father</option>
-                                                <option>Mother</option>
-                                                <option>Son</option>
-                                                <option>Daughter</option>
-                                                <option>Brother</option>
-                                                <option>Sister</option>
-                                            </select>
-                                            <input name="nominee_dob" type="date" placeholder="Nominee DOB" value={formData.nominee_dob} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-green-800 mb-4 text-lg">Brokerage</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            <input name="broker_name" placeholder="Broker Name" value={formData.broker_name} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <input name="broker_number" placeholder="Broker Phone" value={formData.broker_number} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                            <input name="brokerage_amount" type="number" placeholder="Brokerage Amount" value={formData.brokerage_amount} onChange={handleChange} className="p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" />
-                                        </div>
+                                    <div className="space-y-2 p-4 border rounded-xl bg-white border-purple-200 transition-all hover:shadow-md">
+                                        <label className="text-sm font-bold text-slate-700 block mb-2">Additional Images</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            capture="environment"
+                                            multiple
+                                            onChange={(e) => handleFileChange(e, 'Additional_Images')}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 transition-colors"
+                                        />
                                     </div>
                                 </div>
                             </section>

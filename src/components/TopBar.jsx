@@ -16,6 +16,38 @@ export default function TopBar({ onMenuClick, isMobile }) {
         { id: 3, title: 'Low Inventory', message: 'Only 2 SUVs remaining in stock.', time: '5 hours ago', read: true },
     ]);
 
+    React.useEffect(() => {
+        fetchInsuranceNotifications();
+    }, []);
+
+    const fetchInsuranceNotifications = async () => {
+        try {
+            const res = await fetch('/api/dashboard/stats');
+            if (res.ok) {
+                const data = await res.json();
+                const upcoming = data.upcomingInsurances || [];
+                const newNotifs = upcoming.map(item => ({
+                    id: `ins-${item.car_id}`,
+                    title: 'Insurance Expiring',
+                    message: `${item.car_name} expires on ${item.expiry_date}`,
+                    time: 'Upcoming',
+                    read: false,
+                    link: '/#insurance-expiry'
+                }));
+
+                // Merge with existing (avoid duplicates if re-fetched, though here we just append for demo)
+                // Using a simple check to avoid duplication in state if effect runs twice
+                setNotifications(prev => {
+                    const existingIds = new Set(prev.map(n => n.id));
+                    const uniqueNew = newNotifs.filter(n => !existingIds.has(n.id));
+                    return [...uniqueNew, ...prev];
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch notifications", error);
+        }
+    };
+
     const unreadCount = notifications.filter(n => !n.read).length;
 
     const markAsRead = (id) => {
@@ -148,13 +180,28 @@ export default function TopBar({ onMenuClick, isMobile }) {
                                     <div
                                         key={n.id}
                                         className={`p-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 cursor-pointer transition-colors ${!n.read ? 'bg-blue-50/50' : ''}`}
-                                        onClick={() => markAsRead(n.id)}
+                                        onClick={() => {
+                                            markAsRead(n.id);
+                                            setIsNotificationsOpen(false);
+                                        }}
                                     >
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className={`text-sm ${!n.read ? 'font-bold text-slate-800' : 'font-medium text-slate-600'}`}>{n.title}</span>
-                                            <span className="text-[10px] text-slate-400">{n.time}</span>
-                                        </div>
-                                        <p className="text-xs text-slate-500">{n.message}</p>
+                                        {n.link ? (
+                                            <a href={n.link} className="block">
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <span className={`text-sm ${!n.read ? 'font-bold text-slate-800' : 'font-medium text-slate-600'}`}>{n.title}</span>
+                                                    <span className="text-[10px] text-slate-400">{n.time}</span>
+                                                </div>
+                                                <p className="text-xs text-slate-500">{n.message}</p>
+                                            </a>
+                                        ) : (
+                                            <div>
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <span className={`text-sm ${!n.read ? 'font-bold text-slate-800' : 'font-medium text-slate-600'}`}>{n.title}</span>
+                                                    <span className="text-[10px] text-slate-400">{n.time}</span>
+                                                </div>
+                                                <p className="text-xs text-slate-500">{n.message}</p>
+                                            </div>
+                                        )}
                                     </div>
                                 )) : (
                                     <div className="p-8 text-center text-muted-foreground text-sm">

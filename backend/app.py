@@ -86,6 +86,37 @@ class Vehicle(db.Model):
     broker_number: Mapped[str] = mapped_column(String(50), nullable=True)
     brokerage_amount: Mapped[float] = mapped_column(Float, nullable=True)
     price: Mapped[float] = mapped_column(Float, default=0.0)
+    
+    # New Fields for Revamp
+    booking_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    customer_remaining_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    net_short_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    
+    # Customer Address
+    city: Mapped[str] = mapped_column(String(100), nullable=True)
+    pincode: Mapped[str] = mapped_column(String(20), nullable=True)
+    address_line_1: Mapped[str] = mapped_column(String(255), nullable=True)
+    address_line_2: Mapped[str] = mapped_column(String(255), nullable=True)
+    
+    # JSON/Text fields for structured data (Simplified as Text for SQLite compatibility if needed, though PG supports JSON)
+    # Storing as standard Text/String for maximum compatibility in this demo setup
+    dealer_payment_history: Mapped[str] = mapped_column(Text, nullable=True) # JSON string
+    vehicle_pricing_breakdown: Mapped[str] = mapped_column(Text, nullable=True) # JSON string for Customer side
+    dealer_pricing_breakdown: Mapped[str] = mapped_column(Text, nullable=True) # JSON string for Dealer side
+
+    # Additional missing fields
+    entry_type: Mapped[str] = mapped_column(String(50), nullable=True)
+    customer_name: Mapped[str] = mapped_column(String(100), nullable=True)
+    customer_phone: Mapped[str] = mapped_column(String(20), nullable=True)
+    customer_email: Mapped[str] = mapped_column(String(120), nullable=True)
+    customer_dob: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    dealer: Mapped[str] = mapped_column(String(100), nullable=True)
+    location: Mapped[str] = mapped_column(String(100), nullable=True)
+    choice_number: Mapped[str] = mapped_column(String(50), nullable=True)
+    insurance_expiry: Mapped[str] = mapped_column(String(20), nullable=True) # Storing as string or Date
+    scheme: Mapped[str] = mapped_column(String(100), nullable=True)
+    other_remarks: Mapped[str] = mapped_column(Text, nullable=True)
+    hp: Mapped[str] = mapped_column(String(50), nullable=True)
 
     documents = relationship("VehicleDocument", backref="vehicle", cascade="all, delete-orphan")
 
@@ -183,6 +214,8 @@ def create_vehicle():
             data = request.get_json()
             files = {}
 
+        print(f"DEBUG: POST create_vehicle. Type: {data.get('transaction_type')}, Manufacturer: {data.get('manufacturer')}")
+        
         new_vehicle = Vehicle(
             transaction_type=data.get('transaction_type'),
             docket_number=data.get('docket_number'),
@@ -205,7 +238,29 @@ def create_vehicle():
             buyer_address=data.get('buyer_address'),
             price=float(data.get('price', 0)) if data.get('price') else 0.0,
             
-            status='Available' if data.get('transaction_type') != 'Sale' else 'Sold'
+            status='Available' if data.get('transaction_type') != 'Sale' else 'Sold',
+            
+            # New Fields
+            entry_type=data.get('entry_type'),
+            customer_name=data.get('customer_name'),
+            customer_phone=data.get('customer_phone'),
+            customer_email=data.get('customer_email'),
+            dealer=data.get('dealer'),
+            location=data.get('location'),
+            choice_number=data.get('choice_number'),
+            insurance_expiry=data.get('insurance_expiry'),
+            scheme=data.get('scheme'),
+            other_remarks=data.get('other_remarks'),
+            hp=data.get('hp') or data.get('hp_name'),
+            nominee_name=data.get('nominee_name'),
+            nominee_relation=data.get('nominee_relation'),
+            broker_name=data.get('broker_name'),
+            broker_number=data.get('broker_number'),
+            brokerage_amount=float(data.get('brokerage_amount', 0)) if data.get('brokerage_amount') else 0.0,
+            city=data.get('customer_city'),
+            pincode=data.get('customer_pincode'),
+            address_line_1=data.get('customer_address_line1'),
+            address_line_2=data.get('customer_address_line2')
         )
         
         # Handle Dates
@@ -216,6 +271,9 @@ def create_vehicle():
             return None
 
         if data.get('delivery_date'): new_vehicle.delivery_date = parse_date(data.get('delivery_date'))
+        if data.get('booking_date'): new_vehicle.booking_date = parse_date(data.get('booking_date'))
+        if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
+        if data.get('nominee_dob'): new_vehicle.nominee_dob = parse_date(data.get('nominee_dob'))
         if data.get('buyer_dob'): new_vehicle.buyer_dob = parse_date(data.get('buyer_dob'))
 
         # Check VIN uniqueness
@@ -242,12 +300,61 @@ def create_vehicle():
                 db.session.add(new_doc)
 
         db.session.commit()
-        return jsonify({"success": True, "message": "Vehicle created successfully", "id": new_vehicle.id}), 201
+        return jsonify({
+            "success": True, 
+            "message": "Vehicle created successfully", 
+            "id": new_vehicle.id,
+            "vehicle": new_vehicle.to_dict()
+        }), 201
 
     except Exception as e:
         db.session.rollback()
         print(f"Error in create_vehicle: {e}")
         return jsonify({"success": False, "message": str(e)}), 500
+
+
+@app.route('/api/decode-vin/<vin>', methods=['GET'])
+def decode_vin(vin):
+    """
+    Decode VIN using NHTSA vPIC API
+    Returns: Make, Model, ModelYear, FuelTypePrimary
+    """
+    try:
+        # NHTSA vPIC API endpoint
+        url = f"https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/{vin}?format=json"
+        
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        
+        data = response.json()
+        results = data.get('Results', [])
+        
+        # Extract relevant fields
+        vehicle_data = {}
+        for item in results:
+            variable = item.get('Variable', '')
+            value = item.get('Value', '')
+            
+            if variable == 'Make' and value:
+                vehicle_data['Make'] = value
+            elif variable == 'Model' and value:
+                vehicle_data['Model'] = value
+            elif variable == 'Model Year' and value:
+                vehicle_data['ModelYear'] = value
+            elif variable == 'Fuel Type - Primary' and value:
+                vehicle_data['FuelTypePrimary'] = value
+        
+        if not vehicle_data:
+            return jsonify({"error": "Could not decode VIN. Please check the VIN number."}), 400
+        
+        return jsonify(vehicle_data), 200
+        
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Request timeout. Please try again."}), 504
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Failed to fetch VIN data: {str(e)}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 @app.route('/api/vehicles', methods=['GET', 'POST'])
 def vehicles_handler():
@@ -279,6 +386,8 @@ def single_vehicle_handler(id):
 
     if request.method == 'PUT':
         try:
+            print(f"DEBUG: Starting PUT request for vehicle {id}")
+            
             # Handle Updates (JSON or Multipart)
             if request.content_type and 'multipart/form-data' in request.content_type:
                 data = request.form.to_dict()
@@ -286,38 +395,124 @@ def single_vehicle_handler(id):
             else:
                 data = request.get_json()
                 files = {}
-
-            # Update fields dynamically based on input
-            # Note: This is a simple update, for production robust validation is needed
-            for key, value in data.items():
-                 # Skip ID and Date string conversion handling for brevity, assume formatting or ignore complex types for simple fields
-                 if key not in ['id', 'delivery_date', 'buyer_dob', 'nominee_dob']: 
-                    if hasattr(vehicle, key):
-                        if value == '' or value is None:
-                             setattr(vehicle, key, None)
-                        else:
-                             # Attempt float conversion for numbers
-                            if key in ['price', 'running_km', 'brokerage_amount', 'year']:
-                                try:
-                                    if key == 'year': setattr(vehicle, key, int(value))
-                                    else: setattr(vehicle, key, float(value))
-                                except:
-                                    pass # Keep original or error?
-                            else:
-                                setattr(vehicle, key, value)
             
-            # Date Handling
-            if data.get('delivery_date'): vehicle.delivery_date = datetime.strptime(data.get('delivery_date'), '%Y-%m-%d')
-            if data.get('buyer_dob'): vehicle.buyer_dob = datetime.strptime(data.get('buyer_dob'), '%Y-%m-%d')
-            if data.get('nominee_dob'): vehicle.nominee_dob = datetime.strptime(data.get('nominee_dob'), '%Y-%m-%d')
+            print(f"DEBUG: PUT vehicle {id} keys: {list(data.keys())}")
+            if 'dealer_payment_history' in data:
+                print(f"DEBUG: History len: {len(data['dealer_payment_history'])}")
+                print(f"DEBUG: History snippet: {data['dealer_payment_history'][:50]}")
 
+            for key, value in data.items():
+                # Robust field mapping for frontend/backend differences
+                target_key = key
+                if key == 'vin': target_key = 'chassis_number'
+                elif key == 'customer_city': target_key = 'city'
+                elif key == 'customer_pincode': target_key = 'pincode'
+                elif key == 'customer_address_line1': target_key = 'address_line_1'
+                elif key == 'customer_address_line2': target_key = 'address_line_2'
+                
+                if hasattr(vehicle, target_key):
+                    if value == '' or value is None:
+                        # For running_km, use 0.0 instead of None due to NOT NULL constraint
+                        if target_key == 'running_km':
+                            setattr(vehicle, target_key, 0.0)
+                        else:
+                            setattr(vehicle, target_key, None)
+                    else:
+                        # Attempt numeric conversion for specific fields
+                        if target_key in ['price', 'running_km', 'brokerage_amount', 'year', 'customer_remaining_amount', 'net_short_amount']:
+                            try:
+                                if target_key == 'year': 
+                                    setattr(vehicle, target_key, int(value))
+                                else: 
+                                    setattr(vehicle, target_key, float(value))
+                            except ValueError:
+                                # Start of robust error handling for numeric conversions
+                                print(f"Warning: Could not convert {key}={value} to number. Setting to None or 0.")
+                                if target_key == 'year': 
+                                    setattr(vehicle, target_key, None)
+                                elif target_key == 'running_km':
+                                    setattr(vehicle, target_key, 0.0)  # NOT NULL constraint
+                                else: 
+                                    setattr(vehicle, target_key, 0.0)
+                        else:
+                            setattr(vehicle, target_key, value)
+
+                # Handle new JSON fields explicitly if passed as objects (requires json.dumps) or assume passed as strings
+                if key in ['dealer_payment_history', 'vehicle_pricing_breakdown', 'dealer_pricing_breakdown']:
+                    if isinstance(value, (dict, list)):
+                        import json
+                        setattr(vehicle, key, json.dumps(value))
+                    else:
+                        setattr(vehicle, key, value)
+
+            
+            # Date Handling - safely parse dates, checking for empty strings and type
+            delivery_date = data.get('delivery_date')
+            if delivery_date and isinstance(delivery_date, str) and delivery_date.strip():
+                try:
+                    vehicle.delivery_date = datetime.strptime(delivery_date.strip(), '%Y-%m-%d')
+                except ValueError:
+                    pass  # Invalid date format, skip
+                    
+            booking_date = data.get('booking_date')
+            if booking_date and isinstance(booking_date, str) and booking_date.strip():
+                try:
+                    vehicle.booking_date = datetime.strptime(booking_date.strip(), '%Y-%m-%d')
+                except ValueError:
+                    pass
+                    
+            customer_dob = data.get('customer_dob')
+            if customer_dob and isinstance(customer_dob, str) and customer_dob.strip():
+                try:
+                    vehicle.customer_dob = datetime.strptime(customer_dob.strip(), '%Y-%m-%d')
+                except ValueError:
+                    pass
+                    
+            nominee_dob = data.get('nominee_dob')
+            if nominee_dob and isinstance(nominee_dob, str) and nominee_dob.strip():
+                try:
+                    vehicle.nominee_dob = datetime.strptime(nominee_dob.strip(), '%Y-%m-%d')
+                except ValueError:
+                    pass
+                    
+            buyer_dob = data.get('buyer_dob')
+            if buyer_dob and isinstance(buyer_dob, str) and buyer_dob.strip():
+                try:
+                    vehicle.buyer_dob = datetime.strptime(buyer_dob.strip(), '%Y-%m-%d')
+                except ValueError:
+                    pass
+
+            # Auto-update status based on transaction type
+            try:
+                if data.get('transaction_type') == 'Sale':
+                    vehicle.status = 'Sold'
+                    print(f"DEBUG: Setting vehicle {id} status to 'Sold'")
+                elif data.get('transaction_type') == 'Purchase':
+                    vehicle.status = 'Available'
+                    print(f"DEBUG: Setting vehicle {id} status to 'Available'")
+            except Exception as status_err:
+                print(f"Warning: Could not update status: {status_err}")
+
+            print(f"DEBUG: About to commit vehicle {id} with transaction_type={data.get('transaction_type')}")
             db.session.commit()
-            return jsonify({"success": True, "message": "Vehicle updated successfully", "vehicle": vehicle.to_dict()}), 200
+            print(f"DEBUG: Successfully committed vehicle {id}")
+            
+            # Safely serialize vehicle to dict
+            try:
+                vehicle_dict = vehicle.to_dict()
+                return jsonify({"success": True, "message": "Vehicle updated successfully", "vehicle": vehicle_dict}), 200
+            except Exception as dict_err:
+                print(f"Warning: Could not serialize vehicle to dict: {dict_err}")
+                return jsonify({"success": True, "message": "Vehicle updated successfully"}), 200
             
         except Exception as e:
             db.session.rollback()
-            print(f"Error updating vehicle: {e}")
-            return jsonify({"success": False, "message": str(e)}), 500
+            import traceback
+            error_trace = traceback.format_exc()
+            print(f"ERROR updating vehicle {id}: {e}")
+            print(f"Full traceback:\n{error_trace}")
+            # ALWAYS return valid JSON
+            return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -729,7 +924,22 @@ def dashboard_stats():
                 "carsSold": cars_sold,
                 "loansApproved": loans_approved
             },
-            "salesData": prediction_data
+            "salesData": prediction_data,
+            "upcomingInsurances": [
+                {
+                    "car_id": i.vehicle.id if i.vehicle else "N/A",
+                    "car_name": f"{i.vehicle.make} {i.vehicle.model}" if i.vehicle and hasattr(i.vehicle, 'make') else (f"{i.vehicle.manufacturer} {i.vehicle.model}" if i.vehicle else "Unknown Car"),
+                    "expiry_date": i.expiry_date,
+                    "status": "Expiring Soon" if (datetime.strptime(i.expiry_date, '%Y-%m-%d') - datetime.now()).days <= 30 else "Active"
+                }
+                for i in db.session.execute(
+                    db.select(Insurance)
+                    .filter(Insurance.expiry_date >= date.today().strftime('%Y-%m-%d'))
+                    .order_by(Insurance.expiry_date.asc())
+                    .limit(5)
+                ).scalars().all()
+                if i.expiry_date # Ensure expiry_date is not null
+            ]
         }), 200
 
     except Exception as e:

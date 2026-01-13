@@ -41,10 +41,16 @@ function App() {
               <Route index element={IS_DEMO_RESTRICTED ? <></> : <Dashboard />} />
 
               <Route path="inventory" element={IS_DEMO_RESTRICTED ? <></> : <Inventory />} />
-              <Route path="inventory/:id/edit" element={IS_DEMO_RESTRICTED ? <></> : <AddCar />} />
-              <Route path="add-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" />} />
-              <Route path="purchase-old-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Purchase" />} />
-              <Route path="sell-old-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Sale" />} />
+              <Route path="inventory/:id/edit-new" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" hideTypeSwitcher={true} />} />
+              <Route path="inventory/:id/edit-purchase" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Purchase" hideTypeSwitcher={true} />} />
+              <Route path="inventory/:id/edit-sale" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Sale" hideTypeSwitcher={true} />} />
+              <Route path="add-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" hideTypeSwitcher={true} />} />
+
+              <Route path="purchase-old-car" element={IS_DEMO_RESTRICTED ? <></> : <Inventory />} />
+              <Route path="add-purchase-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Purchase" hideTypeSwitcher={true} />} />
+
+              <Route path="sell-old-car" element={IS_DEMO_RESTRICTED ? <></> : <Inventory />} />
+              <Route path="add-sell-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Sale" hideTypeSwitcher={true} />} />
               <Route path="kyc" element={IS_DEMO_RESTRICTED ? <></> : <KYCWorkflow />} />
               <Route path="profile" element={IS_DEMO_RESTRICTED ? <></> : <Profile />} />
 

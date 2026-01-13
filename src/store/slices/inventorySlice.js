@@ -16,13 +16,15 @@ const inventorySlice = createSlice({
     },
     updateVehicle: (state, action) => {
       const { id, ...data } = action.payload;
-      const index = state.items.findIndex(item => item.id === id);
+      // Use loose equality to handle string vs number IDs
+      const index = state.items.findIndex(item => item.id == id);
       if (index !== -1) {
         state.items[index] = { ...state.items[index], ...data };
       }
     },
     deleteVehicle: (state, action) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
+      // Use loose equality to handle string vs number IDs
+      state.items = state.items.filter(item => item.id != action.payload);
     }
   }
 });

@@ -28,7 +28,12 @@ import { logout } from '../store/slices/authSlice';
 
 export default function Sidebar({ isOpen, onClose, isMobile }) {
     const [collapsed, setCollapsed] = useState(false);
-    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
+
+    // Separate states for the new sections
+    const [isNewCarsOpen, setIsNewCarsOpen] = useState(false);
+    const [isPurchaseOldOpen, setIsPurchaseOldOpen] = useState(false);
+    const [isSellOldOpen, setIsSellOldOpen] = useState(false);
+
     const [isInquiriesOpen, setIsInquiriesOpen] = useState(false);
     const [isFinancesOpen, setIsFinancesOpen] = useState(false);
     const [isInsuranceOpen, setIsInsuranceOpen] = useState(false);
@@ -40,7 +45,9 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
     // Reset internal state if collapsed changes (desktop only)
     React.useEffect(() => {
         if (collapsed) {
-            setIsInventoryOpen(false);
+            setIsNewCarsOpen(false);
+            setIsPurchaseOldOpen(false);
+            setIsSellOldOpen(false);
             setIsInquiriesOpen(false);
             setIsFinancesOpen(false);
             setIsInsuranceOpen(false);
@@ -57,15 +64,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
         dispatch(logout());
         setIsLogoutModalOpen(false);
     };
-
-    // Unified active state check for all inventory-related paths
-    const isInventoryActive = [
-        '/inventory',
-        '/add-car',
-        '/purchase-old-car',
-        '/sell-old-car',
-        '/vehicle'
-    ].some(path => location.pathname.startsWith(path));
 
     const SidebarContent = () => (
         <div className={cn(
@@ -100,7 +98,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                     className={({ isActive }) => cn(
                         "flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium",
                         isActive
-                            ? "bg-primary/10 text-primary"
+                            ? "bg-primary/10 text-primary border-r-4 border-primary rounded-none"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground",
                         (!isMobile && collapsed) && "justify-center px-2"
                     )}
@@ -109,25 +107,26 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                     {(!collapsed || isMobile) && <span>Dashboard</span>}
                 </NavLink>
 
-                {/* Inventory Collapsible */}
+                {/* --- 1. New Cars --- */}
                 <div>
                     <button
-                        onClick={() => (!collapsed || isMobile) && setIsInventoryOpen(!isInventoryOpen)}
+                        onClick={() => (!collapsed || isMobile) && setIsNewCarsOpen(!isNewCarsOpen)}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                            isInventoryActive ? "text-primary bg-primary/10" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            location.pathname.startsWith('/inventory') || location.pathname.startsWith('/add-car')
+                                ? "text-primary bg-primary/10"
+                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
                             (!isMobile && collapsed) && "justify-center px-2"
                         )}
                     >
                         <div className="flex items-center gap-3">
                             <Car size={20} />
-                            {(!collapsed || isMobile) && <span>Inventory</span>}
+                            {(!collapsed || isMobile) && <span>New Cars</span>}
                         </div>
-                        {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isInventoryOpen && "rotate-180")} />}
+                        {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isNewCarsOpen && "rotate-180")} />}
                     </button>
 
-                    {/* Inventory Submenu */}
-                    {(!collapsed || isMobile) && isInventoryOpen && (
+                    {(!collapsed || isMobile) && isNewCarsOpen && (
                         <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
                                 to="/inventory"
@@ -135,10 +134,10 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                                 onClick={() => isMobile && onClose && onClose()}
                                 className={({ isActive }) => cn(
                                     "flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm",
-                                    isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
+                                    isActive ? "text-primary font-bold bg-blue-50/80 border-r-4 border-primary rounded-none" : "text-slate-500 hover:text-slate-800"
                                 )}
                             >
-                                <List size={16} /> All Inventory
+                                <List size={16} /> New Cars List
                             </NavLink>
                             <NavLink
                                 to="/add-car"
@@ -148,8 +147,33 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                                     isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
                                 )}
                             >
-                                <PlusCircle size={16} /> New Car
+                                <PlusCircle size={16} /> Add New Car
                             </NavLink>
+                        </div>
+                    )}
+                </div>
+
+                {/* --- 2. Purchase Old Cars --- */}
+                <div>
+                    <button
+                        onClick={() => (!collapsed || isMobile) && setIsPurchaseOldOpen(!isPurchaseOldOpen)}
+                        className={cn(
+                            "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
+                            location.pathname.startsWith('/purchase-old-car') || location.pathname.startsWith('/add-purchase-car')
+                                ? "text-primary bg-primary/10"
+                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            (!isMobile && collapsed) && "justify-center px-2"
+                        )}
+                    >
+                        <div className="flex items-center gap-3">
+                            <ShoppingCart size={20} />
+                            {(!collapsed || isMobile) && <span>Purchase Old Cars</span>}
+                        </div>
+                        {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isPurchaseOldOpen && "rotate-180")} />}
+                    </button>
+
+                    {(!collapsed || isMobile) && isPurchaseOldOpen && (
+                        <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
                                 to="/purchase-old-car"
                                 onClick={() => isMobile && onClose && onClose()}
@@ -158,8 +182,43 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                                     isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
                                 )}
                             >
-                                <ShoppingCart size={16} /> Purchase Old
+                                <List size={16} /> All Purchase List
                             </NavLink>
+                            <NavLink
+                                to="/add-purchase-car"
+                                onClick={() => isMobile && onClose && onClose()}
+                                className={({ isActive }) => cn(
+                                    "flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm",
+                                    isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
+                                )}
+                            >
+                                <PlusCircle size={16} /> Add Purchase Car
+                            </NavLink>
+                        </div>
+                    )}
+                </div>
+
+                {/* --- 3. Sell Old Cars --- */}
+                <div>
+                    <button
+                        onClick={() => (!collapsed || isMobile) && setIsSellOldOpen(!isSellOldOpen)}
+                        className={cn(
+                            "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
+                            location.pathname.startsWith('/sell-old-car') || location.pathname.startsWith('/add-sell-car')
+                                ? "text-primary bg-primary/10"
+                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            (!isMobile && collapsed) && "justify-center px-2"
+                        )}
+                    >
+                        <div className="flex items-center gap-3">
+                            <Banknote size={20} />
+                            {(!collapsed || isMobile) && <span>Sell Old Cars</span>}
+                        </div>
+                        {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isSellOldOpen && "rotate-180")} />}
+                    </button>
+
+                    {(!collapsed || isMobile) && isSellOldOpen && (
+                        <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
                                 to="/sell-old-car"
                                 onClick={() => isMobile && onClose && onClose()}
@@ -168,7 +227,17 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                                     isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
                                 )}
                             >
-                                <Banknote size={16} /> Sell Old
+                                <List size={16} /> All Sell List
+                            </NavLink>
+                            <NavLink
+                                to="/add-sell-car"
+                                onClick={() => isMobile && onClose && onClose()}
+                                className={({ isActive }) => cn(
+                                    "flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-sm",
+                                    isActive ? "text-primary font-medium bg-blue-50" : "text-slate-500 hover:text-slate-800"
+                                )}
+                            >
+                                <PlusCircle size={16} /> Add Sell Car
                             </NavLink>
                         </div>
                     )}
@@ -190,7 +259,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isInquiriesOpen && "rotate-180")} />}
                     </button>
 
-                    {/* Submenu */}
                     {(!collapsed || isMobile) && isInquiriesOpen && (
                         <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
@@ -234,7 +302,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isFinancesOpen && "rotate-180")} />}
                     </button>
 
-                    {/* Submenu */}
                     {(!collapsed || isMobile) && isFinancesOpen && (
                         <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
@@ -278,7 +345,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isInsuranceOpen && "rotate-180")} />}
                     </button>
 
-                    {/* Submenu */}
                     {(!collapsed || isMobile) && isInsuranceOpen && (
                         <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
@@ -322,7 +388,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         {(!collapsed || isMobile) && <ChevronDown size={16} className={cn("transition-transform", isUsersOpen && "rotate-180")} />}
                     </button>
 
-                    {/* Submenu */}
                     {(!collapsed || isMobile) && isUsersOpen && (
                         <div className={cn("mt-1 space-y-1 border-l-2 border-slate-100 pl-2", (!isMobile && collapsed) ? "ml-0" : "ml-9")}>
                             <NavLink
@@ -394,25 +459,6 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                     {(!collapsed || isMobile) && <span>Logout</span>}
                 </button>
             </div>
-        </div >
-    );
-
-    return (
-        <>
-            {isMobile ? (
-                <>
-                    {isOpen && (
-                        <div className="fixed inset-0 z-40 bg-black/50" onClick={onClose} />
-                    )}
-                    {isOpen && (
-                        <div className="fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out">
-                            <SidebarContent />
-                        </div>
-                    )}
-                </>
-            ) : (
-                <SidebarContent />
-            )}
 
             <Modal
                 isOpen={isLogoutModalOpen}
@@ -441,6 +487,25 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                     </Button>
                 </ModalFooter>
             </Modal>
+        </div >
+    );
+
+    return (
+        <>
+            {isMobile ? (
+                <>
+                    {isOpen && (
+                        <div className="fixed inset-0 z-40 bg-black/50" onClick={onClose} />
+                    )}
+                    {isOpen && (
+                        <div className="fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out">
+                            <SidebarContent />
+                        </div>
+                    )}
+                </>
+            ) : (
+                <SidebarContent />
+            )}
         </>
     );
 }

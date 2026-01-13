@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
 import { DollarSign, ShoppingBag, Users, TrendingUp, Download } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from '../components/ui/Button';
@@ -28,6 +29,7 @@ export default function Dashboard() {
         loansApproved: 0
     });
     const [salesData, setSalesData] = React.useState([]);
+    const [upcomingInsurances, setUpcomingInsurances] = React.useState([]);
 
     const [filteredSalesData, setFilteredSalesData] = React.useState([]);
     const [isFilterOpen, setIsFilterOpen] = React.useState(false);
@@ -45,6 +47,7 @@ export default function Dashboard() {
                 setDashboardStats(data.stats);
                 setSalesData(data.salesData);
                 setFilteredSalesData(data.salesData);
+                setUpcomingInsurances(data.upcomingInsurances || []);
             }
         } catch (error) {
             console.error("Failed to fetch dashboard stats", error);
@@ -242,6 +245,52 @@ export default function Dashboard() {
                             )}
                         </div>
                     </CardContent>
+                </Card>
+            </div>
+
+            <div className="space-y-4" id="insurance-expiry">
+                <h3 className="text-lg font-bold uppercase">Upcoming Insurance Expiry</h3>
+                <Card>
+                    <div className="rounded-md border overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-muted/50">
+                                <tr className="text-left border-b">
+                                    <th className="p-4 font-medium uppercase text-xs text-muted-foreground">Car ID</th>
+                                    <th className="p-4 font-medium uppercase text-xs text-muted-foreground">Car Name</th>
+                                    <th className="p-4 font-medium uppercase text-xs text-muted-foreground w-[200px]">Expiry Date</th>
+                                    <th className="p-4 font-medium uppercase text-xs text-muted-foreground w-[150px]">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {upcomingInsurances.length > 0 ? (
+                                    upcomingInsurances.map((item, index) => (
+                                        <tr key={index} className="border-b last:border-0 hover:bg-slate-50">
+                                            <td className="p-4 font-medium uppercase">{item.car_id}</td>
+                                            <td className="p-4 uppercase font-semibold">{item.car_name}</td>
+                                            <td className="p-4 text-muted-foreground">{item.expiry_date}</td>
+                                            <td className="p-4">
+                                                <Badge
+                                                    className={
+                                                        item.status === 'Expiring Soon'
+                                                            ? "bg-yellow-500 hover:bg-yellow-600"
+                                                            : "bg-green-500 hover:bg-green-600"
+                                                    }
+                                                >
+                                                    {item.status.toUpperCase()}
+                                                </Badge>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="p-4 text-center text-muted-foreground text-xs uppercase font-medium">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </Card>
             </div>
         </div>
