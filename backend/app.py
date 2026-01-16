@@ -118,6 +118,17 @@ class Vehicle(db.Model):
     other_remarks: Mapped[str] = mapped_column(Text, nullable=True)
     hp: Mapped[str] = mapped_column(String(50), nullable=True)
 
+    # Legacy Dump Fields
+    rto_tax: Mapped[float] = mapped_column(Float, default=0.0)
+    insurance_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    amc_gmc_tax: Mapped[float] = mapped_column(Float, default=0.0)
+    ext_warranty: Mapped[float] = mapped_column(Float, default=0.0)
+    accessories_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    krunal_accessories: Mapped[float] = mapped_column(Float, default=0.0)
+    hypothecation: Mapped[str] = mapped_column(String(100), nullable=True) # For hp/hypothecation mapping
+    agreement_number: Mapped[str] = mapped_column(String(100), nullable=True) # deal_agreement
+    kyc_status: Mapped[str] = mapped_column(String(50), nullable=True) # kyc
+
     documents = relationship("VehicleDocument", backref="vehicle", cascade="all, delete-orphan")
 
     def to_dict(self):
