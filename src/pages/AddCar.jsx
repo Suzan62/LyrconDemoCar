@@ -733,19 +733,19 @@ export default function AddCar(props) {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {transactionType === 'New' && (
                                     <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
-                                        <div className="flex gap-2">
+                                        <label className="text-sm font-semibold text-slate-700">VIN/Chassis Number *</label>
+                                        <div className="flex flex-col sm:flex-row gap-2">
                                             <input
                                                 name="vin"
                                                 value={formData.vin}
                                                 onChange={handleChange}
                                                 className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.vin ? 'border-red-500' : 'border-slate-300'}`}
-                                                placeholder="Enter Chassis Number"
+                                                placeholder="Enter VIN/Chassis Number"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={handleVinAutoFill}
-                                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap"
+                                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap sm:w-auto w-full"
                                             >
                                                 Auto-Fill
                                             </button>

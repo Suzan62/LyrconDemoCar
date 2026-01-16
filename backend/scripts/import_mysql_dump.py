@@ -109,7 +109,7 @@ def map_row_to_vehicle(row, columns, transaction_type):
         fuel_type=get('fuel_type'),
         running_km=get_float('running_kilometer') or get_float('kilometer'),
         registration_number=get('registration_no') or get('car_no'), # old_cars uses car_no
-        chassis_number=get('chassis_no'),
+        chassis_number=get('chassis_no') if get('chassis_no') else None, # Force None if empty
         engine_number=get('engine_no'),
         
         # Customer
@@ -155,6 +155,7 @@ def map_row_to_vehicle(row, columns, transaction_type):
         
     return v
 
+from sqlalchemy.exc import IntegrityError
 from app import app, db, Vehicle, VehicleDocument, FinanceRecord, Insurance
 
 # ... (rest of imports)
@@ -169,13 +170,13 @@ def import_data():
             print(f"File not found: {SQL_FILE_PATH}")
             return
 
-        print("Clearing existing data...")
-        # Delete dependent tables first to avoid FK violations
-        db.session.query(VehicleDocument).delete()
-        db.session.query(FinanceRecord).delete()
-        db.session.query(Insurance).delete()
-        db.session.query(Vehicle).delete()
-        db.session.commit()
+        print("Recreating database schema...")
+        # Drop all to ensure schema updates (add new columns) are applied
+        db.drop_all()
+        db.create_all()
+        
+        # Optional: Re-create dummy admin user if needed, or let user recreate it
+        # Just creating tables is enough for import.
         
         tables_map = [
             ('new_cars', 'New'),
@@ -189,19 +190,26 @@ def import_data():
             print(f"  Found {len(rows)} rows with columns: {cols}")
             
             count = 0
+            skipped = 0
             for row in rows:
                 if len(row) != len(cols):
-                    # print(f"  Skipping row len mismatch: exp {len(cols)} got {len(row)}")
+                    skipped += 1
                     continue
                 try:
                     v = map_row_to_vehicle(row, cols, type_)
                     db.session.add(v)
+                    db.session.commit()
                     count += 1
+                except IntegrityError as e:
+                    db.session.rollback()
+                    # print(f"  IntegrityError (duplicate/constraint violation): {e}")
+                    skipped += 1
                 except Exception as e:
-                    print(f"  Error mapping row: {e}")
-            
-            print(f"  Added {count} records.")
-            db.session.commit()
+                    db.session.rollback()
+                    # print(f"  Error mapping/inserting row: {e}")
+                    skipped += 1
+                    
+            print(f"  Added {count} records. Skipped {skipped}.")
         
         print("Migration complete!")
 

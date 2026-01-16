@@ -250,8 +250,8 @@ export default function Inventory() {
                 <div className="p-4">
                     <FilterBar filters={filters} setFilters={setFilters} />
 
-                    <div className="overflow-x-auto border rounded-md">
-                        <table className="w-full text-sm">
+                    <div className="overflow-x-auto border rounded-md -mx-4 sm:mx-0">
+                        <table className="w-full text-sm min-w-[800px]">
                             <thead className="bg-[#f8faff] text-[11px] font-bold text-slate-600 uppercase border-b border-slate-100">
                                 <tr>
                                     <th className="p-3 text-left min-w-[150px]">Actions</th>

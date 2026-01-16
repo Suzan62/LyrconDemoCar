@@ -17,9 +17,35 @@ export function FilterBar({ filters, setFilters, onSearch }) {
                 <div className="flex flex-wrap items-end gap-4 lg:gap-6">
 
                     {/* Booking Date Range */}
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2 w-full sm:w-auto sm:min-w-[320px]">
                         <label className="text-sm font-bold text-slate-800 uppercase">Booking Date</label>
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col xs:flex-row items-center gap-2">
+                            <div className="flex flex-col gap-1 w-full flex-1">
+                                <span className="text-[10px] font-bold text-slate-500 uppercase">From:</span>
+                                <Input
+                                    type="date"
+                                    name="dateFrom"
+                                    value={filters.dateFrom || ''}
+                                    onChange={handleChange}
+                                    className="w-full h-10 text-xs border-slate-200 rounded-lg focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-1 w-full flex-1">
+                                <span className="text-[10px] font-bold text-slate-500 uppercase">To:</span>
+                                <Input
+                                    type="date"
+                                    name="dateTo"
+                                    value={filters.dateTo || ''}
+                                    onChange={handleChange}
+                                    className="w-full h-10 text-xs border-slate-200 rounded-lg focus:ring-blue-500"
+                                />
+                            </div>
+                        </div>
+                    </div> */}
+                    <div className="flex flex-col gap-2 w-full">
+                        <label className="text-sm font-bold text-slate-800 uppercase">Booking Date</label>
+                        {/* Grid ensures the two inputs stay in two columns on all screen sizes */}
+                        <div className="grid grid-cols-2 gap-2 w-full">
                             <div className="flex flex-col gap-1">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase">From:</span>
                                 <Input
@@ -27,7 +53,8 @@ export function FilterBar({ filters, setFilters, onSearch }) {
                                     name="dateFrom"
                                     value={filters.dateFrom || ''}
                                     onChange={handleChange}
-                                    className="w-36 h-10 text-xs border-slate-200 rounded-lg focus:ring-blue-500"
+                                    // text-[10px] helps the date string fit better on small mobile screens
+                                    className="w-full h-10 text-[10px] sm:text-xs border-slate-200 rounded-lg focus:ring-blue-500 px-1"
                                 />
                             </div>
                             <div className="flex flex-col gap-1">
@@ -37,12 +64,11 @@ export function FilterBar({ filters, setFilters, onSearch }) {
                                     name="dateTo"
                                     value={filters.dateTo || ''}
                                     onChange={handleChange}
-                                    className="w-36 h-10 text-xs border-slate-200 rounded-lg focus:ring-blue-500"
+                                    className="w-full h-10 text-[10px] sm:text-xs border-slate-200 rounded-lg focus:ring-blue-500 px-1"
                                 />
                             </div>
                         </div>
                     </div>
-
                     {/* Delivery Status */}
                     <div className="flex flex-col gap-1 flex-1 min-w-[180px]">
                         <label className="text-[10px] font-bold text-slate-500 uppercase">Delivery Status</label>
