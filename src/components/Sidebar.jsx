@@ -416,7 +416,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                 </div>
 
 
-                {/* Other Links */}
+                {/* Mobile KYC - Hidden as it is currently a mock/demo page 
                 <NavLink
                     to="/kyc"
                     onClick={() => isMobile && onClose && onClose()}
@@ -431,6 +431,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                     <ScanLine size={20} />
                     {(!collapsed || isMobile) && <span>Mobile KYC</span>}
                 </NavLink>
+                */}
 
             </nav >
 

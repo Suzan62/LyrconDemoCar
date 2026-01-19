@@ -8,13 +8,17 @@ import { Badge } from '../../components/ui/Badge';
 import { Input } from '../../components/ui/Input';
 import { Modal, ModalFooter } from '../../components/ui/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteInquiry, selectInquiries, selectInquiryStats } from '../../store/slices/inquirySlice';
+import { deleteInquiry, selectInquiries, selectInquiryStats, fetchInquiries } from '../../store/slices/inquirySlice';
 
 export default function InquiriesList() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inquiries = useSelector(selectInquiries);
     const stats = useSelector(selectInquiryStats);
+
+    React.useEffect(() => {
+        dispatch(fetchInquiries());
+    }, [dispatch]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');

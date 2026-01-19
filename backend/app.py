@@ -210,7 +210,92 @@ class Insurance(db.Model):
             "vehicle": self.vehicle.to_dict() if self.vehicle else None
         }
 
+class Inquiry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    vehicle_interest = db.Column(db.String(100))
+    car_type = db.Column(db.String(20)) # NEW / OLD
+    contact_method = db.Column(db.String(50))
+    notes = db.Column(db.Text)
+    source = db.Column(db.String(50))
+    status = db.Column(db.String(50), default='Pending') # Pending, Completed
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "customer": self.customer,
+            "email": self.email,
+            "customerPhone": self.phone,
+            "vehicle": self.vehicle_interest,
+            "carType": self.car_type,
+            "contactMethod": self.contact_method,
+            "notes": self.notes,
+            "source": self.source,
+            "status": self.status,
+            "date": self.created_at.strftime('%d %b %Y').upper()
+        }
+
 # ----------------- API ENDPOINTS -----------------
+
+@app.route('/api/inquiries', methods=['GET', 'POST'])
+def inquiries_handler():
+    if request.method == 'GET':
+        inquiries = Inquiry.query.order_by(Inquiry.id.desc()).all()
+        return jsonify([i.to_dict() for i in inquiries]), 200
+
+    if request.method == 'POST':
+        data = request.get_json()
+        try:
+            new_inquiry = Inquiry(
+                customer=data.get('customer'),
+                email=data.get('email'),
+                phone=data.get('customerPhone'),
+                vehicle_interest=data.get('vehicle'),
+                car_type=data.get('carType'),
+                contact_method=data.get('contactMethod'),
+                notes=data.get('notes'),
+                source=data.get('source'),
+                status='Pending'
+            )
+            db.session.add(new_inquiry)
+            db.session.commit()
+            return jsonify({"success": True, "inquiry": new_inquiry.to_dict()}), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 400
+
+@app.route('/api/inquiries/<int:id>', methods=['DELETE', 'PUT'])
+def inquiry_detail_handler(id):
+    inquiry = Inquiry.query.get(id)
+    if not inquiry:
+        return jsonify({"error": "Inquiry not found"}), 404
+
+    if request.method == 'DELETE':
+        try:
+            db.session.delete(inquiry)
+            db.session.commit()
+            return jsonify({"success": True}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 400
+
+    if request.method == 'PUT':
+        # Mostly for status updates
+        data = request.get_json()
+        try:
+            if 'status' in data:
+                inquiry.status = data['status']
+            if 'notes' in data:
+                inquiry.notes = data['notes']
+            
+            db.session.commit()
+            return jsonify({"success": True, "inquiry": inquiry.to_dict()}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 400
 
 @app.route('/')
 def index():

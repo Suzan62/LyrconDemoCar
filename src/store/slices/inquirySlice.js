@@ -1,20 +1,57 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Async Thunks
+export const fetchInquiries = createAsyncThunk(
+    'inquiries/fetchInquiries',
+    async () => {
+        const response = await fetch('/api/inquiries');
+        if (!response.ok) throw new Error('Failed to fetch inquiries');
+        return await response.json();
+    }
+);
+
+export const addInquiry = createAsyncThunk(
+    'inquiries/addInquiry',
+    async (inquiryData) => {
+        const response = await fetch('/api/inquiries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inquiryData)
+        });
+        if (!response.ok) throw new Error('Failed to add inquiry');
+        const data = await response.json();
+        return data.inquiry;
+    }
+);
+
+export const deleteInquiry = createAsyncThunk(
+    'inquiries/deleteInquiry',
+    async (id) => {
+        const response = await fetch(`/api/inquiries/${id}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error('Failed to delete inquiry');
+        return id;
+    }
+);
+
+export const updateInquiry = createAsyncThunk(
+    'inquiries/updateInquiry',
+    async ({ id, status, notes }) => {
+        const response = await fetch(`/api/inquiries/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status, notes })
+        });
+        if (!response.ok) throw new Error('Failed to update inquiry');
+        const data = await response.json();
+        return data.inquiry;
+    }
+);
+
 
 const initialState = {
-    items: [
-        {
-            id: "#INQ-83",
-            customer: "DEMO",
-            customerPhone: "DEMO",
-            email: "demo@example.com",
-            vehicle: "MO",
-            carType: "OLD",
-            date: "26 JUL 2025",
-            status: "Pending",
-            source: "Walk-in",
-            notes: "Interested in the Ford Mustang."
-        }
-    ],
+    items: [],
     loading: false,
     error: null
 };
@@ -23,33 +60,40 @@ const inquirySlice = createSlice({
     name: 'inquiries',
     initialState,
     reducers: {
-        addInquiry: (state, action) => {
-            // Generate a simple ID logic for demo purposes if not provided
-            const newInquiry = {
-                ...action.payload,
-                id: action.payload.id || `#INQ-${Math.floor(Math.random() * 1000)}`,
-                date: action.payload.date || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase(),
-                status: action.payload.status || 'Pending'
-            };
-            state.items.unshift(newInquiry);
-        },
-        updateInquiry: (state, action) => {
-            const { id, ...data } = action.payload;
-            const index = state.items.findIndex(item => item.id === id);
-            if (index !== -1) {
-                state.items[index] = { ...state.items[index], ...data };
-            }
-        },
-        deleteInquiry: (state, action) => {
-            state.items = state.items.filter(item => item.id !== action.payload);
-        },
-        setInquiries: (state, action) => {
-            state.items = action.payload;
-        }
+        // Optional: Client-side only filters or sorts could go here
+    },
+    extraReducers: (builder) => {
+        builder
+            // Fetch
+            .addCase(fetchInquiries.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchInquiries.fulfilled, (state, action) => {
+                state.loading = false;
+                state.items = action.payload;
+            })
+            .addCase(fetchInquiries.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            // Add
+            .addCase(addInquiry.fulfilled, (state, action) => {
+                state.items.unshift(action.payload);
+            })
+            // Delete
+            .addCase(deleteInquiry.fulfilled, (state, action) => {
+                state.items = state.items.filter(item => item.id !== action.payload);
+            })
+            // Update
+            .addCase(updateInquiry.fulfilled, (state, action) => {
+                const index = state.items.findIndex(item => item.id === action.payload.id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+            });
     }
 });
-
-export const { addInquiry, updateInquiry, deleteInquiry, setInquiries } = inquirySlice.actions;
 
 // Selectors
 export const selectInquiries = (state) => state.inquiries.items;

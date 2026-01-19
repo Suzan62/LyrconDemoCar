@@ -238,7 +238,9 @@ export default function Dashboard() {
                                             VIN: {sale.id}
                                         </p>
                                     </div>
-                                    <div className="ml-auto font-medium">+${sale.price.toLocaleString()}</div>
+                                    <div className={`ml-auto font-medium ${sale.price > 0 ? 'text-green-600' : 'text-slate-500 text-xs italic'}`}>
+                                        {sale.price > 0 ? `+$${sale.price.toLocaleString()}` : 'Price Pending'}
+                                    </div>
                                 </div>
                             )) : (
                                 <p className="text-center text-muted-foreground py-8">No recent sales found.</p>

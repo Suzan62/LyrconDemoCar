@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft, FilePlus } from 'lucide-react';
+import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft, FilePlus, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/Button';
 import { useDispatch } from 'react-redux';
@@ -338,6 +338,14 @@ export default function AddCar(props) {
         }
     };
 
+
+    // PDF Preview Function
+    const handlePreview = (file) => {
+        if (file) {
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL, '_blank');
+        }
+    };
 
     const handleFileChange = (e, docType) => {
         if (e.target.files && e.target.files[0]) {
@@ -1078,7 +1086,19 @@ export default function AddCar(props) {
                                                         <label className="text-sm font-bold text-slate-700">{doc.label} (Front & Back)</label>
                                                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Merged to PDF</span>
                                                     </div>
-                                                    {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                    <div className="flex items-center gap-2">
+                                                        {files[doc.key] && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handlePreview(files[doc.key])}
+                                                                className="text-blue-600 hover:text-blue-800 transition-colors"
+                                                                title="Preview Merged PDF"
+                                                            >
+                                                                <Eye size={20} />
+                                                            </button>
+                                                        )}
+                                                        {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                    </div>
                                                 </div>
 
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1601,7 +1621,19 @@ export default function AddCar(props) {
                                                             <label className="text-sm font-bold text-slate-700">{doc.label} (Front & Back)</label>
                                                             <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Merged to PDF</span>
                                                         </div>
-                                                        {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                        <div className="flex items-center gap-2">
+                                                            {files[doc.key] && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handlePreview(files[doc.key])}
+                                                                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                                                                    title="Preview Merged PDF"
+                                                                >
+                                                                    <Eye size={20} />
+                                                                </button>
+                                                            )}
+                                                            {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                        </div>
                                                     </div>
 
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

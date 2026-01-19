@@ -10,11 +10,7 @@ export default function TopBar({ onMenuClick, isMobile }) {
     const { profile } = useSelector(state => state.user);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [notifications, setNotifications] = useState([
-        { id: 1, title: 'New Inquiry', message: 'Customer John Doe requested a quote.', time: '2 min ago', read: false },
-        { id: 2, title: 'Vehicle Sold', message: 'Honda Civic (INV-004) marked as sold.', time: '1 hour ago', read: false },
-        { id: 3, title: 'Low Inventory', message: 'Only 2 SUVs remaining in stock.', time: '5 hours ago', read: true },
-    ]);
+    const [notifications, setNotifications] = useState([]);
 
     React.useEffect(() => {
         fetchInsuranceNotifications();
