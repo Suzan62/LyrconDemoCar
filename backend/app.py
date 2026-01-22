@@ -8,7 +8,7 @@ import os
 import requests
 from werkzeug.utils import secure_filename
 import json
-
+import bcrypt
 class Base(DeclarativeBase):
   pass
 
@@ -542,7 +542,8 @@ def login():
 
     user = db.session.execute(db.select(User).filter_by(email=email)).scalar_one_or_none()
 
-    if user and user.password == password:
+    # Fix: Use bcrypt to verify password
+    if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
         return jsonify({
             "success": True,
             "user": {
@@ -555,7 +556,6 @@ def login():
             "success": False,
             "message": "Invalid email or password."
         }), 401
-
 # ----------------- USERS ENDPOINTS -----------------
 
 @app.route('/api/users', methods=['GET'])
