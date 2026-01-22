@@ -26,6 +26,7 @@ module.exports = {
             out_file: '/home/ubuntu/logs/frontend-out.log',
             time: true,
             instances: 1,
+            exec_mode: 'fork',
             autorestart: true,
             watch: false,
             max_memory_restart: '500M'
