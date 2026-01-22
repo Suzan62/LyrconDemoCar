@@ -101,8 +101,8 @@ export const selectInquiryStats = (state) => {
     const items = state.inquiries.items;
     return {
         total: items.length,
-        completed: items.filter(i => i.status === 'Completed').length,
-        pending: items.filter(i => i.status === 'Pending').length
+        completed: items.filter(i => i.status === 'completed' || i.status === 'Completed').length,
+        pending: items.filter(i => i.status === 'pending' || i.status === 'Pending').length
     };
 };
 

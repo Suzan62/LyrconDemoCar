@@ -12,23 +12,43 @@ import { PlusCircle, Eye, Edit, Trash, Search, Filter, FileText } from 'lucide-r
 export default function FinanceList() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const finances = useSelector(selectFinances);
+    const allFinances = useSelector(selectFinances); // Renamed to avoid conflict with local state
     const stats = useSelector(selectFinanceStats);
-    const loading = useSelector(state => state.finance.loading);
+    const reduxLoading = useSelector(state => state.finance.loading); // Renamed to avoid conflict
 
+    const [finances, setFinances] = useState([]); // Local state for finances
+    const [loading, setLoading] = useState(true); // Local state for loading
     const [searchTerm, setSearchTerm] = useState('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [financeToDelete, setFinanceToDelete] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [entriesPerPage, setEntriesPerPage] = useState(10);
 
     useEffect(() => {
-        dispatch(fetchFinances());
+        const fetchData = async () => {
+            setLoading(true);
+            await dispatch(fetchFinances());
+            setLoading(false);
+        };
+        fetchData();
     }, [dispatch]);
+
+    useEffect(() => {
+        setFinances(allFinances); // Update local finances when Redux state changes
+    }, [allFinances]);
 
     const filteredFinances = finances.filter(item =>
         item.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.bank_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.account_number?.includes(searchTerm)
+        item.account_number?.includes(searchTerm) ||
+        item.car?.toLowerCase().includes(searchTerm.toLowerCase()) // Added car filter
     );
+
+    // Pagination
+    const indexOfLastEntry = currentPage * entriesPerPage;
+    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+    const currentEntries = filteredFinances.slice(indexOfFirstEntry, indexOfLastEntry);
+    const totalPages = Math.ceil(filteredFinances.length / entriesPerPage);
 
     const handleDeleteClick = (id) => {
         setFinanceToDelete(id);
@@ -40,6 +60,8 @@ export default function FinanceList() {
             await dispatch(deleteFinance(financeToDelete));
             setIsDeleteModalOpen(false);
             setFinanceToDelete(null);
+            // Re-fetch or update local state after deletion
+            dispatch(fetchFinances());
         }
     };
 
@@ -112,14 +134,26 @@ export default function FinanceList() {
                                         <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No finance records found.</TableCell>
                                     </TableRow>
                                 ) : (
-                                    filteredFinances.map((item) => (
+                                    currentEntries.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-1">
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600" onClick={() => navigate(`/finance/edit/${item.id}`)}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-green-600"
+                                                        title="Edit"
+                                                        onClick={() => navigate(`/finance/edit/${item.id}`)}
+                                                    >
                                                         <Edit size={16} />
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => handleDeleteClick(item.id)}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-red-500"
+                                                        title="Delete"
+                                                        onClick={() => handleDeleteClick(item.id)}
+                                                    >
                                                         <Trash size={16} />
                                                     </Button>
                                                 </div>
@@ -150,6 +184,46 @@ export default function FinanceList() {
                                 )}
                             </TableBody>
                         </Table>
+                    </div>
+
+                    {/* Pagination Controls */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t">
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="text-slate-600">Show</span>
+                            <select
+                                value={entriesPerPage}
+                                onChange={(e) => {
+                                    setEntriesPerPage(Number(e.target.value));
+                                    setCurrentPage(1);
+                                }}
+                                className="border rounded px-2 py-1 text-sm"
+                            >
+                                <option value={10}>10</option>
+                                <option value={25}>25</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
+                            </select>
+                            <span className="text-slate-600">entries</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(prev => prev - 1)}
+                            >
+                                Previous
+                            </Button>
+                            <Button variant="outline" size="sm" className="bg-slate-100">{currentPage}</Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage * entriesPerPage >= filteredFinances.length}
+                                onClick={() => setCurrentPage(prev => prev + 1)}
+                            >
+                                Next
+                            </Button>
+                        </div>
                     </div>
                 </CardContent>
             </Card>

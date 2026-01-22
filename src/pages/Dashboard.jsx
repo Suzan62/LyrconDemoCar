@@ -39,21 +39,41 @@ export default function Dashboard() {
         fetchStats();
     }, []);
 
+    // const fetchStats = async () => {
+    //     try {
+    //         const res = await fetch('/api/dashboard/stats');
+    //         if (res.ok) {
+    //             const data = await res.json();
+    //             setDashboardStats(data.stats);
+    //             setSalesData(data.salesData);
+    //             setFilteredSalesData(data.salesData);
+    //             setUpcomingInsurances(data.upcomingInsurances || []);
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to fetch dashboard stats", error);
+    //     }
+    // };
     const fetchStats = async () => {
         try {
             const res = await fetch('/api/dashboard/stats');
             if (res.ok) {
                 const data = await res.json();
-                setDashboardStats(data.stats);
-                setSalesData(data.salesData);
-                setFilteredSalesData(data.salesData);
+
+                // Map API response to dashboard state
+                setDashboardStats({
+                    revenue: data.totalRevenue || 0,
+                    carsSold: data.soldVehicles || 0,
+                    loansApproved: data.totalInquiries || 0  // Using inquiries as proxy for loans
+                });
+
+                setSalesData(data.salesData || []);
+                setFilteredSalesData(data.salesData || []);
                 setUpcomingInsurances(data.upcomingInsurances || []);
             }
         } catch (error) {
             console.error("Failed to fetch dashboard stats", error);
         }
     };
-
     // Keep filter logic but ensure it defaults to full data
     React.useEffect(() => {
         if (!dateRange.start && !dateRange.end) {
@@ -169,7 +189,7 @@ export default function Dashboard() {
                         <ShoppingBag className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">+{dashboardStats.carsSold}</div>
+                        <div className="text-2xl font-bold">{dashboardStats.carsSold}</div>
                         <p className="text-xs text-muted-foreground flex items-center text-green-600">
                             <span className="font-bold mr-1">+15%</span> from last month
                         </p>
@@ -181,7 +201,7 @@ export default function Dashboard() {
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">+{dashboardStats.loansApproved}</div>
+                        <div className="text-2xl font-bold">{dashboardStats.loansApproved}</div>
                         <p className="text-xs text-muted-foreground flex items-center text-red-600">
                             <span className="font-bold mr-1">-4%</span> from last month
                         </p>

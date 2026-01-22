@@ -102,6 +102,11 @@ def convert_mysql_to_postgres(input_file, output_file):
     # Warning: This might break if binary data is present. Assuming text dump.
     content = content.replace("\\'", "''")
 
+    # 12. Handle invalid dates (0000-00-00 -> NULL)
+    # MySQL allows this, Postgres throws error.
+    content = content.replace("'0000-00-00 00:00:00'", "NULL")
+    content = content.replace("'0000-00-00'", "NULL")
+
     # Appending the NEW Inquiry Table Schema for Postgres
     new_table_sql = """
 --

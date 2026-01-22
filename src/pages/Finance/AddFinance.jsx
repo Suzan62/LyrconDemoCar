@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { addFinance } from '../../store/slices/financeSlice';
 import { Button } from '../../components/ui/Button';
 import { ArrowLeft, Save, Car } from 'lucide-react';
@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Ca
 export default function AddFinance() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { id } = useParams();
+    const isEditMode = Boolean(id);
     const [loading, setLoading] = useState(false);
 
     // Vehicle Data for Dropdown
@@ -58,11 +60,50 @@ export default function AddFinance() {
 
     useEffect(() => {
         // Fetch vehicles for dropdown
-        fetch('/api/vehicles')
+        fetch('http://127.0.0.1:5000/api/vehicles')
             .then(res => res.json())
             .then(data => setVehicles(data))
             .catch(err => console.error("Failed to fetch vehicles", err));
     }, []);
+
+    // Fetch existing finance record if in edit mode
+    useEffect(() => {
+        if (isEditMode) {
+            setLoading(true);
+            fetch(`http://127.0.0.1:5000/api/finances/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    setFormData({
+                        bank_name: data.bank_name || '',
+                        bank_branch: data.bank_branch || '',
+                        customer_name: data.customer_name || '',
+                        account_number: data.account_number || '',
+                        address: data.address || '',
+                        contact_number: data.contact_number || '',
+                        email: data.email || '',
+                        starting_date: data.starting_date || '',
+                        ending_date: data.ending_date || '',
+                        amount: data.amount || '',
+                        loan_protection: data.loan_protection || false,
+                        disbursement_amount: data.disbursement_amount || '',
+                        disbursement_date: data.disbursement_date || '',
+                        status: data.status || 'Received',
+                        emi_amount: data.emi_amount || '',
+                        car_type: data.car_type || 'New Car',
+                        vehicle_id: data.vehicle_id || ''
+                    });
+                    if (data.vehicle_id) {
+                        const v = vehicles.find(veh => veh.id.toString() === data.vehicle_id.toString());
+                        setSelectedVehicle(v || null);
+                    }
+                })
+                .catch(err => {
+                    console.error("Failed to fetch finance record", err);
+                    alert("Failed to load finance record");
+                })
+                .finally(() => setLoading(false));
+        }
+    }, [id, isEditMode, vehicles]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -81,8 +122,20 @@ export default function AddFinance() {
         if (!validate()) return;
         setLoading(true);
         try {
-            await dispatch(addFinance(formData)).unwrap();
-            navigate('/finance');
+            if (isEditMode) {
+                // Update existing record
+                const res = await fetch(`http://127.0.0.1:5000/api/finances/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (!res.ok) throw new Error('Failed to update');
+                navigate('/finance');
+            } else {
+                // Create new record
+                await dispatch(addFinance(formData)).unwrap();
+                navigate('/finance');
+            }
         } catch (error) {
             alert(`Failed to save: ${error}`);
         } finally {
@@ -97,8 +150,8 @@ export default function AddFinance() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>
-                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Create Finance Record</h2>
-                    <p className="text-muted-foreground">Add a new loan or finance entry.</p>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">{isEditMode ? 'Edit' : 'Create'} Finance Record</h2>
+                    <p className="text-muted-foreground">{isEditMode ? 'Update' : 'Add a new'} loan or finance entry.</p>
                 </div>
             </div>
 
@@ -265,7 +318,7 @@ export default function AddFinance() {
                         <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-100">
                             <Button variant="ghost" onClick={() => navigate('/finance')}>Cancel</Button>
                             <Button onClick={handleSubmit} disabled={loading} className="w-32">
-                                {loading ? "Saving..." : "Save Record"}
+                                {loading ? "Saving..." : (isEditMode ? "Update Record" : "Save Record")}
                             </Button>
                         </div>
                     </div>

@@ -26,6 +26,7 @@ export default function Inventory() {
 
     const [activeTab, setActiveTab] = useState('New'); // 'New', 'Purchase', 'Sale'
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
     const [filters, setFilters] = useState({
         dateFrom: '',
         dateTo: '',
@@ -210,6 +211,11 @@ export default function Inventory() {
         else if (location.pathname.includes('/inventory') || location.pathname.includes('/new-cars')) setActiveTab('New'); // Default
     }, [location.pathname]);
 
+    // Reset to page 1 when filters or tab changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters, activeTab]);
+
     return (
         <div className="space-y-6 w-full max-w-[1600px] mx-auto px-4 py-6">
 
@@ -286,92 +292,94 @@ export default function Inventory() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {filteredItems.slice(0, filters.entries).map((item) => (
-                                    <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="p-2">
-                                            <div className="flex items-center justify-start gap-1">
-                                                <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-500" title="View" onClick={() => navigate(`/vehicle/${item.id}`)}><Eye size={14} /></Button>
-                                                <Button
-                                                    size="icon"
-                                                    variant="ghost"
-                                                    className="h-7 w-7 text-green-600"
-                                                    title="Edit"
-                                                    onClick={() => {
-                                                        const editRoute = item.transaction_type === 'New' ? 'edit-new' :
-                                                            item.transaction_type === 'Purchase' ? 'edit-purchase' :
-                                                                item.transaction_type === 'Sale' ? 'edit-sale' : 'edit-new';
-                                                        navigate(`/inventory/${item.id}/${editRoute}`);
-                                                    }}
-                                                >
-                                                    <Edit size={14} />
-                                                </Button>
-                                                <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500" title="Delete" onClick={() => setDeleteId(item.id)}><Trash size={14} /></Button>
-
-                                                {/* Actions specific to New Cars */}
-                                                {activeTab === 'New' && (
-                                                    <>
-                                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-slate-500" title="Print" onClick={() => handlePrint(item)}><Printer size={14} /></Button>
-                                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-indigo-600" title="Customer Details" onClick={() => openCustomerModal(item)}><User size={14} /></Button>
-                                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-orange-600" title="Dealer Details" onClick={() => openDealerModal(item)}><Store size={14} /></Button>
-                                                    </>
-                                                )}
-
-                                                {/* Actions specific to Purchase/Sale Cars (Payment/Delivery Info) */}
-                                                {(activeTab === 'Purchase' || activeTab === 'Sale') && (
-                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-purple-600" title="Payments & Delivery" onClick={() => openDeliveryModal(item)}>
-                                                        <IndianRupee size={14} />
+                                {filteredItems
+                                    .slice((currentPage - 1) * filters.entries, currentPage * filters.entries)
+                                    .map((item) => (
+                                        <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                                            <td className="p-2">
+                                                <div className="flex items-center justify-start gap-1">
+                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-500" title="View" onClick={() => navigate(`/vehicle/${item.id}`)}><Eye size={14} /></Button>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="h-7 w-7 text-green-600"
+                                                        title="Edit"
+                                                        onClick={() => {
+                                                            const editRoute = item.transaction_type === 'New' ? 'edit-new' :
+                                                                item.transaction_type === 'Purchase' ? 'edit-purchase' :
+                                                                    item.transaction_type === 'Sale' ? 'edit-sale' : 'edit-new';
+                                                            navigate(`/inventory/${item.id}/${editRoute}`);
+                                                        }}
+                                                    >
+                                                        <Edit size={14} />
                                                     </Button>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="p-3 text-slate-600 whitespace-nowrap">{item.booking_date ? new Date(item.booking_date).toLocaleDateString('en-GB') : '01/01/2026'}</td>
+                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500" title="Delete" onClick={() => setDeleteId(item.id)}><Trash size={14} /></Button>
 
-                                        {activeTab === 'Purchase' ? (
-                                            <>
-                                                <td className="p-3 text-slate-600">{item.delivery_date ? new Date(item.delivery_date).toLocaleDateString() : 'N/A'}</td>
-                                                <td className="p-3 text-center">
-                                                    <Badge variant="outline" className={item.delivery_status === 'Delivered' ? 'bg-blue-50 text-blue-700 font-bold border-blue-100' : 'bg-orange-50 text-orange-700 font-bold border-orange-100'}>
-                                                        {item.delivery_status || 'Pending'}
-                                                    </Badge>
-                                                </td>
-                                                <td className="p-3 text-slate-600">{item.manufacturer}</td>
-                                                <td className="p-3 font-semibold text-slate-800">{item.buyer_name || 'N/A'}</td>
-                                                <td className="p-3 text-slate-600">{item.phone || '-'}</td>
-                                                <td className="p-3 text-slate-600">{item.executive_name || '-'}</td>
-                                                <td className="p-3 text-slate-600">{item.insurance_expiry || 'N/A'}</td>
-                                                <td className="p-3 font-mono text-slate-600">{item.registration_number || '-'}</td>
-                                                <td className="p-3 text-slate-600">{item.model}</td>
-                                                <td className="p-3 text-right font-mono font-bold bg-green-50 text-green-700">{(item.customer_remaining_amount || 0).toFixed(2)}</td>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <td className="p-3 font-semibold text-slate-800">{item.buyer_name || 'N/A'}</td>
-                                                <td className="p-3 text-slate-600 font-medium">{item.customer_phone || item.phone || '-'}</td>
-                                                <td className="p-3 text-center">
-                                                    <Badge variant="outline" className={cn(
-                                                        "font-bold px-3 py-1",
-                                                        item.status === 'Sold' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                            item.delivery_status === 'Delivered' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                                                                'bg-slate-100/50 text-slate-600 border-slate-200'
-                                                    )}>
-                                                        {item.delivery_status || item.status || 'Available'}
-                                                    </Badge>
-                                                </td>
-                                                <td className="p-3 text-slate-600">{item.city || '-'}</td>
-                                                <td className="p-3 text-slate-800 font-bold">{item.manufacturer} {item.model}</td>
-                                                <td className="p-3 text-slate-600">{item.color || '-'}</td>
-                                                <td className="p-3 text-slate-600">{item.fuel_type || '-'}</td>
-                                                <td className="p-3 text-slate-600">{item.nominee_name || '-'}</td>
-                                                <td className="p-3 text-right font-mono font-bold text-green-600 bg-[#f8fff9]">
-                                                    {item.customer_remaining_amount ? item.customer_remaining_amount.toFixed(2) : '0.00'}
-                                                </td>
-                                                <td className="p-3 text-right font-mono font-bold text-red-600 bg-[#fff8f8]">
-                                                    {item.net_short_amount ? item.net_short_amount.toFixed(2) : '0.00'}
-                                                </td>
-                                            </>
-                                        )}
-                                    </tr>
-                                ))}
+                                                    {/* Actions specific to New Cars */}
+                                                    {activeTab === 'New' && (
+                                                        <>
+                                                            <Button size="icon" variant="ghost" className="h-7 w-7 text-slate-500" title="Print" onClick={() => handlePrint(item)}><Printer size={14} /></Button>
+                                                            <Button size="icon" variant="ghost" className="h-7 w-7 text-indigo-600" title="Customer Details" onClick={() => openCustomerModal(item)}><User size={14} /></Button>
+                                                            <Button size="icon" variant="ghost" className="h-7 w-7 text-orange-600" title="Dealer Details" onClick={() => openDealerModal(item)}><Store size={14} /></Button>
+                                                        </>
+                                                    )}
+
+                                                    {/* Actions specific to Purchase/Sale Cars (Payment/Delivery Info) */}
+                                                    {(activeTab === 'Purchase' || activeTab === 'Sale') && (
+                                                        <Button size="icon" variant="ghost" className="h-7 w-7 text-purple-600" title="Payments & Delivery" onClick={() => openDeliveryModal(item)}>
+                                                            <IndianRupee size={14} />
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="p-3 text-slate-600 whitespace-nowrap">{item.booking_date ? new Date(item.booking_date).toLocaleDateString('en-GB') : '01/01/2026'}</td>
+
+                                            {activeTab === 'Purchase' ? (
+                                                <>
+                                                    <td className="p-3 text-slate-600">{item.delivery_date ? new Date(item.delivery_date).toLocaleDateString() : 'N/A'}</td>
+                                                    <td className="p-3 text-center">
+                                                        <Badge variant="outline" className={item.delivery_status === 'Delivered' ? 'bg-blue-50 text-blue-700 font-bold border-blue-100' : 'bg-orange-50 text-orange-700 font-bold border-orange-100'}>
+                                                            {item.delivery_status || 'Pending'}
+                                                        </Badge>
+                                                    </td>
+                                                    <td className="p-3 text-slate-600">{item.manufacturer}</td>
+                                                    <td className="p-3 font-semibold text-slate-800">{item.buyer_name || 'N/A'}</td>
+                                                    <td className="p-3 text-slate-600">{item.phone || '-'}</td>
+                                                    <td className="p-3 text-slate-600">{item.executive_name || '-'}</td>
+                                                    <td className="p-3 text-slate-600">{item.insurance_expiry || 'N/A'}</td>
+                                                    <td className="p-3 font-mono text-slate-600">{item.registration_number || '-'}</td>
+                                                    <td className="p-3 text-slate-600">{item.model}</td>
+                                                    <td className="p-3 text-right font-mono font-bold bg-green-50 text-green-700">{(item.customer_remaining_amount || 0).toFixed(2)}</td>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <td className="p-3 font-semibold text-slate-800">{item.buyer_name || 'N/A'}</td>
+                                                    <td className="p-3 text-slate-600 font-medium">{item.customer_phone || item.phone || '-'}</td>
+                                                    <td className="p-3 text-center">
+                                                        <Badge variant="outline" className={cn(
+                                                            "font-bold px-3 py-1",
+                                                            item.status === 'Sold' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                                item.delivery_status === 'Delivered' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                                                    'bg-slate-100/50 text-slate-600 border-slate-200'
+                                                        )}>
+                                                            {item.delivery_status || item.status || 'Available'}
+                                                        </Badge>
+                                                    </td>
+                                                    <td className="p-3 text-slate-600">{item.city || '-'}</td>
+                                                    <td className="p-3 text-slate-800 font-bold">{item.manufacturer} {item.model}</td>
+                                                    <td className="p-3 text-slate-600">{item.color || '-'}</td>
+                                                    <td className="p-3 text-slate-600">{item.fuel_type || '-'}</td>
+                                                    <td className="p-3 text-slate-600">{item.nominee_name || '-'}</td>
+                                                    <td className="p-3 text-right font-mono font-bold text-green-600 bg-[#f8fff9]">
+                                                        {item.customer_remaining_amount ? item.customer_remaining_amount.toFixed(2) : '0.00'}
+                                                    </td>
+                                                    <td className="p-3 text-right font-mono font-bold text-red-600 bg-[#fff8f8]">
+                                                        {item.net_short_amount ? item.net_short_amount.toFixed(2) : '0.00'}
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    ))}
                                 {filteredItems.length === 0 && (
                                     <tr>
                                         <td colSpan={13} className="p-8 text-center text-muted-foreground">No records found.</td>
@@ -381,12 +389,25 @@ export default function Inventory() {
                         </table>
                     </div>
                     <div className="mt-4 flex justify-between items-center text-xs text-slate-500">
-                        <span>Showing {Math.min(filters.entries, filteredItems.length)} of {inventory.length} entries</span>
+                        <span>Showing {Math.min(currentPage * filters.entries, filteredItems.length)} of {filteredItems.length} entries</span>
                         <div className="flex gap-1">
-                            {/* Pagination Mock */}
-                            <Button variant="outline" size="sm" disabled>Previous</Button>
-                            <Button variant="outline" size="sm" className="bg-slate-100">1</Button>
-                            <Button variant="outline" size="sm">Next</Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            >
+                                Previous
+                            </Button>
+                            <Button variant="outline" size="sm" className="bg-slate-100">{currentPage}</Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage * filters.entries >= filteredItems.length}
+                                onClick={() => setCurrentPage(prev => prev + 1)}
+                            >
+                                Next
+                            </Button>
                         </div>
                     </div>
                 </div>

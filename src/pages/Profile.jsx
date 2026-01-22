@@ -28,30 +28,19 @@ export default function Profile() {
 
     // Fetch profile on mount
     React.useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                // Pass email as query param for simplicity (in real app, use token)
-                const email = user?.email || "admin@lyrcon.com";
-                console.log("Fetching profile for:", email);
-                const res = await fetch(`/api/profile?email=${email}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    console.log("Profile data received:", data);
-                    setFormData(data);
-                } else {
-                    const errorText = await res.text();
-                    console.error("Profile fetch failed:", res.status, errorText);
-                    setError(`Failed to load profile: ${res.statusText}`);
-                }
-            } catch (err) {
-                console.error("Failed to fetch profile", err);
-                setError(`Network error: ${err.message}. Is backend running?`);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProfile();
-
+        // Use the user data from Redux state (which comes from localStorage)
+        if (user) {
+            setFormData({
+                name: user.name || "",
+                email: user.email || "",
+                phone: user.phone || "",
+                location: user.location || ""
+            });
+            setLoading(false);
+        } else {
+            setError("No user logged in");
+            setLoading(false);
+        }
 
         // Load profile pic
         const storedPic = localStorage.getItem(`profilePic_${user?.email}`);
@@ -88,7 +77,7 @@ export default function Profile() {
         }
 
         try {
-            const res = await fetch('/api/profile', {
+            const res = await fetch('http://127.0.0.1:5000/api/profile', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -111,7 +100,7 @@ export default function Profile() {
     const confirmDelete = async () => {
         try {
             const email = user?.email || "admin@lyrcon.com";
-            const res = await fetch(`/api/profile?email=${email}`, {
+            const res = await fetch(`http://127.0.0.1:5000/api/profile?email=${email}`, {
                 method: 'DELETE'
             });
 
@@ -145,7 +134,7 @@ export default function Profile() {
 
         try {
             const email = user?.email || "admin@lyrcon.com";
-            const res = await fetch('/api/change-password', {
+            const res = await fetch('http://127.0.0.1:5000/api/change-password', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, ...passwordData })

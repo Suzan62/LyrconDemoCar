@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Eye, Edit, Trash, PlusCircle } from 'lucide-react';
+import { Search, Filter, Eye, Edit, Trash, PlusCircle, Check, X } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/Table';
@@ -28,6 +28,12 @@ export default function InquiriesList() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [inquiryToDelete, setInquiryToDelete] = useState(null);
 
+    const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+    const [inquiryToToggle, setInquiryToToggle] = useState(null);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [entriesPerPage, setEntriesPerPage] = useState(10);
+
     const filteredInquiries = inquiries.filter(item => {
         const matchesSearch =
             item.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -37,6 +43,11 @@ export default function InquiriesList() {
         const matchesType = filterCarType === 'All' || item.carType === filterCarType;
         return matchesSearch && matchesStatus && matchesType;
     });
+
+    // Pagination
+    const indexOfLastEntry = currentPage * entriesPerPage;
+    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+    const currentEntries = filteredInquiries.slice(indexOfFirstEntry, indexOfLastEntry);
 
     const triggerDelete = (id) => {
         setInquiryToDelete(id);
@@ -48,6 +59,31 @@ export default function InquiriesList() {
             dispatch(deleteInquiry(inquiryToDelete));
             setIsDeleteModalOpen(false);
             setInquiryToDelete(null);
+        }
+    };
+
+    const triggerStatusToggle = (inquiry) => {
+        setInquiryToToggle(inquiry);
+        setIsStatusModalOpen(true);
+    };
+
+    const confirmStatusToggle = async () => {
+        if (inquiryToToggle) {
+            const newStatus = inquiryToToggle.status === 'pending' ? 'completed' : 'pending';
+            try {
+                const res = await fetch(`/api/inquiries/${inquiryToToggle.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (res.ok) {
+                    dispatch(fetchInquiries()); // Refresh the list
+                    setIsStatusModalOpen(false);
+                    setInquiryToToggle(null);
+                }
+            } catch (error) {
+                console.error('Error updating inquiry status:', error);
+            }
         }
     };
 
@@ -156,28 +192,45 @@ export default function InquiriesList() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredInquiries.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={9} className="text-center h-24 text-muted-foreground">
-                                            No inquiries found.
-                                        </TableCell>
-                                    </TableRow>
-                                ) : (
-                                    filteredInquiries.map((item) => (
+                                {currentEntries.length > 0 ? (
+                                    currentEntries.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell>
                                                 <div className="flex gap-1">
-                                                    {/* Placeholder check action */}
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-green-600">
-                                                        <span className="text-xs">✓</span>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className={item.status === 'completed' ? "h-8 w-8 text-red-600" : "h-8 w-8 text-orange-600"}
+                                                        title={item.status === 'pending' ? "Complete Inquiry" : "Change to Pending"}
+                                                        onClick={() => triggerStatusToggle(item)}
+                                                    >
+                                                        {item.status === 'pending' ? <Check size={14} /> : <X size={14} />}
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { }}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-blue-600"
+                                                        title="View Details"
+                                                        onClick={() => navigate(`/inquiries/${item.id}`)}
+                                                    >
                                                         <Eye size={14} />
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate('/inquiries/create', { state: { inquiry: item } })}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-green-600"
+                                                        title="Edit"
+                                                        onClick={() => navigate('/inquiries/create', { state: { inquiry: item } })}
+                                                    >
                                                         <Edit size={14} />
                                                     </Button>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => triggerDelete(item.id)}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-red-500"
+                                                        title="Delete"
+                                                        onClick={() => triggerDelete(item.id)}
+                                                    >
                                                         <Trash size={14} />
                                                     </Button>
                                                 </div>
@@ -190,37 +243,109 @@ export default function InquiriesList() {
                                             <TableCell>{item.carType}</TableCell>
                                             <TableCell>{item.date}</TableCell>
                                             <TableCell>
-                                                <Badge variant={item.status === 'Completed' ? 'default' : 'secondary'} className={item.status === 'Pending' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : 'bg-green-100 text-green-700 hover:bg-green-200'}>
+                                                <Badge variant={item.status === 'completed' || item.status === 'Completed' ? 'default' : 'secondary'} className={item.status === 'pending' || item.status === 'Pending' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : 'bg-green-100 text-green-700 hover:bg-green-200'}>
                                                     {item.status}
                                                 </Badge>
                                             </TableCell>
                                         </TableRow>
                                     ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={9} className="text-center h-24 text-muted-foreground">
+                                            No inquiries found.
+                                        </TableCell>
+                                    </TableRow>
                                 )}
                             </TableBody>
                         </Table>
+
+                        {/* Pagination Controls */}
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t">
+                            <div className="flex items-center gap-2 text-sm">
+                                <span className="text-slate-600">Show</span>
+                                <select
+                                    value={entriesPerPage}
+                                    onChange={(e) => {
+                                        setEntriesPerPage(Number(e.target.value));
+                                        setCurrentPage(1);
+                                    }}
+                                    className="border rounded px-2 py-1 text-sm"
+                                >
+                                    <option value={10}>10</option>
+                                    <option value={25}>25</option>
+                                    <option value={50}>50</option>
+                                    <option value={100}>100</option>
+                                </select>
+                                <span className="text-slate-600">entries</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={currentPage === 1}
+                                    onClick={() => setCurrentPage(prev => prev - 1)}
+                                >
+                                    Previous
+                                </Button>
+                                <Button variant="outline" size="sm" className="bg-slate-100">{currentPage}</Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={currentPage * entriesPerPage >= filteredInquiries.length}
+                                    onClick={() => setCurrentPage(prev => prev + 1)}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
 
+            {/* Delete Confirmation Modal */}
+            <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title="Confirm Delete">
+                <div className="p-4">
+                    <p className="text-center mb-4">Are you sure you want to delete this inquiry?</p>
+                    <ModalFooter>
+                        <Button variant="outline" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
+                        <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
+                    </ModalFooter>
+                </div>
+            </Modal>
+
+            {/* Status Toggle Confirmation Modal */}
             <Modal
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                title="Delete Inquiry"
+                isOpen={isStatusModalOpen}
+                onClose={() => setIsStatusModalOpen(false)}
+                title={inquiryToToggle?.status === 'pending' ? "COMPLETE THIS INQUIRY?" : "CHANGE TO PENDING?"}
             >
-                <div className="flex flex-col items-center justify-center p-4 text-center space-y-4">
-                    <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
-                        <Trash className="h-6 w-6 text-red-600" />
+                <div className="p-6">
+                    <div className="flex justify-center mb-6">
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center ${inquiryToToggle?.status === 'pending' ? 'bg-green-100' : 'bg-yellow-100'
+                            }`}>
+                            <Check className={`w-8 h-8 ${inquiryToToggle?.status === 'pending' ? 'text-green-600' : 'text-yellow-600'
+                                }`} />
+                        </div>
                     </div>
-                    <div>
-                        <h4 className="text-lg font-semibold text-gray-900">Delete this inquiry?</h4>
-                        <p className="text-sm text-gray-500 mt-1">This action cannot be undone.</p>
+                    <div className="flex justify-center gap-3">
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsStatusModalOpen(false)}
+                            className="px-6"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={confirmStatusToggle}
+                            className={`px-6 ${inquiryToToggle?.status === 'pending'
+                                ? 'bg-green-600 hover:bg-green-700'
+                                : 'bg-yellow-600 hover:bg-yellow-700'
+                                }`}
+                        >
+                            Proceed
+                        </Button>
                     </div>
                 </div>
-                <ModalFooter>
-                    <Button variant="outline" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-                    <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
-                </ModalFooter>
             </Modal>
 
             {/* Mobile Floating Action Button */}

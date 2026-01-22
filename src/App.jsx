@@ -59,9 +59,11 @@ function App() {
 
               <Route path="finance" element={IS_DEMO_RESTRICTED ? <></> : <FinanceList />} />
               <Route path="finance/create" element={IS_DEMO_RESTRICTED ? <></> : <AddFinance />} />
+              <Route path="finance/edit/:id" element={IS_DEMO_RESTRICTED ? <></> : <AddFinance />} />
 
               <Route path="insurances" element={IS_DEMO_RESTRICTED ? <></> : <InsuranceList />} />
               <Route path="insurances/add" element={IS_DEMO_RESTRICTED ? <></> : <AddInsurance />} />
+              <Route path="insurances/edit/:id" element={IS_DEMO_RESTRICTED ? <></> : <AddInsurance />} />
 
               <Route path="users" element={IS_DEMO_RESTRICTED ? <></> : <UserList />} />
               <Route path="users/create" element={IS_DEMO_RESTRICTED ? <></> : <AddUser />} />

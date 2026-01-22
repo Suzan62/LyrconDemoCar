@@ -3,40 +3,26 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 15, 2026 at 09:20 AM
--- Server version: 11.8.3-MariaDB-log
--- PHP Version: 7.2.34
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `u134626675_parivar_motors`
+-- Database: "u134626675_parivar_motors"
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `car_dealers`
+-- Table structure for table "car_dealers"
 --
 
-CREATE TABLE `car_dealers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "car_dealers" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `car_dealers`
+-- Dumping data for table "car_dealers"
 --
 
-INSERT INTO `car_dealers` (`id`, `name`) VALUES
+INSERT INTO "car_dealers" ("id", "name") VALUES
 (7, 'asda'),
 (8, '12'),
 (9, 'asddfasdf'),
@@ -92,24 +78,23 @@ INSERT INTO `car_dealers` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `car_documents`
+-- Table structure for table "car_documents"
 --
 
-CREATE TABLE `car_documents` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `car_id` int(11) UNSIGNED NOT NULL,
-  `document_name` varchar(255) NOT NULL,
-  `document_path` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `document_type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "car_documents" (
+  "id" SERIAL PRIMARY KEY,
+  "car_id" INTEGER  NOT NULL,
+  "document_name" VARCHAR(255) NOT NULL,
+  "document_path" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  "document_type" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `car_documents`
+-- Dumping data for table "car_documents"
 --
 
-INSERT INTO `car_documents` (`id`, `car_id`, `document_name`, `document_path`, `created_at`, `updated_at`, `document_type`) VALUES
+INSERT INTO "car_documents" ("id", "car_id", "document_name", "document_path", "created_at", "updated_at", "document_type") VALUES
 (6, 18, 'test1', 'uploads/documents/67b1e9ca6cee3_1739712970.png', '2025-02-16 09:06:10', '2025-02-25 12:08:21', 'customer'),
 (8, 21, 'kyc', 'uploads/documents/67b1ebf6ab56b_1739713526.png', '2025-02-16 09:15:26', '2025-02-25 12:08:28', 'customer'),
 (9, 27, 'INSURENCE', 'uploads/documents/67b86267f30b8_1740137063.pdf', '2025-02-21 11:24:23', '2025-02-25 12:08:29', 'customer'),
@@ -326,19 +311,18 @@ INSERT INTO `car_documents` (`id`, `car_id`, `document_name`, `document_path`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cities`
+-- Table structure for table "cities"
 --
 
-CREATE TABLE `cities` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "cities" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `cities`
+-- Dumping data for table "cities"
 --
 
-INSERT INTO `cities` (`id`, `name`) VALUES
+INSERT INTO "cities" ("id", "name") VALUES
 (1, 'Porbandar'),
 (46, 'Rajkot'),
 (50, 'Ahemdabad'),
@@ -433,26 +417,25 @@ INSERT INTO `cities` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dealer_full_payment_details`
+-- Table structure for table "dealer_full_payment_details"
 --
 
-CREATE TABLE `dealer_full_payment_details` (
-  `id` int(11) NOT NULL,
-  `sale_id` int(11) DEFAULT NULL,
-  `total_amount` decimal(10,2) NOT NULL,
-  `amount_paid` decimal(10,2) DEFAULT 0.00,
-  `remaining_amount` decimal(10,2) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `car_id` int(11) DEFAULT NULL,
-  `old_car_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "dealer_full_payment_details" (
+  "id" SERIAL PRIMARY KEY,
+  "sale_id" INTEGER DEFAULT NULL,
+  "total_amount" DECIMAL(10,2) NULL,
+  "amount_paid" DECIMAL(10,2) DEFAULT 0.00,
+  "remaining_amount" DECIMAL(10,2) NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  "car_id" INTEGER DEFAULT NULL,
+  "old_car_id" INTEGER DEFAULT NULL
+);
 --
--- Dumping data for table `dealer_full_payment_details`
+-- Dumping data for table "dealer_full_payment_details"
 --
 
-INSERT INTO `dealer_full_payment_details` (`id`, `sale_id`, `total_amount`, `amount_paid`, `remaining_amount`, `created_at`, `updated_at`, `car_id`, `old_car_id`) VALUES
+INSERT INTO "dealer_full_payment_details" ("id", "sale_id", "total_amount", "amount_paid", "remaining_amount", "created_at", "updated_at", "car_id", "old_car_id") VALUES
 (11, 32, 1022437.00, 140800.00, 881637.00, '2025-02-07 09:46:46', '2025-02-21 10:57:01', 18, NULL),
 (12, NULL, 231492.00, 1231.00, 230261.00, '2025-02-11 15:56:39', '2025-02-11 16:57:17', 23, NULL),
 (13, NULL, 0.00, 0.00, 0.00, '2025-02-13 08:54:35', '2025-02-13 08:54:35', 24, NULL),
@@ -1013,7 +996,7 @@ INSERT INTO `dealer_full_payment_details` (`id`, `sale_id`, `total_amount`, `amo
 (568, NULL, 0.00, 0.00, 0.00, '2025-11-03 10:46:47', '2025-11-03 10:46:47', 364, NULL),
 (569, NULL, 0.00, 0.00, 0.00, '2025-11-03 12:47:08', '2025-11-03 12:47:08', 365, NULL),
 (570, NULL, 0.00, 0.00, 0.00, '2025-11-03 12:47:08', '2025-11-03 12:47:08', 366, NULL);
-INSERT INTO `dealer_full_payment_details` (`id`, `sale_id`, `total_amount`, `amount_paid`, `remaining_amount`, `created_at`, `updated_at`, `car_id`, `old_car_id`) VALUES
+INSERT INTO "dealer_full_payment_details" ("id", "sale_id", "total_amount", "amount_paid", "remaining_amount", "created_at", "updated_at", "car_id", "old_car_id") VALUES
 (571, NULL, 0.00, 0.00, 0.00, '2025-11-04 08:27:37', '2025-11-04 08:27:37', 367, NULL),
 (572, NULL, 0.00, 0.00, 0.00, '2025-11-04 10:50:50', '2025-11-04 10:50:50', 368, NULL),
 (573, NULL, 0.00, 0.00, 0.00, '2025-11-04 11:03:52', '2025-11-04 11:03:52', 369, NULL),
@@ -1167,26 +1150,25 @@ INSERT INTO `dealer_full_payment_details` (`id`, `sale_id`, `total_amount`, `amo
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dealer_payment_installments`
+-- Table structure for table "dealer_payment_installments"
 --
 
-CREATE TABLE `dealer_payment_installments` (
-  `id` int(11) NOT NULL,
-  `dealer_full_payment_id` int(11) NOT NULL,
-  `note` varchar(255) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `payment_date` datetime DEFAULT NULL,
-  `payment_method` enum('check','cash','online','bank') NOT NULL,
-  `payment_status` varchar(50) NOT NULL DEFAULT 'completed',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "dealer_payment_installments" (
+  "id" SERIAL PRIMARY KEY,
+  "dealer_full_payment_id" INTEGER NULL,
+  "note" VARCHAR(255) DEFAULT NULL,
+  "amount" DECIMAL(10,2) NULL,
+  "payment_date" TIMESTAMP DEFAULT NULL,
+  "payment_method" VARCHAR(50) NULL,
+  "payment_status" VARCHAR(50) NULL DEFAULT 'completed',
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `dealer_payment_installments`
+-- Dumping data for table "dealer_payment_installments"
 --
 
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (5, 11, 'asdsadf', 2000.00, '2025-02-11 00:00:00', 'cash', 'completed', '2025-02-11 10:21:47', '2025-02-11 10:21:47'),
 (6, 11, 'asdas', 12323.00, '2025-02-11 00:00:00', 'online', 'completed', '2025-02-11 13:52:35', '2025-02-11 13:52:35'),
 (7, 11, 'asd', 1231.00, '2025-02-11 00:00:00', 'cash', 'completed', '2025-02-11 15:12:29', '2025-02-11 15:12:29'),
@@ -1650,7 +1632,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (473, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50'),
 (474, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50'),
 (475, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (476, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50'),
 (477, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50'),
 (478, 78, NULL, 0.00, NULL, 'cash', 'completed', '2025-03-14 05:20:50', '2025-03-14 05:20:50'),
@@ -2126,7 +2108,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (948, 124, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-03 06:31:24', '2025-04-03 06:31:24'),
 (949, 124, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-03 06:31:24', '2025-04-03 06:31:24'),
 (950, 125, 'KATHLAL ROJMED', 115100.00, '2025-04-03 00:00:00', 'cash', 'completed', '2025-04-03 06:31:28', '2025-04-03 08:25:44');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (951, 125, 'INSURENCE PARIVAR PAYMENT DONE BY PARIVAR', 20400.00, '2025-04-03 00:00:00', 'online', 'completed', '2025-04-03 06:31:28', '2025-04-03 08:27:30'),
 (952, 125, 'AMIR ICICI ', 614131.00, '2025-04-05 00:00:00', 'bank', 'completed', '2025-04-03 06:31:28', '2025-04-05 06:14:27'),
 (953, 125, 'KASAR', 869.00, '2025-04-03 00:00:00', 'cash', 'completed', '2025-04-03 06:31:28', '2025-04-05 06:15:41'),
@@ -2603,7 +2585,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (1424, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15'),
 (1425, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15'),
 (1426, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (1427, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15'),
 (1428, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15'),
 (1429, 171, NULL, 0.00, NULL, 'cash', 'completed', '2025-04-30 10:38:15', '2025-04-30 10:38:15'),
@@ -3106,7 +3088,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (1926, 219, NULL, 0.00, NULL, 'cash', 'completed', '2025-05-30 07:06:36', '2025-05-30 07:06:36'),
 (1927, 219, NULL, 0.00, NULL, 'cash', 'completed', '2025-05-30 07:06:36', '2025-05-30 07:06:36'),
 (1928, 219, NULL, 0.00, NULL, 'cash', 'completed', '2025-05-30 07:06:36', '2025-05-30 07:06:36');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (1929, 219, NULL, 0.00, NULL, 'cash', 'completed', '2025-05-30 07:06:36', '2025-05-30 07:06:36'),
 (1930, 138, 'CASH ', 55300.00, '2025-05-30 00:00:00', 'cash', 'completed', '2025-05-30 07:07:57', '2025-06-02 12:11:36'),
 (1931, 220, NULL, 0.00, NULL, 'cash', 'completed', '2025-05-30 10:23:01', '2025-05-30 10:23:01'),
@@ -3593,7 +3575,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (2412, 267, '', 0.00, '2025-07-12 00:00:00', 'cash', 'completed', '2025-06-13 08:07:43', '2025-07-12 09:01:01'),
 (2413, 267, '', 0.00, '2025-07-12 00:00:00', 'cash', 'completed', '2025-06-13 08:07:43', '2025-07-12 09:01:01'),
 (2414, 267, '', 0.00, '2025-07-12 00:00:00', 'cash', 'completed', '2025-06-13 08:07:43', '2025-07-12 09:01:01');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (2415, 267, '', 0.00, '2025-07-12 00:00:00', 'cash', 'completed', '2025-06-13 08:07:43', '2025-07-12 09:01:01'),
 (2416, 267, '', 0.00, '2025-07-12 00:00:00', 'cash', 'completed', '2025-06-13 08:07:43', '2025-07-12 09:01:01'),
 (2417, 268, NULL, 0.00, NULL, 'cash', 'completed', '2025-06-13 09:35:41', '2025-06-13 09:35:41'),
@@ -4087,7 +4069,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (2905, 316, 'kataria online ', 30000.00, '2025-07-06 00:00:00', 'online', 'completed', '2025-07-02 10:36:16', '2025-08-08 06:14:54'),
 (2906, 316, 'au bank do', 966921.00, '2025-08-08 00:00:00', 'bank', 'completed', '2025-07-02 10:36:16', '2025-08-08 06:14:54'),
 (2907, 316, 'KATARIA ONLINE', 40000.00, '2025-08-08 00:00:00', 'online', 'completed', '2025-07-02 10:36:16', '2025-08-17 08:35:46');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (2908, 316, 'KATARIA ONLINE', 38000.00, '2025-08-08 00:00:00', 'online', 'completed', '2025-07-02 10:36:16', '2025-08-17 08:35:46'),
 (2909, 316, 'KATARIA CASH', 83200.00, '2025-08-08 00:00:00', 'cash', 'completed', '2025-07-02 10:36:16', '2025-08-17 08:37:22'),
 (2910, 316, '', 0.00, '2025-08-08 00:00:00', 'cash', 'completed', '2025-07-02 10:36:16', '2025-08-08 06:14:54'),
@@ -4591,7 +4573,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (3408, 365, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 09:48:33', '2025-07-30 09:48:33'),
 (3409, 365, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 09:48:33', '2025-07-30 09:48:33'),
 (3410, 365, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 09:48:33', '2025-07-30 09:48:33');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (3411, 365, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 09:48:33', '2025-07-30 09:48:33'),
 (3412, 366, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 10:13:16', '2025-07-30 10:13:16'),
 (3413, 366, NULL, 0.00, NULL, 'cash', 'completed', '2025-07-30 10:13:16', '2025-07-30 10:13:16'),
@@ -5090,7 +5072,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (3906, 414, 'CASH ', 50000.00, '2025-08-21 00:00:00', 'cash', 'completed', '2025-08-21 12:12:20', '2025-08-21 12:12:20'),
 (3907, 415, NULL, 0.00, NULL, 'cash', 'completed', '2025-08-22 10:33:41', '2025-08-22 10:33:41'),
 (3908, 415, NULL, 0.00, NULL, 'cash', 'completed', '2025-08-22 10:33:41', '2025-08-22 10:33:41');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (3909, 415, NULL, 0.00, NULL, 'cash', 'completed', '2025-08-22 10:33:41', '2025-08-22 10:33:41'),
 (3910, 415, NULL, 0.00, NULL, 'cash', 'completed', '2025-08-22 10:33:41', '2025-08-22 10:33:41'),
 (3911, 415, NULL, 0.00, NULL, 'cash', 'completed', '2025-08-22 10:33:41', '2025-08-22 10:33:41'),
@@ -5596,7 +5578,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (4411, 464, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:26:49', '2025-09-23 13:26:49'),
 (4412, 464, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:26:49', '2025-09-23 13:26:49'),
 (4413, 464, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:26:49', '2025-09-23 13:26:49');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (4414, 465, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:40:13', '2025-09-23 13:40:13'),
 (4415, 465, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:40:13', '2025-09-23 13:40:13'),
 (4416, 465, NULL, 0.00, NULL, 'cash', 'completed', '2025-09-23 13:40:13', '2025-09-23 13:40:13'),
@@ -6111,7 +6093,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (4925, 515, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:49:35', '2025-10-07 06:49:35'),
 (4926, 516, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:50:39', '2025-10-07 06:50:39'),
 (4927, 516, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:50:39', '2025-10-07 06:50:39');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (4928, 516, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:50:39', '2025-10-07 06:50:39'),
 (4929, 516, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:50:39', '2025-10-07 06:50:39'),
 (4930, 516, NULL, 0.00, NULL, 'cash', 'completed', '2025-10-07 06:50:39', '2025-10-07 06:50:39'),
@@ -6613,7 +6595,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (5426, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07'),
 (5427, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07'),
 (5428, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (5429, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07'),
 (5430, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07'),
 (5431, 565, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-03 06:57:07', '2025-11-03 06:57:07'),
@@ -7107,7 +7089,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (5919, 612, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-22 11:52:25', '2025-11-22 11:52:25'),
 (5920, 612, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-22 11:52:25', '2025-11-22 11:52:25'),
 (5921, 612, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-22 11:52:25', '2025-11-22 11:52:25');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (5922, 612, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-22 11:52:25', '2025-11-22 11:52:25'),
 (5923, 613, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-24 12:08:11', '2025-11-24 12:08:11'),
 (5924, 613, NULL, 0.00, NULL, 'cash', 'completed', '2025-11-24 12:08:11', '2025-11-24 12:08:11'),
@@ -7595,7 +7577,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (6406, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20'),
 (6407, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20'),
 (6408, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (6409, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20'),
 (6410, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20'),
 (6411, 660, NULL, 0.00, NULL, 'cash', 'completed', '2025-12-13 13:27:20', '2025-12-13 13:27:20'),
@@ -8088,7 +8070,7 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 (6898, 708, NULL, 0.00, NULL, 'cash', 'completed', '2026-01-05 11:11:55', '2026-01-05 11:11:55'),
 (6899, 709, '', 0.00, '2026-01-07 00:00:00', 'cash', 'completed', '2026-01-06 12:02:31', '2026-01-07 07:18:07'),
 (6900, 709, '', 0.00, '2026-01-07 00:00:00', 'cash', 'completed', '2026-01-06 12:02:31', '2026-01-07 07:18:07');
-INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "dealer_payment_installments" ("id", "dealer_full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (6901, 709, '', 0.00, '2026-01-07 00:00:00', 'cash', 'completed', '2026-01-06 12:02:31', '2026-01-07 07:18:07'),
 (6902, 709, '', 0.00, '2026-01-07 00:00:00', 'cash', 'completed', '2026-01-06 12:02:31', '2026-01-07 07:18:07'),
 (6903, 709, '', 0.00, '2026-01-07 00:00:00', 'cash', 'completed', '2026-01-06 12:02:31', '2026-01-07 07:18:07'),
@@ -8202,19 +8184,18 @@ INSERT INTO `dealer_payment_installments` (`id`, `dealer_full_payment_id`, `note
 -- --------------------------------------------------------
 
 --
--- Table structure for table `executives`
+-- Table structure for table "executives"
 --
 
-CREATE TABLE `executives` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "executives" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `executives`
+-- Dumping data for table "executives"
 --
 
-INSERT INTO `executives` (`id`, `name`) VALUES
+INSERT INTO "executives" ("id", "name") VALUES
 (22, 'asd'),
 (23, 'andnd'),
 (24, 'adsfasdfs'),
@@ -8233,19 +8214,18 @@ INSERT INTO `executives` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `executive_branches`
+-- Table structure for table "executive_branches"
 --
 
-CREATE TABLE `executive_branches` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "executive_branches" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `executive_branches`
+-- Dumping data for table "executive_branches"
 --
 
-INSERT INTO `executive_branches` (`id`, `name`) VALUES
+INSERT INTO "executive_branches" ("id", "name") VALUES
 (12, 'Ganesh Innova Rajkot'),
 (13, 'Aan Honda'),
 (14, 'Ganesh Tata'),
@@ -8269,23 +8249,22 @@ INSERT INTO `executive_branches` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `extra_charges`
+-- Table structure for table "extra_charges"
 --
 
-CREATE TABLE `extra_charges` (
-  `id` int(11) NOT NULL,
-  `old_car_id` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "extra_charges" (
+  "id" SERIAL PRIMARY KEY,
+  "old_car_id" INTEGER NOT NULL,
+  "description" VARCHAR(255) NOT NULL,
+  "amount" INTEGER NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `extra_charges`
+-- Dumping data for table "extra_charges"
 --
 
-INSERT INTO `extra_charges` (`id`, `old_car_id`, `description`, `amount`, `created_at`, `updated_at`) VALUES
+INSERT INTO "extra_charges" ("id", "old_car_id", "description", "amount", "created_at", "updated_at") VALUES
 (224, 104, 'gadi lavano kharcho', 1000, '2025-06-17 13:55:56', '2025-06-17 13:55:56'),
 (225, 104, 'Touching ', 6500, '2025-06-17 13:55:56', '2025-06-17 13:55:56'),
 (226, 104, 'Amry', 2000, '2025-06-17 13:55:56', '2025-06-17 13:55:56'),
@@ -8297,281 +8276,278 @@ INSERT INTO `extra_charges` (`id`, `old_car_id`, `description`, `amount`, `creat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `extra_charges_Sell`
+-- Table structure for table "extra_charges_Sell"
 --
 
-CREATE TABLE `extra_charges_Sell` (
-  `id` int(11) NOT NULL,
-  `old_car_id` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "extra_charges_Sell" (
+  "id" SERIAL PRIMARY KEY,
+  "old_car_id" INTEGER NOT NULL,
+  "description" VARCHAR(255) NOT NULL,
+  "amount" INTEGER NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `extra_charges_Sell`
+-- Dumping data for table "extra_charges_Sell"
 --
 
-INSERT INTO `extra_charges_Sell` (`id`, `old_car_id`, `description`, `amount`, `created_at`, `updated_at`) VALUES
-(0, 15, 'RTO EXPENSE', 7000, '2025-03-17 05:54:28', '2025-03-17 05:54:28'),
-(0, 21, 'RTO EXPENSE', 8400, '2025-03-19 06:46:09', '2025-03-19 06:46:09'),
-(0, 21, 'INSURENCE', 15300, '2025-03-19 06:46:09', '2025-03-19 06:46:09'),
-(0, 28, 'RTO EXPENSE', 8200, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
-(0, 28, 'INSURENCE', 14500, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
-(0, 28, 'VALUATION', 800, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
-(0, 13, 'RTO EXPENSE', 12200, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
-(0, 13, 'VALUATION', 0, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
-(0, 13, 'INSURENCE', 0, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
-(0, 32, 'INSURANCE', 16878, '2025-03-29 06:04:41', '2025-03-29 06:04:41'),
-(0, 32, 'RTO EXPENSE', 8500, '2025-03-29 06:04:41', '2025-03-29 06:04:41'),
-(0, 33, 'RTO EXPENSE', 3000, '2025-04-01 07:23:24', '2025-04-01 07:23:24'),
-(0, 33, 'insurence', 13300, '2025-04-01 07:23:24', '2025-04-01 07:23:24'),
-(0, 31, 'RTO EXPENSE', 12000, '2025-04-01 07:28:11', '2025-04-01 07:28:11'),
-(0, 31, 'INSURANCE', 20967, '2025-04-01 07:28:11', '2025-04-01 07:28:11'),
-(0, 24, 'RTO EXPENSE', 8200, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
-(0, 24, 'INSURENCE', 20000, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
-(0, 24, 'fuel charge', 800, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
-(0, 27, 'RTO EXPENSE', 7500, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
-(0, 27, 'INSURANCE', 0, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
-(0, 27, 'comission', 5000, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
-(0, 30, 'RTO EXPENSE', 7500, '2025-04-01 08:41:43', '2025-04-01 08:41:43'),
-(0, 30, 'INSURENCE', 10494, '2025-04-01 08:41:43', '2025-04-01 08:41:43'),
-(0, 17, 'RTO EXPENSE', 10500, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
-(0, 17, 'VALUATION', 900, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
-(0, 17, 'KASAR', 190, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
-(0, 34, 'INSURANCE', 20830, '2025-04-02 08:31:35', '2025-04-02 08:31:35'),
-(0, 34, 'RTO EXPENSE', 12000, '2025-04-02 08:31:35', '2025-04-02 08:31:35'),
-(0, 35, 'RTO EXPENSE', 5000, '2025-04-03 05:06:46', '2025-04-03 05:06:46'),
-(0, 35, 'INSURENCE', 0, '2025-04-03 05:06:46', '2025-04-03 05:06:46'),
-(0, 36, 'INSURENCE', 10094, '2025-04-03 05:59:56', '2025-04-03 05:59:56'),
-(0, 36, 'RTO', 8000, '2025-04-03 05:59:56', '2025-04-03 05:59:56'),
-(0, 40, 'demo', 2500, '2025-04-03 06:51:19', '2025-04-03 06:51:19'),
-(0, 42, 'demo', 3200, '2025-04-03 06:53:59', '2025-04-03 06:53:59'),
-(0, 37, 'RTO EXPENSE', 8000, '2025-04-03 06:55:32', '2025-04-03 06:55:32'),
-(0, 37, 'INSURENCE', 10094, '2025-04-03 06:55:32', '2025-04-03 06:55:32'),
-(0, 39, 'COMISSION', 5000, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
-(0, 39, 'RTO ', 10500, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
-(0, 39, 'INSURENCE', 20000, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
-(0, 8, 'KASAR', 733, '2025-04-05 05:04:37', '2025-04-05 05:04:37'),
-(0, 46, 'RTO EXPENSE', 2500, '2025-04-07 05:54:12', '2025-04-07 05:54:12'),
-(0, 46, 'INSURANCE', 4000, '2025-04-07 05:54:12', '2025-04-07 05:54:12'),
-(0, 43, 'RTO EXPENSE', 9000, '2025-04-09 07:14:49', '2025-04-09 07:14:49'),
-(0, 49, 'RTO', 4500, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
-(0, 49, 'valuation', 750, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
-(0, 49, 'INSURENCE', 13755, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
-(0, 50, 'RTO EXPENSE', 7000, '2025-04-23 06:15:00', '2025-04-23 06:15:00'),
-(0, 50, 'valuation', 800, '2025-04-23 06:15:00', '2025-04-23 06:15:00'),
-(0, 47, 'COMISSION', 15000, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
-(0, 47, 'INSURENCE', 16351, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
-(0, 47, 'rto', 8800, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
-(0, 47, 'kasar', 124, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
-(0, 53, 'RTO', 4500, '2025-04-24 08:39:25', '2025-04-24 08:39:25'),
-(0, 53, 'valuation', 900, '2025-04-24 08:39:25', '2025-04-24 08:39:25'),
-(0, 57, 'RTO', 8000, '2025-04-30 10:41:55', '2025-04-30 10:41:55'),
-(0, 48, 'rto expenses', 5500, '2025-05-01 06:24:03', '2025-05-01 06:24:03'),
-(0, 48, 'INSURENCE', 9965, '2025-05-01 06:24:03', '2025-05-01 06:24:03'),
-(0, 56, 'RTO', 9000, '2025-05-09 06:09:27', '2025-05-09 06:09:27'),
-(0, 56, 'INSURANCE', 10727, '2025-05-09 06:09:27', '2025-05-09 06:09:27'),
-(0, 59, 'rto', 4500, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
-(0, 59, 'insurence', 8000, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
-(0, 59, 'valuation', 800, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
-(0, 66, 'RTO EXPENSE', 8000, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
-(0, 66, 'valuation', 800, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
-(0, 66, 'INSURENCE', 11250, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
-(0, 68, 'valuation', 800, '2025-05-26 05:42:46', '2025-05-26 05:42:46'),
-(0, 68, 'name transfer', 4500, '2025-05-26 05:42:46', '2025-05-26 05:42:46'),
-(0, 69, 'rto', 7000, '2025-05-26 05:59:05', '2025-05-26 05:59:05'),
-(0, 74, 'RTO', 4300, '2025-05-30 07:08:36', '2025-05-30 07:08:36'),
-(0, 60, 'rto', 10100, '2025-06-02 12:07:55', '2025-06-02 12:07:55'),
-(0, 73, 'RTO EXPENSE', 7500, '2025-06-04 05:36:33', '2025-06-04 05:36:33'),
-(0, 72, 'RTO EXPENSE', 13500, '2025-06-04 05:41:51', '2025-06-04 05:41:51'),
-(0, 65, 'RTO EXPENSE', 9100, '2025-06-10 12:09:42', '2025-06-10 12:09:42'),
-(0, 84, 'RTO EXPENSE', 6300, '2025-06-12 04:41:52', '2025-06-12 04:41:52'),
-(0, 83, 'valuation', 700, '2025-06-12 04:44:39', '2025-06-12 04:44:39'),
-(0, 87, 'RTO', 5000, '2025-06-13 05:38:01', '2025-06-13 05:38:01'),
-(0, 85, 'RTO EXPENSE', 5500, '2025-06-15 09:27:07', '2025-06-15 09:27:07'),
-(0, 91, 'RTO', 10000, '2025-06-19 06:56:13', '2025-06-19 06:56:13'),
-(0, 94, 'INSURANCE', 12000, '2025-06-24 05:01:14', '2025-06-24 05:01:14'),
-(0, 94, 'RTO', 8000, '2025-06-24 05:01:14', '2025-06-24 05:01:14'),
-(0, 90, 'INSURENCE', 15000, '2025-06-28 10:48:06', '2025-06-28 10:48:06'),
-(0, 90, 'RTO ', 8800, '2025-06-28 10:48:06', '2025-06-28 10:48:06'),
-(0, 95, 'INSURANCE', 0, '2025-06-29 06:55:46', '2025-06-29 06:55:46'),
-(0, 95, 'RTO', 12005, '2025-06-29 06:55:46', '2025-06-29 06:55:46'),
-(0, 93, 'RTO', 5500, '2025-06-29 06:59:34', '2025-06-29 06:59:34'),
-(0, 88, 'RTO EXPENSE', 4500, '2025-06-30 06:50:04', '2025-06-30 06:50:04'),
-(0, 97, 'RTO EXPENSE', 6500, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
-(0, 97, 'VIMO', 11000, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
-(0, 97, 'VALUATION', 800, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
-(0, 98, 'RTO', 6500, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
-(0, 98, 'INSURENCE', 10840, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
-(0, 98, 'valuation', 800, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
-(0, 104, 'RTO ', 4000, '2025-07-13 06:05:19', '2025-07-13 06:05:19'),
-(0, 100, 'INSURENCE', 12000, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
-(0, 100, 'RTO', 6500, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
-(0, 100, 'VALUATION', 800, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
-(0, 102, 'INSURENCE', 11377, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
-(0, 102, 'VALUATION', 800, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
-(0, 102, 'RTO', 7500, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
-(0, 108, 'RTO', 6500, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
-(0, 108, 'INSURANCE', 11792, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
-(0, 108, 'VALUATION', 1049, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
-(0, 109, 'INSURENCE', 11580, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
-(0, 109, 'RTO', 6500, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
-(0, 109, 'VALUATION', 800, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
-(0, 115, 'rto', 4500, '2025-07-26 13:25:51', '2025-07-26 13:25:51'),
-(0, 115, 'INSURENCE', 10700, '2025-07-26 13:25:51', '2025-07-26 13:25:51'),
-(0, 124, 'valuation', 800, '2025-08-17 08:58:00', '2025-08-17 08:58:00'),
-(0, 124, 'RTO PASSING', 13500, '2025-08-17 08:58:00', '2025-08-17 08:58:00'),
-(0, 110, 'RTO', 4500, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
-(0, 110, 'INSURANCE', 11000, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
-(0, 110, 'valuation', 800, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
-(0, 111, 'RTO EXPENSE', 8200, '2025-08-20 05:35:22', '2025-08-20 05:35:22'),
-(0, 111, 'vakuation', 800, '2025-08-20 05:35:22', '2025-08-20 05:35:22'),
-(0, 114, 'valuation', 1600, '2025-08-20 05:37:44', '2025-08-20 05:37:44'),
-(0, 114, 'rto', 10000, '2025-08-20 05:37:44', '2025-08-20 05:37:44'),
-(0, 118, 'rto ', 5500, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
-(0, 118, 'INSURENCE', 9000, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
-(0, 118, 'valuation ', 800, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
-(0, 116, 'rto', 6000, '2025-08-20 05:55:25', '2025-08-20 05:55:25'),
-(0, 116, 'valuation ', 800, '2025-08-20 05:55:25', '2025-08-20 05:55:25'),
-(0, 121, 'INSURENCE', 11726, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
-(0, 121, 'RTO EXPENSE', 7000, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
-(0, 121, 'valuation', 889, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
-(0, 129, 'RTO', 6700, '2025-08-23 04:56:01', '2025-08-23 04:56:01'),
-(0, 129, 'INSURANCE', 15325, '2025-08-23 04:56:01', '2025-08-23 04:56:01'),
-(0, 119, 'INSURENCE', 11580, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
-(0, 119, 'RTO', 4500, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
-(0, 119, 'valuation', 800, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
-(0, 131, 'RTO', 7500, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
-(0, 131, 'INSURENCE', 11770, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
-(0, 131, 'valuation', 800, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
-(0, 135, 'RTO EXPENSE', 6200, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
-(0, 135, 'INSURENCE', 0, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
-(0, 135, 'valuation', 750, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
-(0, 134, 'RTO EXPENSE', 8200, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
-(0, 134, 'INSURENCE', 0, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
-(0, 134, 'VALIATION', 750, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
-(0, 143, 'RTO', 7500, '2025-10-14 12:32:17', '2025-10-14 12:32:17'),
-(0, 143, 'INSURANCE', 11337, '2025-10-14 12:32:17', '2025-10-14 12:32:17'),
-(0, 137, 'VALUATION', 800, '2025-10-23 05:52:18', '2025-10-23 05:52:18'),
-(0, 137, 'RTO EXPENSE', 13000, '2025-10-23 05:52:18', '2025-10-23 05:52:18'),
-(0, 146, 'VALUATION', 750, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
-(0, 146, 'vimo', 9880, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
-(0, 146, 'RTO', 6000, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
-(0, 145, 'RTO EXPENSE', 8500, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
-(0, 145, 'INSURENCE', 14800, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
-(0, 145, 'VALUATION', 750, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
-(0, 151, 'RTO', 0, '2025-11-08 05:26:53', '2025-11-08 05:26:53'),
-(0, 149, 'INSURENCE', 15000, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
-(0, 149, 'RTO EXPENSE', 9200, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
-(0, 149, 'VALUATION', 850, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
-(0, 144, 'INSURENCE', 9800, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
-(0, 144, 'RTO EXPENSE', 4500, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
-(0, 144, 'VALUATION', 850, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
-(0, 154, 'RTO EXPENSE', 5000, '2025-11-10 05:03:04', '2025-11-10 05:03:04'),
-(0, 150, 'RTO', 4200, '2025-11-12 09:07:50', '2025-11-12 09:07:50'),
-(0, 150, 'INSURANC', 7076, '2025-11-12 09:07:50', '2025-11-12 09:07:50'),
-(0, 156, 'rto', 11000, '2025-11-13 06:01:58', '2025-11-13 06:01:58'),
-(0, 156, 'VALUATION', 850, '2025-11-13 06:01:58', '2025-11-13 06:01:58'),
-(0, 155, 'RTO EXPENSE', 9000, '2025-11-17 12:25:55', '2025-11-17 12:25:55'),
-(0, 155, 'VALUATION', 850, '2025-11-17 12:25:55', '2025-11-17 12:25:55'),
-(0, 132, 'INSURENCE', 13700, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
-(0, 132, 'RTO EXPENSE', 9500, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
-(0, 132, 'valuation', 750, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
-(0, 141, 'INSURENCE', 11300, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
-(0, 141, 'VALUATION', 850, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
-(0, 141, 'RTO EXPENSE', 8300, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
-(0, 153, 'RTO', 4500, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
-(0, 153, 'INSURANCE', 14400, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
-(0, 153, 'VALUATION', 850, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
-(0, 140, 'INSURENCE', 23067, '2025-12-12 04:00:15', '2025-12-12 04:00:15'),
-(0, 170, 'INSURENCE', 20853, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
-(0, 170, 'rto', 10500, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
-(0, 170, 'valuation', 850, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
-(0, 172, 'INSURENCE', 24982, '2025-12-18 12:56:14', '2025-12-18 12:56:14'),
-(0, 172, 'RTO', 10000, '2025-12-18 12:56:14', '2025-12-18 12:56:14'),
-(0, 175, 'INSURENCE', 13780, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
-(0, 175, 'rto', 9600, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
-(0, 175, 'VALUATION', 850, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
-(0, 168, 'RTO', 12500, '2025-12-25 12:27:13', '2025-12-25 12:27:13'),
-(0, 168, 'VALUATION', 1750, '2025-12-25 12:27:13', '2025-12-25 12:27:13'),
-(0, 162, 'RTO EXPENSE', 6900, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
-(0, 162, 'VALUATION', 1500, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
-(0, 162, 'INSURANCE', 9281, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
-(0, 182, 'VALUATION', 850, '2026-01-07 06:18:43', '2026-01-07 06:18:43'),
-(0, 182, 'RTO EXPENSE', 9000, '2026-01-07 06:18:43', '2026-01-07 06:18:43');
+INSERT INTO "extra_charges_Sell" ("old_car_id", "description", "amount", "created_at", "updated_at") VALUES
+( 15, 'RTO EXPENSE', 7000, '2025-03-17 05:54:28', '2025-03-17 05:54:28'),
+( 21, 'RTO EXPENSE', 8400, '2025-03-19 06:46:09', '2025-03-19 06:46:09'),
+( 21, 'INSURENCE', 15300, '2025-03-19 06:46:09', '2025-03-19 06:46:09'),
+( 28, 'RTO EXPENSE', 8200, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
+( 28, 'INSURENCE', 14500, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
+( 28, 'VALUATION', 800, '2025-03-26 12:47:55', '2025-03-26 12:47:55'),
+( 13, 'RTO EXPENSE', 12200, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
+( 13, 'VALUATION', 0, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
+( 13, 'INSURENCE', 0, '2025-03-26 12:51:19', '2025-03-26 12:51:19'),
+( 32, 'INSURANCE', 16878, '2025-03-29 06:04:41', '2025-03-29 06:04:41'),
+( 32, 'RTO EXPENSE', 8500, '2025-03-29 06:04:41', '2025-03-29 06:04:41'),
+( 33, 'RTO EXPENSE', 3000, '2025-04-01 07:23:24', '2025-04-01 07:23:24'),
+( 33, 'insurence', 13300, '2025-04-01 07:23:24', '2025-04-01 07:23:24'),
+( 31, 'RTO EXPENSE', 12000, '2025-04-01 07:28:11', '2025-04-01 07:28:11'),
+( 31, 'INSURANCE', 20967, '2025-04-01 07:28:11', '2025-04-01 07:28:11'),
+( 24, 'RTO EXPENSE', 8200, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
+( 24, 'INSURENCE', 20000, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
+( 24, 'fuel charge', 800, '2025-04-01 07:31:29', '2025-04-01 07:31:29'),
+( 27, 'RTO EXPENSE', 7500, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
+( 27, 'INSURANCE', 0, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
+( 27, 'comission', 5000, '2025-04-01 07:32:40', '2025-04-01 07:32:40'),
+( 30, 'RTO EXPENSE', 7500, '2025-04-01 08:41:43', '2025-04-01 08:41:43'),
+( 30, 'INSURENCE', 10494, '2025-04-01 08:41:43', '2025-04-01 08:41:43'),
+( 17, 'RTO EXPENSE', 10500, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
+( 17, 'VALUATION', 900, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
+( 17, 'KASAR', 190, '2025-04-01 08:46:01', '2025-04-01 08:46:01'),
+( 34, 'INSURANCE', 20830, '2025-04-02 08:31:35', '2025-04-02 08:31:35'),
+( 34, 'RTO EXPENSE', 12000, '2025-04-02 08:31:35', '2025-04-02 08:31:35'),
+( 35, 'RTO EXPENSE', 5000, '2025-04-03 05:06:46', '2025-04-03 05:06:46'),
+( 35, 'INSURENCE', 0, '2025-04-03 05:06:46', '2025-04-03 05:06:46'),
+( 36, 'INSURENCE', 10094, '2025-04-03 05:59:56', '2025-04-03 05:59:56'),
+( 36, 'RTO', 8000, '2025-04-03 05:59:56', '2025-04-03 05:59:56'),
+( 40, 'demo', 2500, '2025-04-03 06:51:19', '2025-04-03 06:51:19'),
+( 42, 'demo', 3200, '2025-04-03 06:53:59', '2025-04-03 06:53:59'),
+( 37, 'RTO EXPENSE', 8000, '2025-04-03 06:55:32', '2025-04-03 06:55:32'),
+( 37, 'INSURENCE', 10094, '2025-04-03 06:55:32', '2025-04-03 06:55:32'),
+( 39, 'COMISSION', 5000, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
+( 39, 'RTO ', 10500, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
+( 39, 'INSURENCE', 20000, '2025-04-03 08:25:11', '2025-04-03 08:25:11'),
+( 8, 'KASAR', 733, '2025-04-05 05:04:37', '2025-04-05 05:04:37'),
+( 46, 'RTO EXPENSE', 2500, '2025-04-07 05:54:12', '2025-04-07 05:54:12'),
+( 46, 'INSURANCE', 4000, '2025-04-07 05:54:12', '2025-04-07 05:54:12'),
+( 43, 'RTO EXPENSE', 9000, '2025-04-09 07:14:49', '2025-04-09 07:14:49'),
+( 49, 'RTO', 4500, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
+( 49, 'valuation', 750, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
+( 49, 'INSURENCE', 13755, '2025-04-18 09:07:22', '2025-04-18 09:07:22'),
+( 50, 'RTO EXPENSE', 7000, '2025-04-23 06:15:00', '2025-04-23 06:15:00'),
+( 50, 'valuation', 800, '2025-04-23 06:15:00', '2025-04-23 06:15:00'),
+( 47, 'COMISSION', 15000, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
+( 47, 'INSURENCE', 16351, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
+( 47, 'rto', 8800, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
+( 47, 'kasar', 124, '2025-04-23 06:23:49', '2025-04-23 06:23:49'),
+( 53, 'RTO', 4500, '2025-04-24 08:39:25', '2025-04-24 08:39:25'),
+( 53, 'valuation', 900, '2025-04-24 08:39:25', '2025-04-24 08:39:25'),
+( 57, 'RTO', 8000, '2025-04-30 10:41:55', '2025-04-30 10:41:55'),
+( 48, 'rto expenses', 5500, '2025-05-01 06:24:03', '2025-05-01 06:24:03'),
+( 48, 'INSURENCE', 9965, '2025-05-01 06:24:03', '2025-05-01 06:24:03'),
+( 56, 'RTO', 9000, '2025-05-09 06:09:27', '2025-05-09 06:09:27'),
+( 56, 'INSURANCE', 10727, '2025-05-09 06:09:27', '2025-05-09 06:09:27'),
+( 59, 'rto', 4500, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
+( 59, 'insurence', 8000, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
+( 59, 'valuation', 800, '2025-05-18 05:40:28', '2025-05-18 05:40:28'),
+( 66, 'RTO EXPENSE', 8000, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
+( 66, 'valuation', 800, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
+( 66, 'INSURENCE', 11250, '2025-05-19 12:59:30', '2025-05-19 12:59:30'),
+( 68, 'valuation', 800, '2025-05-26 05:42:46', '2025-05-26 05:42:46'),
+( 68, 'name transfer', 4500, '2025-05-26 05:42:46', '2025-05-26 05:42:46'),
+( 69, 'rto', 7000, '2025-05-26 05:59:05', '2025-05-26 05:59:05'),
+( 74, 'RTO', 4300, '2025-05-30 07:08:36', '2025-05-30 07:08:36'),
+( 60, 'rto', 10100, '2025-06-02 12:07:55', '2025-06-02 12:07:55'),
+( 73, 'RTO EXPENSE', 7500, '2025-06-04 05:36:33', '2025-06-04 05:36:33'),
+( 72, 'RTO EXPENSE', 13500, '2025-06-04 05:41:51', '2025-06-04 05:41:51'),
+( 65, 'RTO EXPENSE', 9100, '2025-06-10 12:09:42', '2025-06-10 12:09:42'),
+( 84, 'RTO EXPENSE', 6300, '2025-06-12 04:41:52', '2025-06-12 04:41:52'),
+( 83, 'valuation', 700, '2025-06-12 04:44:39', '2025-06-12 04:44:39'),
+( 87, 'RTO', 5000, '2025-06-13 05:38:01', '2025-06-13 05:38:01'),
+( 85, 'RTO EXPENSE', 5500, '2025-06-15 09:27:07', '2025-06-15 09:27:07'),
+( 91, 'RTO', 10000, '2025-06-19 06:56:13', '2025-06-19 06:56:13'),
+( 94, 'INSURANCE', 12000, '2025-06-24 05:01:14', '2025-06-24 05:01:14'),
+( 94, 'RTO', 8000, '2025-06-24 05:01:14', '2025-06-24 05:01:14'),
+( 90, 'INSURENCE', 15000, '2025-06-28 10:48:06', '2025-06-28 10:48:06'),
+( 90, 'RTO ', 8800, '2025-06-28 10:48:06', '2025-06-28 10:48:06'),
+( 95, 'INSURANCE', 0, '2025-06-29 06:55:46', '2025-06-29 06:55:46'),
+( 95, 'RTO', 12005, '2025-06-29 06:55:46', '2025-06-29 06:55:46'),
+( 93, 'RTO', 5500, '2025-06-29 06:59:34', '2025-06-29 06:59:34'),
+( 88, 'RTO EXPENSE', 4500, '2025-06-30 06:50:04', '2025-06-30 06:50:04'),
+( 97, 'RTO EXPENSE', 6500, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
+( 97, 'VIMO', 11000, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
+( 97, 'VALUATION', 800, '2025-07-12 08:55:41', '2025-07-12 08:55:41'),
+( 98, 'RTO', 6500, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
+( 98, 'INSURENCE', 10840, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
+( 98, 'valuation', 800, '2025-07-12 08:58:25', '2025-07-12 08:58:25'),
+( 104, 'RTO ', 4000, '2025-07-13 06:05:19', '2025-07-13 06:05:19'),
+( 100, 'INSURENCE', 12000, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
+( 100, 'RTO', 6500, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
+( 100, 'VALUATION', 800, '2025-07-13 06:11:09', '2025-07-13 06:11:09'),
+( 102, 'INSURENCE', 11377, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
+( 102, 'VALUATION', 800, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
+( 102, 'RTO', 7500, '2025-07-17 11:48:26', '2025-07-17 11:48:26'),
+( 108, 'RTO', 6500, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
+( 108, 'INSURANCE', 11792, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
+( 108, 'VALUATION', 1049, '2025-07-24 05:53:45', '2025-07-24 05:53:45'),
+( 109, 'INSURENCE', 11580, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
+( 109, 'RTO', 6500, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
+( 109, 'VALUATION', 800, '2025-07-24 06:42:56', '2025-07-24 06:42:56'),
+( 115, 'rto', 4500, '2025-07-26 13:25:51', '2025-07-26 13:25:51'),
+( 115, 'INSURENCE', 10700, '2025-07-26 13:25:51', '2025-07-26 13:25:51'),
+( 124, 'valuation', 800, '2025-08-17 08:58:00', '2025-08-17 08:58:00'),
+( 124, 'RTO PASSING', 13500, '2025-08-17 08:58:00', '2025-08-17 08:58:00'),
+( 110, 'RTO', 4500, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
+( 110, 'INSURANCE', 11000, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
+( 110, 'valuation', 800, '2025-08-20 05:33:00', '2025-08-20 05:33:00'),
+( 111, 'RTO EXPENSE', 8200, '2025-08-20 05:35:22', '2025-08-20 05:35:22'),
+( 111, 'vakuation', 800, '2025-08-20 05:35:22', '2025-08-20 05:35:22'),
+( 114, 'valuation', 1600, '2025-08-20 05:37:44', '2025-08-20 05:37:44'),
+( 114, 'rto', 10000, '2025-08-20 05:37:44', '2025-08-20 05:37:44'),
+( 118, 'rto ', 5500, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
+( 118, 'INSURENCE', 9000, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
+( 118, 'valuation ', 800, '2025-08-20 05:45:02', '2025-08-20 05:45:02'),
+( 116, 'rto', 6000, '2025-08-20 05:55:25', '2025-08-20 05:55:25'),
+( 116, 'valuation ', 800, '2025-08-20 05:55:25', '2025-08-20 05:55:25'),
+( 121, 'INSURENCE', 11726, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
+( 121, 'RTO EXPENSE', 7000, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
+( 121, 'valuation', 889, '2025-08-20 05:57:48', '2025-08-20 05:57:48'),
+( 129, 'RTO', 6700, '2025-08-23 04:56:01', '2025-08-23 04:56:01'),
+( 129, 'INSURANCE', 15325, '2025-08-23 04:56:01', '2025-08-23 04:56:01'),
+( 119, 'INSURENCE', 11580, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
+( 119, 'RTO', 4500, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
+( 119, 'valuation', 800, '2025-09-11 06:41:21', '2025-09-11 06:41:21'),
+( 131, 'RTO', 7500, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
+( 131, 'INSURENCE', 11770, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
+( 131, 'valuation', 800, '2025-09-11 06:43:44', '2025-09-11 06:43:44'),
+( 135, 'RTO EXPENSE', 6200, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
+( 135, 'INSURENCE', 0, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
+( 135, 'valuation', 750, '2025-09-11 06:52:34', '2025-09-11 06:52:34'),
+( 134, 'RTO EXPENSE', 8200, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
+( 134, 'INSURENCE', 0, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
+( 134, 'VALIATION', 750, '2025-09-11 06:55:58', '2025-09-11 06:55:58'),
+( 143, 'RTO', 7500, '2025-10-14 12:32:17', '2025-10-14 12:32:17'),
+( 143, 'INSURANCE', 11337, '2025-10-14 12:32:17', '2025-10-14 12:32:17'),
+( 137, 'VALUATION', 800, '2025-10-23 05:52:18', '2025-10-23 05:52:18'),
+( 137, 'RTO EXPENSE', 13000, '2025-10-23 05:52:18', '2025-10-23 05:52:18'),
+( 146, 'VALUATION', 750, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
+( 146, 'vimo', 9880, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
+( 146, 'RTO', 6000, '2025-10-27 08:59:17', '2025-10-27 08:59:17'),
+( 145, 'RTO EXPENSE', 8500, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
+( 145, 'INSURENCE', 14800, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
+( 145, 'VALUATION', 750, '2025-10-29 11:50:53', '2025-10-29 11:50:53'),
+( 151, 'RTO', 0, '2025-11-08 05:26:53', '2025-11-08 05:26:53'),
+( 149, 'INSURENCE', 15000, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
+( 149, 'RTO EXPENSE', 9200, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
+( 149, 'VALUATION', 850, '2025-11-08 05:28:28', '2025-11-08 05:28:28'),
+( 144, 'INSURENCE', 9800, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
+( 144, 'RTO EXPENSE', 4500, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
+( 144, 'VALUATION', 850, '2025-11-08 05:31:22', '2025-11-08 05:31:22'),
+( 154, 'RTO EXPENSE', 5000, '2025-11-10 05:03:04', '2025-11-10 05:03:04'),
+( 150, 'RTO', 4200, '2025-11-12 09:07:50', '2025-11-12 09:07:50'),
+( 150, 'INSURANC', 7076, '2025-11-12 09:07:50', '2025-11-12 09:07:50'),
+( 156, 'rto', 11000, '2025-11-13 06:01:58', '2025-11-13 06:01:58'),
+( 156, 'VALUATION', 850, '2025-11-13 06:01:58', '2025-11-13 06:01:58'),
+( 155, 'RTO EXPENSE', 9000, '2025-11-17 12:25:55', '2025-11-17 12:25:55'),
+( 155, 'VALUATION', 850, '2025-11-17 12:25:55', '2025-11-17 12:25:55'),
+( 132, 'INSURENCE', 13700, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
+( 132, 'RTO EXPENSE', 9500, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
+( 132, 'valuation', 750, '2025-11-25 05:37:48', '2025-11-25 05:37:48'),
+( 141, 'INSURENCE', 11300, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
+( 141, 'VALUATION', 850, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
+( 141, 'RTO EXPENSE', 8300, '2025-12-03 12:21:37', '2025-12-03 12:21:37'),
+( 153, 'RTO', 4500, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
+( 153, 'INSURANCE', 14400, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
+( 153, 'VALUATION', 850, '2025-12-05 04:51:05', '2025-12-05 04:51:05'),
+( 140, 'INSURENCE', 23067, '2025-12-12 04:00:15', '2025-12-12 04:00:15'),
+( 170, 'INSURENCE', 20853, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
+( 170, 'rto', 10500, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
+( 170, 'valuation', 850, '2025-12-18 12:53:54', '2025-12-18 12:53:54'),
+( 172, 'INSURENCE', 24982, '2025-12-18 12:56:14', '2025-12-18 12:56:14'),
+( 172, 'RTO', 10000, '2025-12-18 12:56:14', '2025-12-18 12:56:14'),
+( 175, 'INSURENCE', 13780, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
+( 175, 'rto', 9600, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
+( 175, 'VALUATION', 850, '2025-12-22 07:00:07', '2025-12-22 07:00:07'),
+( 168, 'RTO', 12500, '2025-12-25 12:27:13', '2025-12-25 12:27:13'),
+( 168, 'VALUATION', 1750, '2025-12-25 12:27:13', '2025-12-25 12:27:13'),
+( 162, 'RTO EXPENSE', 6900, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
+( 162, 'VALUATION', 1500, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
+( 162, 'INSURANCE', 9281, '2026-01-03 05:40:30', '2026-01-03 05:40:30'),
+( 182, 'VALUATION', 850, '2026-01-07 06:18:43', '2026-01-07 06:18:43'),
+( 182, 'RTO EXPENSE', 9000, '2026-01-07 06:18:43', '2026-01-07 06:18:43');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `finances`
+-- Table structure for table "finances"
 --
 
-CREATE TABLE `finances` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `bank_name` varchar(255) NOT NULL,
-  `bank_branch` varchar(255) NOT NULL,
-  `customer_name` varchar(255) NOT NULL,
-  `account_number` varchar(255) NOT NULL,
-  `address` text NOT NULL,
-  `contact_number` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `starting_date` date NOT NULL,
-  `ending_date` date NOT NULL,
-  `amount` decimal(15,2) NOT NULL,
-  `loan_protection` varchar(255) NOT NULL,
-  `disbursement_amount` decimal(15,2) NOT NULL,
-  `date` date NOT NULL,
-  `payment_out` decimal(5,2) NOT NULL,
-  `status` enum('Received','Not Received') NOT NULL,
-  `emi_amount` decimal(15,2) NOT NULL,
-  `car_id` bigint(20) UNSIGNED NOT NULL,
-  `executive` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `manufacturer_name` varchar(255) DEFAULT NULL,
-  `model_name` varchar(255) DEFAULT NULL,
-  `color` varchar(255) DEFAULT NULL,
-  `manufacture_year` varchar(255) DEFAULT NULL,
-  `fuel_type` varchar(255) DEFAULT NULL,
-  `registration_no` varchar(255) DEFAULT NULL,
-  `chassis_no` varchar(255) DEFAULT NULL,
-  `engine_no` varchar(255) DEFAULT NULL,
-  `hp` varchar(255) DEFAULT NULL,
-  `old_car_id` int(255) DEFAULT NULL,
-  `new_car_id` int(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "finances" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "bank_name" VARCHAR(255) NOT NULL,
+  "bank_branch" VARCHAR(255) NOT NULL,
+  "customer_name" VARCHAR(255) NOT NULL,
+  "account_number" VARCHAR(255) NOT NULL,
+  "address" TEXT NOT NULL,
+  "contact_number" VARCHAR(255) NOT NULL,
+  "email" VARCHAR(255) NOT NULL,
+  "starting_date" DATE NULL,
+  "ending_date" DATE NULL,
+  "amount" DECIMAL(15,2) NOT NULL,
+  "loan_protection" VARCHAR(255) NOT NULL,
+  "disbursement_amount" DECIMAL(15,2) NOT NULL,
+  "DATE" DATE NOT NULL,
+  "payment_out" DECIMAL(5,2) NOT NULL,
+  "status" VARCHAR(50) CHECK (status IN ('Received','Not Received')) NOT NULL,
+  "emi_amount" DECIMAL(15,2) NOT NULL,
+  "car_id" BIGINT  NOT NULL,
+  "executive" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT NULL,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL,
+  "manufacturer_name" VARCHAR(255) DEFAULT NULL,
+  "model_name" VARCHAR(255) DEFAULT NULL,
+  "color" VARCHAR(255) DEFAULT NULL,
+  "manufacture_year" VARCHAR(255) DEFAULT NULL,
+  "fuel_type" VARCHAR(255) DEFAULT NULL,
+  "registration_no" VARCHAR(255) DEFAULT NULL,
+  "chassis_no" VARCHAR(255) DEFAULT NULL,
+  "engine_no" VARCHAR(255) DEFAULT NULL,
+  "hp" VARCHAR(255) DEFAULT NULL,
+  "old_car_id" INTEGER DEFAULT NULL,
+  "new_car_id" INTEGER DEFAULT NULL
+);
 --
--- Dumping data for table `finances`
+-- Dumping data for table "finances"
 --
 
-INSERT INTO `finances` (`id`, `bank_name`, `bank_branch`, `customer_name`, `account_number`, `address`, `contact_number`, `email`, `starting_date`, `ending_date`, `amount`, `loan_protection`, `disbursement_amount`, `date`, `payment_out`, `status`, `emi_amount`, `car_id`, `executive`, `created_at`, `updated_at`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `registration_no`, `chassis_no`, `engine_no`, `hp`, `old_car_id`, `new_car_id`) VALUES
-(12, '23123123', '1231', '1231', '23123', '1231', '231', '32@gmail.com', '0000-00-00', '0000-00-00', 123.00, '1', 123.00, '1231-12-31', 0.00, 'Received', 13123.00, 23, 'asd', '2025-02-16 07:36:09', '2025-02-16 17:06:56', 'sdf', 'df', 'sdf', '123', '', 'sdf', 'sdf', 'dfsdfs', 'fds', 0, 0),
+INSERT INTO "finances" ("id", "bank_name", "bank_branch", "customer_name", "account_number", "address", "contact_number", "email", "starting_date", "ending_date", "amount", "loan_protection", "disbursement_amount", "DATE", "payment_out", "status", "emi_amount", "car_id", "executive", "created_at", "updated_at", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "registration_no", "chassis_no", "engine_no", "hp", "old_car_id", "new_car_id") VALUES
+(12, '23123123', '1231', '1231', '23123', '1231', '231', '32@gmail.com', NULL, NULL, 123.00, '1', 123.00, '1231-12-31', 0.00, 'Received', 13123.00, 23, 'asd', '2025-02-16 07:36:09', '2025-02-16 17:06:56', 'sdf', 'df', 'sdf', '123', '', 'sdf', 'sdf', 'dfsdfs', 'fds', 0, 0),
 (16, 'demo bank ', 'demo branch ', 'demo demo demo ', '1234556534', 'demo near demo ', '1231241231', 'demo@parivar.com', '2025-03-12', '2026-03-10', 12000.00, '1', 50000.00, '2023-05-12', 0.00, 'Received', 1200.00, 0, 'demo', '2025-03-12 05:13:12', '2025-03-12 05:13:12', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', 'REGULAR  GJ07', '-', '-', 'CHOLA  MANDALAM ', NULL, 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `full_payment_details`
+-- Table structure for table "full_payment_details"
 --
 
-CREATE TABLE `full_payment_details` (
-  `id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
-  `total_amount` decimal(10,2) NOT NULL,
-  `amount_paid` decimal(10,2) DEFAULT 0.00,
-  `remaining_amount` decimal(10,2) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "full_payment_details" (
+  "id" SERIAL PRIMARY KEY,
+  "sale_id" INTEGER NOT NULL,
+  "total_amount" DECIMAL(10,2) NOT NULL,
+  "amount_paid" DECIMAL(10,2) DEFAULT 0.00,
+  "remaining_amount" DECIMAL(10,2) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `full_payment_details`
+-- Dumping data for table "full_payment_details"
 --
 
-INSERT INTO `full_payment_details` (`id`, `sale_id`, `total_amount`, `amount_paid`, `remaining_amount`, `created_at`, `updated_at`) VALUES
+INSERT INTO "full_payment_details" ("id", "sale_id", "total_amount", "amount_paid", "remaining_amount", "created_at", "updated_at") VALUES
 (17, 29, 200000.00, 2000.00, 198000.00, '2025-02-07 04:45:37', '2025-02-07 04:46:01'),
 (20, 32, 925265.00, 499706.00, 425559.00, '2025-02-07 09:46:46', '2025-03-03 06:15:17'),
 (36, 48, 10004.00, 12.00, 9992.00, '2025-02-13 09:10:11', '2025-02-13 09:30:09'),
@@ -8982,19 +8958,18 @@ INSERT INTO `full_payment_details` (`id`, `sale_id`, `total_amount`, `amount_pai
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hire_purchase`
+-- Table structure for table "hire_purchase"
 --
 
-CREATE TABLE `hire_purchase` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "hire_purchase" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `hire_purchase`
+-- Dumping data for table "hire_purchase"
 --
 
-INSERT INTO `hire_purchase` (`id`, `name`) VALUES
+INSERT INTO "hire_purchase" ("id", "name") VALUES
 (20, 'asd'),
 (21, 'as'),
 (22, 'none'),
@@ -9073,31 +9048,30 @@ INSERT INTO `hire_purchase` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inquiries`
+-- Table structure for table "inquiries"
 --
 
-CREATE TABLE `inquiries` (
-  `id` int(11) NOT NULL,
-  `customer_name` varchar(255) NOT NULL,
-  `customer_email` varchar(255) NOT NULL,
-  `customer_phone` varchar(16) NOT NULL,
-  `vehicle_of_interest` varchar(255) NOT NULL,
-  `preferred_contact_method` enum('email','phone') NOT NULL DEFAULT 'email',
-  `additional_notes` text DEFAULT NULL,
-  `inquiry_source` enum('website','phone','walk-in','referral') NOT NULL DEFAULT 'walk-in',
-  `referral_person` varchar(255) DEFAULT NULL,
-  `car_type` varchar(255) DEFAULT NULL,
-  `followed_up_date` date DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `status` enum('pending','completed') NOT NULL DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "inquiries" (
+  "id" SERIAL PRIMARY KEY,
+  "customer_name" VARCHAR(255) NULL,
+  "customer_email" VARCHAR(255) NULL,
+  "customer_phone" VARCHAR(16) NULL,
+  "vehicle_of_interest" VARCHAR(255) NULL,
+  "preferred_contact_method" VARCHAR(50) CHECK (preferred_contact_method IN ('email','phone')) NOT NULL DEFAULT 'email',
+  "additional_notes" TEXT DEFAULT NULL,
+  "inquiry_source" VARCHAR(50) CHECK (inquiry_source IN ('website','phone','walk-in','referral')) NOT NULL DEFAULT 'walk-in',
+  "referral_person" VARCHAR(255) DEFAULT NULL,
+  "car_type" VARCHAR(255) DEFAULT NULL,
+  "followed_up_date" DATE DEFAULT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL ,
+  "status" VARCHAR(50) CHECK (status IN ('pending','completed')) NOT NULL DEFAULT 'pending'
+);
 --
--- Dumping data for table `inquiries`
+-- Dumping data for table "inquiries"
 --
 
-INSERT INTO `inquiries` (`id`, `customer_name`, `customer_email`, `customer_phone`, `vehicle_of_interest`, `preferred_contact_method`, `additional_notes`, `inquiry_source`, `referral_person`, `car_type`, `followed_up_date`, `created_at`, `updated_at`, `status`) VALUES
+INSERT INTO "inquiries" ("id", "customer_name", "customer_email", "customer_phone", "vehicle_of_interest", "preferred_contact_method", "additional_notes", "inquiry_source", "referral_person", "car_type", "followed_up_date", "created_at", "updated_at", "status") VALUES
 (4, 'GULAM MOMIN ', 'tahir3mansuri@gmail.com', '7623924382', 'KIA SELTOS HTXO DSL MT', 'phone', 'SELTOS', 'phone', '', '', '2025-04-25', '2025-02-25 05:31:38', '2025-04-25 13:58:40', 'completed'),
 (9, 'KEVAL SONI', 'tahir3mansuri@gmail.com', '9016345182', 'KIA STROS HTK PLUS PETROL WHITE', 'phone', 'PRICE GIVEN', 'phone', '', '', '2025-05-20', '2025-02-27 09:27:43', '2025-05-20 16:51:07', 'completed'),
 (10, 'sonu bhai mk ', 'tahir3mansuri@gmail.com', '9898786213', 'bolero n10', 'phone', 'ref by lal bhai forman kapadwanj', 'referral', 'lala bhai forman kapadwanj', '', '2025-04-24', '2025-03-01 07:41:33', '2025-04-24 11:11:21', 'completed'),
@@ -9172,42 +9146,41 @@ INSERT INTO `inquiries` (`id`, `customer_name`, `customer_email`, `customer_phon
 -- --------------------------------------------------------
 
 --
--- Table structure for table `installments`
+-- Table structure for table "installments"
 --
 
-CREATE TABLE `installments` (
-  `id` int(11) NOT NULL,
-  `loan_id` int(11) NOT NULL,
-  `installment_number` int(11) NOT NULL,
-  `due_date` datetime NOT NULL,
-  `amount_due` decimal(10,2) NOT NULL,
-  `amount_paid` decimal(10,2) DEFAULT NULL,
-  `payment_date` datetime DEFAULT NULL,
-  `status` enum('paid','pending') DEFAULT 'pending',
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE "installments" (
+  "id" SERIAL PRIMARY KEY,
+  "loan_id" INTEGER NOT NULL,
+  "installment_number" INTEGER NOT NULL,
+  "due_date" TIMESTAMP NOT NULL,
+  "amount_due" DECIMAL(10,2) NOT NULL,
+  "amount_paid" DECIMAL(10,2) DEFAULT NULL,
+  "payment_date" TIMESTAMP DEFAULT NULL,
+  "status" VARCHAR(50) CHECK (status IN ('paid','pending')) DEFAULT 'pending',
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insurancedocument`
+-- Table structure for table "insurancedocument"
 --
 
-CREATE TABLE `insurancedocument` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `insurance_id` bigint(20) UNSIGNED NOT NULL,
-  `document_name` varchar(255) NOT NULL,
-  `document_path` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "insurancedocument" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "insurance_id" BIGINT  NOT NULL,
+  "document_name" VARCHAR(255) NOT NULL,
+  "document_path" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `insurancedocument`
+-- Dumping data for table "insurancedocument"
 --
 
-INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `document_path`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurancedocument" ("id", "insurance_id", "document_name", "document_path", "created_at", "updated_at") VALUES
 (2, 10, 'NEW POLICY', 'uploads/documents/InsuranceDocument/67ce696775ab1_1741580647.pdf', '2025-03-10 04:24:07', '2025-03-10 04:24:07'),
 (3, 10, 'OLD POLICY', 'uploads/documents/InsuranceDocument/67ce69677aa0c_1741580647.pdf', '2025-03-10 04:24:07', '2025-03-10 04:24:07'),
 (4, 10, 'RC BOOK', 'uploads/documents/InsuranceDocument/67ce69677af9d_1741580647.pdf', '2025-03-10 04:24:07', '2025-03-10 04:24:07'),
@@ -9571,7 +9544,7 @@ INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `documen
 (389, 95, 'ADHAR CARD', 'uploads/documents/InsuranceDocument/683aebeba4b4d_1748691947.pdf', '2025-05-31 11:45:47', '2025-05-31 11:45:47'),
 (390, 95, 'PAN CARD', 'uploads/documents/InsuranceDocument/683aebebb3ce5_1748691947.pdf', '2025-05-31 11:45:47', '2025-05-31 11:45:47'),
 (391, 95, 'RC BOOK', 'uploads/documents/InsuranceDocument/683aebebb40df_1748691947.pdf', '2025-05-31 11:45:47', '2025-05-31 11:45:47');
-INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `document_path`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurancedocument" ("id", "insurance_id", "document_name", "document_path", "created_at", "updated_at") VALUES
 (392, 95, 'OLD POLICY', 'uploads/documents/InsuranceDocument/683aebebb4415_1748691947.pdf', '2025-05-31 11:45:47', '2025-05-31 11:45:47'),
 (393, 95, 'NEW POLICY 25/26', 'uploads/documents/InsuranceDocument/683aebebb472c_1748691947.pdf', '2025-05-31 11:45:47', '2025-05-31 11:45:47'),
 (394, 96, 'ADHAR CARD', 'uploads/documents/InsuranceDocument/683d49cc8f215_1748847052.pdf', '2025-06-02 06:50:52', '2025-06-02 06:50:52'),
@@ -9932,7 +9905,7 @@ INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `documen
 (754, 185, 'NEW POLICY 25/26', 'uploads/documents/InsuranceDocument/68a5a2ae948b2_1755685550.pdf', '2025-08-20 10:25:50', '2025-08-20 10:25:50'),
 (755, 186, 'ADHAR CARD', 'uploads/documents/InsuranceDocument/68a5a56da34d2_1755686253.pdf', '2025-08-20 10:37:33', '2025-08-20 10:37:33'),
 (756, 186, 'PAN CARD', 'uploads/documents/InsuranceDocument/68a5a56da5b29_1755686253.pdf', '2025-08-20 10:37:33', '2025-08-20 10:37:33');
-INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `document_path`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurancedocument" ("id", "insurance_id", "document_name", "document_path", "created_at", "updated_at") VALUES
 (757, 186, 'RC BOOK', 'uploads/documents/InsuranceDocument/68a5a56da5fec_1755686253.pdf', '2025-08-20 10:37:33', '2025-08-20 10:37:33'),
 (758, 186, 'OLD POLICY', 'uploads/documents/InsuranceDocument/68a5a56da6628_1755686253.pdf', '2025-08-20 10:37:33', '2025-08-20 10:37:33'),
 (759, 186, 'NEW POLICY 25/26', 'uploads/documents/InsuranceDocument/68a5a56da6a82_1755686253.pdf', '2025-08-20 10:37:33', '2025-08-20 10:37:33'),
@@ -10292,7 +10265,7 @@ INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `documen
 (1114, 278, 'ADHAR CARD/PAN CARD ', 'uploads/documents/InsuranceDocument/691ac1f64dc3e_1763361270.pdf', '2025-11-17 07:34:30', '2025-11-17 07:34:30'),
 (1115, 278, 'RC BOOK', 'uploads/documents/InsuranceDocument/691ac1f650f5e_1763361270.pdf', '2025-11-17 07:34:30', '2025-11-17 07:34:30'),
 (1116, 278, 'OLD POLICY', 'uploads/documents/InsuranceDocument/691ac1f6513e7_1763361270.pdf', '2025-11-17 07:34:30', '2025-11-17 07:34:30');
-INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `document_path`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurancedocument" ("id", "insurance_id", "document_name", "document_path", "created_at", "updated_at") VALUES
 (1117, 278, 'NEW POLICY ', 'uploads/documents/InsuranceDocument/691ac1f651795_1763361270.pdf', '2025-11-17 07:34:30', '2025-11-17 07:34:30'),
 (1118, 280, 'ADHAR CARD/PAN CARD ', 'uploads/documents/InsuranceDocument/691acf4415dbb_1763364676.pdf', '2025-11-17 08:31:16', '2025-11-17 08:31:16'),
 (1119, 280, 'RC BOOK', 'uploads/documents/InsuranceDocument/691acf4419716_1763364676.pdf', '2025-11-17 08:31:16', '2025-11-17 08:31:16'),
@@ -10568,40 +10541,39 @@ INSERT INTO `insurancedocument` (`id`, `insurance_id`, `document_name`, `documen
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insurances`
+-- Table structure for table "insurances"
 --
 
-CREATE TABLE `insurances` (
-  `id` int(11) NOT NULL,
-  `insurance_bank` varchar(255) NOT NULL,
-  `branch` varchar(255) DEFAULT NULL,
-  `customer_name` varchar(255) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `car_id` int(10) UNSIGNED DEFAULT NULL,
-  `insurance_company_name` varchar(255) NOT NULL,
-  `premium_amount` decimal(10,2) NOT NULL,
-  `remaining_amount` int(255) DEFAULT NULL,
-  `expiry_date` date NOT NULL,
-  `manufacturer_name` varchar(255) DEFAULT NULL,
-  `model_name` varchar(255) DEFAULT NULL,
-  `color` varchar(255) DEFAULT NULL,
-  `manufacture_year` varchar(255) DEFAULT NULL,
-  `fuel_type` varchar(255) DEFAULT NULL,
-  `registration_no` varchar(255) DEFAULT NULL,
-  `chassis_no` varchar(255) DEFAULT NULL,
-  `engine_no` varchar(255) DEFAULT NULL,
-  `hp` varchar(255) DEFAULT NULL,
-  `customer_phone` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "insurances" (
+  "id" SERIAL PRIMARY KEY,
+  "insurance_bank" VARCHAR(255) NOT NULL,
+  "branch" VARCHAR(255) DEFAULT NULL,
+  "customer_name" VARCHAR(255) NOT NULL,
+  "address" VARCHAR(255) DEFAULT NULL,
+  "amount" DECIMAL(10,2) NOT NULL,
+  "car_id" INTEGER  DEFAULT NULL,
+  "insurance_company_name" VARCHAR(255) NOT NULL,
+  "premium_amount" DECIMAL(10,2) NOT NULL,
+  "remaining_amount" INTEGER DEFAULT NULL,
+  "expiry_date" DATE NOT NULL,
+  "manufacturer_name" VARCHAR(255) DEFAULT NULL,
+  "model_name" VARCHAR(255) DEFAULT NULL,
+  "color" VARCHAR(255) DEFAULT NULL,
+  "manufacture_year" VARCHAR(255) DEFAULT NULL,
+  "fuel_type" VARCHAR(255) DEFAULT NULL,
+  "registration_no" VARCHAR(255) DEFAULT NULL,
+  "chassis_no" VARCHAR(255) DEFAULT NULL,
+  "engine_no" VARCHAR(255) DEFAULT NULL,
+  "hp" VARCHAR(255) DEFAULT NULL,
+  "customer_phone" VARCHAR(255) DEFAULT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `insurances`
+-- Dumping data for table "insurances"
 --
 
-INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `address`, `amount`, `car_id`, `insurance_company_name`, `premium_amount`, `remaining_amount`, `expiry_date`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `registration_no`, `chassis_no`, `engine_no`, `hp`, `customer_phone`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurances" ("id", "insurance_bank", "branch", "customer_name", "address", "amount", "car_id", "insurance_company_name", "premium_amount", "remaining_amount", "expiry_date", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "registration_no", "chassis_no", "engine_no", "hp", "customer_phone", "created_at", "updated_at") VALUES
 (4, 'IFFCOTOKIO', 'NADIAD', 'SURESHKUMAR MOHANBHAI DABHI', 'KATHLAL-387630', 10000.00, 0, 'IFFCOTOKIO', 10000.00, 0, '2026-02-25', 'maruti', 'swift', 'WHITE  ', '2024', 'CNG', 'GJO7', 'as', 'asd', '', '9016210654', '2025-02-27 05:42:05', '2025-03-12 09:04:38'),
 (5, 'IFFCOTOKIO', 'KAPADWANJ', 'ZALA MUKESHKUMAR BHUPENDRASINH', 'GOGJIPURA', 7599.00, 41, 'IFCO TOKIO', 7600.00, 0, '2026-03-04', 'MARUTI SUZUKI-2024', 'EECO 5 STR AC CNG', 'WHITE  ', '2024', '', 'GJ07DG1933', 'C96064', '11181', 'AU SMALL FINANCE LTD', '6351982573', '2025-03-01 09:39:36', '2025-03-10 04:37:17'),
 (6, 'IFFCOTOKIO', 'KAPADWANJ', 'SOLANKI PRAVINSINH RAMSINH', 'CHARED', 7700.00, 41, 'IFCO TOKIO', 7700.00, 0, '2026-03-20', 'MARUTI SUZUKI-2024', 'EECO 5 STR AC CNG', 'WHITE  ', '2024', 'CNG', 'GJ07DG2975', 'C98829', '14342', 'CHOLA MANDALAM INVESTMENT &FIN CO LTD', '8150805938', '2025-03-01 09:46:19', '2025-03-12 11:22:42'),
@@ -10747,7 +10719,7 @@ INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `ad
 (162, 'RELIANCE BAJAJ ', 'KAPDWANJ', 'MIRZA IKBALBEG KASAMBEG ', 'RAM DAS FALIYU COUT ROAD KHEDA ', 11296.00, 0, 'RELIANCE BAJAJ ', 11296.00, 0, '2026-07-30', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI', 'WHITE', '2023', 'PETROL/CNG', 'GJ07DF5651', 'G643904', '281858', 'BANK OF INDIA', '', '2025-07-31 09:58:27', '2025-11-15 12:25:37'),
 (163, 'CHOLAMANDALAM ', 'KAPDWANJ', 'SODHA DILIPSINH KALABHAI ', 'BHIMPURA THUNCHAL BETAWADA ', 29584.00, 0, 'CHOLAMANDALAM ', 29584.00, 0, '2026-07-30', 'MARUTI SUZUKI INDIA LTD', 'BOL MAXX PUP CITY ', 'WHITE', '2025', 'DIESEL ', 'REGULAR', 'F56783', 'F44844', 'AU SMALL FINANC BANK LIMITED', '', '2025-07-31 11:15:22', '2025-07-31 11:20:14'),
 (164, 'TATA INSURANCE', 'NADIYAD', 'TARPARA DAKSHA VALLABHBHAI', 'NANA MAVAMAN ROAD', 47880.00, 0, 'TATA INSURANCE', 47880.00, 0, '2026-07-31', 'HYUNDAI MOTOR INDIA LTD', 'CRETA', 'WHITE', '2025', 'DIESEL', 'CHOICE 4109', 'M232940', 'M461532', 'HDFC BANK LTD', '08866312516', '2025-08-02 10:47:13', '2025-08-02 11:12:10');
-INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `address`, `amount`, `car_id`, `insurance_company_name`, `premium_amount`, `remaining_amount`, `expiry_date`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `registration_no`, `chassis_no`, `engine_no`, `hp`, `customer_phone`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurances" ("id", "insurance_bank", "branch", "customer_name", "address", "amount", "car_id", "insurance_company_name", "premium_amount", "remaining_amount", "expiry_date", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "registration_no", "chassis_no", "engine_no", "hp", "customer_phone", "created_at", "updated_at") VALUES
 (165, 'TATA INSURANCE', 'NADIAD', 'IMRAN ISHAKBHAI VHORA', '9099131419', 14400.00, 0, 'TATA INSURANCE', 14400.00, 0, '2026-08-01', 'MARUTI SUZUKI INDIA LTD', 'BREZZA VXI (O) CNG', 'WHITE', '2023', 'PETROL/CNG', 'GJ07DF3133', 'E243208', 'N9248394', 'BANK OF INDIA', '09426551804', '2025-08-02 11:17:26', '2025-08-05 12:08:14'),
 (166, 'CHOLAMANDALAM', 'KAPDWANJ', 'SINDHI FARUKBHAI PIRMAHAMAD ', 'AT AND POST PETHPUR TA AND DIST GANDHINAGAR ', 18737.00, 0, 'CHOLAMANDALAM', 18737.00, 0, '2026-08-31', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO CAMPER ', 'WHITE', '2012', 'DIESEL', 'GJ18AV2185', '1F44254', 'F28320', 'NA', '98987 84150', '2025-08-04 11:57:36', '2025-08-04 12:07:17'),
 (167, 'CHOLAMANDALAM', 'KAPDWANJ', 'MADARI SANJAYNATH JAFARNATH ', 'KHADAL ,KATHLAL ', 9016.00, 0, 'CHOLAMANDALAM', 9016.00, 0, '2026-08-04', 'HONDA CARS INDIA ', 'HONDA CITY 1.5 VX MT ', 'G BROWN', '2016', 'DIESEL', 'GJ01RU8886', 'G4202335', '405409', 'AU SMALL FINANCE BENK LTD', '9773024469', '2025-08-07 11:10:02', '2025-08-07 11:40:56'),
@@ -10889,7 +10861,7 @@ INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `ad
 (309, 'TATA INSURANCE', 'NADIYAD', 'IRFAN MAJIDBHAI GHANCHI ', '125/688 STREET ROAD LANE GUJRATHUSING BORDA AHMEDABAD', 1560.00, 0, 'TATA INSURANCE', 1560.00, 0, '2026-12-04', 'TVS MOTOR COMPANY LTD ', 'TVS JUPITER ', 'WHITE', '2023', 'PETROL', 'GJ27FG3334', 'N12869', '1411880', 'NA', '98989 99613', '2025-12-06 10:38:37', '2025-12-10 11:24:20'),
 (310, 'FUTURE GENERALI TRUTLEMINT ', 'NADIYAD', 'VAHORA ADAMBHAI ISMAILBHAI ', 'ANANDNAGAR SOC CHILING SENTER PACHAL KAPADVANJ ', 25074.00, 0, 'FUTURE GENERALI TRUTLEMINT ', 25074.00, 7074, '2026-12-13', 'MAHINDRA&MAHINDRA LIMITED', 'BOL MAXX PUP HD 2.0L LX', 'WHITE', '2024', 'DIESEL', 'GJ07TU6252', 'L22940', 'K30854', 'HDFC BANK LTD', '99250 92161', '2025-12-08 11:05:18', '2025-12-31 08:37:44'),
 (311, 'ICIC INSURANCE TURTLEMINT ', 'NADIYAD', 'DABHI BADARBHAI BHALAJI ', 'GHODASAR NI MUVADI RANODRA ', 11352.00, 0, 'ICIC INSURANCE TURTLEMINT ', 11352.00, 2, '2026-12-10', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI (0) CNG ', 'WHITE', '2024', 'PETROL/CNG', 'GJ38BH2654', 'L932147', '660008', 'BANK OF INDIA', '97254 81185', '2025-12-08 12:16:29', '2025-12-08 12:18:25');
-INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `address`, `amount`, `car_id`, `insurance_company_name`, `premium_amount`, `remaining_amount`, `expiry_date`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `registration_no`, `chassis_no`, `engine_no`, `hp`, `customer_phone`, `created_at`, `updated_at`) VALUES
+INSERT INTO "insurances" ("id", "insurance_bank", "branch", "customer_name", "address", "amount", "car_id", "insurance_company_name", "premium_amount", "remaining_amount", "expiry_date", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "registration_no", "chassis_no", "engine_no", "hp", "customer_phone", "created_at", "updated_at") VALUES
 (312, 'FUTURE GENERALI TRUTLEMINT ', 'NADIYAD', 'ZALA BADABHAI MADHABHAI ', 'ROAD VISTAR PATHAVAT ,BAR MUVADA JARAAT', 21666.00, 0, 'FUTURE GENERALI TRUTLEMINT ', 21666.00, 0, '2026-12-08', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO CAMPER 2WD PSD CV', 'WHITE', '2024', 'DIESEL', 'GJ07TU6165', 'K29433', 'K22257', 'AU SMALL FINANCE BENK LTD', '98988 80205', '2025-12-09 11:14:31', '2025-12-09 11:33:47'),
 (313, 'CHOLAMANDALAM', 'KAPDWANJ', 'RATHOD DILIPBHAI MANILAL', 'KANIYEL SIMADO KANIAL KATHLAL ,AHMEDABAD ', 9281.00, 0, 'CHOLAMANDALAM', 9281.00, 0, '2026-12-07', 'MARUTI SUZUKI INDIA LTD', 'ALTO LXI CNG', 'WHITE', '2020', 'PETROL/CNG', 'GJ07DC6761', 'F52679', '303399', 'AU SMALL FINANC BANK LIMITED', '9724764978/9265860909', '2025-12-09 11:46:09', '2025-12-09 11:49:53'),
 (314, 'IFFCO TOKIO', 'NADIYAD', 'BHAVSAR NISHAT JITENDRAKUMAR ', 'KATHLAL', 9250.00, 0, 'IFFCO TOKIO', 9250.00, 0, '2026-12-13', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2024', 'PETROL/CNG', 'GJ07DH0842', 'E10489', '4355421', 'HDFC BANK LTD', '9586483835', '2025-12-09 11:53:45', '2025-12-09 11:59:57'),
@@ -10940,19 +10912,18 @@ INSERT INTO `insurances` (`id`, `insurance_bank`, `branch`, `customer_name`, `ad
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insurance_companies`
+-- Table structure for table "insurance_companies"
 --
 
-CREATE TABLE `insurance_companies` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "insurance_companies" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `insurance_companies`
+-- Dumping data for table "insurance_companies"
 --
 
-INSERT INTO `insurance_companies` (`id`, `name`) VALUES
+INSERT INTO "insurance_companies" ("id", "name") VALUES
 (12, 'Go Digit'),
 (13, 'HDFC ERGO'),
 (21, 'as'),
@@ -10997,26 +10968,25 @@ INSERT INTO `insurance_companies` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insurance_payment`
+-- Table structure for table "insurance_payment"
 --
 
-CREATE TABLE `insurance_payment` (
-  `id` int(11) NOT NULL,
-  `amount` int(11) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `note` varchar(255) NOT NULL,
-  `payment_date` date NOT NULL,
-  `payment_method` enum('check',' cash','online','bank') NOT NULL,
-  `Insurance_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "insurance_payment" (
+  "id" SERIAL PRIMARY KEY,
+  "amount" INTEGER DEFAULT NULL,
+  "description" VARCHAR(255) DEFAULT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  "note" VARCHAR(255) NULL,
+  "payment_date" DATE NULL,
+  "payment_method" VARCHAR(50) NULL,
+  "Insurance_id" INTEGER NULL
+);
 --
--- Dumping data for table `insurance_payment`
+-- Dumping data for table "insurance_payment"
 --
 
-INSERT INTO `insurance_payment` (`id`, `amount`, `description`, `created_at`, `updated_at`, `note`, `payment_date`, `payment_method`, `Insurance_id`) VALUES
+INSERT INTO "insurance_payment" ("id", "amount", "description", "created_at", "updated_at", "note", "payment_date", "payment_method", "Insurance_id") VALUES
 (5, 5022, NULL, '2025-02-23 12:34:41', '2025-03-30 10:07:06', 'DISCOUNT', '2025-02-23', '', 2),
 (6, 111, NULL, '2025-02-23 12:39:08', '2025-02-23 12:39:08', 'asd', '2025-02-23', '', 3),
 (7, 10000, NULL, '2025-02-27 05:42:23', '2025-02-27 05:42:23', 'AU SMALL FINANCE', '2025-02-27', 'online', 4),
@@ -11488,36 +11458,35 @@ INSERT INTO `insurance_payment` (`id`, `amount`, `description`, `created_at`, `u
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loan_details`
+-- Table structure for table "loan_details"
 --
 
-CREATE TABLE `loan_details` (
-  `id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
-  `loan_amount` decimal(10,2) NOT NULL,
-  `number_of_parts` int(11) NOT NULL,
-  `installment_amount` decimal(10,2) NOT NULL,
-  `interest_rate` decimal(5,2) DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE "loan_details" (
+  "id" SERIAL PRIMARY KEY,
+  "sale_id" INTEGER NOT NULL,
+  "loan_amount" DECIMAL(10,2) NOT NULL,
+  "number_of_parts" INTEGER NOT NULL,
+  "installment_amount" DECIMAL(10,2) NOT NULL,
+  "interest_rate" DECIMAL(5,2) DEFAULT NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `manufacturers`
+-- Table structure for table "manufacturers"
 --
 
-CREATE TABLE `manufacturers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "manufacturers" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `manufacturers`
+-- Dumping data for table "manufacturers"
 --
 
-INSERT INTO `manufacturers` (`id`, `name`) VALUES
+INSERT INTO "manufacturers" ("id", "name") VALUES
 (10, 'Tata Motors'),
 (11, 'Kia'),
 (12, 'Toyota'),
@@ -11563,19 +11532,18 @@ INSERT INTO `manufacturers` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `models`
+-- Table structure for table "models"
 --
 
-CREATE TABLE `models` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "models" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `models`
+-- Dumping data for table "models"
 --
 
-INSERT INTO `models` (`id`, `name`) VALUES
+INSERT INTO "models" ("id", "name") VALUES
 (17, 'Seltos'),
 (18, 'Innova'),
 (19, 'City'),
@@ -11829,129 +11797,128 @@ INSERT INTO `models` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_cars`
+-- Table structure for table "new_cars"
 --
 
-CREATE TABLE `new_cars` (
-  `id` int(11) NOT NULL,
-  `docket_number` varchar(255) NOT NULL,
-  `entry_type` enum('sales') DEFAULT 'sales',
-  `booking_date` date DEFAULT NULL,
-  `delivery_date` date DEFAULT NULL,
-  `customer_name` varchar(255) DEFAULT NULL,
-  `customer_phone` varchar(20) DEFAULT NULL,
-  `customer_address1` text DEFAULT NULL,
-  `customer_address2` text DEFAULT NULL,
-  `city_name` varchar(255) DEFAULT NULL,
-  `pincode` varchar(20) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `customer_dob` date DEFAULT NULL,
-  `nominee_relationship` enum('father','mother','husband','wife','son','daughter','brother','sister') DEFAULT NULL,
-  `nominee_name` varchar(255) DEFAULT NULL,
-  `nominee_dob` date DEFAULT NULL,
-  `manufacturer_name` varchar(255) DEFAULT NULL,
-  `model_name` varchar(255) DEFAULT NULL,
-  `color` varchar(50) DEFAULT NULL,
-  `manufacture_year` varchar(255) DEFAULT NULL,
-  `fuel_type` varchar(255) DEFAULT NULL,
-  `running_kilometer` int(11) DEFAULT NULL,
-  `registration_no` varchar(255) DEFAULT NULL,
-  `chassis_no` varchar(255) DEFAULT NULL,
-  `engine_no` varchar(255) DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `hp_name` varchar(255) DEFAULT NULL,
-  `dealer_name` varchar(255) DEFAULT NULL,
-  `executive_branch_name` varchar(255) DEFAULT NULL,
-  `executive_name` varchar(255) DEFAULT NULL,
-  `executive_number` int(255) DEFAULT NULL,
-  `insurance_company_name` varchar(255) DEFAULT NULL,
-  `rto_name` varchar(255) DEFAULT NULL,
-  `rto_code` varchar(255) DEFAULT NULL,
-  `parsing_status` enum('pending','completed') DEFAULT NULL,
-  `number_plate` enum('received','pending') DEFAULT NULL,
-  `choice_number` varchar(255) DEFAULT NULL,
-  `scheme` varchar(255) DEFAULT NULL,
-  `broker_name` varchar(255) DEFAULT NULL,
-  `other_remarks` text DEFAULT NULL,
-  `kyc` varchar(255) DEFAULT NULL,
-  `deal_agreement` varchar(255) DEFAULT NULL,
-  `main_image` varchar(255) DEFAULT NULL,
-  `ex_showroom_price` int(11) DEFAULT NULL,
-  `rto_tax` decimal(10,2) DEFAULT 0.00,
-  `insurance` decimal(10,2) DEFAULT 0.00,
-  `amc_gmc_tax` decimal(10,2) DEFAULT 0.00,
-  `ext_warranty` decimal(10,2) DEFAULT 0.00,
-  `accessories` decimal(10,2) DEFAULT 0.00,
-  `krunal_accessories` decimal(10,2) DEFAULT 0.00,
-  `fast_tag` decimal(10,2) DEFAULT 0.00,
-  `tcs` decimal(10,2) DEFAULT 0.00,
-  `trc` int(11) DEFAULT NULL,
-  `loyalty_card` decimal(10,2) DEFAULT 0.00,
-  `driver_price` decimal(10,2) DEFAULT NULL,
-  `total_on_road` decimal(10,2) DEFAULT 0.00,
-  `consumer_offer` decimal(10,2) DEFAULT 0.00,
-  `corporate_discount` decimal(10,2) DEFAULT 0.00,
-  `other_discount` decimal(10,2) DEFAULT 0.00,
-  `net_on_road` decimal(10,2) DEFAULT 0.00,
-  `disbursement` decimal(10,2) DEFAULT 0.00,
-  `down_payment` decimal(10,2) DEFAULT 0.00,
-  `net_short_payment` decimal(10,2) DEFAULT 0.00,
-  `dealer_ex_showroom_price` decimal(10,2) DEFAULT 0.00,
-  `dealer_rto_tax` decimal(10,2) DEFAULT 0.00,
-  `dealer_insurance` decimal(10,2) DEFAULT 0.00,
-  `dealer_amc_gmc_tax` decimal(10,2) DEFAULT 0.00,
-  `dealer_ext_warranty` decimal(10,2) DEFAULT 0.00,
-  `dealer_accessories` decimal(10,2) DEFAULT 0.00,
-  `dealer_krunal_accessories` decimal(10,2) DEFAULT 0.00,
-  `dealer_fast_tag` decimal(10,2) DEFAULT 0.00,
-  `dealer_tcs` decimal(10,2) DEFAULT 0.00,
-  `dealer_trc` int(11) NOT NULL,
-  `dealer_loyalty_card` decimal(10,2) DEFAULT 0.00,
-  `dealer_driver_price` decimal(10,2) DEFAULT NULL,
-  `dealer_total_on_road` decimal(10,2) DEFAULT 0.00,
-  `dealer_consumer_offer` decimal(10,2) DEFAULT 0.00,
-  `dealer_corporate_discount` decimal(10,2) DEFAULT 0.00,
-  `dealer_other_discount` decimal(10,2) DEFAULT 0.00,
-  `dealer_net_on_road` decimal(10,2) DEFAULT 0.00,
-  `dealer_disbursement` decimal(10,2) DEFAULT 0.00,
-  `dealer_down_payment` decimal(10,2) DEFAULT 0.00,
-  `dealer_net_short_payment` decimal(10,2) DEFAULT 0.00,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('sold','unsold') NOT NULL DEFAULT 'unsold',
-  `Delivery_status` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "new_cars" (
+  "id" SERIAL PRIMARY KEY,
+  "docket_number" VARCHAR(255) NULL,
+  "entry_type" VARCHAR(50) CHECK (entry_type IN ('sales')) DEFAULT 'sales',
+  "booking_date" DATE DEFAULT NULL,
+  "delivery_date" DATE DEFAULT NULL,
+  "customer_name" VARCHAR(255) DEFAULT NULL,
+  "customer_phone" VARCHAR(20) DEFAULT NULL,
+  "customer_address1" TEXT DEFAULT NULL,
+  "customer_address2" TEXT DEFAULT NULL,
+  "city_name" VARCHAR(255) DEFAULT NULL,
+  "pincode" VARCHAR(20) DEFAULT NULL,
+  "email" VARCHAR(255) DEFAULT NULL,
+  "customer_dob" DATE DEFAULT NULL,
+  "nominee_relationship" VARCHAR(50) CHECK (nominee_relationship IN ('father','mother','husband','wife','son','daughter','brother','sister')) DEFAULT NULL,
+  "nominee_name" VARCHAR(255) DEFAULT NULL,
+  "nominee_dob" DATE DEFAULT NULL,
+  "manufacturer_name" VARCHAR(255) DEFAULT NULL,
+  "model_name" VARCHAR(255) DEFAULT NULL,
+  "color" VARCHAR(50) DEFAULT NULL,
+  "manufacture_year" VARCHAR(255) DEFAULT NULL,
+  "fuel_type" VARCHAR(255) DEFAULT NULL,
+  "running_kilometer" INTEGER DEFAULT NULL,
+  "registration_no" VARCHAR(255) DEFAULT NULL,
+  "chassis_no" VARCHAR(255) DEFAULT NULL,
+  "engine_no" VARCHAR(255) DEFAULT NULL,
+  "location" VARCHAR(255) DEFAULT NULL,
+  "hp_name" VARCHAR(255) DEFAULT NULL,
+  "dealer_name" VARCHAR(255) DEFAULT NULL,
+  "executive_branch_name" VARCHAR(255) DEFAULT NULL,
+  "executive_name" VARCHAR(255) DEFAULT NULL,
+  "executive_number" INTEGER DEFAULT NULL,
+  "insurance_company_name" VARCHAR(255) DEFAULT NULL,
+  "rto_name" VARCHAR(255) DEFAULT NULL,
+  "rto_code" VARCHAR(255) DEFAULT NULL,
+  "parsing_status" VARCHAR(50) CHECK (parsing_status IN ('pending','completed')) DEFAULT NULL,
+  "number_plate" VARCHAR(50) CHECK (number_plate IN ('received','pending')) DEFAULT NULL,
+  "choice_number" VARCHAR(255) DEFAULT NULL,
+  "scheme" VARCHAR(255) DEFAULT NULL,
+  "broker_name" VARCHAR(255) DEFAULT NULL,
+  "other_remarks" TEXT DEFAULT NULL,
+  "kyc" VARCHAR(255) DEFAULT NULL,
+  "deal_agreement" VARCHAR(255) DEFAULT NULL,
+  "main_image" VARCHAR(255) DEFAULT NULL,
+  "ex_showroom_price" INTEGER DEFAULT NULL,
+  "rto_tax" DECIMAL(10,2) DEFAULT 0.00,
+  "insurance" DECIMAL(10,2) DEFAULT 0.00,
+  "amc_gmc_tax" DECIMAL(10,2) DEFAULT 0.00,
+  "ext_warranty" DECIMAL(10,2) DEFAULT 0.00,
+  "accessories" DECIMAL(10,2) DEFAULT 0.00,
+  "krunal_accessories" DECIMAL(10,2) DEFAULT 0.00,
+  "fast_tag" DECIMAL(10,2) DEFAULT 0.00,
+  "tcs" DECIMAL(10,2) DEFAULT 0.00,
+  "trc" INTEGER DEFAULT NULL,
+  "loyalty_card" DECIMAL(10,2) DEFAULT 0.00,
+  "driver_price" DECIMAL(10,2) DEFAULT NULL,
+  "total_on_road" DECIMAL(10,2) DEFAULT 0.00,
+  "consumer_offer" DECIMAL(10,2) DEFAULT 0.00,
+  "corporate_discount" DECIMAL(10,2) DEFAULT 0.00,
+  "other_discount" DECIMAL(10,2) DEFAULT 0.00,
+  "net_on_road" DECIMAL(10,2) DEFAULT 0.00,
+  "disbursement" DECIMAL(10,2) DEFAULT 0.00,
+  "down_payment" DECIMAL(10,2) DEFAULT 0.00,
+  "net_short_payment" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_ex_showroom_price" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_rto_tax" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_insurance" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_amc_gmc_tax" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_ext_warranty" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_accessories" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_krunal_accessories" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_fast_tag" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_tcs" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_trc" INTEGER NULL,
+  "dealer_loyalty_card" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_driver_price" DECIMAL(10,2) DEFAULT NULL,
+  "dealer_total_on_road" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_consumer_offer" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_corporate_discount" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_other_discount" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_net_on_road" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_disbursement" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_down_payment" DECIMAL(10,2) DEFAULT 0.00,
+  "dealer_net_short_payment" DECIMAL(10,2) DEFAULT 0.00,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  "status" VARCHAR(50) CHECK (status IN ('sold','unsold')) NOT NULL DEFAULT 'unsold',
+  "Delivery_status" VARCHAR(255) DEFAULT NULL
+);
 --
--- Dumping data for table `new_cars`
+-- Dumping data for table "new_cars"
 --
 
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (21, '120337', 'sales', '2025-02-07', '2025-02-10', '  malek mayurmiya memudmiya', '9904374549', 'malek fali bareja', 'bareja382425', 'ahmedabad', '382425', 'tahir3mansuri@gmail.com', '1985-06-08', 'father', 'memudmiya', '1960-06-01', 'MARUTI SUZUKI-2025', 'ertiga zxi o cng', 'WHITE  ', '123', 'sadf', NULL, 'choice', '-', '-', 'AHMEDABAD', 'NAasdqweqwe', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'YOGESH', 0, 'MSIL', 'AHMEDABAD', 'GJ-27', 'pending', 'pending', 'CHOICE', '-', 'ISLAMUDDIN', '', '67a5b7f16823b_1738913777.pdf', '67a5b7f168408_1738913777.jpg', NULL, 1198001, 53752.00, 58939.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11980.00, 0, 0.00, 0.00, 1322672.00, 0.00, 0.00, 34672.00, 1288000.00, 0.00, 0.00, 1288000.00, 1188000.00, 53159.00, 54398.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11880.00, 0, 0.00, 0.00, 1307437.00, 0.00, 0.00, 30000.00, 1277437.00, 0.00, 123123.00, 1277437.00, '2025-02-07 07:36:17', '2025-03-13 10:56:38', 'sold', 'delivered'),
 (27, '264796', 'sales', '2025-02-15', '2025-02-20', 'MANSURI SOHILBHAI  MUNIRBHAI', '8128341151', '1241,TAVAR SAME HALDHARWAS KHEDA', 'GUJARAT-387110', 'HALDDHRWAS', '387110', 'tahir3mansuri@gmail.com', '1991-07-23', 'father', 'MUNIR BHAI', '1970-01-01', 'MAHINDRA', 'SCORPIO S11 SF ', 'BLACK', '2025', 'DIESEL', NULL, 'GJ07DH8217', 'MA1TA2YS2S2A86222', 'YSS4A35928', 'ANAND', 'INDUSIND BANK', 'M M VORA', 'ANAND', 'PARESH BHAI', 0, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', '8217', '40000', '-', '', '67b5bd074542b_1739963655.pdf', '67b5bd0745bf5_1739963655.jpeg', NULL, 1750000, 75000.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17500.00, 0, 0.00, 0.00, 1902500.00, 0.00, 0.00, 20500.00, 1882000.00, 0.00, 0.00, 1882000.00, 1750000.00, 76000.00, 56773.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17060.00, 0, 0.00, 0.00, 1899833.00, 44000.00, 0.00, 0.00, 1855833.00, 0.00, 0.00, 1855833.00, '2025-02-19 11:14:15', '2025-02-21 11:24:23', 'sold', 'delivered'),
 (28, '766191', 'sales', '2025-02-20', '2025-02-21', 'SOLANKI VIJAY BHAI MAHIJI BHAI', '8849966745', 'KAPADWANJ', '', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1995-03-03', 'father', 'MAHIJIBHAI', '1970-06-01', 'MAHINDRA', 'BOLERO 1.7 10 FT', 'WHITE', '', '', NULL, 'REGULAR', 'B23162', 'B18052', 'UJJAIN', 'AU SMALL FAINANCE', 'BHAGVATI', 'UJJAIN MP', 'PAWAN', 0, 'CHOLAMANDALAM', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '', 'MOHSIN MARKET', '', '67b6bc15ef8fe_1740028949.pdf', '67b6bc15eff71_1740028949.jpeg', '67b6bc15f0088_1740028949.pdf', 1012199, 55000.00, 28000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 1095199.00, 5199.00, 1390.00, 0.00, 1088610.00, 0.00, 0.00, 1088610.00, 1023000.00, 55000.00, 27000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4500, 0.00, 2500.00, 1109500.00, 58500.00, 0.00, 0.00, 1051000.00, 0.00, 0.00, 1051000.00, '2025-02-20 05:22:30', '2025-05-02 07:22:26', 'sold', 'delivered'),
 (30, '310811', 'sales', '2025-02-21', '2025-02-26', 'PARMAR VISHWAJIT NATVARSINH', '8140757582', 'RAMPURA  FALIYU', 'RAMPURA-PANCHMAHAL GUJARAT-389350', 'PANCHMAHAL', '389350', 'tahir3mansuri@gmail.com', '1999-02-22', 'wife', 'HEMLATABEN', '2002-01-01', 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG ', 'WHITE', '', '', NULL, 'PRIVATE PASSING', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'YOGESH', 0, 'MSIL', 'PANCHMAHAL', 'GJ17', 'pending', 'pending', 'CHOICE', '-', '-', '', '67b86d51f0540_1740139857.pdf', '67b86d51f0769_1740139857.jpeg', NULL, 1088001, 49021.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 560.00, 1000.00, 1203440.00, 0.00, 0.00, 13765.00, 1189675.00, 0.00, 0.00, 1189675.00, 1088001.00, 47321.00, 38581.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1184783.00, 0.00, 0.00, 0.00, 1184783.00, 0.00, 0.00, 1184783.00, '2025-02-21 12:10:58', '2025-05-02 07:23:10', 'sold', 'delivered'),
 (31, '551138', 'sales', '2025-02-22', '2025-02-28', 'ZALA KAMLESHKUMAR BHIKHABHAI', '8200471078', 'JITPURA,MU-DHOLAKUVA KOSAM KHEDA KAPADWANJ-387610', '-', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1997-08-30', 'father', 'BHIKHABHAI', '1966-06-01', 'MARUTI SUZUKI', 'SWIFT VXI PETROL', 'BLACK', '2025', 'PETROL', NULL, 'GJ07DH9780', '-', '-', 'nadiad', 'PENDING', 'kiran motors nadiad', 'AHMEDABAD', 'aashutosh', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '9780,5622,8484', '25000', 'sanjay zala-', '', '67b9ad715e7d5_1740221809.pdf', '67b9ab231e0c5_1740221219.jpeg', NULL, 729501, 37930.00, 39831.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 738.00, 0.00, 838000.00, 25000.00, 0.00, 45000.00, 768000.00, 0.00, 0.00, 768000.00, 729501.00, 37930.00, 39831.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 837262.00, 25000.00, 0.00, 45000.00, 767262.00, 0.00, 0.00, 767262.00, '2025-02-22 10:46:59', '2025-03-16 09:29:58', 'sold', 'delivered'),
 (32, '646169', 'sales', '2025-02-20', '2025-02-26', 'BALDANIYA VIPUL DHIRUBHAI', '9016611816', 'FLAT-NO C-502 PRAMUKH HORIZON-2', 'SARGASAN GANDHINAGAR-382421', 'GANDHIBAGAR', '382421', 'tahir3mansuri@gmail.com', '1993-03-28', 'wife', 'ASMITABEN', '1996-01-01', 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE', '', '', NULL, 'TAXI PASSING', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'YOGESH', 0, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', 'REGULAR', '-', 'KRUPESH', '', '67bc03ad316ad_1740374957.pdf', '67bc03ad318ac_1740374957.jpeg', NULL, 1088000, 54978.00, 49021.00, 8441.00, 0.00, 20000.00, 0.00, 0.00, 10880.00, 9000, 885.00, 0.00, 1241205.00, 15000.00, 0.00, 18205.00, 1208000.00, 0.00, 0.00, 1208000.00, 1088001.00, 47671.00, 36463.00, 8443.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1191458.00, 0.00, 0.00, 0.00, 1191458.00, 0.00, 0.00, 1191458.00, '2025-02-24 05:29:17', '2025-03-21 05:29:01', 'sold', 'delivered'),
-(34, '124473', 'sales', '2025-01-05', '2025-01-13', 'PARMAR VISHNUKUMAR PUNAMBHAI', '9265203289', 'ANGHADI', 'ANGHADI', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1966-01-01', 'father', 'TAHI', '1966-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, '-`', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'YOGESH', 0, 'MSIL', 'GJ07', 'GJ07', 'completed', 'received', 'REGULAR', '15000', '-', '', '67bd8ce164f8b_1740475617.pdf', '67bd8ce165137_1740475617.jpeg', NULL, 670000, 34605.00, 42628.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 885.00, 1000.00, 783118.00, 15000.00, 0.00, 50000.00, 718118.00, 0.00, 0.00, 718118.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-02-25 09:26:57', '2025-03-14 11:04:28', 'sold', 'delivered'),
+(34, '124473', 'sales', '2025-01-05', '2025-01-13', 'PARMAR VISHNUKUMAR PUNAMBHAI', '9265203289', 'ANGHADI', 'ANGHADI', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1966-01-01', 'father', 'TAHI', '1966-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, '-"', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'YOGESH', 0, 'MSIL', 'GJ07', 'GJ07', 'completed', 'received', 'REGULAR', '15000', '-', '', '67bd8ce164f8b_1740475617.pdf', '67bd8ce165137_1740475617.jpeg', NULL, 670000, 34605.00, 42628.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 885.00, 1000.00, 783118.00, 15000.00, 0.00, 50000.00, 718118.00, 0.00, 0.00, 718118.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-02-25 09:26:57', '2025-03-14 11:04:28', 'sold', 'delivered'),
 (35, '174930', 'sales', '2025-02-22', '2024-03-01', 'DIWAN IMRANSHA KARIMSHA', '9016014561', 'RUDAN', 'RUDAN', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1977-06-01', 'wife', 'BILKISBANU', '1978-01-01', '2025', 'BREZZA ZXI CNG', 'WHITE  ', NULL, NULL, NULL, 'REGULAR  GJ07', '-', '-', 'AHMEDABAD', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '67bedc759f6b1_1740561525.pdf', '67bedc759fbf0_1740561525.jpeg', NULL, 1221000, 54524.00, 52691.00, 0.00, 0.00, 0.00, 15000.00, 0.00, 12210.00, 0, 0.00, 1000.00, 1355425.00, 0.00, 0.00, 25420.00, 1330005.00, 0.00, 0.00, 1330005.00, 1221000.00, 54524.00, 52691.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12210.00, 0, 0.00, 0.00, 1340425.00, 0.00, 0.00, 25000.00, 1315425.00, 0.00, 0.00, 1315425.00, '2025-02-26 09:18:45', '2025-03-14 11:03:36', 'sold', 'delivered'),
 (36, '642133', 'sales', '2025-02-20', '2025-03-03', 'CHAUHAN KULDIPSINH  KISHANSINH', '8160009412', 'NARODA', 'AHMEDABAD', 'ahmedabad', '380001', 'tahir3mansuri@gmail.com', '1995-08-22', 'wife', 'JAYSHREEBEN', '1997-01-01', '2025', 'DZIRE TOUR', 'WHITE', NULL, NULL, NULL, 'GJ01', '-', '-', 'AHMEDABAD', 'NA', 'KATARIA  AUTOMOBILES ', 'AHMEDABAD', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ01', 'pending', 'pending', 'REGULAR', '-', '-', '-', '67bedea0d0dbb_1740562080.pdf', '67bedea0d10b0_1740562080.jpeg', NULL, 751001, 40300.00, 48621.00, 14579.00, 0.00, 0.00, 0.00, 0.00, 0.00, 9000, 885.00, 1000.00, 864386.00, 0.00, 0.00, 24386.00, 840000.00, 0.00, 0.00, 840000.00, 751001.00, 41224.00, 36080.00, 14579.00, 0.00, 0.00, 0.00, 0.00, 0.00, 7300, 0.00, 0.00, 850184.00, 0.00, 0.00, 0.00, 850184.00, 0.00, 0.00, 850184.00, '2025-02-26 09:28:00', '2025-03-14 11:03:00', 'sold', 'delivered'),
-(38, '902859', 'sales', '2025-02-27', '2025-03-04', 'RAJUBHAI JIVABHAI KATARIYA', '9712101811', 'E-620 NAVI VASAHAT ROHITVAS BALASINOR GUJARAT-388255', 'BALASINOR-388255', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1974-05-09', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE  ', '', '', NULL, 'choice', '-', '-', 'AHMEDABAD', 'SHRIRAM FINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'hmil', 'GJ-35', 'GJ-35', 'pending', 'pending', 'CHOICE-0272', '0', 'IRFAN SHRIRAM', '', '67c04a009437d_1740655104.pdf', '67c04a0094648_1740655104.jpeg', NULL, 1198001, 53572.00, 58939.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 11981.00, 0, 885.00, 1000.00, 1343378.00, 0.00, 0.00, 15000.00, 1328378.00, 0.00, 0.00, 1328378.00, 1198001.00, 53572.00, 43083.00, 0.00, 0.00, 18000.00, 0.00, 0.00, 11981.00, 300, 0.00, 0.00, 1324937.00, 0.00, 0.00, 0.00, 1324937.00, 0.00, 0.00, 1324937.00, '2025-02-27 11:18:24', '2025-03-14 11:02:21', 'sold', 'delivered'),
+(38, '902859', 'sales', '2025-02-27', '2025-03-04', 'RAJUBHAI JIVABHAI KATARIYA', '9712101811', 'E-620 NAVI VASAHAT ROHITVAS BALASINOR GUJARAT-388255', 'BALASINOR-388255', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1974-05-09', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE  ', '', '', NULL, 'choice', '-', '-', 'AHMEDABAD', 'SHRIRAM FINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'hmil', 'GJ-35', 'GJ-35', 'pending', 'pending', 'CHOICE-0272', '0', 'IRFAN SHRIRAM', '', '67c04a009437d_1740655104.pdf', '67c04a0094648_1740655104.jpeg', NULL, 1198001, 53572.00, 58939.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 11981.00, 0, 885.00, 1000.00, 1343378.00, 0.00, 0.00, 15000.00, 1328378.00, 0.00, 0.00, 1328378.00, 1198001.00, 53572.00, 43083.00, 0.00, 0.00, 18000.00, 0.00, 0.00, 11981.00, 300, 0.00, 0.00, 1324937.00, 0.00, 0.00, 0.00, 1324937.00, 0.00, 0.00, 1324937.00, '2025-02-27 11:18:24', '2025-03-14 11:02:21', 'sold', 'delivered'),
 (39, '927086', 'sales', '2025-03-01', '2025-03-03', 'bihola maheshbhai manubhai', '8347194415', '4/59 bhoivas jannu-2 daskroi zanu dist ahmedabad', '382430', 'ahmedabad', '382430', 'tahir3mansuri@gmail.com', '1997-10-26', 'wife', 'janakben', '1999-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'choice', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', '', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ-27', 'pending', 'pending', 'CHOICE', '15000', '-', '', '67c29b95a8abf_1740807061.pdf', '67c29b95a9567_1740807061.jpeg', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 885.00, 1000.00, 785517.00, 0.00, 0.00, 48069.00, 737448.00, 0.00, 0.00, 737448.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752632.00, 15000.00, 0.00, 40000.00, 697632.00, 0.00, 0.00, 697632.00, '2025-03-01 05:31:01', '2025-03-14 11:00:43', 'sold', 'delivered'),
-(40, '555316', 'sales', '2025-03-01', '2025-03-03', 'chauhan babubhai ramabhai', '9316997456', ' soneri sorna kheda ', 'gujarat-387620', 'Kapadwanj', '387620', 'tahir3mansuri@gmail.com', '1984-06-01', 'wife', 'ramila ben', '1985-06-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, '-`', '-', '-', 'AHMEDABAD', 'hdb financil services ltd', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'CHOICE', '15000', 'DIRECT', '', '67c29d1a41350_1740807450.pdf', '67c29d1a419b6_1740807450.jpeg', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 0.00, 1000.00, 784632.00, 15000.00, 0.00, 41631.00, 728001.00, 0.00, 0.00, 728001.00, 670000.00, 35163.00, 47693.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752856.00, 15000.00, 0.00, 40000.00, 697856.00, 0.00, 0.00, 697856.00, '2025-03-01 05:37:30', '2025-03-14 10:59:45', 'sold', 'delivered'),
-(41, '468940', 'sales', '2025-03-01', '2025-03-03', 'thakor jyantibhai chandubhai', '9586257339', 'dholabhai na muvada othvad kheda balasinor 388255', 'balasinor-388255', 'balasinor', '388255', 'tahir3mansuri@gmail.com', '1990-01-01', 'mother', 'makuben', '1970-06-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, '-`', '-', '-', 'AHMEDABAD', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ-35', 'gj35', 'pending', 'pending', 'CHOICE', '0', '-', '', '67c29ec4d7101_1740807876.pdf', '67c29ec4d791e_1740807876.jpeg', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 885.00, 1000.00, 785517.00, 15000.00, 0.00, 35601.00, 734916.00, 0.00, 0.00, 734916.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752632.00, 15000.00, 0.00, 40000.00, 697632.00, 0.00, 0.00, 697632.00, '2025-03-01 05:44:36', '2025-05-02 07:25:33', 'sold', 'delivered'),
-(42, '427607', 'sales', '1994-03-18', '1994-03-18', 'dabhi vijaybhai bhimsinh', '7698800305', '446,rajputa bavra kheda gujarat-387130', 'bavra kheda gujarat 387130', 'kheda', '387130', 'tahir3mansuri@gmail.com', '1994-03-18', 'father', 'bhimsinh', '1975-01-01', 'MARUTI SUZUKI', 'EECO 5 SEATER ACO ', 'WHITE', NULL, NULL, NULL, '-`', '-', '-', 'AHMEDABAD', 'CHOLA  MANDALAM ', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '15000', '-', '', '67c53c4d54bc2_1740979277.pdf', '67c53c4d55175_1740979277.jpeg', NULL, 670000, 35163.00, 47468.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 885.00, 1000.00, 785516.00, 15000.00, 0.00, 59103.00, 711413.00, 0.00, 0.00, 711413.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752632.00, 15000.00, 0.00, 40000.00, 697632.00, 0.00, 0.00, 697632.00, '2025-03-03 05:21:17', '2025-05-02 07:25:56', 'sold', 'delivered'),
-(43, '640560', 'sales', '2025-03-03', '2025-03-13', 'RAHOLIYA UTSAV RAJUBHAI', '8160099583', 'GANDHINAGAR', 'ADDRESS PENDING', 'GANDHINAGAR', '-', 'tahir3mansuri@gmail.com', '2003-08-20', 'mother', '-', '1900-01-01', 'HYUNDAI', 'CRETA SO KNIGHTEDITION BLACK', 'BLACK', '2025', 'DIESEL', NULL, '-`', '-', '-', 'RAJASTHAN-JAIPUR', 'PENDING', 'ARODAR HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'GJ-18', 'GJ-18', 'pending', 'pending', 'CHOICE', '50000', '-', '', '67c567e0bee60_1740990432.jpeg', '67c567e0bf0e6_1740990432.jpeg', NULL, 1620000, 73000.00, 90038.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16201.00, 0, 0.00, 0.00, 1799239.00, 0.00, 0.00, 50000.00, 1749239.00, 0.00, 0.00, 1749239.00, 1620100.00, 0.00, 39206.00, 0.00, 0.00, 0.00, 0.00, 0.00, 2500.00, 16200, 0.00, 10000.00, 1678006.00, 0.00, 0.00, 50000.00, 1628006.00, 0.00, 0.00, 1628006.00, '2025-03-03 08:27:12', '2025-03-19 05:53:05', 'sold', 'delivered'),
+(40, '555316', 'sales', '2025-03-01', '2025-03-03', 'chauhan babubhai ramabhai', '9316997456', ' soneri sorna kheda ', 'gujarat-387620', 'Kapadwanj', '387620', 'tahir3mansuri@gmail.com', '1984-06-01', 'wife', 'ramila ben', '1985-06-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, '-"', '-', '-', 'AHMEDABAD', 'hdb financil services ltd', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'CHOICE', '15000', 'DIRECT', '', '67c29d1a41350_1740807450.pdf', '67c29d1a419b6_1740807450.jpeg', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 0.00, 1000.00, 784632.00, 15000.00, 0.00, 41631.00, 728001.00, 0.00, 0.00, 728001.00, 670000.00, 35163.00, 47693.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752856.00, 15000.00, 0.00, 40000.00, 697856.00, 0.00, 0.00, 697856.00, '2025-03-01 05:37:30', '2025-03-14 10:59:45', 'sold', 'delivered'),
+(41, '468940', 'sales', '2025-03-01', '2025-03-03', 'thakor jyantibhai chandubhai', '9586257339', 'dholabhai na muvada othvad kheda balasinor 388255', 'balasinor-388255', 'balasinor', '388255', 'tahir3mansuri@gmail.com', '1990-01-01', 'mother', 'makuben', '1970-06-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, '-"', '-', '-', 'AHMEDABAD', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ-35', 'gj35', 'pending', 'pending', 'CHOICE', '0', '-', '', '67c29ec4d7101_1740807876.pdf', '67c29ec4d791e_1740807876.jpeg', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 885.00, 1000.00, 785517.00, 15000.00, 0.00, 35601.00, 734916.00, 0.00, 0.00, 734916.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752632.00, 15000.00, 0.00, 40000.00, 697632.00, 0.00, 0.00, 697632.00, '2025-03-01 05:44:36', '2025-05-02 07:25:33', 'sold', 'delivered'),
+(42, '427607', 'sales', '1994-03-18', '1994-03-18', 'dabhi vijaybhai bhimsinh', '7698800305', '446,rajputa bavra kheda gujarat-387130', 'bavra kheda gujarat 387130', 'kheda', '387130', 'tahir3mansuri@gmail.com', '1994-03-18', 'father', 'bhimsinh', '1975-01-01', 'MARUTI SUZUKI', 'EECO 5 SEATER ACO ', 'WHITE', NULL, NULL, NULL, '-"', '-', '-', 'AHMEDABAD', 'CHOLA  MANDALAM ', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '15000', '-', '', '67c53c4d54bc2_1740979277.pdf', '67c53c4d55175_1740979277.jpeg', NULL, 670000, 35163.00, 47468.00, 0.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 0, 885.00, 1000.00, 785516.00, 15000.00, 0.00, 59103.00, 711413.00, 0.00, 0.00, 711413.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 752632.00, 15000.00, 0.00, 40000.00, 697632.00, 0.00, 0.00, 697632.00, '2025-03-03 05:21:17', '2025-05-02 07:25:56', 'sold', 'delivered'),
+(43, '640560', 'sales', '2025-03-03', '2025-03-13', 'RAHOLIYA UTSAV RAJUBHAI', '8160099583', 'GANDHINAGAR', 'ADDRESS PENDING', 'GANDHINAGAR', '-', 'tahir3mansuri@gmail.com', '2003-08-20', 'mother', '-', '1900-01-01', 'HYUNDAI', 'CRETA SO KNIGHTEDITION BLACK', 'BLACK', '2025', 'DIESEL', NULL, '-"', '-', '-', 'RAJASTHAN-JAIPUR', 'PENDING', 'ARODAR HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'GJ-18', 'GJ-18', 'pending', 'pending', 'CHOICE', '50000', '-', '', '67c567e0bee60_1740990432.jpeg', '67c567e0bf0e6_1740990432.jpeg', NULL, 1620000, 73000.00, 90038.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16201.00, 0, 0.00, 0.00, 1799239.00, 0.00, 0.00, 50000.00, 1749239.00, 0.00, 0.00, 1749239.00, 1620100.00, 0.00, 39206.00, 0.00, 0.00, 0.00, 0.00, 0.00, 2500.00, 16200, 0.00, 10000.00, 1678006.00, 0.00, 0.00, 50000.00, 1628006.00, 0.00, 0.00, 1628006.00, '2025-03-03 08:27:12', '2025-03-19 05:53:05', 'sold', 'delivered'),
 (44, '625160', 'sales', '2025-03-04', '2025-03-10', 'PATEL JAGDISHBHAI TRIKAMBHAI', '6352275872', 'UKARDINA MUVADA', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1974-08-23', 'wife', 'KUSUMBEN', '1981-05-18', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '2025', 'CNG', NULL, 'REGULAR  GJ07', '35782', '438722', 'AHMEDABAD', 'CHOLA  MANDALAM ', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '67c6e5c74d1fb_1741088199.pdf', '67c6e5c74d638_1741088199.pdf', NULL, 670000, 35163.00, 47469.00, 0.00, 0.00, 35000.00, 0.00, 500.00, 0.00, 0, 885.00, 1000.00, 789017.00, 15000.00, 0.00, 30517.00, 743500.00, 0.00, 0.00, 743500.00, 670000.00, 35163.00, 47469.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 783632.00, 0.00, 0.00, 0.00, 783632.00, 0.00, 0.00, 0.00, '2025-03-04 11:36:39', '2025-03-14 10:57:16', 'sold', 'delivered'),
 (46, '753131', 'sales', '2025-03-02', '2025-03-06', 'VAGHELA SOBHANABEN PUNAMBHAI', '9723318531', 'VADOL', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1966-01-01', 'son', 'MAHESHBHAI', '1985-01-01', 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE  ', '', '', NULL, 'GJ07DH2755', 'B980342', '9724021', 'AHMEDABAD', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67c7eacecc26e_1741155022.pdf', '67c7eacecc49b_1741155022.pdf', NULL, 1088000, 49021.00, 54978.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 10880.00, 0, 885.00, 1000.00, 1223764.00, 0.00, 0.00, 0.00, 1223764.00, 0.00, 0.00, 1223764.00, 1088601.00, 49072.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1203531.00, 0.00, 0.00, 0.00, 1203531.00, 0.00, 0.00, 1203531.00, '2025-03-05 06:10:22', '2025-03-07 04:26:03', 'sold', 'delivered'),
 (47, '387105', 'sales', '2025-03-04', '2025-03-06', 'salim alamsha diwan', '8799078694', 'duplex no-10 bage masira duolex-2 nr al-fasani nr gazala farm 100 ftring road ', 'gyaspur sarkhej roadahmedabad380055', 'ahmedabad', '380055', 'tahir3mansuri@gmail.com', '1962-03-15', 'son', 'siraj', '2004-06-01', 'MAHINDRA', 'scorpio classic s 7 seater', 'BLACK', NULL, NULL, NULL, 'gj01ww7617', 'YSS4B45794', 'S2B88198', 'AHMEDABAD', 'INDUSIND BANK', 'PARAM AUTOMOBILES', 'KATHLAL', 'TAHIR ', 2147483647, 'MAHINDRA SHOWROOM', 'AHMEDABAD', 'GJ-01', 'completed', 'received', '7617', '90000', 'DIRECT', '', '67c929e28650f_1741236706.pdf', '67c929e286785_1741236706.jpeg', NULL, 1361600, 59200.00, 96974.00, 25790.00, 0.00, 0.00, 0.00, 0.00, 13616.00, 0, 0.00, 0.00, 1557180.00, 0.00, 0.00, 97180.00, 1460000.00, 0.00, 0.00, 1460000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-06 04:51:46', '2025-03-06 04:57:27', 'sold', 'delivered'),
 (48, '174967', 'sales', '2025-03-20', '2025-03-10', 'KHOKHAR NIYAJALI MUSTUFAMIYA', '8141372178', 'KHOKHARVADA', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1974-06-15', 'wife', 'SHABANABANU', '1980-01-01', 'MARUTI SUZUKI', 'BALENO ZETA ', 'WHITE', '2025', 'PETROL  CNG', NULL, 'REGULAR  GJ07', '-', '-', 'NADIAD', 'HDFC BANK LTD', 'KIRAN MOTERS', '', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67ce93ae53b54_1741591470.pdf', '67ce93ae5413d_1741591470.pdf', NULL, 937000, 47581.00, 50472.00, 0.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0, 885.00, 0.00, 1065938.00, 15000.00, 25000.00, 30000.00, 995938.00, 0.00, 0.00, 995938.00, 937000.00, 47581.00, 50472.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1065053.00, 25000.00, 0.00, 45000.00, 995053.00, 0.00, 0.00, 995053.00, '2025-03-10 07:24:30', '2025-04-03 05:00:29', 'sold', 'delivered'),
-(49, '473145', 'sales', '2025-03-14', '2025-03-14', 'GOVARDHAN STONES QUARRY PVT LTD', '9099425031', 'OPP VRAJVATIKA KHEDA KATHLAL-387630', 'kathlal-387630', 'kathlal', '387630', 'tahir3mansuri@gmail.com', '2024-10-03', NULL, 'NA', '0000-00-00', 'MAHINDRA-2025', 'CAMPER ZX O ', 'BROWNZ', NULL, NULL, NULL, '-`', 'B24899', '20637', 'UJJAIN', 'NA', 'BHAGIRATH', 'KATHLAL', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'GJ-07', 'GJ07', 'pending', 'pending', 'REGULAR', '0', '-', '', '67d3bcb2523e4_1741929650.pdf', NULL, NULL, 1075999, 55000.00, 26863.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10459.00, 4500, 0.00, 0.00, 1172821.00, 17821.00, 0.00, 0.00, 1155000.00, 0.00, 0.00, 1155000.00, 1075999.00, 0.00, 26863.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10459.00, 4500, 0.00, 6000.00, 1117821.00, 5000.00, 0.00, 25000.00, 1087821.00, 0.00, 0.00, 1087821.00, '2025-03-14 05:20:50', '2025-03-14 06:30:52', 'sold', 'delivered'),
-(50, '600849', 'sales', '2025-02-18', '2025-02-18', 'DHAVALKUMAR MANSINHBHAI SODHA', '7046232154', '743 MOTI MALJIWALA KUVO VASNA KHEDA 387340', '-', 'VASNA', '387340', 'tahir3mansuri@gmail.com', '0001-01-01', 'wife', 'NA', '0000-00-00', 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE', NULL, NULL, NULL, '-`', '-', '-', 'AHMEDABAD', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', NULL, 'received', 'REGULAR', '0', '-', '', NULL, NULL, NULL, 1088001, 49021.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1202880.00, 0.00, 0.00, 15880.00, 1187000.00, 0.00, 0.00, 1187000.00, 1088001.00, 47321.00, 39347.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1185549.00, 0.00, 0.00, 0.00, 1185549.00, 0.00, 0.00, 1185549.00, '2025-03-14 09:26:30', '2025-03-14 09:34:56', 'sold', 'delivered'),
+(49, '473145', 'sales', '2025-03-14', '2025-03-14', 'GOVARDHAN STONES QUARRY PVT LTD', '9099425031', 'OPP VRAJVATIKA KHEDA KATHLAL-387630', 'kathlal-387630', 'kathlal', '387630', 'tahir3mansuri@gmail.com', '2024-10-03', NULL, 'NA', NULL, 'MAHINDRA-2025', 'CAMPER ZX O ', 'BROWNZ', NULL, NULL, NULL, '-"', 'B24899', '20637', 'UJJAIN', 'NA', 'BHAGIRATH', 'KATHLAL', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'GJ-07', 'GJ07', 'pending', 'pending', 'REGULAR', '0', '-', '', '67d3bcb2523e4_1741929650.pdf', NULL, NULL, 1075999, 55000.00, 26863.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10459.00, 4500, 0.00, 0.00, 1172821.00, 17821.00, 0.00, 0.00, 1155000.00, 0.00, 0.00, 1155000.00, 1075999.00, 0.00, 26863.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10459.00, 4500, 0.00, 6000.00, 1117821.00, 5000.00, 0.00, 25000.00, 1087821.00, 0.00, 0.00, 1087821.00, '2025-03-14 05:20:50', '2025-03-14 06:30:52', 'sold', 'delivered'),
+(50, '600849', 'sales', '2025-02-18', '2025-02-18', 'DHAVALKUMAR MANSINHBHAI SODHA', '7046232154', '743 MOTI MALJIWALA KUVO VASNA KHEDA 387340', '-', 'VASNA', '387340', 'tahir3mansuri@gmail.com', '0001-01-01', 'wife', 'NA', NULL, 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE', NULL, NULL, NULL, '-"', '-', '-', 'AHMEDABAD', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', NULL, 'received', 'REGULAR', '0', '-', '', NULL, NULL, NULL, 1088001, 49021.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1202880.00, 0.00, 0.00, 15880.00, 1187000.00, 0.00, 0.00, 1187000.00, 1088001.00, 47321.00, 39347.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1185549.00, 0.00, 0.00, 0.00, 1185549.00, 0.00, 0.00, 1185549.00, '2025-03-14 09:26:30', '2025-03-14 09:34:56', 'sold', 'delivered'),
 (51, '973726', 'sales', '2025-01-12', '2025-01-24', 'RABARI GOVINDBHAI VIRAMBHAI', '9825428808', 'PADMALA', 'VADODARA', 'VADODARA', '391350', 'tahir3mansuri@gmail.com', '1977-06-06', 'brother', 'LALJIBHAI', '1982-01-01', '2025', 'FRONX DELTA', 'BLUE', NULL, NULL, NULL, 'GJ06BR4734', '462210', '7613283', 'AHMEDABAD', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'BARODA', 'GJ06', 'completed', 'received', '', '-', '-', '-', '67d3face08c01_1741945550.pdf', '67d3face09410_1741945550.jpeg', NULL, 932500, 47679.00, 43159.00, 0.00, 0.00, 0.00, 30000.00, 500.00, 0.00, 0, 0.00, 1000.00, 1053838.00, 15000.00, 0.00, 0.00, 1038838.00, 0.00, 0.00, 1038838.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-14 09:45:50', '2025-03-14 10:53:18', 'sold', 'delivered'),
 (52, '308819', 'sales', '2025-01-04', '0025-12-07', 'PARMAR VISHNUKUMAR PUNAMBHAI', '9265203289', 'ANGHADI', 'THASRA', 'THASRA', '388250', 'tahir3mansuri@gmail.com', '2004-02-16', 'mother', 'RANJANBEN', '1979-01-01', '2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07DH1646', 'E17476', '4364322', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', '', '-', 'SALIMBHAI', '-', '67d5378b2b4e4_1742026635.pdf', '67d5378b2bb6a_1742026635.jpeg', NULL, 670000, 33663.00, 47469.00, 0.00, 0.00, 35000.00, 0.00, 500.00, 0.00, 0, 0.00, 1000.00, 786632.00, 15000.00, 0.00, 0.00, 771632.00, 0.00, 0.00, 771632.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 08:17:15', '2025-03-15 08:43:08', 'sold', 'delivered'),
 (53, '657149', 'sales', '2025-01-27', '2025-01-30', 'ZALA DASHARTHBHAI GANSYAMBHAI ', '9054504994', 'CHHIPADI', 'KATHLAL', 'KATHLAL', '387635', 'tahir3mansuri@gmail.com', '2002-12-15', 'mother', 'SHAJANBEN', '1983-01-01', '2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07DH2488', 'E25943', '4375161', 'AHMEDABAD', 'CHOLA  MANDALAM ', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', '-', '-', '67d53b057c765_1742027525.pdf', '67d53b057c98b_1742027525.jpeg', NULL, 658000, 39605.00, 40382.00, 0.00, 0.00, 35000.00, 0.00, 500.00, 0.00, 0, 0.00, 1000.00, 773487.00, 0.00, 0.00, 0.00, 773487.00, 0.00, 0.00, 773487.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 08:32:05', '2025-03-15 08:42:19', 'sold', 'delivered'),
-(54, '162647', 'sales', '0000-00-00', '2025-01-24', 'MANISHBHAI MANGALBHAI CHAUHAN', '8866468053', 'BARAIYA FALIYU', 'DABHAN', 'NADIAD', '387320', 'tahir3mansuri@gmail.com', '0000-00-00', 'wife', 'SANGITABEN', '1993-01-01', 'MARUTI SUZUKI', 'CELERIOVXI CNG', 'WHITE', NULL, NULL, NULL, 'GJ07DH2392', '23328', '54699', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', '-', '-', NULL, NULL, NULL, 673500, 35326.00, 36431.00, 0.00, 0.00, 30000.00, 0.00, 500.00, 0.00, 0, 0.00, 1000.00, 775757.00, 30000.00, 0.00, 0.00, 745757.00, 0.00, 0.00, 745757.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 10:38:12', '2025-03-15 11:24:02', 'sold', 'delivered'),
+(54, '162647', 'sales', NULL, '2025-01-24', 'MANISHBHAI MANGALBHAI CHAUHAN', '8866468053', 'BARAIYA FALIYU', 'DABHAN', 'NADIAD', '387320', 'tahir3mansuri@gmail.com', NULL, 'wife', 'SANGITABEN', '1993-01-01', 'MARUTI SUZUKI', 'CELERIOVXI CNG', 'WHITE', NULL, NULL, NULL, 'GJ07DH2392', '23328', '54699', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', '-', '-', NULL, NULL, NULL, 673500, 35326.00, 36431.00, 0.00, 0.00, 30000.00, 0.00, 500.00, 0.00, 0, 0.00, 1000.00, 775757.00, 30000.00, 0.00, 0.00, 745757.00, 0.00, 0.00, 745757.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 10:38:12', '2025-03-15 11:24:02', 'sold', 'delivered'),
 (55, '842877', 'sales', '2025-01-10', '2025-01-22', 'DABHI RAVINDRASINH VINUBHAI', '6352709379', 'FUDALPURA', 'KACHCHAI ,KHEDA ', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1995-01-25', 'father', 'VINUBHAI', '1979-01-01', '2025', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'GJ07DH2461', 'E16581', '4364427', 'AHMEDABAD', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', '', '-', '-', '', '67d568526ecaa_1742039122.pdf', NULL, NULL, 658000, 34605.00, 41962.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 734567.00, 0.00, 0.00, 0.00, 734567.00, 0.00, 0.00, 734567.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 11:23:02', '2025-03-15 11:45:22', 'sold', 'delivered'),
 (56, '958119', 'sales', '2025-01-01', '2025-01-18', 'DARJI VIMALKUMAR DINESHBHAI', '9898796295', 'SOMNATH SOCIETY ', 'ODHAV,AHMEDABAD', 'AHMEDABAD', '382415', 'tahir3mansuri@gmail.com', '1981-07-01', 'wife', 'RUPALBEN', '1984-01-01', '2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ27EF5698', 'E17138', '4365165', 'AHMEDABAD', 'CHOLA  MANDALAM ', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ-27', NULL, 'received', '', '-', '-', '-', '67d56ddbccefe_1742040539.pdf', '67d56ddbcd2fc_1742040539.pdf', NULL, 658000, 34605.00, 41962.00, 13009.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 1000.00, 782576.00, 0.00, 0.00, 0.00, 782576.00, 0.00, 0.00, 782576.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-15 12:08:59', '2025-03-16 09:28:24', 'sold', 'delivered'),
 (57, '792954', 'sales', '2025-03-15', '2025-03-28', 'MADARI KISHANNATH SURAMNATH', '9016952124', 'TAIYABPURA', 'KAPADVANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1990-01-01', 'wife', 'TEJALBEN', '1990-01-01', '2025', 'CRETA S O', 'BLACK', '', '', NULL, 'REGULAR  GJ07', '-', '-', 'SURAT', 'SHRI RAM FINANCE', 'MONARCH', 'KATHLAL', 'TAHIR ', 2147483647, 'HIML', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67d5727c7a209_1742041724.pdf', '67d5727c7a5a4_1742041724.jpeg', NULL, 1446900, 69522.00, 81434.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 14469.00, 0, 0.00, 0.00, 1632325.00, 90425.00, 0.00, 0.00, 1541900.00, 0.00, 0.00, 1541900.00, 1446900.00, 14469.00, 69522.00, 81434.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1612325.00, 0.00, 0.00, 100000.00, 1512325.00, 0.00, 0.00, 1512325.00, '2025-03-15 12:28:44', '2025-03-22 08:23:02', 'sold', 'delivered'),
@@ -11959,17 +11926,17 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (59, '219601', 'sales', '2025-02-08', '2025-02-15', 'RUPAREL JAYESHKUMAR VASUDEVBHAI', '9426995209', 'ASHVMEGH APARTMENT ', 'JUNAGADH', 'JUNAGADH', '362001', 'tahir3mansuri@gmail.com', '1989-01-01', 'father', 'VASUDEVBHAI', '1965-01-01', '2025', 'ERTIGA VXI O  CNG', 'BLACK', NULL, NULL, NULL, 'GJ11', '976085', '9716393', 'AHMEDABAD', 'BANK OF INDIA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'JUNAGADH', 'GJ11', 'completed', 'received', 'REGULAR', '-', '-', '-', NULL, NULL, NULL, 1088000, 47321.00, 40907.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1187108.00, 0.00, 0.00, 0.00, 1187108.00, 0.00, 0.00, 1187108.00, 1088000.00, 47321.00, 40907.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 0.00, 0.00, 1187108.00, 0.00, 0.00, 2108.00, 1185000.00, 0.00, 0.00, 1185000.00, '2025-03-18 08:05:29', '2025-03-22 09:12:31', 'sold', 'delivered'),
 (60, '641300', 'sales', '0025-03-19', '2025-03-28', 'RATHOD  JAYESHKUMAR PUNJALAL', '9924965051', '129,MALAJIVADU FALIYU', 'RAVDAVAT', 'KHEDA', '387610', 'tahir3mansuri@gmail.com', '1984-07-18', 'brother', 'AMARSINH', '1980-10-24', 'MARUTI SUZUKI-2025', 'BREZZA ZXI CNG', 'BLACK', '2025', 'PETROL  CNG', NULL, 'REGULAR  GJ07', '-', '-', 'surat', 'HDFC BANK LTD', 'raviratna surat', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '-', '', '67dab0b4aa3d7_1742385332.pdf', NULL, NULL, 1221000, 54524.00, 52691.00, 0.00, 0.00, 0.00, 15000.00, 600.00, 12210.00, 0, 885.00, 2500.00, 1356910.00, 19410.00, 0.00, 0.00, 1337500.00, 0.00, 0.00, 1337500.00, 1221000.00, 54524.00, 52691.00, 0.00, 0.00, 0.00, 0.00, 600.00, 12210.00, 0, 0.00, 0.00, 1341025.00, 25006.00, 0.00, 0.00, 1316019.00, 0.00, 0.00, 1316019.00, '2025-03-19 11:55:32', '2025-03-30 05:50:16', 'sold', 'delivered'),
 (61, '506492', 'sales', '2025-04-15', '2025-04-15', 'BHOI PRATAPBHAI BHALABHAI', '9870004787', 'SAMASPUR', 'BAVRA/KHEDA', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1969-10-11', 'son', 'YOGESHKUMAR', '1996-09-20', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'REGULAR  GJ07', '-', '-', 'NADIAD', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'VIJAYBHAI', '', '67dc0d0b29d44_1742474507.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30000.00, 12000.00, 0.00, 0.00, 0, 0.00, 0.00, 787225.00, 15000.00, 0.00, 32225.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-20 12:41:47', '2025-06-13 09:05:13', 'sold', 'delivered'),
-(62, '367388', 'sales', '2025-03-20', '2025-04-02', 'VAGHANI TUSHAR KALUBHAI', '9426551804', 'TANVI BANGLOWS ', 'UTARSANDA', 'NADIAD', '387370', 'tahir3mansuri@gmail.com', '1991-01-10', NULL, '', '0000-00-00', 'HYUNDAI ', 'CRETA SO PETROL', 'BLACK', '2025', 'PETROL', NULL, 'GJ07DH4321', '-', '-', 'HIMMATNAGAR', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 0, 'TATA  AIG', 'GJ07', '', NULL, NULL, 'CHOICE', '', '', '', '67dcf480b1928_1742533760.pdf', NULL, NULL, 1446900, 65217.00, 36020.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14519.00, 0, 0.00, 0.00, 1562656.00, 47656.00, 0.00, 0.00, 1515000.00, 0.00, 0.00, 1515000.00, 1446900.00, 65217.00, 36020.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14469.00, 0, 0.00, 0.00, 1562606.00, 64000.00, 0.00, 0.00, 1498606.00, 0.00, 0.00, 1498606.00, '2025-03-20 12:46:48', '2025-04-29 06:30:36', 'sold', 'delivered'),
+(62, '367388', 'sales', '2025-03-20', '2025-04-02', 'VAGHANI TUSHAR KALUBHAI', '9426551804', 'TANVI BANGLOWS ', 'UTARSANDA', 'NADIAD', '387370', 'tahir3mansuri@gmail.com', '1991-01-10', NULL, '', NULL, 'HYUNDAI ', 'CRETA SO PETROL', 'BLACK', '2025', 'PETROL', NULL, 'GJ07DH4321', '-', '-', 'HIMMATNAGAR', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 0, 'TATA  AIG', 'GJ07', '', NULL, NULL, 'CHOICE', '', '', '', '67dcf480b1928_1742533760.pdf', NULL, NULL, 1446900, 65217.00, 36020.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14519.00, 0, 0.00, 0.00, 1562656.00, 47656.00, 0.00, 0.00, 1515000.00, 0.00, 0.00, 1515000.00, 1446900.00, 65217.00, 36020.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14469.00, 0, 0.00, 0.00, 1562606.00, 64000.00, 0.00, 0.00, 1498606.00, 0.00, 0.00, 1498606.00, '2025-03-20 12:46:48', '2025-04-29 06:30:36', 'sold', 'delivered'),
 (63, '192421', 'sales', '2025-03-20', '2025-04-02', 'DUBEY BRIJKISHOR OMPRAKASH', '9727438358', 'BUTVANI NAGAR', '9/93,,,BAVLA', 'AHMEDABAD', '382220', 'tahir3mansuri@gmail.com', '1985-12-27', 'mother', 'CHANDRAVATIBEN', '1968-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'CHOICE', '-', '-', 'NADIAD', 'CHOLA  MANDALAM ', 'kiran motors ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ-27', 'pending', 'pending', 'CHOICE', '-', '-', '', '67dd21e9118f3_1742545385.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 775725.00, 45000.00, 0.00, 10725.00, 720000.00, 0.00, 0.00, 720000.00, 670000.00, 35163.00, 40625.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 776288.00, 15000.00, 0.00, 30000.00, 731288.00, 0.00, 0.00, 731288.00, '2025-03-21 08:23:05', '2025-04-03 04:56:48', 'sold', 'delivered'),
 (64, '265132', 'sales', '2025-03-18', '2025-04-05', 'PAGI RAHULKUMAR  KALUBHAI', '9512332363', 'BHEMAPURA ', 'MEGHRAJ,,ARVALLI', 'MODASA', '383350', 'tahir3mansuri@gmail.com', '2002-07-21', 'wife', 'HETALBEN', '2007-01-01', 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE  ', NULL, NULL, NULL, 'REGULAR  ', '-', '-', 'NADIAD', 'K,P FINANCE', 'KIRAN', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'MODASA', 'GJ31', 'pending', 'pending', 'REGULAR', '-', '-', 'WITH  ACASSARIES', '67dd39e65cdae_1742551526.pdf', '67dd39e65d3dc_1742551526.pdf', NULL, 1088001, 49021.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10880.00, 0, 780.00, 0.00, 1203660.00, 17880.00, 0.00, 0.00, 1185780.00, 0.00, 0.00, 1185780.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-21 10:05:26', '2025-04-05 05:13:32', 'sold', 'delivered'),
 (66, '221044', 'sales', '2025-03-21', '2025-04-01', 'MAHARAJ  AYODHADAS GURURAMDAS', '9875243483', 'RUSTAMPURA', 'KHEDA-387130', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1971-08-02', 'brother', 'VINODBHAI', '1985-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'REGULAR  GJ07', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'SHAILESHBHAI', '', '67de598c9d26f_1742625164.pdf', '67de598c9d4d3_1742625164.pdf', NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 775725.00, 60725.00, 0.00, 0.00, 715000.00, 0.00, 0.00, 715000.00, 670000.00, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 775725.00, 45000.00, 0.00, 0.00, 730725.00, 0.00, 0.00, 730725.00, '2025-03-22 06:32:44', '2025-03-30 12:01:18', 'sold', 'delivered'),
-(67, '899597', 'sales', '2025-01-12', '2025-01-24', 'CHAUHAN  MANISHBHAI  MANGALBHAI', '8866468053', 'HATHNOLI', 'DABHAN', 'KHEDA', '387320', 'tahir3mansuri@gmail.com', '0000-00-00', NULL, '', '0000-00-00', 'MARUTI SUZUKI', 'CELERIO VXI', 'WHITE  ', NULL, NULL, NULL, 'REGULAR  GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', '', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', 'SHAMBHU BHAI RIYA', '-', NULL, NULL, NULL, 673500, 35326.00, 36431.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0, 0.00, 1000.00, 765257.00, 0.00, 0.00, 0.00, 765257.00, 0.00, 0.00, 765257.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-22 10:49:25', '2025-03-22 10:52:29', 'sold', 'delivered'),
-(68, '627213', 'sales', '2024-12-20', '2025-01-31', 'DABHI RAVINDRASINH BHEMABHAI', '8780340721', 'PRIMARY SCHOOL AREA', 'BHARKUNDA.KATHLAL', 'KATHLAL', '387430', 'tahir3mansuri@gmail.com', '0000-00-00', 'wife', 'GEETABEN', '1995-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG TAXI', 'WHITE  ', NULL, NULL, NULL, 'GJ07TU6556', 'E26469', '4375739', 'AHMEDABAD', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'GJ07TU6556', '-', '-', '-', '67de9d4e535ab_1742642510.pdf', '67de9d4e53f65_1742642510.pdf', NULL, 658000, 34605.00, 41692.00, 0.00, 0.00, 0.00, 35000.00, 500.00, 0.00, 0, 0.00, 1000.00, 769797.00, 20000.00, 0.00, 0.00, 749797.00, 0.00, 0.00, 749797.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-22 11:21:50', '2025-04-21 09:13:45', 'sold', 'delivered'),
+(67, '899597', 'sales', '2025-01-12', '2025-01-24', 'CHAUHAN  MANISHBHAI  MANGALBHAI', '8866468053', 'HATHNOLI', 'DABHAN', 'KHEDA', '387320', 'tahir3mansuri@gmail.com', NULL, NULL, '', NULL, 'MARUTI SUZUKI', 'CELERIO VXI', 'WHITE  ', NULL, NULL, NULL, 'REGULAR  GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', '', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', 'SHAMBHU BHAI RIYA', '-', NULL, NULL, NULL, 673500, 35326.00, 36431.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0, 0.00, 1000.00, 765257.00, 0.00, 0.00, 0.00, 765257.00, 0.00, 0.00, 765257.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-22 10:49:25', '2025-03-22 10:52:29', 'sold', 'delivered'),
+(68, '627213', 'sales', '2024-12-20', '2025-01-31', 'DABHI RAVINDRASINH BHEMABHAI', '8780340721', 'PRIMARY SCHOOL AREA', 'BHARKUNDA.KATHLAL', 'KATHLAL', '387430', 'tahir3mansuri@gmail.com', NULL, 'wife', 'GEETABEN', '1995-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG TAXI', 'WHITE  ', NULL, NULL, NULL, 'GJ07TU6556', 'E26469', '4375739', 'AHMEDABAD', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'completed', 'received', 'GJ07TU6556', '-', '-', '-', '67de9d4e535ab_1742642510.pdf', '67de9d4e53f65_1742642510.pdf', NULL, 658000, 34605.00, 41692.00, 0.00, 0.00, 0.00, 35000.00, 500.00, 0.00, 0, 0.00, 1000.00, 769797.00, 20000.00, 0.00, 0.00, 749797.00, 0.00, 0.00, 749797.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-22 11:21:50', '2025-04-21 09:13:45', 'sold', 'delivered'),
 (69, '438537', 'sales', '2025-03-25', '2025-04-10', 'PATHAN IQBALKHAN BASIRKHAN', '999883365', 'RAKHIYAL ,UDHYOG VISTAR', 'AHMEDABAD', 'AHMEDABAD', '380023', 'tahir3mansuri@gmail.com', '1973-05-29', 'son', 'NAIMBHAI', '1997-04-06', 'HYUNDAI', 'CRETA S X  O AT ', 'BLACK', '', '', NULL, 'GJ27', '-', '-', 'HIMMATNAGAR', 'NA', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA  AIG', 'AHMEDABAD', 'GJ-27', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e27db1241e1_1742896561.pdf', NULL, NULL, 1999999, 87999.00, 40700.00, 37954.00, 0.00, 0.00, 0.00, 0.00, 19999.00, 0, 0.00, 0.00, 2186651.00, 26651.00, 0.00, 0.00, 2160000.00, 0.00, 0.00, 2160000.00, 1999900.00, 86499.00, 40700.00, 0.00, 0.00, 3502.00, 0.00, 0.00, 19999.00, 0, 0.00, 0.00, 2150600.00, 70000.00, 0.00, 0.00, 2080600.00, 0.00, 0.00, 2080600.00, '2025-03-25 09:56:01', '2025-04-03 04:55:59', 'sold', 'delivered'),
 (70, '391451', 'sales', '2025-03-25', '2025-03-28', 'VALAND RAJESHKUMAR  DHULABHAI', '9974685590', 'SHREEJI  RESIDENCY  ,,,,RICE MILL PACHAD ', 'BALASINOR', 'MAHISAGAR', '388255', 'tahir3mansuri@gmail.com', '1983-05-16', 'wife', 'REKHABEN', '1983-09-25', 'KIA', ' SONET', 'WHITE  ', '', '', NULL, 'GJ35AA0473', '-', '-', 'SURAT', 'SHREE RAM FINANCE', 'SHREE NATH KIA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e2aba1ba718_1742908321.pdf', NULL, NULL, 954900, 51964.00, 28000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1034864.00, 22864.00, 0.00, 0.00, 1012000.00, 0.00, 0.00, 1012000.00, 954900.00, 51964.00, 28000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1034864.00, 40000.00, 0.00, 0.00, 994864.00, 0.00, 0.00, 994864.00, '2025-03-25 13:12:01', '2025-04-03 08:16:13', 'sold', 'delivered'),
-(72, '359820', 'sales', '2025-03-25', '2025-03-29', 'KANSARA UMESHKUMAR  NAVINCHANDRA', '9714498664', 'KUMBHARVADA NI PASE', 'KAPADVANJ ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1987-11-18', NULL, '', '0000-00-00', 'HYUNDAI', 'CRETA E', 'WHITE  ', '2025', '', NULL, 'GJ07DH3752', '', '-', 'HIMMATNAGAR', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e639ae292ae_1743141294.pdf', '67e639ae29bd4_1743141294.jpeg', NULL, 1268700, 54998.00, 70256.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12687.00, 0, 0.00, 0.00, 1406641.00, 0.00, 0.00, 76641.00, 1330000.00, 0.00, 0.00, 1330000.00, 1268700.00, 57943.00, 33400.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12687.00, 0, 0.00, 0.00, 1372730.00, 0.00, 0.00, 47000.00, 1325730.00, 0.00, 0.00, 1325730.00, '2025-03-28 05:54:54', '2025-04-29 06:29:29', 'sold', 'delivered'),
+(72, '359820', 'sales', '2025-03-25', '2025-03-29', 'KANSARA UMESHKUMAR  NAVINCHANDRA', '9714498664', 'KUMBHARVADA NI PASE', 'KAPADVANJ ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1987-11-18', NULL, '', NULL, 'HYUNDAI', 'CRETA E', 'WHITE  ', '2025', '', NULL, 'GJ07DH3752', '', '-', 'HIMMATNAGAR', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e639ae292ae_1743141294.pdf', '67e639ae29bd4_1743141294.jpeg', NULL, 1268700, 54998.00, 70256.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12687.00, 0, 0.00, 0.00, 1406641.00, 0.00, 0.00, 76641.00, 1330000.00, 0.00, 0.00, 1330000.00, 1268700.00, 57943.00, 33400.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12687.00, 0, 0.00, 0.00, 1372730.00, 0.00, 0.00, 47000.00, 1325730.00, 0.00, 0.00, 1325730.00, '2025-03-28 05:54:54', '2025-04-29 06:29:29', 'sold', 'delivered'),
 (74, '234833', 'sales', '2025-03-28', '2025-04-01', 'CHAUHAN MANHARBHAI  GOTABHAI', '9624317577', 'WANTHVALI', 'MEHMEDABAD', 'KHEDA', '387430', 'tahir3mansuri@gmail.com', '1986-02-10', 'wife', 'AMARTBEN', '1988-01-07', 'MARUTI SUZUKI', 'BREZZA LXI CNG', 'WHITE  ', '', '', NULL, 'REGULAR  GJ07', '-', '-', 'NADIIAD', 'BANK OF BARODA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR', 0, '-', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e7c9dddbaf8_1743243741.pdf', '67e7c9dddbd3f_1743243741.pdf', NULL, 964001, 42390.00, 44848.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1051239.00, 25000.00, 0.00, 0.00, 1026239.00, 0.00, 0.00, 1026239.00, 1221000.00, 54524.00, 52691.00, 0.00, 0.00, 0.00, 0.00, 600.00, 12210.00, 0, 0.00, 0.00, 1341025.00, 0.00, 0.00, 25000.00, 1316025.00, 0.00, 0.00, 1316025.00, '2025-03-29 10:22:21', '2025-04-02 06:13:40', 'sold', 'delivered'),
-(77, '695210', 'sales', '2025-04-04', '2025-04-04', 'PINJARA IDRISHBHAI MAJIDBHAI', '7990734247', 'HAT FALIYU', 'DAHIKOT,CHENPUR', 'PANCHMAHAL', '389380', 'tahir3mansuri@gmail.com', '1968-12-22', NULL, '', '0000-00-00', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', '', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e7dbfa49c06_1743248378.pdf', '67e7dbfa49e17_1743248378.pdf', NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 42000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 787225.00, 15000.00, 25000.00, 15553.00, 731672.00, 0.00, 0.00, 731672.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-29 11:39:38', '2025-06-13 09:28:53', 'sold', 'delivered'),
+(77, '695210', 'sales', '2025-04-04', '2025-04-04', 'PINJARA IDRISHBHAI MAJIDBHAI', '7990734247', 'HAT FALIYU', 'DAHIKOT,CHENPUR', 'PANCHMAHAL', '389380', 'tahir3mansuri@gmail.com', '1968-12-22', NULL, '', NULL, 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', '', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ', 'pending', 'pending', 'REGULAR', '-', '-', '', '67e7dbfa49c06_1743248378.pdf', '67e7dbfa49e17_1743248378.pdf', NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 42000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 787225.00, 15000.00, 25000.00, 15553.00, 731672.00, 0.00, 0.00, 731672.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-03-29 11:39:38', '2025-06-13 09:28:53', 'sold', 'delivered'),
 (78, '480179', 'sales', '2025-04-01', '2025-04-06', 'SONI MITESHKUMAR ASHOKKUMAR', '9712986480', 'BHAVASARVADA', 'KAPADWANJ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1980-03-29', 'wife', 'NIKITABEN', '1982-01-01', 'HYUNDAI', 'AURA S CNG', 'WHITE  ', '', '', NULL, 'REGULAR  GJ07', '-', '-', 'AHMEDABABD', '-', 'PRATHAM HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '67eb7d3a07c67_1743486266.pdf', NULL, NULL, 837000, 42930.00, 54197.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 934127.00, 0.00, 0.00, 114127.00, 820000.00, 0.00, 0.00, 820000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-01 05:44:26', '2025-04-07 06:35:43', 'sold', 'delivered'),
 (79, '717403', 'sales', '2025-04-01', '2025-04-07', 'PATEL JAGDISHBHAI JASHUBHAI', '8320315064', 'KACHIYA VAD', 'KAPADWANJ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1984-03-28', 'brother', 'NARENDRA BHAI', '1974-01-01', 'MARUTI SUZUKI', 'SUPER CARRY CNG', 'WHITE', '', 'CNG', NULL, 'gj07tu6863', '348031', '93409', 'NADIIAD', 'NA', 'kiran motors ', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'completed', 'received', 'REGULAR', '-', '-', '', '67fcaf854adac_1744613253.pdf', '67fcaf854b0ac_1744613253.jpeg', NULL, 650500, 36192.00, 23965.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 710657.00, 20000.00, 9000.00, 10000.00, 671657.00, 0.00, 0.00, 671657.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-01 10:28:42', '2025-04-14 06:47:33', 'sold', 'delivered'),
 (81, '905711', 'sales', '2025-04-04', '2023-04-19', 'KHOKHAR SEHJADALI MAJARALI', '9909267868', 'KHOKHARVADA', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1985-07-12', 'brother', 'ISHAQBHAI', '1988-06-01', 'HYUNDAI', 'CRETA SX O MT', 'BLACK', '2025', 'DIESEL', NULL, 'REGULAR  GJ07', '-', '-', 'HIMMATNAGAR', 'HDFC BANK LTD', 'BHURAWALA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE  4422', '-', '-', '-', '67f0dfc10174e_1743839169.pdf', '67f0dfc101a2f_1743839169.pdf', NULL, 1904700, 88465.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19047.00, 0, 0.00, 8500.00, 2062212.00, 65000.00, 0.00, 0.00, 1997212.00, 0.00, 0.00, 1997212.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-05 07:46:09', '2025-04-18 04:55:59', 'sold', 'delivered'),
@@ -11979,14 +11946,14 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (85, '221065', 'sales', '2025-04-11', '2025-04-23', 'MEHTA KIRAT FATEHCHAND', '9227951050', 'NAVRANGPURA', 'AHMEDABAD', 'AHMEDABAD', '380015', 'tahir3mansuri@gmail.com', '1964-08-26', 'wife', 'CHARUBEN', '1964-08-26', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE  ', '2025', 'CNG', NULL, 'GJ01', '-', '-', '', 'NA', '-', '', 'TAHIR', 0, '-', 'AHMEDABAD', 'GJ01', 'pending', 'pending', '', '-', '-', '', '67f8d719a947e_1744361241.pdf', NULL, NULL, 664000, 25530.00, 36825.00, 13000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 739355.00, 20000.00, 0.00, 10000.00, 709355.00, 0.00, 0.00, 709355.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-11 08:47:21', '2025-04-23 10:57:07', 'sold', 'delivered'),
 (86, '515195', 'sales', '2025-04-11', '2025-04-25', 'DAVE PRASHANTBHAI NATVARBHAI', '9824682246', 'NEW HOUSING SOCIETY', 'DAKOR/KHEDA', 'KHEDA', '388225', 'tahir3mansuri@gmail.com', '1983-01-01', 'wife', 'PRITIBEN', '1980-03-25', 'MARUTI SUZUKI', 'dezire ZXI+', 'BLACK', '', '', NULL, 'GJO7', '', '-', 'NADIAD', 'BANK OF BARODA', 'kiran motors nadiad', 'KATHLAL', 'TAHIR', 2147483647, 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'IMRANBHAI DAKOR', '', '67f8f9c3bc4d8_1744370115.pdf', '67f8f9c3bc752_1744370115.pdf', NULL, 969000, 49470.00, 52466.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1070936.00, 396.00, 0.00, 0.00, 1070540.00, 0.00, 0.00, 1070540.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-11 11:15:15', '2025-05-02 07:09:47', 'sold', 'delivered'),
 (88, '516722', 'sales', '2025-04-15', '2025-04-23', 'DABHI RAJENDRAKUMAR BHUDHABHAI', '7567385193', 'RUDAN', 'KHEDA', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1982-07-05', 'wife', 'USHABEN', '1983-01-01', 'MARUTI SUZUKI', 'ERTIGA ZXI O  CNG', 'BLACK', '2025', 'CNG', NULL, 'GJ07DH5521', '-', '-', 'NADIAD', 'SHRII RAM FINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE  5521', '-', '-', '', '68071b8048971_1745296256.pdf', '67fe337fc7188_1744712575.pdf', NULL, 1210500, 54090.00, 58939.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12105.00, 0, 0.00, 0.00, 1335634.00, 0.00, 0.00, 12634.00, 1323000.00, 0.00, 0.00, 1323000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-15 10:22:55', '2025-04-29 06:21:52', 'sold', 'delivered'),
-(89, '674684', 'sales', '2025-04-15', '0000-00-00', 'HADI VINUBHAI RAMANBHAI', '7096765617', 'VADADALA', 'MAHISAGAR', 'MAHISAGAR', '388255', 'tahir3mansuri@gmail.com', '1988-05-25', 'wife', 'NILUBEN HADI', '1989-07-14', 'MAHINDRA', 'XUV700', 'BLACK', '2025', 'DIESEL', NULL, 'GJ35AA3796', 'C43212', '58299', 'DAHOD', 'INDUSIND BANK', 'AMBER AUTO MOBILE', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'MAHISAGAR', 'GJ35', 'pending', 'pending', '', '-', 'VISHAL RABARI-8347332801', '', '67ff62156878e_1744790037.pdf', NULL, NULL, 2239000, 93270.00, 83641.00, 0.00, 0.00, 40000.00, 0.00, 0.00, 22390.00, 0, 30000.00, 0.00, 2508301.00, 0.00, 0.00, 0.00, 2508301.00, 0.00, 0.00, 2508301.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-16 07:53:57', '2025-04-29 06:25:29', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+(89, '674684', 'sales', '2025-04-15', NULL, 'HADI VINUBHAI RAMANBHAI', '7096765617', 'VADADALA', 'MAHISAGAR', 'MAHISAGAR', '388255', 'tahir3mansuri@gmail.com', '1988-05-25', 'wife', 'NILUBEN HADI', '1989-07-14', 'MAHINDRA', 'XUV700', 'BLACK', '2025', 'DIESEL', NULL, 'GJ35AA3796', 'C43212', '58299', 'DAHOD', 'INDUSIND BANK', 'AMBER AUTO MOBILE', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'MAHISAGAR', 'GJ35', 'pending', 'pending', '', '-', 'VISHAL RABARI-8347332801', '', '67ff62156878e_1744790037.pdf', NULL, NULL, 2239000, 93270.00, 83641.00, 0.00, 0.00, 40000.00, 0.00, 0.00, 22390.00, 0, 30000.00, 0.00, 2508301.00, 0.00, 0.00, 0.00, 2508301.00, 0.00, 0.00, 2508301.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-16 07:53:57', '2025-04-29 06:25:29', 'sold', 'delivered');
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (90, '714823', 'sales', '2025-05-18', '2025-05-10', 'SODHAPARMAR  AJITSINH UDESINH', '7600002584', 'ZAL BHAI NI MUVADI', 'RUDAN', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1977-01-01', 'wife', 'RANJANBEN', '1980-01-07', 'MARUTI SUZUKI-2025', 'ALTO K 10 VXI CNG', 'grey ', '', '', NULL, 'GJO7DH4139', '390924', '845913', 'NADIAD', 'SBI BANK', 'kiran motors ', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6800dbb225d42_1744886706.pdf', '6800dbb226078_1744886706.jpeg', NULL, 620500, 32860.00, 31265.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 375.00, 0.00, 685000.00, 55000.00, 0.00, 20000.00, 610000.00, 0.00, 0.00, 610000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-17 10:45:06', '2025-05-11 06:11:30', 'sold', 'delivered'),
 (92, '155681', 'sales', '2025-05-08', '2025-05-18', 'ZALA MAHESHBHAI  UDHABHAI', '8849957294', 'NARSIHPURA', 'CHABUTARI PASE/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1986-01-01', 'brother', 'JAYDIPSINH', '2000-12-23', 'MARUTI SUZUKI-2025', 'EECO 5 SEATER AC', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'CHOLA MANDALAM', 'kiran motors nadiad', 'KATHLAL', 'TAHIR ', 0, 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '680233ef221f1_1744974831.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 0.00, 5500.00, 0.00, 0.00, 0, 0.00, 0.00, 750725.00, 15000.00, 0.00, 725.00, 735000.00, 0.00, 0.00, 735000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-18 11:13:51', '2025-05-09 05:24:19', 'sold', 'delivered'),
 (93, '135289', 'sales', '2025-04-19', '2025-04-30', 'VAGHELA VIJAYSINH UDESINH', '8200206621', 'LAXMIPURA ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1996-08-08', 'wife', 'PAYALBEN', '1990-01-01', 'HUNDAI', 'AURA SX ', 'WHITE  ', '2025', 'CNG', NULL, 'GJ07', '-', '-', 'MUMBAI', 'INDUSIND BANK', 'MUMBAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'SUFIYAN POPULAR GARAGE', '', '68034799489cd_1745045401.pdf', '6803479948bc7_1745045401.pdf', NULL, 911000, 44521.00, 57517.00, 0.00, 0.00, 2000.00, 0.00, 500.00, 0.00, 0, 0.00, 0.00, 1015538.00, 65000.00, 0.00, 538.00, 950000.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-19 06:50:01', '2025-05-07 10:52:07', 'sold', 'delivered'),
 (94, '327487', 'sales', '2025-04-19', '2025-04-23', 'MIRZA SHAIDBEG FARUKBEG', '9173932937', 'NANI KANYASHALA PACHHAD  KATHLAL', 'KATHLAL', 'KATHALA,', '387630', 'tahir3mansuri@gmail.com', '1999-11-21', 'brother', 'SOHILBEG', '2000-08-25', 'MARUTI SUZUKI-2025', 'BREZAA VXI', 'WHITE  ', '', '', NULL, 'GJ07DH7798', '597952', '06987', 'NADIAD', 'HDFC BANK LTD', 'kiran motors nadiad', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'completed', 'received', 'CHOICE', '-', '-', '', '680376e67f9d8_1745057510.pdf', '680376e67ff10_1745057510.pdf', NULL, 1070000, 46776.00, 48140.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10700.00, 0, 0.00, 0.00, 1175616.00, 20000.00, 0.00, 15616.00, 1140000.00, 0.00, 0.00, 1140000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-19 10:11:50', '2025-04-24 05:17:02', 'sold', 'delivered'),
-(95, '934603', 'sales', '2025-04-19', '2025-04-30', 'PATEL MAHESHBHAI VINUBHAI', '9824397563', 'GREED ROAD  ANAND', 'ANAND', 'ANANAD', '388001', 'tahir3mansuri@gmail.com', '1958-06-11', NULL, '', '0000-00-00', 'TOYOTA', 'HYRIDER', 'WHITE  ', '', '', NULL, 'GJ23', '-', '-', '', '', '', '', '', 0, 'TATA  AIG', 'AANAND', 'GJ23', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1999000, 88774.00, 75578.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19990.00, 0, 0.00, 0.00, 2183342.00, 45047.00, 0.00, 0.00, 2138295.00, 0.00, 0.00, 2138295.00, 1999000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19990.00, 7200, 0.00, 0.00, 2026190.00, 0.00, 0.00, 0.00, 2026190.00, 0.00, 0.00, 2026190.00, '2025-04-19 12:52:23', '2025-05-02 07:09:22', 'sold', 'delivered'),
-(96, '311026', 'sales', '2025-04-21', '2025-04-30', 'KA PATEL KIRTAN SURESHBHAI', '9427084937', 'RANCHODRAY  NAGAR ', 'DAKOR ROAD //KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1998-08-18', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'PICK UP 2.0 LLX', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'KATHLAL', '-', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6805e8d0e50db_1745217744.pdf', '6805e8d0e53d3_1745217744.pdf', NULL, 1085999, 53560.00, 27300.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10860.00, 0, 0.00, 0.00, 1177719.00, 27719.00, 0.00, 0.00, 1150000.00, 0.00, 0.00, 1150000.00, 1085999.00, 53560.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10859.00, 0, 0.00, 0.00, 1150418.00, 25000.00, 0.00, 18000.00, 1107418.00, 0.00, 0.00, 1107418.00, '2025-04-21 05:52:36', '2025-05-01 06:32:13', 'sold', 'delivered'),
+(95, '934603', 'sales', '2025-04-19', '2025-04-30', 'PATEL MAHESHBHAI VINUBHAI', '9824397563', 'GREED ROAD  ANAND', 'ANAND', 'ANANAD', '388001', 'tahir3mansuri@gmail.com', '1958-06-11', NULL, '', NULL, 'TOYOTA', 'HYRIDER', 'WHITE  ', '', '', NULL, 'GJ23', '-', '-', '', '', '', '', '', 0, 'TATA  AIG', 'AANAND', 'GJ23', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1999000, 88774.00, 75578.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19990.00, 0, 0.00, 0.00, 2183342.00, 45047.00, 0.00, 0.00, 2138295.00, 0.00, 0.00, 2138295.00, 1999000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19990.00, 7200, 0.00, 0.00, 2026190.00, 0.00, 0.00, 0.00, 2026190.00, 0.00, 0.00, 2026190.00, '2025-04-19 12:52:23', '2025-05-02 07:09:22', 'sold', 'delivered'),
+(96, '311026', 'sales', '2025-04-21', '2025-04-30', 'KA PATEL KIRTAN SURESHBHAI', '9427084937', 'RANCHODRAY  NAGAR ', 'DAKOR ROAD //KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1998-08-18', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'PICK UP 2.0 LLX', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'KATHLAL', '-', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6805e8d0e50db_1745217744.pdf', '6805e8d0e53d3_1745217744.pdf', NULL, 1085999, 53560.00, 27300.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10860.00, 0, 0.00, 0.00, 1177719.00, 27719.00, 0.00, 0.00, 1150000.00, 0.00, 0.00, 1150000.00, 1085999.00, 53560.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10859.00, 0, 0.00, 0.00, 1150418.00, 25000.00, 0.00, 18000.00, 1107418.00, 0.00, 0.00, 1107418.00, '2025-04-21 05:52:36', '2025-05-01 06:32:13', 'sold', 'delivered'),
 (97, '401543', 'sales', '2025-04-21', '2025-04-25', 'MALEK INJMAM  ILYASBHAI', '7567991691', 'P  N BODDING ', 'DEHGAM  ', 'DAHEGAM', '382305', 'tahir3mansuri@gmail.com', '1997-01-01', 'father', 'ILYASBHAI', '1961-01-01', 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE  ', '', '', NULL, 'GJ31', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'KARARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'IFFCOTOKIO', 'DAHEGAM', 'GJ31', 'pending', 'pending', 'REGULAR', '-', '-', '', '680640ea49bdf_1745240298.pdf', '680640ea49eda_1745240298.jpeg', NULL, 1100500, 49538.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 500.00, 11005.00, 0, 0.00, 1000.00, 1216521.00, 0.00, 0.00, 0.00, 1216521.00, 0.00, 0.00, 1216521.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-21 12:58:18', '2025-06-13 08:51:49', 'sold', 'delivered'),
 (98, '963821', 'sales', '2025-04-21', '2025-04-25', 'PATHAN  TARIKKHAN UBEDKHAN ', '9924453157', 'JUNA BAPUNAGAR', 'AHMEDABAD', 'AHMEDABAD', '380024', 'tahir3mansuri@gmail.com', '1997-01-01', 'wife', 'SHEHNAZ', '1988-07-06', 'tata yodha', '4*2 ac', 'WHITE  ', '2025', 'DIESEL', NULL, 'GJ27', '-', '-', 'AHMEDABAD', 'KOTAK MAHINDRA', 'SHITAL AHMEDABAD', 'KATHLAL', 'TAHIR', 2147483647, 'TATA  AIG', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '-', '-', '', '6808c4fd7c6e0_1745405181.pdf', NULL, NULL, 1055269, 65000.00, 30500.00, 25000.00, 0.00, 0.00, 0.00, 0.00, 10553.00, 0, 0.00, 0.00, 1186322.00, 46322.00, 0.00, 0.00, 1140000.00, 0.00, 0.00, 1140000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-23 10:46:21', '2025-05-01 06:30:09', 'sold', 'delivered'),
 (99, '762929', 'sales', '2025-04-24', '2025-04-30', 'PARMAR AJAYBHAI RAJUBHAI', '9722715788', 'GADHADA ROAD/DHASAGAM', 'BHAVNAGAR', 'BHAVNAGAR', '364730', 'tahir3mansuri@gmail.com', '1996-09-03', 'wife', 'DAYABEN', '2002-01-14', 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE  ', '', '', NULL, 'GJ04', '-', '-', 'AHMEDABAD', '-', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'BHAVNAGAR', 'GJ-33', 'pending', 'pending', 'REGULAR', '-', '-', '', '6809f722de5ab_1745483554.pdf', '6809f722deefb_1745483554.jpeg', NULL, 1100500, 49538.00, 33170.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11005.00, 0, 0.00, 0.00, 1194213.00, 0.00, 0.00, 0.00, 1194213.00, 0.00, 0.00, 1194213.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-04-24 08:32:34', '2025-05-03 07:55:56', 'sold', 'delivered'),
@@ -12000,16 +11967,16 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (107, '435374', 'sales', '2025-05-08', '2025-05-14', 'TRIVEDI ANILKUMAR JAYDUTTPRASAD', '7405846668', 'PANJARA POLE VISTAR ', 'YAMUNA  ICE FACTORY  NI PASE', 'DAKOR', '388225', 'tahir3mansuri@gmail.com', '1967-10-19', 'son', 'CHIKLIT', '2000-03-07', 'HUNDAI', 'ALCAZAR', 'BLACK', '', '', NULL, 'GJ07', 'as', '-', 'KAPADWANJ', 'HDFC  BANK ', '', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '-', '', '681c9fca3b64f_1746706378.pdf', '681c9fca3bcb1_1746706378.pdf', NULL, 1955900, 84934.00, 103401.00, 0.00, 0.00, 5000.00, 0.00, 0.00, 19559.00, 0, 0.00, 1000.00, 2168794.00, 88794.00, 0.00, 0.00, 2080000.00, 0.00, 0.00, 2080000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-08 12:12:58', '2025-05-22 04:45:56', 'sold', 'delivered'),
 (108, '467116', 'sales', '2025-05-10', '2025-05-20', 'PARMAR SHANTIBHAI FATABHAI ', '6353170592', '71  BHATHIJI VADU FALIYU', 'RUSTAMPURA', 'THASRA', '388245', 'tahir3mansuri@gmail.com', '1965-01-01', 'son', 'KAMLESHBHAI', '1998-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', '', '', NULL, 'REGULAR', 'as', '-', 'NADIAD', 'AU SMALL FAINANCE', 'kiran motors nadiad', 'KATHLAL-', 'TAHIR ', 2147483647, 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'SHAILESHBHAI SEVALIYA', '', '681ee37ce17cc_1746854780.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 2000.00, 0.00, 0.00, 0, 0.00, 0.00, 777725.00, 35000.00, 0.00, 725.00, 742000.00, 0.00, 0.00, 742000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-10 05:26:20', '2025-05-26 04:20:13', 'sold', 'delivered'),
 (109, '924585', 'sales', '2025-05-01', '2025-05-15', 'ISHA DIPIKABEN ZALA', '9725052811', 'NANIRATNAGAR', 'MANINAGAR', 'AHMEDABADD', '380008', 'tahir3mansuri@gmail.com', '1985-01-01', 'husband', 'VARUN MANKANI', '2003-02-08', 'MARUTI SUZUKI ', 'FRONX DELTA CNG', 'BLUISH BLACK', '2025', 'PETROL  CNG', NULL, 'GJ', '-', '-', 'NADIAD', 'CANARA BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'AHMEDABAD', 'GJ03', 'pending', 'pending', '0802/2405/0020/0018', '-', '-', '', NULL, NULL, NULL, 880500, 44953.00, 35137.00, 17089.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 977679.00, 7000.00, 10679.00, 20000.00, 940000.00, 0.00, 0.00, 940000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-12 04:05:05', '2025-05-16 08:41:20', 'sold', 'delivered'),
-(110, '607826', 'sales', '2025-05-13', '2025-05-27', 'RAMAVALA SARAFRAJ HANIFBHAI', '9106693423', 'UDHAWALA ', 'DEVGADH BARIYA ,DAHOD', 'DAHOD', '389380', 'tahir3mansuri@gmail.com', '2002-10-20', NULL, '', '0000-00-00', 'HUNDAI', 'CRETA SX O AT ', 'RED', '2025', 'DIESEL', NULL, 'REGULAR', '', '-', 'KAPADWANJ', 'NA', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'DAHOD', 'GJ13', 'pending', 'pending', 'REGULAR', '-', '-', '', '6822f8108b8bf_1747122192.pdf', '6822f8108bd21_1747122192.jpeg', NULL, 2049800, 87319.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20498.00, 0, 0.00, 0.00, 2217617.00, 52617.00, 0.00, 0.00, 2165000.00, 0.00, 0.00, 2165000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-13 07:43:12', '2025-05-27 11:18:34', 'sold', 'delivered'),
+(110, '607826', 'sales', '2025-05-13', '2025-05-27', 'RAMAVALA SARAFRAJ HANIFBHAI', '9106693423', 'UDHAWALA ', 'DEVGADH BARIYA ,DAHOD', 'DAHOD', '389380', 'tahir3mansuri@gmail.com', '2002-10-20', NULL, '', NULL, 'HUNDAI', 'CRETA SX O AT ', 'RED', '2025', 'DIESEL', NULL, 'REGULAR', '', '-', 'KAPADWANJ', 'NA', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'DAHOD', 'GJ13', 'pending', 'pending', 'REGULAR', '-', '-', '', '6822f8108b8bf_1747122192.pdf', '6822f8108bd21_1747122192.jpeg', NULL, 2049800, 87319.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20498.00, 0, 0.00, 0.00, 2217617.00, 52617.00, 0.00, 0.00, 2165000.00, 0.00, 0.00, 2165000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-13 07:43:12', '2025-05-27 11:18:34', 'sold', 'delivered'),
 (111, '422024', 'sales', '2025-05-13', '2025-05-25', 'CHAUHAN  RAJESHBHAI SHANABHAI', '9601623441', 'GODALI/KHEDA', 'KHEDA', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1996-03-09', 'wife', 'SEJALBEN', '1997-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, '-', '', 'GJ07', 'pending', 'pending', 'REGULAR', '', '', '', '6823117271a31_1747128690.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 15000.00, 0.00, 0.00, 0, 0.00, 0.00, 790725.00, 35000.00, 0.00, 10725.00, 745000.00, 0.00, 0.00, 745000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-13 09:31:30', '2025-05-26 07:05:54', 'sold', 'delivered'),
 (112, '207302', 'sales', '2025-05-25', '2025-05-26', 'DABHI  CHANDRASINH  SOMABHAI', '9638307067', 'NANI MUDEL', 'CHHIPADI', 'kathlal', '387635', 'tahir3mansuri@gmail.com', '1969-01-01', 'wife', 'KAILASHBEN', '1989-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG ', 'WHITE', '2025', '', NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'received', '', '-', '-', '', '6823154072847_1747129664.pdf', '6823154072d32_1747129664.pdf', NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 15000.00, 463.00, 0.00, 0, 0.00, 0.00, 791188.00, 35000.00, 2100.00, 23625.00, 730463.00, 0.00, 0.00, 730463.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-13 09:47:44', '2025-06-02 05:31:43', 'sold', 'delivered'),
-(114, '525495', 'sales', '2025-05-15', '2025-06-04', 'BARAIYA VASANTKUMARB DIPAKBHAI', '9327340423', 'CHORAVALU FALIYU', 'GHOGHAWADA', 'GHOGHAWADA', '387630', 'tahir3mansuri@gmail.com', '1994-08-16', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', '', '', NULL, '-`', '-', '-', 'KAPADWANJ', 'BOB', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE1999', '-', '-', '', '6826e89742c58_1747380375.pdf', NULL, NULL, 1100500, 49538.00, 54978.00, 0.00, 0.00, 0.00, 20000.00, 500.00, 11005.00, 0, 0.00, 0.00, 1236521.00, 16521.00, 0.00, 0.00, 1220000.00, 0.00, 0.00, 1220000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-16 07:26:15', '2025-06-05 05:11:46', 'sold', 'delivered'),
+(114, '525495', 'sales', '2025-05-15', '2025-06-04', 'BARAIYA VASANTKUMARB DIPAKBHAI', '9327340423', 'CHORAVALU FALIYU', 'GHOGHAWADA', 'GHOGHAWADA', '387630', 'tahir3mansuri@gmail.com', '1994-08-16', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', '', '', NULL, '-"', '-', '-', 'KAPADWANJ', 'BOB', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE1999', '-', '-', '', '6826e89742c58_1747380375.pdf', NULL, NULL, 1100500, 49538.00, 54978.00, 0.00, 0.00, 0.00, 20000.00, 500.00, 11005.00, 0, 0.00, 0.00, 1236521.00, 16521.00, 0.00, 0.00, 1220000.00, 0.00, 0.00, 1220000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-16 07:26:15', '2025-06-05 05:11:46', 'sold', 'delivered'),
 (115, '751509', 'sales', '2025-05-16', '2025-05-28', 'VAHORA VASIMBHAI YUNUSHBHAI', '9727772719', 'MALEKPURA ROAD', 'KATHLAL', 'KATHALAL', '387620', 'tahir3mansuri@gmail.com', '1988-06-26', 'father', 'YUNUSBHAI', '1963-06-01', 'hyundai', 'NIOS SPORT CNG', 'WHITE', '2025', 'CNG', NULL, 'REGULAR', '-', '-', 'NADIAD', 'BOB', 'PROGRESSIVE TATA', 'KATHLAL', 'TAHIR', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '0', '-', '', '682703be3f18a_1747387326.pdf', NULL, NULL, 838200, 54250.00, 42986.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 1500.00, 935436.00, 121936.00, 0.00, 0.00, 813500.00, 0.00, 0.00, 813500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-16 09:22:06', '2025-05-28 06:33:52', 'sold', 'delivered'),
 (116, '207493', 'sales', '2025-05-17', '2025-05-25', 'SHARMA SHAILESHKUMAR SHANKARLAL', '9712546393', 'KATALAL', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1957-06-01', 'son', 'VIMALBHAI', '2000-01-01', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG TAXI', 'WHITE', NULL, NULL, NULL, 'REGULAR', '-', '-', 'NADIAD', 'HDFC', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '0', '-', '', '68282149b841d_1747460425.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 9000.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 784725.00, 15000.00, 0.00, 29725.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-17 05:40:25', '2025-06-02 04:52:30', 'sold', 'delivered'),
 (117, '841464', 'sales', '2025-05-17', '2025-05-23', 'JOSHI ATULKUMAR VISHNUPRASAD', '9601789412', 'NANANO', 'KATHLAL', 'kathlal', '387630', 'tahir3mansuri@gmail.com', '1973-01-01', 'son', 'YASH', '2000-10-02', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG TAXI', 'WHITE', NULL, NULL, NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', '-', 'TAHIR', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '0', '-', '-', '6828228beaae8_1747460747.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 9000.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 784725.00, 15000.00, 29725.00, 0.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-17 05:45:47', '2025-05-23 12:21:00', 'sold', 'delivered'),
 (120, '719605', 'sales', '2025-05-17', '2025-05-18', 'MALEK ASHIKHUSEN FATEHMAHANMAD', '9909990349', 'DASTAGIR SOCIETY', 'KATHLAL', 'KATHALAL', '387630', 'tahir3mansuri@gmail.com', '1984-10-22', 'son', 'MOINNAWAZ', '2007-04-02', 'MARUTI SUZUKI', 'BREZZA LXI CNG', 'WHITE', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '682834ecd927b_1747465452.pdf', NULL, NULL, 964001, 43890.00, 44848.00, 0.00, 0.00, 15000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1067739.00, 15000.00, 0.00, 32739.00, 1020000.00, 0.00, 0.00, 1020000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-17 07:04:12', '2025-05-19 04:24:02', 'sold', 'delivered'),
-(121, '645029', 'sales', '2025-05-18', '2025-05-22', 'PATEL DARSHANKUMAR PANKAJKUMAR', '9924139620', 'PATELVADI SAME', 'PATELVADA//KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1984-07-12', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'PICK UP 1.7 LLX', 'WHITE', NULL, NULL, NULL, 'GJ07', 'as', '-', 'ANAND', 'AU SMALL FAINANCE', 'M M VOHRA', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', 'NOMINEE PENDING', '682af7c012c5f_1747646400.pdf', NULL, NULL, 1010000, 52500.00, 26389.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 500.00, 1088889.00, 40389.00, 0.00, 0.00, 1048500.00, 0.00, 0.00, 1048500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-19 09:20:00', '2025-05-22 04:48:30', 'sold', 'delivered'),
-(122, '320320', 'sales', '2025-05-20', '2025-05-21', 'TRIVEDI  PRADIPKUMAR NAVINCHANDRA', '9909004900', 'A./27  VRUNDAVAN SOCIETY ', 'BH/ST WORK SHOP  HIGH WAY /PALANPUR', 'BANASKANTHA', '385001', 'tahir3mansuri@gmail.com', '1982-07-09', NULL, '', '0000-00-00', 'HUNDAI', 'CRETA S O AUTO ', 'BLACK', NULL, NULL, NULL, 'GJ08', 'as', '-', 'KAPADWANJ', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'PALANPUR', 'GJ08', 'pending', 'pending', 'REGULAR', '-', '-', '', '682c4366b138d_1747731302.pdf', NULL, NULL, 1755200, 75129.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17552.00, 0, 0.00, 0.00, 1907881.00, 57881.00, 0.00, 0.00, 1850000.00, 0.00, 0.00, 1850000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-20 08:55:02', '2025-05-22 04:42:08', 'sold', 'delivered'),
+(121, '645029', 'sales', '2025-05-18', '2025-05-22', 'PATEL DARSHANKUMAR PANKAJKUMAR', '9924139620', 'PATELVADI SAME', 'PATELVADA//KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1984-07-12', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'PICK UP 1.7 LLX', 'WHITE', NULL, NULL, NULL, 'GJ07', 'as', '-', 'ANAND', 'AU SMALL FAINANCE', 'M M VOHRA', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', 'NOMINEE PENDING', '682af7c012c5f_1747646400.pdf', NULL, NULL, 1010000, 52500.00, 26389.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 500.00, 1088889.00, 40389.00, 0.00, 0.00, 1048500.00, 0.00, 0.00, 1048500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-19 09:20:00', '2025-05-22 04:48:30', 'sold', 'delivered'),
+(122, '320320', 'sales', '2025-05-20', '2025-05-21', 'TRIVEDI  PRADIPKUMAR NAVINCHANDRA', '9909004900', 'A./27  VRUNDAVAN SOCIETY ', 'BH/ST WORK SHOP  HIGH WAY /PALANPUR', 'BANASKANTHA', '385001', 'tahir3mansuri@gmail.com', '1982-07-09', NULL, '', NULL, 'HUNDAI', 'CRETA S O AUTO ', 'BLACK', NULL, NULL, NULL, 'GJ08', 'as', '-', 'KAPADWANJ', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'PALANPUR', 'GJ08', 'pending', 'pending', 'REGULAR', '-', '-', '', '682c4366b138d_1747731302.pdf', NULL, NULL, 1755200, 75129.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17552.00, 0, 0.00, 0.00, 1907881.00, 57881.00, 0.00, 0.00, 1850000.00, 0.00, 0.00, 1850000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-20 08:55:02', '2025-05-22 04:42:08', 'sold', 'delivered'),
 (123, '450475', 'sales', '2025-05-20', '2025-05-20', 'SHAIKH RAFIKBHAI MOHAMMADBHAI', '9426364873', '11  AANAND NAGAR SOCIETY ', 'BH/DAIRY / NADI GATE  /KAPADVANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1973-08-05', 'son', 'SHAIKH ADNAN', '2001-05-26', 'MAHINDRA& MAHINDARA LIMITD', 'BOLEERO MAXX 1.7', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'ANAND', 'NA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR', 2147483647, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '', '682d709957296_1747808409.pdf', NULL, NULL, 1010000, 52500.00, 27500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1090000.00, 35000.00, 0.00, 10000.00, 1045000.00, 0.00, 0.00, 1045000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-21 06:20:09', '2025-05-22 04:41:50', 'sold', 'delivered'),
 (124, '552310', 'sales', '2025-05-23', '2025-05-30', 'MANSURI SALMANBHAI SALIMBHAI', '7402778692', 'DANDIYA BAJAR', 'TIMBA ROAD /GODHRA', 'PANCHMAHAL', '388710', 'tahir3mansuri@gmail.com', '1991-04-18', 'wife', 'RUHINABEN', '1993-01-01', 'TOYOTA', 'FORTUNER LEGENDER 4*2', 'BLACK', NULL, NULL, NULL, 'GJ07', 'as', '-', 'KAPADWANJ', '', 'MUNJAN TOYOTA', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '', '', '68315364a35c2_1748063076.pdf', NULL, NULL, 4751000, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 4751000.00, 0.00, 0.00, 0.00, 4751000.00, 0.00, 0.00, 4751000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-24 05:04:36', '2025-05-31 04:59:24', 'sold', 'delivered'),
 (125, '696957', 'sales', '2025-05-22', '2025-05-30', 'CHAUHAN  RANJITKUMAR SHANTILAL', '9904101437', 'JOGNIMATA VADU FALIYU', 'GODALI', 'MAHEMDAVAD', '387130', 'tahir3mansuri@gmail.com', '1994-05-24', 'wife', 'RAMILABEN', '1995-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', 'as', '-', 'NADIAD', 'NA', 'kiran motors nadiad', 'KATHLAL', 'TAHIR', 2147483647, 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6831bfc9e8183_1748090825.pdf', '6831bfc9e83a7_1748090825.pdf', NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 15000.00, 0.00, 0.00, 0, 0.00, 0.00, 790725.00, 35000.00, 0.00, 10725.00, 745000.00, 0.00, 0.00, 745000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-24 12:47:05', '2025-05-27 07:47:14', 'sold', 'delivered'),
@@ -12017,10 +11984,10 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (129, '192322', 'sales', '2025-05-27', '2025-05-29', 'MALEK JAHIRMIYA AHEMADMIYA', '9624959204', 'LIMBUDI  VALU FALIYU', 'JALIYA', 'JALIYA', '387335', 'tahir3mansuri@gmail.com', '1975-06-01', 'son', 'SEEDHIKMIYA ', '2004-01-01', 'HUNDAI', 'CRETA E DIESEL', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '', '-', '68356b4a9e2ad_1748331338.pdf', NULL, NULL, 1268700, 54998.00, 70256.00, 0.00, 0.00, 0.00, 0.00, 500.00, 12687.00, 0, 0.00, 0.00, 1407141.00, 0.00, 0.00, 0.00, 1407141.00, 0.00, 0.00, 1407141.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-27 07:35:38', '2025-05-30 05:29:58', 'sold', 'delivered'),
 (130, '344119', 'sales', '2025-05-28', '2025-06-13', 'KHARADI BACHUBEN HARSHDBHAI', '8141067611', 'HANUMAN DHAL ', 'MAHUDHA', 'MAHUDA', '3873335', 'tahir3mansuri@gmail.com', '1968-06-01', 'son', 'PRITESHBHAI', '1991-12-27', 'HUNDAI', 'KIA CARENS PREMIUM 0', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '7011', '-', 'KAPADWANJ', '', '-', 'KATHLAL-', 'TAHIR', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '-', '-', NULL, NULL, NULL, 1454900, 67753.00, 60493.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14549.00, 0, 0.00, 0.00, 1597695.00, 0.00, 0.00, 0.00, 1597695.00, 0.00, 0.00, 1597695.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-28 10:26:13', '2025-06-12 04:22:06', 'sold', 'delivered'),
 (131, '466628', 'sales', '2025-05-29', '2025-06-04', 'SHAIKH  MAHIRMIYA LATIFMIYA', '7487015433', 'PASU DAVAKHANA SAME', 'OPP  TALUKA PANCHAYAT / BALASINOR', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '2002-02-11', 'father', 'LATIFMIYA', '1966-06-01', 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE  ', '2025', 'PETROL/CNG', NULL, 'GJ35', 'as', '-', 'ahmedabad', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', 'CHOICE  3227', '-', 'FARDIN KHOKHAR', '', '6839a3b71b40f_1748607927.pdf', '6839a3b71bebb_1748607927.jpeg', NULL, 1100500, 49538.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 500.00, 11005.00, 0, 0.00, 500.00, 1217021.00, 17021.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-05-29 10:24:50', '2025-06-05 05:09:37', 'sold', 'delivered'),
-(134, '198420', 'sales', '2025-06-02', '2025-06-04', 'SHAIKH AHMEDRAZA M YUNUS', '9712865341', 'SAI NAGAR SOCIETY   ', 'RAJPUR ROAD /BALASINOR', 'balasinor', '387620', 'tahir3mansuri@gmail.com', '1995-05-25', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE  ', '2025', 'PETROL  CNG', NULL, 'GJ35', 'as', '-', 'ahmedabad', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'gj35', 'pending', 'pending', 'REGULAR', '-', '-', '', '683d484f4aa32_1748846671.pdf', '683d484f4b466_1748846671.jpeg', NULL, 1210500, 54090.00, 53939.00, 0.00, 0.00, 10000.00, 0.00, 500.00, 12105.00, 0, 0.00, 1000.00, 1342134.00, 17134.00, 0.00, 0.00, 1325000.00, 0.00, 0.00, 1325000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-02 06:37:11', '2025-08-02 12:46:10', 'sold', 'delivered'),
+(134, '198420', 'sales', '2025-06-02', '2025-06-04', 'SHAIKH AHMEDRAZA M YUNUS', '9712865341', 'SAI NAGAR SOCIETY   ', 'RAJPUR ROAD /BALASINOR', 'balasinor', '387620', 'tahir3mansuri@gmail.com', '1995-05-25', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE  ', '2025', 'PETROL  CNG', NULL, 'GJ35', 'as', '-', 'ahmedabad', '', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'gj35', 'pending', 'pending', 'REGULAR', '-', '-', '', '683d484f4aa32_1748846671.pdf', '683d484f4b466_1748846671.jpeg', NULL, 1210500, 54090.00, 53939.00, 0.00, 0.00, 10000.00, 0.00, 500.00, 12105.00, 0, 0.00, 1000.00, 1342134.00, 17134.00, 0.00, 0.00, 1325000.00, 0.00, 0.00, 1325000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-02 06:37:11', '2025-08-02 12:46:10', 'sold', 'delivered'),
 (136, '199700', 'sales', '2025-05-25', '2025-06-06', 'SOLANKI SHAILESHBHAI  GIRISHBHAI', '9624248964', 'BHAGVAN JI NI MUVADI ', 'AANTROLI', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1986-07-05', 'wife', 'SUSHILABEN', '2000-01-01', 'MARUTI SUZUKI-2025', 'SWIFT VXI  PETROL ', 'BLACK', '', '', NULL, 'GJ07', 'as', '-', 'NADIAD', 'hdb financil services ltd', 'kiran motors nadiad', 'KATHLAL-', 'TAHIR', 2147483647, 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '', '683d65257a381_1748854053.pdf', '683d65257ac2c_1748854053.jpeg', NULL, 729501, 39831.00, 36430.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 805762.00, 40000.00, 0.00, 0.00, 765762.00, 0.00, 0.00, 765762.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-02 08:47:33', '2025-06-08 04:41:10', 'sold', 'delivered'),
 (137, '960577', 'sales', '2025-06-04', '2025-06-06', 'KHOKHAR FURQANALI ASGARALI', '9722956786', 'MUKHI VADU FALIYU', 'KHOKHARWADA/KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1998-01-23', 'wife', 'MAHINUR ', '1999-10-30', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', 'as', '-', 'NADIAD', 'CENTRAL BANK OF INDIA', 'kiran motors nadiad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJO7', 'pending', 'pending', 'CHOICE--4520', '-', '-', '-', '683ff0756f334_1749020789.pdf', NULL, NULL, 670000, 40062.00, 35163.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 775725.00, 50725.00, 0.00, 0.00, 725000.00, 0.00, 0.00, 725000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-04 07:06:56', '2025-06-06 09:59:25', 'sold', 'delivered'),
-(138, '313628', 'sales', '2025-05-04', '2025-06-18', 'SIROYA MAHAMMAD UJER ABDULAZIZ', '9978794693', 'AHMADPURA', 'META/BANASKANTHA', 'BANASKANTHA', '385520', 'tahir3mansuri@gmail.com', '1997-05-29', 'wife', '', '0000-00-00', 'HUNDAI', 'CRETA S O AUTO ', 'KNIGHT ADITION WHITE', NULL, NULL, NULL, 'GJ08', 'as', '-', '', '-', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'BANASKANTHA', 'GJ08', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6841301a9bf90_1749102618.pdf', '6841301a9c38b_1749102618.jpeg', NULL, 1770100, 75746.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17701.00, 0, 0.00, 0.00, 1923547.00, 75000.00, 0.00, 0.00, 1848547.00, 0.00, 0.00, 1848547.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-05 05:50:18', '2025-06-18 09:42:34', 'sold', 'delivered'),
+(138, '313628', 'sales', '2025-05-04', '2025-06-18', 'SIROYA MAHAMMAD UJER ABDULAZIZ', '9978794693', 'AHMADPURA', 'META/BANASKANTHA', 'BANASKANTHA', '385520', 'tahir3mansuri@gmail.com', '1997-05-29', 'wife', '', NULL, 'HUNDAI', 'CRETA S O AUTO ', 'KNIGHT ADITION WHITE', NULL, NULL, NULL, 'GJ08', 'as', '-', '', '-', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'BANASKANTHA', 'GJ08', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6841301a9bf90_1749102618.pdf', '6841301a9c38b_1749102618.jpeg', NULL, 1770100, 75746.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17701.00, 0, 0.00, 0.00, 1923547.00, 75000.00, 0.00, 0.00, 1848547.00, 0.00, 0.00, 1848547.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-05 05:50:18', '2025-06-18 09:42:34', 'sold', 'delivered'),
 (139, '958892', 'sales', '2025-06-05', '2025-06-15', 'TINWALA  ADIL AARIFBHAI', '8866673739', 'B 36  MADNI PARK  SOCIETY', 'MARIDA ROAD /MARIDA', 'NADIAD', '387360', 'tahir3mansuri@gmail.com', '1998-02-26', 'father', 'AARIFBHAI', '1962-01-01', 'HUNDAI', 'I 20 ASTA', 'WHITE  ', '', '', NULL, 'GJ07DH4552', 'as', '-', '', 'AU SMALL FAINANCE', 'monarch', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '-', '', '6841380bbadc1_1749104651.pdf', NULL, NULL, 937800, 47620.00, 56954.00, 0.00, 0.00, 2000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1044374.00, 94374.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-05 06:24:11', '2025-06-13 04:55:57', 'sold', 'delivered'),
 (141, '795084', 'sales', '2025-06-09', '2025-06-20', 'RANA TWINKLEKUMAREE ARVINDKUMAR', '7383042427', '36 INDIRANAGAR ', 'OPP 658   BLOCK NUMBER  / AHMEDABAD', 'AHMEDABAD', '380024', 'tahir3mansuri@gmail.com', '1996-04-29', 'father', 'ARVINDKUMAR', '1967-01-01', 'TATA', 'TATA PUNCH CREATIVE', 'WHITE', '', '', NULL, 'GJ27EG1887', '-', 'as', '', 'BANK OF BARODA', '-', '', 'TAHIR', 0, 'TATA INSURANCE', 'AHMEDABAD', 'GJ27', 'completed', 'received', '', '-', '-', '-', NULL, NULL, NULL, 926429, 47306.00, 54686.00, 17979.00, 0.00, 0.00, 0.00, 600.00, 0.00, 0, 0.00, 0.00, 1047000.00, 0.00, 0.00, 0.00, 1047000.00, 0.00, 0.00, 1047000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-10 06:26:16', '2025-08-22 04:54:15', 'sold', 'delivered'),
 (143, '897129', 'sales', '2025-06-05', '2025-06-13', 'MANSURI KADILBHAI HASANBHAI', '8155984127', '45 ANAND NAGAR SOCIETY', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1984-12-29', 'wife', 'SOHANABANU', '1988-05-13', 'MARUTI SUZUKI-2025', 'FRONX DELTA CNG', 'MAGMA GRAY', '', '', NULL, 'GJ07', '-', 'as', 'NADIAD', 'BANK OF BARODA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'BAYAD', 'GJ09', 'pending', 'pending', 'REGULAR', '-', '', '', '6847f4c61b57a_1749546182.pdf', '6847d93b93b4f_1749539131.pdf', NULL, 935500, 42768.00, 47512.00, 0.00, 0.00, 21800.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1047580.00, 65780.00, 0.00, 0.00, 981800.00, 0.00, 0.00, 981800.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-10 07:05:31', '2025-06-14 04:56:08', 'sold', 'delivered'),
@@ -12028,25 +11995,25 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (145, '537200', 'sales', '2025-06-11', '2025-06-12', 'KHOKHAR ISHAQALI MAZHARALI', '9909267868', 'KHOKHARWADA', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1988-06-01', 'brother', 'SAHEJADALI ', '1985-07-12', 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO Z 8 S ', 'BLUISH BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'ANAND', 'HDFC BANK LTD', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE/5777', '-', '-', '-', '68497f596936d_1749647193.pdf', '68497f5969706_1749647193.pdf', NULL, 1956000, 80797.00, 66548.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19560.00, 0, 0.00, 0.00, 2122905.00, 2019.00, 0.00, 0.00, 2120886.00, 0.00, 0.00, 2120886.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-11 13:06:33', '2025-06-13 07:19:16', 'sold', 'delivered'),
 (146, '394743', 'sales', '2025-06-12', '2025-06-26', 'PARMAR SHANTIBHAI RAMANBHAI', '9638053792', '347/MOTI MUVADI', 'SANDESAR', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1988-12-09', 'wife', 'SEETABEN', '1995-01-01', 'KIA', 'SONET HTK O ', 'BLACK', '2025', 'DIESEL ', NULL, 'GJ07', '-', '-', 'AHMEDABAD PANRAPOL', 'M&M FINANCIAL SERVICES LTD', 'WESTCOAST KIA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '684a5d0d176a3_1749703949.pdf', '684a5d0d17e35_1749703949.pdf', NULL, 1104900, 51400.00, 59000.00, 0.00, 0.00, 10000.00, 0.00, 500.00, 11050.00, 0, 0.00, 0.00, 1236850.00, 56850.00, 0.00, 0.00, 1180000.00, 0.00, 0.00, 1180000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-12 04:52:29', '2025-06-24 07:45:06', 'sold', 'delivered'),
 (147, '995624', 'sales', '2025-06-13', '2025-06-15', 'KAZI SAHEJADALI AIYUBMIYA', '9974049292', '2636 KAZI SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1988-07-19', 'wife', 'TEHMINA ', '1992-01-01', 'HUNDAI', 'AURA SX ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'PANJAB NATIONAL BANK', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '684bcfc35dc7c_1749798851.pdf', NULL, NULL, 911000, 46372.00, 57517.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 1015889.00, 125889.00, 0.00, 0.00, 890000.00, 0.00, 0.00, 890000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-13 07:14:11', '2025-06-15 09:24:06', 'sold', 'delivered'),
-(148, '497226', 'sales', '2025-06-12', '2025-06-19', 'PATEL  JANKIBAHEN  ANKITKUMAR', '9408012111', 'SWAGAT FLAMINGO OF ROAD', 'SARGASAN GANDHINAGAR-', 'GANDHINAGAR', '382421', 'tahir3mansuri@gmail.com', '1994-01-14', 'husband', 'ANKITKUMAR', '0000-00-00', 'MARUTI SUZUKI-2025', 'GV HYBRID DELTA  AT', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ18EE3539', '-', '-', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '', '-', '-', '', '684bf9bc30c21_1749809596.pdf', '684bf9bc3102f_1749809596.jpeg', NULL, 1392999, 63641.00, 47571.00, 21700.00, 0.00, 59.00, 0.00, 0.00, 13930.00, 0, 0.00, 0.00, 1539900.00, 30000.00, 0.00, 35000.00, 1474900.00, 0.00, 0.00, 1474900.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-13 10:13:16', '2025-06-24 06:48:46', 'sold', 'delivered'),
+(148, '497226', 'sales', '2025-06-12', '2025-06-19', 'PATEL  JANKIBAHEN  ANKITKUMAR', '9408012111', 'SWAGAT FLAMINGO OF ROAD', 'SARGASAN GANDHINAGAR-', 'GANDHINAGAR', '382421', 'tahir3mansuri@gmail.com', '1994-01-14', 'husband', 'ANKITKUMAR', NULL, 'MARUTI SUZUKI-2025', 'GV HYBRID DELTA  AT', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ18EE3539', '-', '-', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '', '-', '-', '', '684bf9bc30c21_1749809596.pdf', '684bf9bc3102f_1749809596.jpeg', NULL, 1392999, 63641.00, 47571.00, 21700.00, 0.00, 59.00, 0.00, 0.00, 13930.00, 0, 0.00, 0.00, 1539900.00, 30000.00, 0.00, 35000.00, 1474900.00, 0.00, 0.00, 1474900.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-13 10:13:16', '2025-06-24 06:48:46', 'sold', 'delivered'),
 (150, '171349', 'sales', '2025-06-16', '2025-06-19', 'PARMAR  JESANGBHAI LAXMANBHAI ', '7990647496', 'SONALPURA', 'ABHRIPUR', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1992-06-01', 'wife', 'VERSHABEN', '1991-01-01', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', 'as', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '684fe52e51fab_1750066478.pdf', NULL, NULL, 819500, 47746.00, 42116.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 910247.00, 20000.00, 2100.00, 0.00, 888147.00, 0.00, 0.00, 888147.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-16 09:34:38', '2025-06-18 11:26:08', 'sold', 'delivered'),
 (151, '368014', 'sales', '2025-06-16', '2025-06-25', 'PATEL VIMESHKUMAR VITTHALBHAI', '8488069501', 'MAHALAXMI SOCIETY ', 'JAGDAMBA VIDHYALAY PASE//BALASINOR', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1964-06-19', 'wife', 'SUREKHABEN', '1968-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC  TAXI', 'WHITE', NULL, NULL, NULL, 'GJ35', '', 'as', 'NADIAD', 'HDFC BANK LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'gj35', 'pending', 'pending', '5033', '-', '-', '-', '685004f9ab184_1750074617.pdf', NULL, NULL, 695500, 36349.00, 43509.00, 0.00, 0.00, 0.00, 0.00, 500.00, 0.00, 0, 0.00, 1000.00, 776858.00, 0.00, 0.00, 0.00, 776858.00, 0.00, 0.00, 776858.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-16 11:50:17', '2025-06-18 06:27:32', 'sold', 'cancel'),
-(152, '118568', 'sales', '0000-00-00', '2025-06-27', 'TRIVEDI TRUPTIBEN PRAKASHBHAI ', '9909479871', 'GOPALPURA ', 'DAKOR/THASRA', 'THASRA', '388255', 'tahir3mansuri@gmail.com', '1979-05-11', 'son', 'NAYANBHAI', '1998-10-24', 'KATARIA-NEXA', 'XL6 ZETA', 'WHITE', '', 'PETROL', NULL, 'GJ07', '-', '-', '', '', 'KATARIA NEXA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68500d95f1344_1750076821.pdf', NULL, NULL, 1183500, 54972.00, 41706.00, 0.00, 0.00, 42980.00, 0.00, 0.00, 11835.00, 0, 0.00, 0.00, 1334993.00, 20000.00, 0.00, 12093.00, 1302900.00, 0.00, 0.00, 1302900.00, 1183500.00, 54972.00, 41706.00, 0.00, 0.00, 42980.00, 0.00, 0.00, 11835.00, 0, 0.00, 0.00, 1334993.00, 20000.00, 0.00, 45000.00, 1269993.00, 0.00, 0.00, 1269993.00, '2025-06-16 12:27:01', '2025-07-01 10:28:05', 'sold', 'delivered'),
-(153, '647357', 'sales', '2025-06-17', '2025-06-27', 'PRAJAPATI JIGNESHKUMAR RAMANBHAI', '9624488385', '45 PATELWADO ZANDA', 'ZANDA/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1987-06-16', NULL, '', '0000-00-00', 'HUNDAI', 'AURA S', 'WHITE  ', NULL, NULL, NULL, 'GJ', '-', '-', '', '-', 'GALLOPS HUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68512eed844ca_1750150893.pdf', NULL, NULL, 837000, 42930.00, 54197.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 934127.00, 134127.00, 0.00, 0.00, 800000.00, 0.00, 0.00, 800000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-17 09:01:33', '2025-06-24 07:46:23', 'sold', 'delivered'),
+(152, '118568', 'sales', NULL, '2025-06-27', 'TRIVEDI TRUPTIBEN PRAKASHBHAI ', '9909479871', 'GOPALPURA ', 'DAKOR/THASRA', 'THASRA', '388255', 'tahir3mansuri@gmail.com', '1979-05-11', 'son', 'NAYANBHAI', '1998-10-24', 'KATARIA-NEXA', 'XL6 ZETA', 'WHITE', '', 'PETROL', NULL, 'GJ07', '-', '-', '', '', 'KATARIA NEXA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68500d95f1344_1750076821.pdf', NULL, NULL, 1183500, 54972.00, 41706.00, 0.00, 0.00, 42980.00, 0.00, 0.00, 11835.00, 0, 0.00, 0.00, 1334993.00, 20000.00, 0.00, 12093.00, 1302900.00, 0.00, 0.00, 1302900.00, 1183500.00, 54972.00, 41706.00, 0.00, 0.00, 42980.00, 0.00, 0.00, 11835.00, 0, 0.00, 0.00, 1334993.00, 20000.00, 0.00, 45000.00, 1269993.00, 0.00, 0.00, 1269993.00, '2025-06-16 12:27:01', '2025-07-01 10:28:05', 'sold', 'delivered'),
+(153, '647357', 'sales', '2025-06-17', '2025-06-27', 'PRAJAPATI JIGNESHKUMAR RAMANBHAI', '9624488385', '45 PATELWADO ZANDA', 'ZANDA/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1987-06-16', NULL, '', NULL, 'HUNDAI', 'AURA S', 'WHITE  ', NULL, NULL, NULL, 'GJ', '-', '-', '', '-', 'GALLOPS HUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68512eed844ca_1750150893.pdf', NULL, NULL, 837000, 42930.00, 54197.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 934127.00, 134127.00, 0.00, 0.00, 800000.00, 0.00, 0.00, 800000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-17 09:01:33', '2025-06-24 07:46:23', 'sold', 'delivered'),
 (154, '477625', 'sales', '2025-06-18', '2025-06-23', 'KHOKHAR FARDINALI NAZIMALI', '7990900708', '3207 /PATHANVADA', 'MALIWAD NO DHAL /MAHUDHA', 'MAHUDHA', '387335', 'tahir3mansuri@gmail.com', '2000-07-02', 'father', 'NAZIMALI', '1974-01-01', 'KIA', 'SELTOS', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'SURAT', 'ICICI BANK LTD', 'SHREE NATH KIA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE 8604', '-', '-', '-', '6853e34379808_1750328131.pdf', NULL, NULL, 1255900, 60322.00, 52834.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12559.00, 0, 0.00, 0.00, 1381615.00, 67615.00, 0.00, 0.00, 1314000.00, 0.00, 0.00, 1314000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-19 10:15:31', '2025-06-27 04:52:00', 'sold', 'delivered'),
 (156, '331276', 'sales', '2025-06-21', '2025-06-30', 'DESAI SHILPABEN  VASUDEV', '9898792541', '44 NIJANAND PARK   TALOD', 'TALOD/SABARKANTHA', 'SABARKANTHA', '383215', 'tahir3mansuri@gmail.com', '1987-01-01', 'husband', 'RAHULBHAI', '1989-10-20', 'MARUTI SUZUKI-2025', 'BALENO DELTA CNG', 'WHITE', '2025', ' CNG', NULL, 'GJ18', '-', '-', 'NADIAD', 'BANK OF BARODA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '4040', '-', '-', '-', '68567f199c25d_1750499097.pdf', '68567f199cc8a_1750499097.pdf', NULL, 844000, 45256.00, 44123.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 934379.00, 70000.00, 0.00, 44379.00, 820000.00, 0.00, 0.00, 820000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-21 09:44:57', '2025-07-02 10:31:25', 'sold', 'delivered'),
 (157, '475414', 'sales', '2025-06-21', '2025-06-28', 'SHAIKH ASGARMIYA ISUBMIYA', '9998853304', 'SIPAIWADA /DAKOR', 'DAKOR/THASRA', 'THASRA', '388255', 'tahir3mansuri@gmail.com', '1973-06-01', 'son', 'AYANMIYA', '2005-01-02', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'BANK OF  INDIA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', '-', '-', '-', '', '68569c9e5bb37_1750506654.pdf', '68569c9e5c9bc_1750506654.pdf', NULL, 670000, 37163.00, 35562.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 773225.00, 55000.00, 0.00, 0.00, 718225.00, 0.00, 0.00, 718225.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-21 11:47:44', '2025-06-29 06:30:54', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
-(158, '418681', 'sales', '2025-06-21', '2025-06-29', 'CHAVDA JITENDRAKUMAR SHANKARJI', '09662225909', 'VASNA', 'GANDHINAGAR', 'GANDHINAGAR', '382650', 'tahir3mansuri@gmail.com', '1986-06-30', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE', NULL, NULL, NULL, 'GJ', '-', '-', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '-', '-', '', '-', '68569e2fab81c_1750507055.pdf', '68569e2fabc90_1750507055.pdf', NULL, 1210500, 54090.00, 58939.00, 0.00, 0.00, 0.00, 0.00, 500.00, 12105.00, 0, 0.00, 1000.00, 1337134.00, 0.00, 0.00, 0.00, 1337134.00, 0.00, 0.00, 1337134.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-21 11:57:35', '2025-07-31 05:07:04', 'sold', 'cancel'),
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
+(158, '418681', 'sales', '2025-06-21', '2025-06-29', 'CHAVDA JITENDRAKUMAR SHANKARJI', '09662225909', 'VASNA', 'GANDHINAGAR', 'GANDHINAGAR', '382650', 'tahir3mansuri@gmail.com', '1986-06-30', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA ZXI O  CNG', 'WHITE', NULL, NULL, NULL, 'GJ', '-', '-', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '-', '-', '', '-', '68569e2fab81c_1750507055.pdf', '68569e2fabc90_1750507055.pdf', NULL, 1210500, 54090.00, 58939.00, 0.00, 0.00, 0.00, 0.00, 500.00, 12105.00, 0, 0.00, 1000.00, 1337134.00, 0.00, 0.00, 0.00, 1337134.00, 0.00, 0.00, 1337134.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-21 11:57:35', '2025-07-31 05:07:04', 'sold', 'cancel'),
 (159, '293474', 'sales', '2025-06-23', '2025-06-26', 'RABARI ANKIT RAJUBHAI', '9931999990', 'MALATAJ,PO MALATAJ   SOJITRA', 'DIS ANANND', 'ANAND', '387220', '', '1997-02-12', 'wife', 'KRISHNABEN', '1995-09-05', 'TOYOTA', 'FORTUNER 4*2 AT DIESEL ', 'SUPER WHITE', '2025', 'DIESEL ', NULL, '2521', '-', '-', 'SURAT', 'NA', 'MUNJANI', 'KATHLAL', 'TAHIR', 2147483647, 'TOYOTA', 'GJ-23', '', 'pending', 'pending', '2521', '110000', 'IRFAN RIYA', '', '685a780ca9a48_1750759436.pdf', NULL, NULL, 3901000, 165130.00, 140000.00, 0.00, 0.00, 10000.00, 0.00, 0.00, 39010.00, 0, 0.00, 0.00, 4255140.00, 75140.00, 0.00, 0.00, 4180000.00, 0.00, 0.00, 4180000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-23 08:18:10', '2025-06-27 04:57:42', 'sold', 'delivered'),
 (160, '226215', 'sales', '2025-06-23', '2025-06-28', 'LUHAR BHAVESHBHAI  RAMESHBHAI', '7622092983', '12 VAGHESHWARI RESIDENCY  ', 'VALLABH NAGAR SAME /UMRETH', 'UMRETH', '388220', 'tahir3mansuri@gmail.com', '1997-06-01', 'wife', 'BHAVNABEN', '1998-04-30', 'MAHINDRA', 'SCORPIO S11 SF ', 'BLUISH BLACK', '2025', 'DIESEL ', NULL, 'GJ23', '-', '-', 'ANAND', 'HDFC BANK LTD', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'ICICI LOMBARD', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '', '68593242c5634_1750676034.pdf', '68593242c60b1_1750676034.pdf', NULL, 1771998, 75838.00, 63131.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17400.00, 0, 0.00, 0.00, 1928367.00, 42000.00, 0.00, 0.00, 1886367.00, 0.00, 0.00, 1886367.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-23 10:53:54', '2025-06-29 06:20:16', 'sold', 'delivered'),
 (161, '608946', 'sales', '2025-06-23', '2025-06-27', 'PARMAR BABARBHAI SHANABHAI', '8141117252', 'VASADARA /', 'JETHOLI /BALASINOR', 'BALASINOR', '388265', 'tahir3mansuri@gmail.com', '1984-11-21', 'wife', 'NAYNABEN', '1985-01-01', 'HUNDAI', 'CRETA SX O ', 'BLUISH BLACK', NULL, NULL, NULL, 'GJ35', '-', '-', 'SURAT', 'BANK OF BARODA', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'MAHISAGAR', 'GJ35', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6859462c307d8_1750681132.pdf', '6859462c30b9b_1750681132.pdf', NULL, 1999999, 87000.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19999.00, 0, 0.00, 0.00, 2156998.00, 56998.00, 0.00, 0.00, 2100000.00, 0.00, 0.00, 2100000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-23 12:18:52', '2025-06-27 04:54:42', 'sold', 'delivered'),
 (163, '412183', 'sales', '2025-06-25', '2025-07-08', 'KHOKHAR SHAHNAWAZ SAKURAHMED', '9998172588', 'DASTGIR SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1998-03-19', 'father', 'SHAKURAHMED', '1967-01-01', 'MARUTI SUZUKI-2025', 'FRONX SIGMA', 'GREY', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', 'HDFC BANK LTD', 'KIRAN MOTORS ', '', 'TAHIR ', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', '', '', '', '', '685ce401e0cc4_1750918145.pdf', '685ce401e168d_1750918145.jpeg', NULL, 754500, 41093.00, 32140.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 827733.00, 0.00, 0.00, 27733.00, 800000.00, 0.00, 0.00, 800000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 06:09:05', '2025-07-13 05:54:42', 'sold', 'delivered'),
 (164, '355527', 'sales', '2025-06-26', '2025-06-27', 'SHAIKH ASHIFBHAI  YUSUFBHAI', '9824423523', 'NAVA MADRASA PASE ', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1978-12-30', 'wife', 'RESHMABEN', '1984-03-23', 'HUNDAI', 'VANUE S +', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'ahmedabad', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 0, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '685d27a5142b9_1750935461.pdf', NULL, NULL, 953000, 48326.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1031326.00, 106326.00, 0.00, 0.00, 925000.00, 0.00, 0.00, 925000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 10:57:41', '2025-06-27 04:44:19', 'sold', 'delivered'),
-(165, '983644', 'sales', '2025-06-26', '2025-06-30', 'ZALA SANJAYKUMAR  ARVINDBHAI ', '9737032026', 'KALESAR', 'CHHIPDI ', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1998-08-28', NULL, '', '0000-00-00', 'MARUTI SUZUKI', 'EECO 5 SEATER AC ', 'WHITE', '2025', 'CNG', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 11:10:27', '2025-07-11 07:18:56', 'unsold', 'cancel'),
-(166, '149895', 'sales', '2025-06-26', '2025-06-30', 'SODHA  PARMAR  DHARMENDRAKUMAR RAYSINH', '9016724353', '65 VAHANVATI MATA NA MANDIR PASE', 'SARALI', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1985-06-01', NULL, '', '0000-00-00', 'HUNDAI', 'CRETA S O', '', NULL, NULL, NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1605200, 71000.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16052.00, 0, 0.00, 0.00, 1742252.00, 72252.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 11:57:38', '2025-07-01 06:08:51', 'sold', 'delivered'),
+(165, '983644', 'sales', '2025-06-26', '2025-06-30', 'ZALA SANJAYKUMAR  ARVINDBHAI ', '9737032026', 'KALESAR', 'CHHIPDI ', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1998-08-28', NULL, '', NULL, 'MARUTI SUZUKI', 'EECO 5 SEATER AC ', 'WHITE', '2025', 'CNG', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 11:10:27', '2025-07-11 07:18:56', 'unsold', 'cancel'),
+(166, '149895', 'sales', '2025-06-26', '2025-06-30', 'SODHA  PARMAR  DHARMENDRAKUMAR RAYSINH', '9016724353', '65 VAHANVATI MATA NA MANDIR PASE', 'SARALI', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1985-06-01', NULL, '', NULL, 'HUNDAI', 'CRETA S O', '', NULL, NULL, NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1605200, 71000.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16052.00, 0, 0.00, 0.00, 1742252.00, 72252.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 11:57:38', '2025-07-01 06:08:51', 'sold', 'delivered'),
 (167, '347901', 'sales', '2025-06-26', '2025-06-27', 'RABARI GOVIND VIRAMBHAI', '9825428808', 'OO ,MADHA FALIYU ', 'PADMALA/VADODARA', 'VADODARA', '391350', 'tahir3mansuri@gmail.com', '1977-06-06', 'wife', 'GEETABEN', '1984-01-01', 'KIA', 'SONET HTX AT ', 'BLACK', NULL, NULL, NULL, 'GJ06', '', '-', 'ahmedabad', '', 'SHREE NATH KIA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'VADODARA', 'GJ06', 'pending', 'pending', '9909', '-', '-', '-', '685d39e9b4ae2_1750940137.pdf', NULL, NULL, 1342900, 58384.00, 35000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 13429.00, 0, 0.00, 0.00, 1449713.00, 40713.00, 0.00, 0.00, 1409000.00, 0.00, 0.00, 1409000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-26 12:15:37', '2025-06-27 04:40:55', 'sold', 'delivered'),
-(169, '413580', 'sales', '2025-06-29', '2025-07-27', 'SHREE BHOLENATH ENTERPRISE', '8160067052', '3127 / HOUSE NO B 20  ', 'BANSIDHAR SOCIETY  NR BUS STAND /DHANSURA', 'DHANSURA', '383310', 'tahir3mansuri@gmail.com', '0000-00-00', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA ', 'SCORPIO S11 TOP MODEL', 'BLACK ', '2025', 'DIESEL', NULL, 'GJ31', '-', '', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'BAYAD', 'GJ31', 'pending', 'pending', '9399', '-', '-', '', '6862462e9f993_1751270958.pdf', NULL, NULL, 1750000, 150000.00, 63000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17500.00, 0, 0.00, 0.00, 1980500.00, 25500.00, 0.00, 0.00, 1955000.00, 0.00, 0.00, 1955000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-30 05:51:15', '2025-07-25 04:44:19', 'sold', 'delivered'),
+(169, '413580', 'sales', '2025-06-29', '2025-07-27', 'SHREE BHOLENATH ENTERPRISE', '8160067052', '3127 / HOUSE NO B 20  ', 'BANSIDHAR SOCIETY  NR BUS STAND /DHANSURA', 'DHANSURA', '383310', 'tahir3mansuri@gmail.com', NULL, NULL, '', NULL, 'MAHINDRA& MAHINDARA ', 'SCORPIO S11 TOP MODEL', 'BLACK ', '2025', 'DIESEL', NULL, 'GJ31', '-', '', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'BAYAD', 'GJ31', 'pending', 'pending', '9399', '-', '-', '', '6862462e9f993_1751270958.pdf', NULL, NULL, 1750000, 150000.00, 63000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17500.00, 0, 0.00, 0.00, 1980500.00, 25500.00, 0.00, 0.00, 1955000.00, 0.00, 0.00, 1955000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-30 05:51:15', '2025-07-25 04:44:19', 'sold', 'delivered'),
 (170, '129032', 'sales', '2025-06-29', '2025-06-30', 'PARMAR SAROJBEN VIMALBHAI ', '6354042821', 'BAPUJI NA MUVADA', 'VADALI/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1999-08-20', 'husband', 'VIMALBHAI', '1995-01-18', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '686244e48b80d_1751270628.pdf', NULL, NULL, 695500, 36349.00, 43509.00, 0.00, 0.00, 20000.00, 20000.00, 500.00, 0.00, 0, 0.00, 1000.00, 816858.00, 55000.00, 0.00, 11858.00, 750000.00, 0.00, 0.00, 750000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-06-30 06:04:02', '2025-07-02 06:31:30', 'sold', 'delivered'),
 (171, '894159', 'sales', '2025-06-30', '2025-07-05', 'PATHAN ARBAJKHAN  MUSTUFAKHAN ', '7359260361', 'MOTA MAHOLLA /DHULETA', 'BHARODA/ANAND', 'ANAND', '388210', 'tahir3mansuri@gmail.com', '2001-04-21', 'brother', 'MAHIRKHAN', '2004-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ23', '-', '-', 'ahmedabad', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', '', 2147483647, 'MSIL', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68638fc110bac_1751355329.pdf', NULL, NULL, 670000, 35163.00, 40062.00, 0.00, 0.00, 30500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 775725.00, 45000.00, 0.00, 30725.00, 700000.00, 0.00, 0.00, 700000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-01 07:35:29', '2025-08-13 09:32:41', 'sold', 'cancel'),
 (172, '364929', 'sales', '2025-07-02', '2025-07-10', 'PATEL KALPESHKUMAR RAVJIBHAI', '7359395315', '205/BHOJA NA MUVADA', 'MEJIVADA/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1988-04-23', 'wife', 'GAYATRIBEN', '1985-06-01', 'MARUTI SUZUKI-2025', 'ERTIGA VXI    TAXI', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'SBI BANK', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68650ba00a78b_1751452576.pdf', '68650ba00aaee_1751452576.pdf', NULL, 1100500, 49538.00, 54978.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11005.00, 0, 3980.00, 0.00, 1220001.00, 10000.00, 0.00, 0.00, 1210001.00, 0.00, 0.00, 1210001.00, 1100500.00, 47838.00, 47430.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11050.00, 0, 0.00, 0.00, 1206818.00, 36818.00, 0.00, 0.00, 1170000.00, 0.00, 0.00, 1170000.00, '2025-07-02 10:36:16', '2025-08-17 07:59:07', 'sold', 'delivered'),
@@ -12060,22 +12027,22 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (183, '716746', 'sales', '2025-07-17', '2025-07-21', 'PARMAR JIGNESHKUMAR DASHRATHBHAI', '9904545764', 'VHORWAD,,KATHLAL', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1981-07-12', 'wife', 'JYOTIBEN', '1981-06-01', 'KATARIA-NEXA', 'FRONX DETLA + ', 'WHITE', '', '', NULL, 'GJ07', '', '-', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 880500, 43253.00, 31839.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 955592.00, 17000.00, 0.00, 38592.00, 900000.00, 0.00, 0.00, 900000.00, 880500.00, 43253.00, 31839.00, 0.00, 0.00, 10000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 965592.00, 27000.00, 0.00, 48000.00, 890592.00, 0.00, 0.00, 890592.00, '2025-07-17 05:40:41', '2025-08-02 12:43:46', 'sold', 'delivered'),
 (184, '914456', 'sales', '2025-07-17', '2025-07-25', 'MALEK KAUSARBANU M ASIF', '7867863234', 'HAZARAT PARK SOCIETY ', 'KAPADVANJ ROAD /DAKOR', 'DAKOR', '388225', 'tahir3mansuri@gmail.com', '1980-05-31', 'husband', 'M AASIF', '1978-06-10', 'HYUNDAI MOTOR INDIA LTD', 'CRETA S O', 'BLACK ', '2025', 'DIESEL ', NULL, 'GJ07', '-', '-', 'ANAND', '-', 'BHURAWALA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6878d79135455_1752749969.pdf', NULL, NULL, 1605200, 71967.00, 60000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16052.00, 0, 0.00, 0.00, 1753219.00, 83219.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 1670000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-17 10:11:18', '2025-07-25 04:37:00', 'sold', 'delivered'),
 (185, '712102', 'sales', '2025-07-17', '2025-08-02', 'BHOI NIKHILKUMAR SHAILESHBHAI', '9998084799', 'VAGJIPUR ', 'ATARSMBA', 'ATARSUMBA', '387620', 'tahir3mansuri@gmail.com', '1991-03-07', 'father', 'SHAILESHKUMAR', '1976-06-01', 'MARUTI SUZUKI ', 'DEZIRE VXI', 'WHITE', '2025', 'CNG', NULL, 'GJ07', '', '-', 'ahmedabad', 'BANK OF INDIA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 0, 'IFCO TOKIO', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6878d9e622304_1752750566.pdf', '6878d9e6228ba_1752750566.pdf', NULL, 879000, 43184.00, 40000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 962184.00, 26184.00, 0.00, 0.00, 936000.00, 0.00, 0.00, 936000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-17 11:09:26', '2025-08-17 07:49:55', 'sold', 'delivered'),
-(186, '773720', 'sales', '2025-07-18', '2025-07-22', 'SHAIKH IRFANMIYA MORSALIMMIYA', '9723972893', 'BAKARNA MUVADA', 'GAROD', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1992-02-14', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO MAX  HD 1.7   9 FT', 'WHITE', '', '', NULL, 'GJ07TU7458', '-', '-', 'ANAND', 'AU SMALL FAINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 0, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '687a39fe70513_1752840702.pdf', NULL, NULL, 1010000, 58000.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1098000.00, 28000.00, 0.00, 0.00, 1070000.00, 0.00, 0.00, 1070000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-18 12:12:00', '2025-11-11 06:37:58', 'sold', 'delivered'),
+(186, '773720', 'sales', '2025-07-18', '2025-07-22', 'SHAIKH IRFANMIYA MORSALIMMIYA', '9723972893', 'BAKARNA MUVADA', 'GAROD', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1992-02-14', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO MAX  HD 1.7   9 FT', 'WHITE', '', '', NULL, 'GJ07TU7458', '-', '-', 'ANAND', 'AU SMALL FAINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 0, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '687a39fe70513_1752840702.pdf', NULL, NULL, 1010000, 58000.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1098000.00, 28000.00, 0.00, 0.00, 1070000.00, 0.00, 0.00, 1070000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-18 12:12:00', '2025-11-11 06:37:58', 'sold', 'delivered'),
 (187, '514644', 'sales', '2025-07-19', '2025-07-27', 'ZALA JAGDISHKUMAR PRABHATBHAI', '7046545321', '561/ISHWAR PURA', 'SARALI', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1991-06-01', 'brother', 'HASMUKHBHAI', '1989-06-01', 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'INDORE', 'AU SMALL FAINANCE', 'BHAGWATI MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE  ', '-', '-', '-', '687b689234811_1752918162.pdf', NULL, NULL, 1772200, 75000.00, 63000.00, 0.00, 0.00, 3500.00, 0.00, 0.00, 17720.00, 0, 0.00, 6000.00, 1937420.00, 57420.00, 0.00, 0.00, 1880000.00, 0.00, 0.00, 1880000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-19 09:42:43', '2025-07-26 13:16:13', 'sold', 'delivered'),
 (188, '512974', 'sales', '2025-07-19', '2025-07-25', 'PATEL PRIYANK NARENDRAKUMAR', '7016725131', 'A-102 SHREE HARI RESIDENCY', 'KATHLAL', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1985-02-10', 'mother', 'ILABEN', '1963-08-12', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY STD CNG', 'WHITE', '2025', 'CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '687b6be716479_1752919015.pdf', NULL, NULL, 664000, 36825.00, 24500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 725325.00, 41500.00, 0.00, 8825.00, 675000.00, 0.00, 0.00, 675000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-19 09:56:55', '2025-07-26 13:13:06', 'sold', 'delivered'),
-(190, '978673', 'sales', '2025-07-22', '2025-07-31', 'MEMAN FARDIN MAHAMMAD SAFI', '9601462768', '34 SHIVNAGAR SOCIETY ', 'JUNI MAMLATDAR  COURT ROAD/DEHGAM', 'DEHGAM/GANDHINAGAR', '382305', 'tahir3mansuri@gmail.com', '2000-03-09', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA  VXI O  CNG', '', NULL, NULL, NULL, 'GJ31', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', '18', 'pending', 'pending', 'REGULAR', '-', '-', '-', '687f6db22139f_1753181618.pdf', NULL, NULL, 1115442, 48546.00, 45094.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11154.00, 0, 0.00, 0.00, 1220236.00, 32236.00, 0.00, 0.00, 1188000.00, 0.00, 0.00, 1188000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 10:53:40', '2025-08-02 07:31:02', 'sold', 'delivered'),
-(191, '392743', 'sales', '2025-07-19', '2025-07-25', 'DABHI  CHHATRASINH  RAMSINH', '9998965268', 'MUDEL ', 'RATANPUR/CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1968-06-29', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'SBI BANK', 'KATARIA  AUTOMOBILES -ahmedabad', '', '', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '687f75133191a_1753183507.pdf', NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 799435.00, 35000.00, 2100.00, 17335.00, 745000.00, 0.00, 0.00, 745000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 11:25:07', '2025-08-02 07:26:13', 'sold', 'delivered'),
-(192, '424598', 'sales', '2025-07-22', '2025-07-26', 'RADADIYA MANILAL MULJIBHAI', '9727555538', 'BUS STAND PACHAD', 'VADAL', 'JUNAGADH', '362310', 'tahir3mansuri@gmail.com', '1965-06-01', NULL, '', '0000-00-00', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX O ', 'WHITE', NULL, NULL, NULL, '-', '-', '-', 'NADIAD', '-', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ11', NULL, NULL, 'REGULAR', '-', '-', '-', '687f7a7d722fb_1753184893.jpg', NULL, NULL, 1999900, 88000.00, 42531.00, 0.00, 0.00, 3500.00, 0.00, 0.00, 19999.00, 0, 0.00, 1500.00, 2155430.00, 67830.00, 0.00, 0.00, 2087600.00, 0.00, 0.00, 2087600.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 11:48:14', '2025-07-26 13:09:14', 'sold', 'delivered'),
-(193, '349715', 'sales', '2025-07-23', '2025-07-30', 'ZALA PINTUKUMAR PRAHLADBHAI', '6353405374', 'LAXMIPURA/CHARED', 'KAKARKHAD/KHEDA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1999-04-15', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO 1.7 10 FT', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6880d439f3118_1753273401.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-23 12:23:22', '2025-07-26 05:44:55', 'unsold', 'cancel'),
+(190, '978673', 'sales', '2025-07-22', '2025-07-31', 'MEMAN FARDIN MAHAMMAD SAFI', '9601462768', '34 SHIVNAGAR SOCIETY ', 'JUNI MAMLATDAR  COURT ROAD/DEHGAM', 'DEHGAM/GANDHINAGAR', '382305', 'tahir3mansuri@gmail.com', '2000-03-09', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'ERTIGA  VXI O  CNG', '', NULL, NULL, NULL, 'GJ31', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', '18', 'pending', 'pending', 'REGULAR', '-', '-', '-', '687f6db22139f_1753181618.pdf', NULL, NULL, 1115442, 48546.00, 45094.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11154.00, 0, 0.00, 0.00, 1220236.00, 32236.00, 0.00, 0.00, 1188000.00, 0.00, 0.00, 1188000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 10:53:40', '2025-08-02 07:31:02', 'sold', 'delivered'),
+(191, '392743', 'sales', '2025-07-19', '2025-07-25', 'DABHI  CHHATRASINH  RAMSINH', '9998965268', 'MUDEL ', 'RATANPUR/CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1968-06-29', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'SBI BANK', 'KATARIA  AUTOMOBILES -ahmedabad', '', '', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '687f75133191a_1753183507.pdf', NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 799435.00, 35000.00, 2100.00, 17335.00, 745000.00, 0.00, 0.00, 745000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 11:25:07', '2025-08-02 07:26:13', 'sold', 'delivered'),
+(192, '424598', 'sales', '2025-07-22', '2025-07-26', 'RADADIYA MANILAL MULJIBHAI', '9727555538', 'BUS STAND PACHAD', 'VADAL', 'JUNAGADH', '362310', 'tahir3mansuri@gmail.com', '1965-06-01', NULL, '', NULL, 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX O ', 'WHITE', NULL, NULL, NULL, '-', '-', '-', 'NADIAD', '-', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ11', NULL, NULL, 'REGULAR', '-', '-', '-', '687f7a7d722fb_1753184893.jpg', NULL, NULL, 1999900, 88000.00, 42531.00, 0.00, 0.00, 3500.00, 0.00, 0.00, 19999.00, 0, 0.00, 1500.00, 2155430.00, 67830.00, 0.00, 0.00, 2087600.00, 0.00, 0.00, 2087600.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-22 11:48:14', '2025-07-26 13:09:14', 'sold', 'delivered'),
+(193, '349715', 'sales', '2025-07-23', '2025-07-30', 'ZALA PINTUKUMAR PRAHLADBHAI', '6353405374', 'LAXMIPURA/CHARED', 'KAKARKHAD/KHEDA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1999-04-15', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO 1.7 10 FT', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6880d439f3118_1753273401.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-23 12:23:22', '2025-07-26 05:44:55', 'unsold', 'cancel'),
 (195, '874113', 'sales', '2025-07-25', '2025-07-31', 'MULTANI SIJAN HAMIDBHAI', '7862001635', '38 MULTANPURA ', 'BALASINORKHEDA', 'KHEDA', '388255', 'tahir3mansuri@gmail.com', '2002-12-10', 'mother', 'SHABANABEN', '1983-06-01', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY CNG', 'WHITE', NULL, NULL, NULL, 'GJ35', '', '-', 'NADIAD', 'AU SMALL FAINANCE', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', 'REGULAR', '-', '', '-', '68837cf5f0b09_1753447669.pdf', NULL, NULL, 664000, 36825.00, 24645.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 725470.00, 0.00, 0.00, 0.00, 725470.00, 0.00, 0.00, 725470.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-25 12:47:50', '2025-08-02 09:35:39', 'sold', 'cancel'),
-(196, '779486', 'sales', '2025-07-28', '2025-08-05', 'CHRISTIAN FRENKLIN YAKUBBHAI ', '9106613832', 'RAMI NI CHALI RAKHIYAL ', 'AHMEDABAD ', 'AHMEDABAD', '380021', 'tahir3mansuri@gmail.com', '1990-03-06', NULL, '', '0000-00-00', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SO ', 'BLACK', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ27', 'pending', 'pending', 'REGULAR', '-', '-', '', '68873c1902ff0_1753693209.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-28 09:00:09', '2025-07-29 12:11:42', 'unsold', 'cancel'),
+(196, '779486', 'sales', '2025-07-28', '2025-08-05', 'CHRISTIAN FRENKLIN YAKUBBHAI ', '9106613832', 'RAMI NI CHALI RAKHIYAL ', 'AHMEDABAD ', 'AHMEDABAD', '380021', 'tahir3mansuri@gmail.com', '1990-03-06', NULL, '', NULL, 'HYUNDAI MOTOR INDIA LTD', 'CRETA SO ', 'BLACK', '', '', NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ27', 'pending', 'pending', 'REGULAR', '-', '-', '', '68873c1902ff0_1753693209.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-28 09:00:09', '2025-07-29 12:11:42', 'unsold', 'cancel'),
 (197, '482782', 'sales', '2025-07-28', '2025-08-07', 'RATHOD  MEZULLAHUSAIN HAJIMIYAN', '8160765404', 'BAHIYAL', 'GANDHINAGAR', 'GANDHINAGAR', '382308', 'tahir3mansuri@gmail.com', '1998-11-24', 'mother', 'SHABANABANU', '1981-06-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC ', 'WHITE', NULL, NULL, NULL, 'GJ18', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', '1718', '-', '-', '-', '6887452fbcaf5_1753695535.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-28 09:38:55', '2025-08-04 11:10:01', 'unsold', 'cancel'),
 (198, '401009', 'sales', '2025-07-28', '2025-08-02', 'TARPARA DAKSHA VALLABHBHAI', '8866312516', 'NANA MAVAMAN ROAD', 'RAJKOT', 'RAJKOT', '360005', 'tahir3mansuri@gmail.com', '1988-08-29', 'husband', 'NIKUNJ RADADIYA', '1993-06-01', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX O ', 'WHITE', '2025', 'DIESEL', NULL, 'GJ03pj4109', '-', '-', 'NADIAD', '-', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ03', 'GJ03', 'pending', 'pending', '4109', '-', '-', '', '68874f5c08457_1753698140.pdf', NULL, NULL, 1999900, 88000.00, 42000.00, 0.00, 0.00, 0.00, 3500.00, 0.00, 19900.00, 0, 0.00, 1599.00, 2154899.00, 67000.00, 0.00, 0.00, 2087899.00, 0.00, 0.00, 2087899.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-28 10:22:20', '2025-08-08 05:56:17', 'sold', 'delivered'),
 (199, '506806', 'sales', '2025-07-28', '2025-08-05', 'GOSWAMI NIKUNJGIRI ASHWINGIRI', '9909697878', 'GAYATRI COLONY', 'KOTHAMBA LUNAWADA', 'PANCHMAHAL', '389220', 'tahir3mansuri@gmail.com', '1989-06-01', 'wife', 'DIVYABEN', '1992-11-08', 'NEXA', 'BALENO SIGMA PETROL', 'WHITE', '', 'PETROL', NULL, 'GJ22', '-', '-', 'NADIAD', 'NA', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ22', 'pending', 'pending', '8422', '-', '-', '', '68886294c3c5c_1753768596.pdf', NULL, NULL, 670000, 33463.00, 28589.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 732052.00, 55000.00, 0.00, 45052.00, 632000.00, 0.00, 0.00, 632000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-29 05:56:36', '2025-08-05 06:30:22', 'sold', 'delivered'),
-(200, '961075', 'sales', '2025-07-29', '2025-07-31', 'SODHA DILIPSINH KALABHAI', '9638484294', '406/ BHIMPURA', 'THUNCHAL/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1989-11-14', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO 1.7 10 FT', 'WHITE', '', '', NULL, 'GJ07', '', '-', 'NADIAD', 'AU SMALL FAINANCE', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', NULL, NULL, 'REGULAR', '-', '-', '', '688890f57b361_1753780469.pdf', NULL, NULL, 1010000, 58000.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1098000.00, 47000.00, 0.00, 0.00, 1051000.00, 0.00, 0.00, 1051000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-29 09:14:29', '2025-08-01 12:22:25', 'sold', 'delivered'),
+(200, '961075', 'sales', '2025-07-29', '2025-07-31', 'SODHA DILIPSINH KALABHAI', '9638484294', '406/ BHIMPURA', 'THUNCHAL/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1989-11-14', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO 1.7 10 FT', 'WHITE', '', '', NULL, 'GJ07', '', '-', 'NADIAD', 'AU SMALL FAINANCE', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', NULL, NULL, 'REGULAR', '-', '-', '', '688890f57b361_1753780469.pdf', NULL, NULL, 1010000, 58000.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1098000.00, 47000.00, 0.00, 0.00, 1051000.00, 0.00, 0.00, 1051000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-29 09:14:29', '2025-08-01 12:22:25', 'sold', 'delivered'),
 (201, '912976', 'sales', '2025-07-28', '2025-08-05', 'MADARI VIKRAMNATH RUMALNATH', '9023391694', '14 INDIRA NAGARI ', 'TAIYABPURA/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1980-01-01', 'brother', 'SHAMBHUNATH', '1984-06-01', 'MARUTI SUZUKI INDIA LTD', 'FRONX DELTA +', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'SHRIRAM FINANCE', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '6888a15c6f565_1753784668.pdf', NULL, NULL, 880500, 43000.00, 32000.00, 0.00, 0.00, 0.00, 0.00, 500.00, 0.00, 0, 0.00, 0.00, 956000.00, 62500.00, 0.00, 0.00, 893500.00, 0.00, 0.00, 893500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-29 10:24:28', '2025-08-17 07:56:10', 'sold', 'delivered'),
 (202, '918370', 'sales', '2025-07-30', '2025-08-05', 'POCHA IMRAN YUNUS', '9898642379', 'BURANI SOCIETY  LUNAWADA', 'SHAHERA', 'LUNAWADA', '389210', 'tahir3mansuri@gmail.com', '1980-11-11', 'wife', 'shahinben', '1991-11-06', 'NEXA', 'BALENO SIGMA', 'WHITE', '2025', 'PETROL', NULL, 'GJ35', '', '-', 'NADIAD', 'HDFC BANK LTD', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', 'REGULAR', '-', '-', '', '6889ea71afc26_1753868913.pdf', '6889ea71b01de_1753868913.pdf', NULL, 670000, 33463.00, 28589.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 732052.00, 55000.00, 0.00, 45052.00, 632000.00, 0.00, 0.00, 632000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-30 09:48:33', '2025-08-06 04:45:08', 'sold', 'delivered'),
-(203, '396536', 'sales', '2025-07-30', '2025-08-08', 'POCHA IMRAN ABRAR', '8141184004', '403 GAJNAVI MASJID PASE', 'SHAHERA', 'PANCHMAHAL', '389210', 'tahir3mansuri@gmail.com', '1989-04-17', NULL, '', '0000-00-00', 'NEXA', 'BALENO SIGMA', 'WHITE  ', NULL, NULL, NULL, 'GJ17', '-', '-', 'NADIAD', '-', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ17', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6889f03ca67b1_1753870396.pdf', '6889f03ca6c26_1753870396.pdf', NULL, 670000, 33463.00, 28395.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 731858.00, 55000.00, 0.00, 44858.00, 632000.00, 0.00, 0.00, 632000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-30 10:13:16', '2025-08-05 06:36:14', 'sold', 'delivered'),
+(203, '396536', 'sales', '2025-07-30', '2025-08-08', 'POCHA IMRAN ABRAR', '8141184004', '403 GAJNAVI MASJID PASE', 'SHAHERA', 'PANCHMAHAL', '389210', 'tahir3mansuri@gmail.com', '1989-04-17', NULL, '', NULL, 'NEXA', 'BALENO SIGMA', 'WHITE  ', NULL, NULL, NULL, 'GJ17', '-', '-', 'NADIAD', '-', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ17', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6889f03ca67b1_1753870396.pdf', '6889f03ca6c26_1753870396.pdf', NULL, 670000, 33463.00, 28395.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 731858.00, 55000.00, 0.00, 44858.00, 632000.00, 0.00, 0.00, 632000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-30 10:13:16', '2025-08-05 06:36:14', 'sold', 'delivered'),
 (204, '982742', 'sales', '2025-07-30', '2025-07-31', 'PATEL ROMESH PANKAJKUMAR', '9724209924', '238 PATEL FALIYU ', 'GHODASAR', 'KHEDA', '387110', 'tahir3mansuri@gmail.com', '1991-04-29', 'wife', 'PATEL SHILPABEN', '1990-02-24', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', 'PRADHYUMAN', '-', '6889f10a773eb_1753870602.pdf', NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 764435.00, 0.00, 0.00, 54435.00, 710000.00, 0.00, 0.00, 710000.00, 695500.00, 34649.00, 34286.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 764435.00, 37100.00, 0.00, 35000.00, 692335.00, 0.00, 0.00, 692335.00, '2025-07-30 10:16:42', '2025-08-02 07:19:26', 'sold', 'delivered'),
 (205, '719598', 'sales', '2025-07-31', '2025-09-02', 'SUTHAR HIMANSHU BHUPENDRABHAI', '76980002778', 'OPP JOGIDAS STREET ', 'MANIYARI KHAD /ANAND', 'ANAND', '388001', 'tahir3mansuri@gmail.com', '1978-08-04', 'wife', 'REKHABEN', '1979-12-16', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ23', '-', '-', 'ahmedabad', 'UKO BANK', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 0, 'MSIL', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '', '68b529424792f_1756703042.pdf', '688b1fadc7cd4_1753948077.pdf', NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 799435.00, 59435.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-31 07:47:57', '2025-10-23 08:14:03', 'sold', 'delivered'),
 (206, '834729', 'sales', '2025-07-31', '2025-08-15', 'PRAJAPATI KISHANKUMAR DILIPBHAI', '8000780274', '139 RABARI TEKRA', 'GOLAAJ/KHEDA', 'KHEDA', '388250', 'tahir3mansuri@gmail.com', '1990-09-21', 'wife', 'GEETABEN', '1997-10-14', 'HYUNDAI MOTOR INDIA LTD', 'CRETA E X ', 'BLACK', '', '', NULL, 'GJ07', '', '-', 'HIMMATNAGAR', 'BANK OF BARODA', 'BHURAWALA', 'KATHLAL-', 'TAHIR ', 2147483647, '', 'KHEDA', 'GJ07', 'pending', NULL, '1309/1390', '-', '-', '', '688b23210e812_1753948961.pdf', NULL, NULL, 1456500, 62800.00, 50000.00, 0.00, 0.00, 0.00, 10000.00, 0.00, 14560.00, 0, 0.00, 0.00, 1593860.00, 70000.00, 0.00, 0.00, 1523860.00, 0.00, 0.00, 1523860.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-07-31 08:02:41', '2025-08-17 07:40:25', 'sold', 'delivered'),
@@ -12083,10 +12050,10 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (208, '597586', 'sales', '2025-07-31', '2025-08-06', 'SHAIKH USMANGINI   ABDULMAJID', '9714434526', 'A-16 PAYAGA BALASINOR ', 'BALASINOR ', 'MAHISAGAR', '388255', 'tahir3mansuri@gmail.com', '1972-04-12', 'wife', 'MERUNISHA', '1981-06-01', 'MARUTI SUZUKI INDIA LTD', 'BREAZZ ZXI ', 'WHITEME', '', '', NULL, 'GJ35', '-', '-', 'AHMEDAVAD', 'HDFC BANK LTD', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ35', 'GJ35', 'pending', 'pending', 'REGULAR', '-', '-', '', '688b57d4a3023_1753962452.pdf', NULL, NULL, 1221000, 52825.00, 46446.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12210.00, 0, 885.00, 0.00, 1333366.00, 10000.00, 0.00, 30658.00, 1292708.00, 0.00, 0.00, 1292708.00, 1221000.00, 52825.00, 46446.00, 0.00, 0.00, 0.00, 0.00, 0.00, 12210.00, 0, 0.00, 0.00, 1332481.00, 10000.00, 0.00, 45000.00, 1277481.00, 0.00, 0.00, 1277481.00, '2025-07-31 11:47:32', '2025-08-17 07:36:55', 'sold', 'delivered'),
 (209, '111579', 'sales', '2025-08-01', '0205-08-03', 'PRAJAPATI BHAVESHKUMAR NATUBHAI', '9824655568', 'PRAJAPATI VAS', 'NAPA TALPAD /ANAND', 'ANAND', '388560', 'tahir3mansuri@gmail.com', '1976-09-04', 'wife', 'PARULBEN', '1978-06-01', 'MARUTI SUZUKI INDIA LTD', 'WAGONR VXI ', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'NADIAD', 'BOB', 'kiran motors ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '-', '688c6aec20327_1754032876.pdf', '688c6aec2073b_1754032876.pdf', NULL, 713500, 35487.00, 32478.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 782350.00, 35000.00, 0.00, 42350.00, 705000.00, 0.00, 0.00, 705000.00, 713500.00, 35487.00, 32478.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 781465.00, 35000.00, 0.00, 55000.00, 691465.00, 0.00, 0.00, 691465.00, '2025-08-01 07:21:16', '2025-08-02 08:53:18', 'sold', 'delivered'),
 (210, '703640', 'sales', '2025-08-01', '2025-08-08', 'CHAUHAN SANJAY MELABHAI', '6353737288', 'NANPURA /VASO', 'VASO', 'KHEDA ', '387380', 'tahir3mansuri@gmail.com', '1985-12-17', 'father', 'MELABHAI', '1960-06-01', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '688c92e0379e0_1754043104.pdf', NULL, NULL, 1115442, 48456.00, 45094.00, 0.00, 0.00, 0.00, 10000.00, 0.00, 0.00, 11154, 0.00, 0.00, 1230146.00, 20146.00, 0.00, 0.00, 1210000.00, 0.00, 0.00, 1210000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-01 10:11:44', '2025-08-07 05:55:43', 'sold', 'delivered'),
-(211, '224119', 'sales', '2025-08-02', '2025-08-15', 'SOLANKI ASHOKKUMAR SOMABHAI', '8401474970', '2810 ISHWARKRUPA SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1998-07-18', NULL, '', '0000-00-00', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX (0)', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'SURAT', 'AU SMALL FAINANCE', 'BHURAWALA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '688dbe2b429c6_1754119723.pdf', NULL, NULL, 1904700, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19047.00, 0, 0.00, 0.00, 1923747.00, 0.00, 0.00, 0.00, 1923747.00, 0.00, 0.00, 1923747.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-02 07:28:43', '2025-08-22 09:09:24', 'sold', 'cancel'),
+(211, '224119', 'sales', '2025-08-02', '2025-08-15', 'SOLANKI ASHOKKUMAR SOMABHAI', '8401474970', '2810 ISHWARKRUPA SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1998-07-18', NULL, '', NULL, 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX (0)', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'SURAT', 'AU SMALL FAINANCE', 'BHURAWALA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '688dbe2b429c6_1754119723.pdf', NULL, NULL, 1904700, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19047.00, 0, 0.00, 0.00, 1923747.00, 0.00, 0.00, 0.00, 1923747.00, 0.00, 0.00, 1923747.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-02 07:28:43', '2025-08-22 09:09:24', 'sold', 'cancel'),
 (212, '641372', 'sales', '2025-08-02', '2025-08-08', 'SOLANKI DILIPSINH RAMSINH', '9714664706', '394 NISHAD NI PACHAD LAXMIPURA', 'CHARED KAKARKHAD', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1977-07-01', 'wife', 'SANTOKBEN', '1975-06-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC TAXI CNG ', 'WHITE', '', '', NULL, '-', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '688dea2dcf3fb_1754130989.pdf', NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 764435.00, 0.00, 0.00, 0.00, 764435.00, 0.00, 0.00, 764435.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-02 10:36:29', '2025-08-13 04:21:59', 'sold', 'cancel'),
 (213, '770247', 'sales', '2025-08-04', '2025-08-10', 'BARAIYA LALSINH BHALABHAI', '9925394211', 'BARAIYA NI MUVADI', 'KAPRUPUR/KHEDA', 'KHEDA', '387305', 'tahir3mansuri@gmail.com', '1991-06-07', 'son', 'HIMANSHU', '2003-11-16', 'MARUTI SUZUKI ', 'FRONX DELTA', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '--', '-', '', '68908bc17ae2d_1754303425.pdf', '68908bc17b50c_1754303425.pdf', NULL, 935500, 45811.00, 34571.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1015882.00, 15000.00, 243882.00, 60000.01, 696999.99, 0.00, 0.00, 696999.99, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-04 10:30:25', '2025-08-08 06:21:54', 'sold', 'delivered'),
-(214, '467334', 'sales', '2025-08-04', '2025-08-10', 'UPADHYAY VISHALBHAI RAJESHKUMAR', '7778071576', 'AJWA ROAD ', 'BARODA', 'BARODA', '390019', 'tahir3mansuri@gmail.com', '1994-08-29', NULL, '', '0000-00-00', 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-05 05:46:51', '2025-08-22 09:08:42', 'unsold', 'cancel'),
+(214, '467334', 'sales', '2025-08-04', '2025-08-10', 'UPADHYAY VISHALBHAI RAJESHKUMAR', '7778071576', 'AJWA ROAD ', 'BARODA', 'BARODA', '390019', 'tahir3mansuri@gmail.com', '1994-08-29', NULL, '', NULL, 'MARUTI SUZUKI', 'ERTIGA VXI O  CNG', 'WHITE', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-05 05:46:51', '2025-08-22 09:08:42', 'unsold', 'cancel'),
 (215, '164635', 'sales', '2025-08-03', '2025-09-24', 'PATEL PIYUSHBHAI SHASHIKANT', '8200640761', 'DHADHOLI ', 'VANSOLI/MAHUDHA ', 'MAHUDHA', '387335', 'tahir3mansuri@gmail.com', '1981-08-04', 'wife', 'DIPALBEN', '1983-06-01', 'HYUNDAI MOTOR INDIA LTD', 'CRETA S', 'WHITE  ', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', 'SURAT', 'NA', 'BHURAWALA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '0078', '--', '-', '-', '6891a69534486_1754375829.pdf', '6891a695349a9_1754375829.pdf', NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-05 06:37:09', '2025-09-22 13:45:25', 'sold', 'delivered'),
 (216, '868227', 'sales', '2025-08-06', '2025-08-10', 'JOSHI RAJALBEN RONAKKUMAR', '7575083730', '2826 AMBIKANAGAR SOCIETY ', ' KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1989-07-13', 'husband', 'RONAKBHAI', '1989-08-09', 'TOYOTA', 'HYRYDER G HYBRID', 'BLACK', '2025', 'DIESEL ', NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'INDIAN BANK', 'SHRIJI TOYOTA', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', '', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '68931f7204556_1754472306.pdf', NULL, NULL, 1884000, 73352.00, 83949.00, 0.00, 23709.00, 0.00, 0.00, 0.00, 18840.00, 0, 0.00, 0.00, 2083850.00, 103850.00, 0.00, 0.00, 1980000.00, 0.00, 0.00, 1980000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-06 06:20:04', '2025-08-17 07:12:39', 'sold', 'delivered'),
 (217, '211626', 'sales', '2025-08-07', '2025-08-10', 'DABHI PRAKASHKUMAR BHARATBHAI', '8511342801', 'UNDREL ', 'AHMEDABAD', 'AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1997-05-18', 'wife', 'PARVATIBEN', '1997-06-05', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ27', '-', 'as', 'ahmedabad', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '-', '-', '-', '689488038cf66_1754564611.pdf', '689488038d665_1754564611.pdf', NULL, 695500, 34286.00, 34649.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 799435.00, 35000.00, 0.00, 24435.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-07 11:03:31', '2025-08-13 09:35:49', 'sold', 'delivered'),
@@ -12094,8 +12061,8 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (219, '249480', 'sales', '2025-08-12', '2025-08-25', 'GAUR SHASHANK ASHOKBHAI', '8490800122', 'AKRUTI TOWNSHIP SAME', 'NAROL', 'AHMEDABAD', '380001', 'tahir3mansuri@gmail.com', '1999-09-23', 'brother', 'ANISHBHAI', '1995-06-01', 'MARUTI SUZUKI', 'DEZIRE TOUR CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ27', '-', 'as', '', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ27', 'pending', 'pending', '', '--', '', '-', NULL, NULL, NULL, 777000, 38440.00, 42814.00, 15083.00, 0.00, 0.00, 0.00, 0.00, 0.00, 2800, 0.00, 0.00, 876137.00, 13337.00, 0.00, 0.00, 862800.00, 0.00, 0.00, 862800.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-12 06:01:43', '2025-08-17 06:58:30', 'sold', 'delivered'),
 (220, '950451', 'sales', '2025-08-12', '2025-08-16', 'VAHORA IMTYAZ AYUBBHAI ', '9879893522', '25 SILVER PARK', 'NR FATIMA MASJID /ROYAL PLAZA ', 'ANAND', '388001', 'tahir3mansuri@gmail.com', '1970-04-23', 'wife', 'SAMIRABEN', '1975-06-01', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX (0) AT', 'BLACK', NULL, NULL, NULL, 'GJ23', '-', '-', 'HIMMATNAGAR', 'HDFC BANK LTD', 'BHURAWALA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '-', '689ae2ac48c0c_1754981036.pdf', NULL, NULL, 1999900, 88000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19900.00, 0, 0.00, 0.00, 2107800.00, 75000.00, 0.00, 0.00, 2032800.00, 0.00, 0.00, 2032800.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-12 06:43:56', '2025-08-17 06:52:05', 'sold', 'delivered'),
 (221, '307782', 'sales', '2025-08-07', '2025-08-21', 'VALI AEZAJ NISHAR', '7016930964', 'BUS STAND ROAD', 'SHAHERA', 'PANCHMAHAL', '389210', 'tahir3mansuri@gmail.com', '1994-04-01', 'wife', 'tabassum', '1997-11-08', 'MARUTI SUZUKI ', 'BALENO SIGMA PETROL', 'WHITE  ', '2025', 'PETROL', NULL, 'GJ17', '-', '-', 'NADIAD', 'axis bank ltd', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ17', 'pending', 'pending', 'REGULAR', '--', '-', '', '689b1be2a7704_1754995682.pdf', NULL, NULL, 670000, 33463.00, 28589.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 732052.00, 55000.00, 0.00, 45052.00, 632000.00, 0.00, 0.00, 632000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-12 10:48:02', '2025-08-22 05:03:10', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
-(222, '377440', 'sales', '2025-08-12', '2025-08-22', 'MANSURI  MUNIRBHAI  GANIBHAI', '8128341151', '1241 TOWER SAME', 'HALDHARVAS', 'KHEDA', '387110', 'tahir3mansuri@gmail.com', '1966-06-18', NULL, '', '0000-00-00', 'HYUNDAI ', 'EXTER SX CNH KNIGHT EDITION ', 'BLACK ', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 948300, 59260.00, 49107.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1056667.00, 0.00, 0.00, 0.00, 1056667.00, 0.00, 0.00, 1056667.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-13 05:08:23', '2025-09-09 09:47:59', 'sold', 'delivered'),
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
+(222, '377440', 'sales', '2025-08-12', '2025-08-22', 'MANSURI  MUNIRBHAI  GANIBHAI', '8128341151', '1241 TOWER SAME', 'HALDHARVAS', 'KHEDA', '387110', 'tahir3mansuri@gmail.com', '1966-06-18', NULL, '', NULL, 'HYUNDAI ', 'EXTER SX CNH KNIGHT EDITION ', 'BLACK ', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 948300, 59260.00, 49107.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1056667.00, 0.00, 0.00, 0.00, 1056667.00, 0.00, 0.00, 1056667.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-13 05:08:23', '2025-09-09 09:47:59', 'sold', 'delivered'),
 (223, '627163', 'sales', '2025-08-13', '2025-08-19', 'MIRZA NASIRBEG MUSTUFABEG', '9904078964', 'BEHIND PUNIT ASHRAM ', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1963-01-13', 'son', 'ATIKBHAI', '1998-11-24', 'MARUTI SUZUKI-2025', 'XL6 ZETA CNG', 'BLACK ', '2025', ' CNG', NULL, 'GJ07DH8394', '-', '', 'ahmedabad', 'CENTRAL BANK OF INDIA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '689c22923abc4_1755062930.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-13 05:28:50', '2025-11-11 06:23:32', 'unsold', 'delivered'),
 (224, '435267', 'sales', '2025-08-14', '2025-08-20', 'MATIN MAHAMMAD HANIF SHAIKH', '9725227013', '5093 GANCHIWADA MASJID', 'GHANCHIWADA', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1961-12-28', 'father', 'M HANIF', '1961-12-28', 'MARUTI SUZUKI-2025', 'BALENO SIGMA PETROL', 'WHITE  ', '2025', 'PETROL', NULL, 'GJ07', '-', 'as', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '689c260c8b751_1755063820.pdf', NULL, NULL, 670000, 33463.00, 28589.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 732052.00, 55000.00, 68000.00, 0.00, 609052.00, 0.00, 0.00, 609052.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-13 05:43:40', '2025-08-22 04:58:04', 'sold', 'delivered'),
 (225, '805832', 'sales', '2025-08-13', '2025-08-16', 'MANSURI ILYASBHAI USMANGANI', '9724311053', 'RUDAN', 'RUDAN/MAHEMDAVAD', 'MAHEMDAVAD', '387335', 'tahir3mansuri@gmail.com', '1984-04-23', 'wife', 'ANISABEN', '1984-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', 'as', 'ahmedabad', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '689c5b3b65ae4_1755077435.pdf', '689c5b3b66155_1755077435.pdf', NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 799435.00, 64435.00, 0.00, 0.00, 735000.00, 0.00, 0.00, 735000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-13 09:30:35', '2025-08-17 06:48:49', 'sold', 'delivered'),
@@ -12105,7 +12072,7 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (229, '289847', 'sales', '2025-08-14', '2025-08-27', 'PARMAR JAYDIP SURESHBHAI', '9106902713', 'KASHOR/ANAND', 'ANAND', 'ANAND', '388460', 'tahir3mansuri@gmail.com', '2005-07-22', 'father', 'sureshbhai', '1981-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', '2025', 'PETROL/CNG', NULL, 'GJ23', '', 'as', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, '', 'AANAND', 'GJ23', 'pending', 'pending', '', '--', '-', '', NULL, NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 2000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 766435.00, 35000.00, 0.00, 29435.00, 702000.00, 0.00, 0.00, 702000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-14 12:31:08', '2025-08-27 05:48:23', 'sold', 'delivered'),
 (230, '880199', 'sales', '2025-08-14', '2025-08-27', 'VAHORA SALIMBHAI USMNGANIBHAI', '9824397030', '12 HINA PARK SOCIETY ', 'NEAR VAHORA SOCIETY/MAHEMDAVAD', 'MAHEMDAVAD', '387130', 'tahir3mansuri@gmail.com', '2005-07-22', 'wife', 'BILKISBEN', '1984-01-01', 'HUNDAI', 'CRETA SX O MT', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', 'as', 'HIMMATNAGAR', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '--', '', '-', '689f1b49d297c_1755257673.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-15 11:34:33', '2025-09-09 09:47:11', 'sold', 'delivered'),
 (231, '708556', 'sales', '2025-08-18', '2025-08-28', 'DABHI ARVINDJI SHIVAJI', '7228981631', 'RANODARA', 'RANODARA /AMDAVAD', 'AMDAVAD', '382433', 'tahir3mansuri@gmail.com', '1978-01-01', 'son', 'AJAYBHAI', '2002-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ27', '-', '-', 'ahmedabad', '-', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '--', '', '-', '68a2d229c8353_1755501097.pdf', NULL, NULL, 695500, 38346.00, 39009.00, 0.00, 35000.00, 0.00, 0.00, 500.00, 0.00, 0, 0.00, 0.00, 808355.00, 0.00, 0.00, 0.00, 808355.00, 0.00, 0.00, 808355.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-18 07:11:37', '2025-08-22 05:22:06', 'sold', 'cancel'),
-(232, '862717', 'sales', '2025-08-18', '2025-08-21', 'DABHI VIJAYSINH SHIVSINH', '9687761361/785994397', '496 NAVA KAKARKHAD', 'KAKARKHAD /KHEDA', 'KATHLAL', '387630', '', '0000-00-00', 'brother', 'RANJITSIN', '1985-06-30', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO B 6', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', 'as', 'ANAND', 'AU SMALL FAINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 0, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68a2d799b31b9_1755502489.pdf', NULL, NULL, 999900, 46350.00, 31000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1077250.00, 37250.00, 0.00, 0.00, 1040000.00, 0.00, 0.00, 1040000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-18 07:34:49', '2025-08-22 04:47:14', 'sold', 'delivered'),
+(232, '862717', 'sales', '2025-08-18', '2025-08-21', 'DABHI VIJAYSINH SHIVSINH', '9687761361/785994397', '496 NAVA KAKARKHAD', 'KAKARKHAD /KHEDA', 'KATHLAL', '387630', '', NULL, 'brother', 'RANJITSIN', '1985-06-30', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO B 6', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', 'as', 'ANAND', 'AU SMALL FAINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 0, 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68a2d799b31b9_1755502489.pdf', NULL, NULL, 999900, 46350.00, 31000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1077250.00, 37250.00, 0.00, 0.00, 1040000.00, 0.00, 0.00, 1040000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-18 07:34:49', '2025-08-22 04:47:14', 'sold', 'delivered'),
 (234, '774378', 'sales', '2025-08-16', '2025-08-30', 'PAGI PUNABHAI JERA BHAI', '8758184749', 'BILVANIYA', 'SABARKANTHA', 'SABARKANTHA', '383310', 'tahir3mansuri@gmail.com', '1964-01-01', 'son', 'MAHESHBHAI', '1989-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ09', '', 'as', 'ahmedabad', 'CHOLA MANDALAM', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'HIMMATNAGAR', 'GJ09', 'pending', 'pending', '', '--', '-', '-', '68a319d85d671_1755519448.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-18 12:17:28', '2025-08-27 06:17:24', 'unsold', 'cancel'),
 (235, '578214', 'sales', '2025-08-19', '2025-08-29', 'ZALA VIJAYSINH BHAVANSINH', '9725740100', '1367-1 SUTARIYANA KUVA', 'CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1980-12-23', 'wife', 'SAMRUDHDHIBEN', '1988-08-15', 'KIA', 'SELTOS HTK 0 +', 'BLACK', '2025', 'DIESEL', NULL, 'GJ07', '-', 'as', 'SURAT', 'BANK OF  INDIA', 'SHREE NATH KIA', 'KATHLAL-', 'TAHIR', 0, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE-2504', '--', '', '-', '68a40b02b7fe5_1755581186.pdf', '68a40b02b88cb_1755581186.jpeg', NULL, 1727900, 72300.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1800200.00, 0.00, 0.00, 0.00, 1800200.00, 0.00, 0.00, 1800200.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-19 05:26:26', '2025-08-28 06:38:58', 'sold', 'delivered'),
 (236, '456627', 'sales', '2025-08-20', '2025-08-27', 'LUHANA PRAKASH ASHOKBHAI', '8799507430', 'F24 PRUTHVI PARK ', 'ODE BAZAR /NASIKWALA HALL NR /UMRETH', 'ANAND', '388220', 'tahir3mansuri@gmail.com', '1986-09-07', 'brother', 'JAYKISHAN ', '1985-07-04', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', '', NULL, NULL, NULL, 'GJ23', '-', 'as', 'NADIAD', 'NA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68a56ca4b73f0_1755671716.pdf', NULL, NULL, 664000, 24500.00, 36825.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 725325.00, 20000.00, 11500.00, 23825.00, 670000.00, 0.00, 0.00, 670000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-08-20 06:35:16', '2025-08-22 04:42:01', 'sold', 'delivered'),
@@ -12127,7 +12094,7 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (252, '755725', 'sales', '2025-09-01', '2025-09-10', 'SODHAPARMAR  DINESHKUMAR DIPABHAI', '9712668088', 'MADEVPURA/MINAVADA', 'MINAWADA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1986-12-31', 'wife', 'BHAVNABEN', '1995-10-26', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'AU SMALL FAINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '--', '', '-', '68b6dcc853c4f_1756814536.pdf', NULL, NULL, 695500, 39349.00, 43509.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0, 0.00, 0.00, 798358.00, 0.00, 0.00, 0.00, 798358.00, 0.00, 0.00, 798358.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-02 12:02:16', '2025-09-06 05:57:57', 'sold', 'delivered'),
 (253, '309498', 'sales', '2025-09-04', '2025-09-15', 'PARMAR KIRANKUMAR MAHOBATSINH', '9913747732', 'RATANJI NA MUVADA/', 'MANJIPURA/KHEDA', 'KHEDA', '388230', 'tahir3mansuri@gmail.com', '1984-03-12', 'wife', 'SUMITRABEN', '1986-01-01', 'MARUTI SUZUKI ', 'ERTIGA VXI', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'ahmedabad', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '', '', '68b985877cdb5_1756988807.pdf', NULL, NULL, 1115442, 45094.00, 48456.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11154.00, 0, 0.00, 0.00, 1220146.00, 0.00, 21000.00, 0.00, 1199146.00, 0.00, 0.00, 1199146.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-04 12:26:47', '2025-09-27 13:56:40', 'sold', 'cancel'),
 (254, '444258', 'sales', '2025-09-05', '2025-09-06', 'PARMAR RAJESHBHAI  RAMABHAI ', '9016051655', 'BHIMPURA', 'NAVAGAM/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '2003-12-23', 'brother', 'BHAVESHBHAI', '2000-06-01', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '', '-', 'ahmedabad', 'CHOLA MANDALAM', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68ba81429f2f0_1757053250.pdf', NULL, NULL, 695500, 34649.00, 34286.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 764435.00, 0.00, 0.00, 0.00, 764435.00, 0.00, 0.00, 764435.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-05 06:20:50', '2025-09-06 06:37:50', 'sold', 'delivered'),
-(255, '423103', 'sales', '2025-09-09', '2025-09-20', 'DABHI JASVANTSINH RAMSINH', '9327446679', 'MUDEL/RATANPUR', 'RATANPUR/KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1979-06-01', NULL, '', '0000-00-00', 'MAHINDRA-2025', 'SCORPIO S11 SF ', 'black', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1772200, 75000.00, 63000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17720.00, 0, 0.00, 0.00, 1927920.00, 97920.00, 0.00, 0.00, 1830000.00, 0.00, 0.00, 1830000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-09 09:04:05', '2025-09-18 10:39:10', 'sold', 'delivered'),
+(255, '423103', 'sales', '2025-09-09', '2025-09-20', 'DABHI JASVANTSINH RAMSINH', '9327446679', 'MUDEL/RATANPUR', 'RATANPUR/KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1979-06-01', NULL, '', NULL, 'MAHINDRA-2025', 'SCORPIO S11 SF ', 'black', '', '', NULL, '', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1772200, 75000.00, 63000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 17720.00, 0, 0.00, 0.00, 1927920.00, 97920.00, 0.00, 0.00, 1830000.00, 0.00, 0.00, 1830000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-09 09:04:05', '2025-09-18 10:39:10', 'sold', 'delivered'),
 (256, '577147', 'sales', '2025-09-09', '2025-09-25', 'BAROT DEVRAJ  RAMESHBHAI', '9824397563', 'AMBALAL PARK/ASTPARK SOCIETY NI  NEAR', 'KARELIBAG/VADODARA', 'VADODARA', '390018', 'tahir3mansuri@gmail.com', '1998-11-04', 'father', 'RAMESHBHAI', '1975-06-01', 'MAHINDRA&MAHINDRA LIMITED', 'THAR ROXX AX 7 ', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'ANAND', 'HDFC BANK LTD', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'GJ07DJ2022', '--', '-', '', '68bffdb6e16b5_1757412790.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-09 10:13:10', '2025-11-03 10:00:23', 'unsold', 'delivered'),
 (257, '773962', 'sales', '2025-09-11', '2025-09-25', 'SAIYAD  TOHIDALI TOFIKALI', '8758524470', 'NR R K SCHOOL  /NAPA', 'NAPA', 'ANAND', '388560', 'tahir3mansuri@gmail.com', '2002-07-01', 'brother', 'SAHIL SAIYAD', '2004-07-23', 'HUNDAI', 'VANUE S (0) +', 'WHITE', NULL, NULL, NULL, 'GJ23', '', '-', '', 'ICICI BANK LTD', '-', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'AANAND', 'GJ23', 'pending', 'pending', 'CHOICE/4077', '--', '-', '-', '68c2b7b25c8a3_1757591474.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-11 11:51:14', '2025-09-17 06:06:52', 'unsold', 'cancel'),
 (258, '661423', 'sales', '2025-09-12', '2025-09-25', 'DABHI AJITBHAI  RAIJIBHAI', '8141558301', 'VADVALU FALIYU VANTDA PO KHADOL  GUJARAT', '387635', 'KHADOL', '387635', 'tahir3mansuri@gmail.com', '1994-10-15', 'father', 'RAIJIBHAI', '1975-06-01', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY CNG', 'WHITE  ', '2025', 'CNG', NULL, 'gjGJ07', '-', '-', 'nadiad', 'AU SMALL FINANCE', 'kiran motors nadiad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', NULL, 'pending', '', '', '', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-13 06:17:15', '2025-09-25 04:55:28', 'unsold', 'delivered'),
@@ -12141,19 +12108,19 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (267, '937698', 'sales', '2025-09-19', '2025-09-26', 'PARMAR AMARATBHAI RAVJIBHAI ', '6354515262', 'THAKORVAS', ' UKARDINA MUVDA ', 'KAPADWANJ', '387610', 'tahir3mansuri@gmail.com', '1969-12-11', 'son', 'BHAVESHKUMAR ', '2000-01-11', 'HYUNDAI MOTOR INDIA LTD', 'AURA S ', 'WHITE', '', 'CNG', NULL, 'GJ07DH8612', '-', '-', 'SURAT ', 'AU SMALL FAINANCE', 'MONARCH ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68ce46388e7e1_1758348856.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-19 11:40:00', '2025-10-10 12:22:39', 'unsold', 'delivered'),
 (268, '445187', 'sales', '2025-09-19', '2025-10-01', 'PATEL ARCHITKUMAR HARSHADBHAI', ' 9624242580', 'SAIJPUR', 'ANAND', 'ANAND', '388570', 'tahir3mansuri@gmail.com', '0993-01-21', 'wife', 'MADHUBEN ', '1993-05-11', 'HYUNDAI', 'CRETA S O', 'WHITE', '', 'DIESEL', NULL, 'GJ23', '-', '-', 'HIMMATNAGAR', 'AU SMALL FAINANCE', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR', 0, 'TATA INSURANCE', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '', '', '68cd4da2e0429_1758285218.pdf', NULL, NULL, 1551774, 78700.00, 40000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 15517.00, 0, 0.00, 0.00, 1685991.00, 0.00, 0.00, 0.00, 1685991.00, 0.00, 0.00, 1685991.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-19 12:33:38', '2025-10-01 07:50:38', 'sold', 'delivered'),
 (269, '790780', 'sales', '2025-09-22', '2025-10-01', 'PATEL RAVIBHAI SURESHBHAI', '7046325291', 'NARSHIPUR', 'KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1993-04-18', 'wife', 'SARIKABEN', '1997-06-01', '', 'SCORPIO S11 SF ', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'ahmedabad', 'INDUSIND BANK', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 0, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d12d7b599d6_1758539131.pdf', NULL, NULL, 1670499, 75000.00, 65000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 3500.00, 1830704.00, 50704.00, 0.00, 0.00, 1780000.00, 0.00, 0.00, 1780000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-22 11:05:31', '2025-10-13 12:07:39', 'sold', 'delivered'),
-(270, '961452', 'sales', '2025-09-22', '2025-09-30', 'RABARI KAMLESHBHAI BHIKHABHAI', '7041893397', '365 NANI BHAGOL', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1984-11-01', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', '', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d1483986920_1758545977.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-22 12:59:37', '2025-10-08 09:00:52', 'unsold', 'cancel'),
-(271, '558542', 'sales', '2025-09-22', '2025-09-30', 'CHAUHAN MAHESHKUMAR BALVANTBHAI', '8140192667', 'KUBHARYANI MUVADI', 'WANTHVALI/KHEDA', 'KHEDA', '387430', 'tahir3mansuri@gmail.com', '2002-02-23', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', '', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '68d14998f14da_1758546328.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-22 13:05:28', '2025-11-05 05:28:16', 'sold', 'cancel'),
+(270, '961452', 'sales', '2025-09-22', '2025-09-30', 'RABARI KAMLESHBHAI BHIKHABHAI', '7041893397', '365 NANI BHAGOL', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1984-11-01', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', '', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d1483986920_1758545977.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-22 12:59:37', '2025-10-08 09:00:52', 'unsold', 'cancel'),
+(271, '558542', 'sales', '2025-09-22', '2025-09-30', 'CHAUHAN MAHESHKUMAR BALVANTBHAI', '8140192667', 'KUBHARYANI MUVADI', 'WANTHVALI/KHEDA', 'KHEDA', '387430', 'tahir3mansuri@gmail.com', '2002-02-23', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', '', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'INDUSIND BANK', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '68d14998f14da_1758546328.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-22 13:05:28', '2025-11-05 05:28:16', 'sold', 'cancel'),
 (272, '495395', 'sales', '2025-09-23', '2025-10-01', 'DABHI HARSHADBHAI SHANTIBHAI ', '9624397633', 'ARAL/KATHLAL', 'ARAL', 'KATHLAL ', '387635', 'tahir3mansuri@gmail.com', '1998-06-01', 'wife', 'NEETABEN ', '1997-04-26', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', 'PETROL/CNG', NULL, 'REGULAR', '-', '-', 'NADIAD', 'INDUSIND BANK', 'KIRAN MOTARS ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68d26fe1ed4a3_1758621665.pdf', NULL, NULL, 635500, 35165.00, 29000.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 734665.00, 0.00, 0.00, 0.00, 734665.00, 0.00, 0.00, 734665.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-23 10:01:06', '2025-10-01 06:13:41', 'sold', 'delivered'),
 (273, '888990', 'sales', '2025-09-23', '2025-09-24', 'MALEK MUSTAKMOHAMMAD MAMDUMIYA ', '9586605307', '1159 ASHIYANA SOCIETY ', 'VADOD ROAD HADGOOD ', 'ANAND ', '388110', 'tahir3mansuri@gmail.com', '1981-08-07', 'wife', 'SABERABEN ', '1997-08-11', 'MARUTI SUZUKI INDIA LTD', 'SWIFT VXI  PETROL', 'WHITE', '2025', 'PETROL', NULL, 'REGULAR', '-', '-', 'ahmedabad', 'NA', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ23', 'pending', 'pending', 'REGULAR', '-', '-', '', '68d28106cf215_1758626054.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-23 11:14:14', '2025-09-25 04:56:48', 'sold', 'delivered'),
 (274, '777796', 'sales', '2025-09-23', '2025-09-30', 'RATHOD MAHESHBHAI BABABHAI ', '09638307067', 'TANTARIYA /SARALI ', 'BAGDOL ', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1997-01-01', 'wife', 'SHILPABEN ', '1996-01-01', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI CNG', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'INDUSINDE', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68d28762a6446_1758627682.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-23 11:26:49', '2025-10-08 09:01:33', 'sold', 'cancel'),
 (275, '935231', 'sales', '2025-09-23', '2025-10-12', 'BHOI CHIRAGKUMAR MOHANBHAI ', '7990461971', 'KOTHIVALU FALIYU ', 'DAKOR ', 'DAKOR', '388225', 'tahir3mansuri@gmail.com', '1996-08-19', 'wife', 'URVASHIBEN ', '1998-09-29', '', 'DEZIRE VXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'BOB', '', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68d2871dc27f8_1758627613.pdf', NULL, NULL, 803100, 38766.00, 43636.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 885502.00, 15502.00, 0.00, 0.00, 870000.00, 0.00, 0.00, 870000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-23 11:40:13', '2025-10-13 11:12:25', 'sold', 'delivered'),
-(276, '926101', 'sales', '2025-09-24', '2025-10-01', 'KAZI SAHILMAHMAD MAHAMDANIF ', '932722929728', 'INDIRA NAGAR KATHLAL ', 'KATHLAL ', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1999-08-23', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTARS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '', '-', '-', '68d3c54dd8edc_1758709069.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-24 10:17:49', '2025-09-27 06:25:08', 'unsold', 'cancel'),
+(276, '926101', 'sales', '2025-09-24', '2025-10-01', 'KAZI SAHILMAHMAD MAHAMDANIF ', '932722929728', 'INDIRA NAGAR KATHLAL ', 'KATHLAL ', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1999-08-23', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTARS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '', '-', '-', '68d3c54dd8edc_1758709069.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-24 10:17:49', '2025-09-27 06:25:08', 'unsold', 'cancel'),
 (277, '854195', 'sales', '2025-09-24', '2025-10-12', 'PARMAR  SANJAYBHAI VITHALBHAI', '7046862419', 'SANSOLI', 'KHEDA', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1999-11-09', 'husband', 'SANJAYBHAI', '1998-06-01', 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO S11  CAPTAIN ST', 'BLACK', '', '', NULL, 'GJ07', '-', '', 'INDORE ', 'AU SMALL FAINANCE', 'BHAGIRATH MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE6419', '-', '', '', '68d3d142f26e9_1758712130.pdf', NULL, NULL, 1670499, 75000.00, 65000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 0.00, 1827204.00, 22204.00, 0.00, 0.00, 1805000.00, 0.00, 0.00, 1805000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-24 11:08:51', '2025-10-12 12:32:54', 'sold', 'delivered'),
 (278, '210042', 'sales', '2025-09-24', '2025-10-12', 'MANSURI AEZAZ MEHBUBBHAI', '8160106192', 'ANAND NAGAR SOCIETY', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1998-02-11', 'wife', 'SALEHA', '1999-04-17', 'HYUNDAI', 'NIOS SPORT CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'HIMMATNAGAR', 'BANK OF BARODA', 'BHURAWALA HYUNDAI', '', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '68d3d2f3d2a87_1758712563.pdf', NULL, NULL, 766720, 52136.00, 52469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 871325.00, 121325.00, 0.00, 0.00, 750000.00, 0.00, 0.00, 750000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-24 11:16:03', '2025-10-10 12:54:27', 'sold', 'delivered'),
 (279, '803732', 'sales', '2025-09-24', '2025-09-25', 'THAKOR SHAHNAWAZ AFZALMIYA', '8155096181', 'NR JUNI MASJID', 'BHALEJ/ANAND', 'ANAND', '388205', 'tahir3mansuri@gmail.com', '1996-02-29', 'father', 'AFZALMIYA', '1960-06-01', 'HYUNDAI', 'NIOS SPORTS CNG', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', 'SBI BANK', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR', 0, 'TATA INSURANCE', 'AANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '', '-', '', '68d3d4f89b40e_1758713080.pdf', NULL, NULL, 766720, 52136.00, 54469.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 873325.00, 103325.00, 0.00, 0.00, 770000.00, 0.00, 0.00, 770000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-24 11:24:40', '2025-09-25 13:40:03', 'sold', 'delivered'),
 (280, '252175', 'sales', '2025-09-25', '2025-09-30', 'VHORA TAUFIKBHAI NAJIRMIYA', '8734878383', 'INDIRA NAGRI ', 'THASRA', 'THASRA', '388250', 'tahir3mansuri@gmail.com', '1987-10-15', 'brother', 'YASINBHAI', '1987-06-01', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'SBI BANK', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d560d79053f_1758814423.pdf', NULL, NULL, 611900, 36825.00, 25000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673725.00, 15000.00, 11500.00, 15000.00, 632225.00, 0.00, 0.00, 632225.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-25 15:33:43', '2025-11-08 05:25:03', 'sold', 'not_delivered'),
 (281, '496907', 'sales', '2025-09-25', '2025-10-15', 'PATEL ALPESHKUMAR MAHENDRABHAI', '7284931790', 'AZAD POLE', 'BHANER', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1992-01-26', 'brother', 'BHADRESHBHAI', '1996-12-12', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68d5625530d60_1758814805.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 15000.00, 0.00, 27203.00, 631000.00, 0.00, 0.00, 631000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-25 15:40:05', '2025-10-15 06:23:54', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (282, '680238', 'sales', '2025-09-25', '2025-10-01', 'SODHAPARMAR RAJENDRASINH PARBATSINH', '9313149286', 'KHALAL', 'SHARKHEJ', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '2002-01-13', 'brother', 'JAYESHKUMAR', '1996-06-15', 'MARUTI SUZUKI INDIA LTD', 'SWIFT VXI CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d56443099c2_1758815299.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-25 15:48:19', '2025-10-01 06:01:53', 'sold', 'delivered'),
 (283, '156453', 'sales', '2025-09-25', '2025-10-09', 'BAROT VIKRAMBHAI KAMLESHBHAI', '7600406739', 'BAROT KHADKI', 'TORNA', 'TORNA', '387365', 'tahir3mansuri@gmail.com', '0985-11-07', 'wife', 'SMITABEN', '1985-12-31', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'GREY', NULL, NULL, NULL, 'GJ07', '-', '', 'NADIAD', 'BANK OF BARODA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '68d565ba0e25f_1758815674.pdf', NULL, NULL, 635500, 36349.00, 43509.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 715358.00, 0.00, 0.00, 0.00, 715358.00, 0.00, 0.00, 715358.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-25 15:54:34', '2025-10-08 06:25:55', 'sold', 'delivered'),
 (284, '731431', 'sales', '2025-09-25', '2025-10-16', 'PATEL LALJIBHAI PRABHUBHAI', '9714769949', 'MANDIRVADI KHADKI', 'BHANER', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1975-03-01', 'brother', 'JAGDISHBHAI', '1973-06-01', 'MAHINDRA& MAHINDARA LIMITD', 'PICK UP 1.7 LLX 10 FT', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'HDFC BANK LTD', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', '', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d5672b8e0a9_1758816043.pdf', NULL, NULL, 902800, 54200.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 987000.00, 0.00, 0.00, 0.00, 987000.00, 0.00, 0.00, 987000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-25 16:00:43', '2025-10-16 05:42:49', 'sold', 'delivered'),
@@ -12165,32 +12132,32 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (290, '114673', 'sales', '2025-09-25', '2025-10-14', 'PARMAR JITUBHAI RAMESHBHAI ', '6354182554', 'TAIYABPURA', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1996-06-10', 'wife', 'JYOTIBEN', '1990-12-10', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI   CNG', 'WHITE  ', '', '', NULL, '', '-', '-', 'NADIAD', 'CHOLA MANDALAM ', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '', '68d61b1513392_1758862101.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 04:48:21', '2025-10-14 08:28:20', 'sold', 'delivered'),
 (291, '659150', 'sales', '2025-09-26', '2025-10-02', 'SOLANKI GOVINDBHAI DESAIBHAI ', '9879994686', 'SOLANKIPURA ', 'KATHLAL ', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1982-06-01', 'son', 'CHINTAN', '2005-02-12', 'MARUTI SUZUKI INDIA LTD', 'ALTO K10 VXI CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68d61d20e20af_1758862624.pdf', NULL, NULL, 531900, 0.00, 28832.00, 30196.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 590928.00, 40000.00, 0.00, 15000.00, 535928.00, 0.00, 0.00, 535928.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 04:57:04', '2025-10-02 13:19:45', 'sold', 'delivered'),
 (292, '385745', 'sales', '2025-09-26', '2025-09-27', 'MALEK JABBARHUSEN NOORMAHEMAD ', '9724685422', '03 ALI BANGLOWS', 'NR MASJID TUBA', 'KHEDA', '382430', 'tahir3mansuri@gmail.com', '1993-06-30', 'brother', 'TOSIFHUSEN', '1995-05-10', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO B6 ', 'WHITE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', 'NADIAD', 'NA', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSL', '', '', 'pending', 'pending', '-', '*', '-', '', '68d6215064908_1758863696.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 05:14:56', '2025-09-27 12:39:19', 'sold', 'delivered'),
-(293, '887518', 'sales', '2025-09-26', '2025-09-27', 'TALAPADA SHAILESHKUMAR CHIMANBHAI ', '9499793762', 'KESHAR ', 'KRSHAR ', 'MEHMEDABAD ', '387430', 'tahir3mansuri@gmall.com', '1993-06-30', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO PICK UP ', 'WHITE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', '', 'HDB ', '', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'received', '-', '-', '-', '', NULL, NULL, NULL, 876000, 50600.00, 27310.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 500.00, 954410.00, 9410.00, 0.00, 0.00, 945000.00, 0.00, 0.00, 945000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 05:42:42', '2025-10-15 06:47:32', 'sold', 'delivered'),
+(293, '887518', 'sales', '2025-09-26', '2025-09-27', 'TALAPADA SHAILESHKUMAR CHIMANBHAI ', '9499793762', 'KESHAR ', 'KRSHAR ', 'MEHMEDABAD ', '387430', 'tahir3mansuri@gmall.com', '1993-06-30', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO PICK UP ', 'WHITE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', '', 'HDB ', '', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'received', '-', '-', '-', '', NULL, NULL, NULL, 876000, 50600.00, 27310.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 500.00, 954410.00, 9410.00, 0.00, 0.00, 945000.00, 0.00, 0.00, 945000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 05:42:42', '2025-10-15 06:47:32', 'sold', 'delivered'),
 (294, '146522', 'sales', '2025-09-26', '2025-10-05', 'BHARWAD CHHELLABHAI BUTABHAI', '9824162510', 'MOTI RATNAKAR ', 'SALOD/SORNA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1976-06-01', 'son', 'NARESHBHAI', '1990-01-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'SHRIRAM FIANNCE LTD', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d676449fb23_1758885444.pdf', NULL, NULL, 635500, 34620.00, 35129.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 740249.00, 25000.00, 0.00, 15249.00, 700000.00, 0.00, 0.00, 700000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 11:17:24', '2026-01-07 05:25:47', 'sold', 'delivered'),
-(296, '700059', 'sales', '2025-09-26', '2025-10-21', 'DABHI DHIRAJKUMAR VINUBHAI', '8140377856', 'PITHAI ', 'KATHLAL', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1998-06-15', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO S11 SF ', 'BLACK', NULL, NULL, NULL, 'GJ07', '', '-', 'nadiad', '', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d6802af3027_1758887978.pdf', NULL, NULL, 1670491, 80000.00, 71000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 0.00, 1838196.00, 0.00, 0.00, 0.00, 1838196.00, 0.00, 0.00, 1838196.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 11:59:39', '2025-10-17 11:00:42', 'sold', 'cancel'),
-(297, '736049', 'sales', '2025-09-27', '2025-10-01', 'CHAUHAN VIJAYBHAI DASHRATBHAI ', '8128252023', 'BARAIYA VAGO ', 'GOTHAJ ', 'KHEDA ', '387130', 'tahir3mansuri@gmail.com', '1990-08-21', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'ALTO K 10 VXI CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '68d776f315ae1_1758951155.pdf', NULL, NULL, 531900, 30196.00, 28832.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 590928.00, 0.00, 0.00, 0.00, 590928.00, 0.00, 0.00, 590928.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-27 05:32:35', '2025-09-27 13:55:17', 'sold', 'cancel'),
+(296, '700059', 'sales', '2025-09-26', '2025-10-21', 'DABHI DHIRAJKUMAR VINUBHAI', '8140377856', 'PITHAI ', 'KATHLAL', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1998-06-15', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO S11 SF ', 'BLACK', NULL, NULL, NULL, 'GJ07', '', '-', 'nadiad', '', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '68d6802af3027_1758887978.pdf', NULL, NULL, 1670491, 80000.00, 71000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 0.00, 1838196.00, 0.00, 0.00, 0.00, 1838196.00, 0.00, 0.00, 1838196.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-26 11:59:39', '2025-10-17 11:00:42', 'sold', 'cancel'),
+(297, '736049', 'sales', '2025-09-27', '2025-10-01', 'CHAUHAN VIJAYBHAI DASHRATBHAI ', '8128252023', 'BARAIYA VAGO ', 'GOTHAJ ', 'KHEDA ', '387130', 'tahir3mansuri@gmail.com', '1990-08-21', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'ALTO K 10 VXI CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '68d776f315ae1_1758951155.pdf', NULL, NULL, 531900, 30196.00, 28832.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 590928.00, 0.00, 0.00, 0.00, 590928.00, 0.00, 0.00, 590928.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-27 05:32:35', '2025-09-27 13:55:17', 'sold', 'cancel'),
 (298, '667619', 'sales', '2025-09-27', '2025-10-11', 'MANVANI MUKESHKUMAR SADHUBHAI', '8469647407', 'NANI RATNAKAR MATA ROAD', 'KAPADVANJ ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1969-06-01', 'wife', 'RAJVANTIBEN', '1977-02-24', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA ZXI O  CNG', 'WHITE  ', '2025', 'PETROL/CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'SHRI RAM FINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68d7b6a2bba89_1758967458.pdf', NULL, NULL, 1182500, 47197.00, 53779.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11825.00, 0, 0.00, 0.00, 1295301.00, 0.00, 0.00, 0.00, 1295301.00, 0.00, 0.00, 1295301.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-27 10:04:18', '2025-10-11 12:01:26', 'sold', 'delivered'),
 (299, '849842', 'sales', '2025-09-27', '2025-10-04', 'PATEL NIRAGKUMAR  NATVARBHAI', '8780782560', 'BHOJA NA  MUVADA/SIHORA', 'KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1987-08-28', 'father', 'NATVARBHAI', '1948-11-30', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI   CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'NA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '68d7bcd6c8e9b_1758969046.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-27 10:30:46', '2025-10-03 05:28:03', 'sold', 'delivered'),
 (300, '532867', 'sales', '2025-09-27', '2025-11-18', 'CHUNARA KALPESHHBAI KANUBHAI', '7990210948', '1207/ RAVJINAGAR  KATHWADA', 'AHMEDABAD', 'AHMEDABAD', '382430', 'tahir3mansuri@gmail.com', '1996-06-01', 'wife', 'SONALBEN', '1992-10-19', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI   CNG', 'WHITE  ', '', '', NULL, 'GJ27', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ27', 'pending', 'pending', 'REGULAR', '-', '-', '', '68d7c16de4d78_1758970221.pdf', NULL, NULL, 1076300, 49827.00, 44322.00, 19245.00, 0.00, 20687.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1221144.00, 9457.00, 0.00, 0.00, 1211687.00, 0.00, 0.00, 1211687.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-27 10:50:21', '2025-11-20 08:44:07', 'sold', 'delivered'),
 (301, '112985', 'sales', '2025-09-28', '2025-10-07', 'PARMAR RAMESHBHAI BABUBHAI', '8799500957', 'PIPLAVADU FALIYU', 'GUMADIYA/KHEDA', 'KHEDA ', '388250', 'tahir3mansuri@gmail.com', '2000-03-27', 'wife', 'SAPNABEN', '2006-07-15', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FAINANCE', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '68d8dd3b4f6cc_1759042875.pdf', NULL, NULL, 635500, 35000.00, 35000.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 740500.00, 45800.00, 0.00, 0.00, 694700.00, 0.00, 0.00, 694700.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-28 07:01:15', '2025-10-07 05:41:55', 'sold', 'delivered'),
 (302, '195667', 'sales', '2025-09-29', '2025-10-02', 'PINJARA MUNTAJIR MAJIDBHAI', '7990734247', 'HAT FALIYU', 'DAHIKOT/CHENPUR', 'PANCHMAHAL', '389380', 'tahir3mansuri@gmail.com', '1990-06-01', 'wife', 'FAJILAT', '1995-09-27', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', 'CNG', NULL, 'GJ17', '-', '-', 'NADIAD', 'NA', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'PANCHMAHAL', 'GJ18', 'pending', 'pending', 'REGULAR', '--', '=', '', '68da48ac13c6d_1759135916.pdf', NULL, NULL, 635500, 36349.00, 43509.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 750358.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-29 08:51:56', '2025-10-02 05:42:06', 'unsold', 'delivered'),
 (303, '699635', 'sales', '2025-09-29', '2025-10-05', 'DABHI RANJITSINH KALUSINH ', '9998433356', 'VADVADU FALIYU ', 'KAKARKHAD', 'KHEDA ', '387630', 'tahir3mansuri@gmail.com', '1987-08-02', 'wife', 'ARUNABEN ', '1988-06-01', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO B6 ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'ANANAD', '-', 'MAHINDRA&MAHINDRA ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 04:46:55', '2025-10-07 05:45:55', 'sold', 'cancel'),
-(304, '278854', 'sales', '2025-09-29', '2025-09-05', 'RATHOD SHAILESHBHAI ARVINDBHAI ', '09638307067', 'TATARIYA ', 'BAGDOL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '0000-00-00', 'brother', 'RATHOD AJAY ', '2000-06-01', 'MARUTI SUZUKI INDIA LTD', 'BREZZA LXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68db6346a4a16_1759208262.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 04:57:42', '2025-10-08 09:09:07', 'unsold', 'cancel'),
-(305, '388864', 'sales', '2025-09-29', '2025-10-05', 'SODHA MAHESHBHAI BHALABHAI ', '8780950514', 'JUNA BILODRA ', 'KHEDA ', 'KHEDA ', '387002', 'tahir3mansuri@gmail.com', '1992-06-30', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'PIPDI ', '-', 'MAHINDRA&MAHINDRA ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68db66c093c98_1759209152.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 05:12:32', '2025-10-08 09:06:33', 'unsold', 'cancel'),
+(304, '278854', 'sales', '2025-09-29', '2025-09-05', 'RATHOD SHAILESHBHAI ARVINDBHAI ', '09638307067', 'TATARIYA ', 'BAGDOL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', NULL, 'brother', 'RATHOD AJAY ', '2000-06-01', 'MARUTI SUZUKI INDIA LTD', 'BREZZA LXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68db6346a4a16_1759208262.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 04:57:42', '2025-10-08 09:09:07', 'unsold', 'cancel'),
+(305, '388864', 'sales', '2025-09-29', '2025-10-05', 'SODHA MAHESHBHAI BHALABHAI ', '8780950514', 'JUNA BILODRA ', 'KHEDA ', 'KHEDA ', '387002', 'tahir3mansuri@gmail.com', '1992-06-30', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11', 'BLACK', NULL, NULL, NULL, 'GJ07', '-', '-', 'PIPDI ', '-', 'MAHINDRA&MAHINDRA ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68db66c093c98_1759209152.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 05:12:32', '2025-10-08 09:06:33', 'unsold', 'cancel'),
 (306, '831185', 'sales', '2025-09-29', '2025-09-30', 'RATHOD  DALPATSINH BADESINH', '9924875290', 'SARKHEJ', 'KHEDA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1972-05-01', 'wife', 'AMRUTBEN', '1977-06-01', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI   CNG', 'SILVER', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'BANK OF  INDIA', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '', '-', '68db811b39da6_1759215899.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 15000.00, 0.00, 0.00, 1165312.00, 0.00, 0.00, 1165312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 07:04:59', '2025-10-23 06:18:38', 'sold', 'delivered'),
 (307, '908373', 'sales', '2025-09-28', '2025-10-07', 'PANDYA AVINASHBHAI PRAVINCHANDRA ', '9662020420', 'DAKOR ROAD ', 'KAPADVANJ ', 'KHEDA ', '387620', 'tahir3mansuri@gmail.com', '1987-07-02', 'wife', 'MINAXIBEN', '1990-11-13', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ07DH9524', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 07:18:54', '2025-10-08 08:43:07', 'sold', 'delivered'),
 (308, '470538', 'sales', '2025-09-30', '2025-10-05', 'KAZI NAIMALI ABDULRAUF', '9974934736', '2634-35 KAZI SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1970-06-01', 'son', 'JISHAN KAZI', '2000-06-01', 'MARUTI SUZUKI INDIA LTD', 'BREZZA LXI CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'NADIAD', '', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', 'SEFUBHAI KAZI', '-', NULL, NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 07:20:10', '2025-10-08 05:37:27', 'unsold', 'cancel'),
 (309, '127787', 'sales', '2025-09-30', '2025-10-15', 'PATHAN SHAHIDKHAN SAMSUDDINKHAN', '9998914906', 'SURTI SOCIETY /JANTANAGAR', 'KHANVADI/RAMOL', 'AHMEDABAD', '382449', 'tahir3mansuri@gmail.com', '1986-07-15', 'wife', 'MAJIDABANU ', '1994-11-26', 'MARUTI SUZUKI INDIA LTD', 'SWIFT VXIO CNG', 'WHITE', '2025', 'CNG', NULL, 'GJ27', '-', '-', 'NADIAD', 'BAJAJ FINANCE', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '', NULL, NULL, NULL, 770900, 41998.00, 38967.00, 16358.00, 0.00, 49500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 917723.00, 35000.00, 6723.00, 25000.00, 851000.00, 0.00, 0.00, 851000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 11:00:31', '2025-10-15 06:52:38', 'sold', 'delivered'),
 (310, '482553', 'sales', '2025-09-30', '2025-10-10', 'BHOI VIJAYBHAI SHANABHAI', '9662070419', '2-193  ARUNVAD', 'MAHISHA', 'KHEDA', '387340', 'tahir3mansuri@gmail.com', '1995-06-15', 'father', 'SHANABHAI', '1973-01-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '68dbbb322a9e7_1759230770.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-09-30 11:12:50', '2025-11-03 05:13:42', 'unsold', 'cancel'),
 (311, '951027', 'sales', '2025-10-01', '2025-10-14', 'ZALA SANJAYSINH  PRAVINSINH', '9624262319', 'KALESAR /CHHIPDI', 'CHHIPDI', 'KATHLAL', '387635', 'tahir3mansuri@gmail.com', '1995-06-01', 'brother', 'VIPULSINH', '1990-01-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'BANK OF INDIA', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', '', 'GJ07', 'pending', 'pending', 'REGULAR', '--', 'JAYDIP ZALA', '-', '68dcb67041bcd_1759295088.pdf', NULL, NULL, 635500, 35129.00, 34620.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 725249.00, 35000.00, 0.00, 10249.00, 680000.00, 0.00, 0.00, 680000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 05:04:48', '2025-10-13 13:15:18', 'sold', 'delivered'),
-(312, '796568', 'sales', '2025-01-01', '2025-10-20', 'RATHOD SIDDHARTH  RAMESHBHAI', '6357075048', 'B60 PADMASHALI SOCIETY ', 'VIRAT NAGAR/AHMEDABAD', 'AHMEDABAD', '382415', 'tahir3mansuri@gmail.com', '1990-01-31', NULL, '', '0000-00-00', 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO N', 'BLACK', NULL, NULL, NULL, 'GJ27', '', '-', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68dcbc5ef2090_1759296606.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 05:30:07', '2025-10-08 05:44:30', 'unsold', 'cancel'),
+(312, '796568', 'sales', '2025-01-01', '2025-10-20', 'RATHOD SIDDHARTH  RAMESHBHAI', '6357075048', 'B60 PADMASHALI SOCIETY ', 'VIRAT NAGAR/AHMEDABAD', 'AHMEDABAD', '382415', 'tahir3mansuri@gmail.com', '1990-01-31', NULL, '', NULL, 'MAHINDRA& MAHINDARA LIMITD', 'SCORPIO N', 'BLACK', NULL, NULL, NULL, 'GJ27', '', '-', 'ANAND', '', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '--', '-', '-', '68dcbc5ef2090_1759296606.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 05:30:07', '2025-10-08 05:44:30', 'unsold', 'cancel'),
 (313, '746345', 'sales', '2025-10-01', '2025-10-10', 'SHAIKH MAHIRHUSEN M HANIF', '9624088797', 'NADIYADI BHAGOL', 'LAKKATTOLA/MAHUDHA', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1997-07-08', 'wife', 'SHAIKH ANJUMBANU', '1999-06-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'NADIAD', '', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR ', 0, 'MSIL', '', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '68dcd5e2f21da_1759303138.pdf', NULL, NULL, 635500, 36449.00, 43509.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 07:18:59', '2025-10-13 05:17:30', 'sold', 'cancel'),
 (314, '481713', 'sales', '2025-10-01', '2025-10-09', 'PARMAR TEJENDRASINH PRAHLADBHAI', '8980361092', 'PATEL FALIYU', 'SINGHALI/ANTROLI', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1994-01-11', 'wife', 'REKHABEN', '1990-06-01', 'MARUTI SUZUKI INDIA LTD', 'WAGONR VXI ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'received', 'REGULAR', '-', '', '-', '68dd0a24e309a_1759316516.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 722000.00, 0.00, 0.00, 0, 0.00, 0.00, 722000.00, 0.00, 0.00, 0.00, 722000.00, 0.00, 0.00, 722000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 11:01:56', '2025-10-08 06:34:01', 'sold', 'delivered'),
-(315, '723035', 'sales', '2025-10-01', '2025-10-10', 'DABHI RANJITSINH NANSINH', '6353358273', 'BAGDOL SARALI', 'SARALI', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1999-01-07', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'SK FINANCE ', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', NULL, '-', '-', '-', '', '68dd0b0a3d5d2_1759316746.pdf', NULL, NULL, 635500, 36449.00, 43509.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 11:05:46', '2025-10-28 13:17:20', 'sold', 'cancel'),
+(315, '723035', 'sales', '2025-10-01', '2025-10-10', 'DABHI RANJITSINH NANSINH', '6353358273', 'BAGDOL SARALI', 'SARALI', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1999-01-07', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'SK FINANCE ', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', NULL, '-', '-', '-', '', '68dd0b0a3d5d2_1759316746.pdf', NULL, NULL, 635500, 36449.00, 43509.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 750458.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-01 11:05:46', '2025-10-28 13:17:20', 'sold', 'cancel'),
 (316, '541036', 'sales', '2025-10-02', '2025-10-15', 'PATHAN NAJIRKHAN AKBARKHAN', '9574740786', 'RUDAN/KHEDA', 'KHED', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1980-01-01', 'wife', 'AFSANA BIBI', '1980-06-01', 'MARUTI SUZUKI INDIA LTD', 'SWIFT ZXI ', '', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'union bank', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '7282', '-', '-', '-', '68de6bde8160a_1759407070.pdf', NULL, NULL, 838900, 40984.00, 45456.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0, 0.00, 0.00, 945340.00, 40000.00, 15000.00, 0.00, 890340.00, 0.00, 0.00, 890340.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-02 12:11:10', '2025-10-08 09:10:53', 'sold', 'cancel'),
-(317, '976707', 'sales', '2025-10-03', '2025-10-12', 'ZALA RANJITSINH CHANDRASINH', '9724311773', '2900 BHATHOD ', 'CHHIPADI ', 'KATHLAL ', '387635', 'tahir3mansuri@gmail.com', '1988-11-23', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '- ', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', NULL, NULL, '-', '-', '-', '', '68df54b3d05d6_1759466675.pdf', NULL, NULL, 635500, 34620.00, 35129.00, 0.00, 0.00, 37500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 742749.00, 35000.00, 9249.00, 15000.00, 683500.00, 0.00, 0.00, 683500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 04:44:35', '2025-10-12 06:02:47', 'sold', 'delivered'),
+(317, '976707', 'sales', '2025-10-03', '2025-10-12', 'ZALA RANJITSINH CHANDRASINH', '9724311773', '2900 BHATHOD ', 'CHHIPADI ', 'KATHLAL ', '387635', 'tahir3mansuri@gmail.com', '1988-11-23', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '- ', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', NULL, NULL, '-', '-', '-', '', '68df54b3d05d6_1759466675.pdf', NULL, NULL, 635500, 34620.00, 35129.00, 0.00, 0.00, 37500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 742749.00, 35000.00, 9249.00, 15000.00, 683500.00, 0.00, 0.00, 683500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 04:44:35', '2025-10-12 06:02:47', 'sold', 'delivered'),
 (318, '710782', 'sales', '2025-10-03', '2025-03-10', 'SOLANKI CHETANKUMAR KANUBHAI', '9157117043', 'JIT PUR ', 'SABARKANTHA', 'SABARKANTHA', '383325', 'tahir3mansuri@gmail.com', '2005-01-01', 'father', 'KANUBHAI', '1977-01-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'GJ31', '-', '-', 'NADIAD', 'CHOLA MANDALAM', 'KIRAN MOTERS', '', 'TAHIR', 0, 'MSIL', 'MODASA', 'GJ31', 'pending', 'pending', 'REGULAR', '-', '', '-', '68dfa00de6ca2_1759485965.pdf', NULL, NULL, 635500, 36349.00, 43509.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 750358.00, 0.00, 10358.00, 0.00, 740000.00, 0.00, 0.00, 740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 10:06:05', '2025-10-10 06:01:36', 'sold', 'cancel'),
-(319, '885842', 'sales', '2025-10-03', '2025-10-08', 'DABHI DILIPSINH MANASINH ', '9998433356', 'VADVALU FALIUA ', 'KAKRKHAD', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1980-06-21', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68dfb93a12b7b_1759492410.pdf', NULL, NULL, 895600, 50000.00, 30285.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4000, 0.00, 0.00, 979885.00, 29885.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 11:53:30', '2025-10-15 12:07:43', 'sold', 'delivered'),
+(319, '885842', 'sales', '2025-10-03', '2025-10-08', 'DABHI DILIPSINH MANASINH ', '9998433356', 'VADVALU FALIUA ', 'KAKRKHAD', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1980-06-21', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68dfb93a12b7b_1759492410.pdf', NULL, NULL, 895600, 50000.00, 30285.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4000, 0.00, 0.00, 979885.00, 29885.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 950000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 11:53:30', '2025-10-15 12:07:43', 'sold', 'delivered'),
 (320, '211252', 'sales', '2025-10-13', '2025-10-11', 'PATEL PIYUSHKUMAR HARESHBHAI ', '7359301873', 'SUKUN RECIDENSI ', 'DAKOR', 'DAKOR', '388225', 'tahir3mansuri@gmail.com', '2000-01-23', 'sister', 'SHAILESHBHAI PATEL ', '1997-05-29', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX O ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68dfc37a9aa03_1759495034.pdf', NULL, NULL, 1930971, 85000.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19300.00, 0, 0.00, 0.00, 2085271.00, 54271.00, 0.00, 0.00, 2031000.00, 0.00, 0.00, 2031000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-03 12:37:14', '2025-10-15 07:32:47', 'sold', 'delivered'),
 (321, '729345', 'sales', '2025-10-06', '2025-10-15', 'MANSURI MAHAMMAD ASIF  AKHTARBHAI ', '9979624464', '3991 G VAHORVAD  SOCIETY', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1994-11-01', 'wife', 'MANSURI NUSRAT ', '1997-01-06', 'MARUTI SUZUKI-2025', 'FRONX  SIGMA', 'WHITE', '2025', 'PETROL', NULL, 'GJ07', '-', '-', 'nadiad', 'ICICI BANK LTD', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 0, 'MSL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '', '68e49817326bf_1759811607.pdf', NULL, NULL, 681000, 37438.00, 34689.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 753127.00, 63127.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-07 04:33:27', '2025-10-16 10:27:51', 'sold', 'delivered'),
 (322, '155882', 'sales', '2025-10-06', '2025-10-29', 'ZALA RAMESHBHAI CHAGANBHAI ', '9714383832', 'KALESHAR ', 'CHHIPADI', 'KATHLAL', '387635', 'tahir3mansuri@gmail.com', '1972-06-29', 'wife', 'RANJANBEN ', '1975-01-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'REGULAR', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'GJ07', 'GJ07', 'pending', 'pending', '-', '-', '-', '-', '68e498e007b6a_1759811808.pdf', NULL, NULL, 635500, 36349.00, 43509.00, 0.00, 0.00, 0.00, 20000.00, 0.00, 0.00, 0, 0.00, 0.00, 735358.00, 25000.00, 17100.00, 15000.00, 678258.00, 0.00, 0.00, 678258.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-07 04:36:48', '2025-11-03 04:59:45', 'sold', 'delivered'),
@@ -12211,8 +12178,8 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (337, '825409', 'sales', '2025-10-14', '2025-10-29', 'PATEL KANUBHAI KANTIBHAI', '9537323237', 'SODHANVADO', 'TORNA', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1965-03-28', 'son', 'ANANDKUMAR', '1989-08-23', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '68ee3c7653d36_1760443510.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 740549.00, 25000.00, 180.00, 15549.00, 699820.00, 0.00, 0.00, 699820.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-14 12:05:10', '2025-11-03 04:58:41', 'sold', 'delivered'),
 (338, '215811', 'sales', '2025-10-15', '2025-10-25', 'VAGHELA  RAJENDRASINH NARUBHAI', '9725438374', 'AMBIKANAGAR SOCI', 'SOMNATH BUS STATION,SANAD ', 'SANAND,AHMEDABAD', '382110', 'tahir3mansuri@gmail.com', '1960-02-20', NULL, 'ANANDKUMAR', '1989-08-23', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', NULL, NULL, NULL, 'REGULAR', '-', '-', 'NADIAD', '-', 'KIRAN MOTORS ', 'KATHLA', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', NULL, NULL, '-', '-', '-', '', '68ef4097ed3ad_1760510103.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-15 06:35:04', '2025-10-28 13:25:55', 'sold', 'cancel'),
 (339, '758448', 'sales', '2025-10-15', '2025-10-17', 'PUROHIT KAMALBHAI THAKORLAL', '7621919008', 'HOLI  CHAKLA ', 'THASARA/KHEDA', 'KHEDA', '388250', 'tahir3mansuri@gmail.com', '1969-08-10', 'wife', 'RACHNABEN', '1980-06-01', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'nadiad', 'union bank', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', '-', '68ef4b084f521_1760512776.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 312.00, 0.00, 0.00, 1180000.00, 0.00, 0.00, 1180000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-15 07:19:36', '2025-10-17 07:48:00', 'sold', 'delivered'),
-(340, '945019', 'sales', '2025-10-17', '2025-10-30', 'RATHOD NAJIRBHAI MUSTUFABHAI ', '9512415340', '377,MALEKNAGAR,ANARA', 'ANARA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1985-06-01', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY STD CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMATNGAR ', '', 'KIRAN MOTARS ', 'KATHLA', 'TAHIR', 2147483647, '', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68f327c4135e9_1760765892.pdf', NULL, NULL, 611900, 36825.00, 25000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673725.00, 15000.00, 0.00, 20577.00, 638148.00, 0.00, 0.00, 638148.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-18 05:38:12', '2025-11-03 04:57:23', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+(340, '945019', 'sales', '2025-10-17', '2025-10-30', 'RATHOD NAJIRBHAI MUSTUFABHAI ', '9512415340', '377,MALEKNAGAR,ANARA', 'ANARA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1985-06-01', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY STD CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMATNGAR ', '', 'KIRAN MOTARS ', 'KATHLA', 'TAHIR', 2147483647, '', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '68f327c4135e9_1760765892.pdf', NULL, NULL, 611900, 36825.00, 25000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673725.00, 15000.00, 0.00, 20577.00, 638148.00, 0.00, 0.00, 638148.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-18 05:38:12', '2025-11-03 04:57:23', 'sold', 'delivered');
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (341, '841985', 'sales', '2025-10-18', '2025-11-12', 'SODHAPARMAR PRAVINSINH  BHAGVANSINH', '8320462159', '3781/PRAVIN SO MILL ', 'BALASINOR ROAD /KATHLAL', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1962-06-01', 'daughter', 'VANDANABEN', '1988-06-01', 'Tata Motors', 'NEXON', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', '', 'CANERA BANK', 'TATA', '', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '', '68f327edab6be_1760765933.pdf', NULL, NULL, 951390, 50972.00, 51900.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1054262.00, 68262.00, 0.00, 0.00, 986000.00, 0.00, 0.00, 986000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-18 05:38:53', '2025-11-20 08:37:29', 'sold', 'delivered'),
 (342, '281772', 'sales', '2025-10-15', '2025-11-05', 'ZALA NARESHBHAI CHHATRASINH', '8980965186', 'GOGJIPURA ', 'CHHIPDI /KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1994-06-01', 'brother', 'KETAN ZALA', '2000-06-01', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG (0)', 'WHITE  ', '2025', 'CNG', NULL, 'GJ07DJ0759', 'A263084', '161128', 'nadiad', 'BANK OF INDIA', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07DJ0759', 'completed', 'received', 'REGULAR', '*', '-', '-', '68f330ff5ab39_1760768255.pdf', NULL, NULL, 770900, 41998.00, 38967.00, 0.00, 0.00, 39500.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 891365.00, 25000.00, 0.00, 0.00, 866365.00, 0.00, 0.00, 866365.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-18 06:17:35', '2025-11-05 12:37:23', 'sold', 'delivered'),
 (343, '891520', 'sales', '2025-10-20', '2025-10-30', 'ZALA RAJENDRASINH SAHEBSINH', '8200681620', 'KHADAL', 'KHADAL/KHEDA', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1991-09-11', 'wife', 'DINABEN', '1995-11-05', 'MARUTI SUZUKI-2025', 'DEZIRE VXI CNG ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'nadiad', 'AXIS BANK LIMITED', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '', '68f5ebbc2ebc5_1760947132.pdf', NULL, NULL, 803100, 38766.00, 43636.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 915502.00, 16502.00, 0.00, 450.00, 898550.00, 0.00, 0.00, 898550.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-20 07:58:52', '2025-10-31 04:54:54', 'sold', 'delivered'),
@@ -12224,14 +12191,14 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (350, '823276', 'sales', '2025-10-27', '2025-11-10', 'ZALA RAMESHKUMAR  CHANDUJI', '9427179890', 'KHODI /VADOD', 'VADOD /AHMEDABAD', 'AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1981-04-03', 'son', 'jaydipsinh', '2003-08-25', 'MARUTI SUZUKI-2025', 'xl 6 zeta ', 'cng', '', '', NULL, 'Gj27', '', '-', 'AHMEDABAD', 'indian overseas', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'AHMEDABAD', 'gj27', 'pending', 'pending', 'REGULAR', '*', '-', '', '68ff5afa35ae3_1761565434.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-27 11:43:54', '2025-11-12 11:27:04', 'sold', 'cancel'),
 (351, '405936', 'sales', '2025-10-27', '2025-10-30', 'ZALA MAHENDRASINH BALUSINH', '7984902352', 'KHDAL', 'KHADAL/KATHLAL', 'KATHLAL', '387365', '', '1989-10-28', 'brother', 'DIGHVIJAYSINH', '1991-09-24', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG ', 'WHITE', NULL, NULL, NULL, '-', '-', '-', 'nadiad', 'AU SMALL FINANCE LTD', 'KIRAN MOTERS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '*', '-', '-', '68ff5e50828b4_1761566288.pdf', NULL, NULL, 744900, 40676.00, 38222.00, 0.00, 0.00, 0.00, 2000.00, 0.00, 0.00, 0, 0.00, 0.00, 825798.00, 15000.00, 0.00, 16798.00, 794000.00, 0.00, 0.00, 794000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-27 11:58:08', '2025-10-31 04:53:45', 'sold', 'delivered'),
 (352, '797283', 'sales', '2025-10-27', '2025-10-31', 'SODHA ISHWARBHAI PRATAPBHAI', '9978687896', 'SHARMA PURA', 'RAVALIYA', 'THASARA', '388255', 'tahir3mansuri@gmail.com', '1984-01-01', 'wife', 'GEETABEN', '1983-06-01', 'MAHINDRA', 'SCORPIO S11 ', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FINANCE LTD', 'BHAGIRATH MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '-', '--', '', '69009f9b6f2dc_1761648539.pdf', NULL, NULL, 1670000, 75000.00, 66000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16750.00, 0, 0.00, 0.00, 1827750.00, 0.00, 27750.00, 0.00, 1800000.00, 0.00, 0.00, 1800000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-28 10:48:59', '2025-10-31 04:46:49', 'sold', 'delivered'),
-(353, '317734', 'sales', '2025-10-28', '2025-11-12', 'CHAUHAN INDRAJITSINH AMARSINH', '9265765579', 'ODHVJI NA MUVDA', 'PANDVA', 'KHEDA ', '388265', 'tahir3mansuri@gmail.com', '1995-02-17', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11', 'BLACK', NULL, NULL, NULL, '', '-', '-', 'AHMEDAVAD', '', 'BHAGIRAT', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '6900abec7f86a_1761651692.pdf', NULL, NULL, 1670000, 75000.00, 66000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16700.00, 0, 0.00, 0.00, 1827700.00, 37700.00, 0.00, 0.00, 1790000.00, 0.00, 0.00, 1790000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-28 11:41:32', '2025-11-05 05:20:54', 'sold', 'cancel'),
-(354, '181817', 'sales', '0000-00-00', '0000-00-00', 'SOLANKI MAHENDRASINH NARVATSINH', '7574921864', '', '', '', '', '', '0000-00-00', NULL, '', '0000-00-00', 'MARUTI', 'EECO 5 STR AC CNG ', 'WHITE', '', '', NULL, '-', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 635800, 35130.00, 34620.00, 0.00, 0.00, 30000.00, 0.00, 885.00, 0.00, 0, 0.00, 0.00, 736435.00, 46435.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-28 13:45:34', '2025-12-09 05:22:48', 'sold', 'cancel'),
-(355, '256182', 'sales', '0000-00-00', '2025-10-31', 'CHAUHAN RANJITKUMAR SHANTILAL', '9904101437', 'JOGNIMATA VALU FALIYU GHODALI', 'KHEDA MEHMDAVAD', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '0000-00-00', 'father', 'SHANTILAL', '1966-01-01', 'MAHINDRA', 'BMT MAXX CITY PICK UP', 'WHITE  ', '2025', 'DIESEL ', NULL, '-', '', '', 'ANAND', 'NA', 'M M VOHRA', 'KATHLAL', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA ', 'GJ-07', 'pending', NULL, 'REGULAR', '', '', '', NULL, NULL, NULL, 737700, 48600.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 816300.00, 6300.00, 0.00, 0.00, 810000.00, 0.00, 0.00, 810000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-29 05:19:54', '2025-10-30 06:09:16', 'sold', 'delivered'),
+(353, '317734', 'sales', '2025-10-28', '2025-11-12', 'CHAUHAN INDRAJITSINH AMARSINH', '9265765579', 'ODHVJI NA MUVDA', 'PANDVA', 'KHEDA ', '388265', 'tahir3mansuri@gmail.com', '1995-02-17', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11', 'BLACK', NULL, NULL, NULL, '', '-', '-', 'AHMEDAVAD', '', 'BHAGIRAT', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '6900abec7f86a_1761651692.pdf', NULL, NULL, 1670000, 75000.00, 66000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16700.00, 0, 0.00, 0.00, 1827700.00, 37700.00, 0.00, 0.00, 1790000.00, 0.00, 0.00, 1790000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-28 11:41:32', '2025-11-05 05:20:54', 'sold', 'cancel'),
+(354, '181817', 'sales', NULL, NULL, 'SOLANKI MAHENDRASINH NARVATSINH', '7574921864', '', '', '', '', '', NULL, NULL, '', NULL, 'MARUTI', 'EECO 5 STR AC CNG ', 'WHITE', '', '', NULL, '-', '', '', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 635800, 35130.00, 34620.00, 0.00, 0.00, 30000.00, 0.00, 885.00, 0.00, 0, 0.00, 0.00, 736435.00, 46435.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-28 13:45:34', '2025-12-09 05:22:48', 'sold', 'cancel'),
+(355, '256182', 'sales', NULL, '2025-10-31', 'CHAUHAN RANJITKUMAR SHANTILAL', '9904101437', 'JOGNIMATA VALU FALIYU GHODALI', 'KHEDA MEHMDAVAD', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', NULL, 'father', 'SHANTILAL', '1966-01-01', 'MAHINDRA', 'BMT MAXX CITY PICK UP', 'WHITE  ', '2025', 'DIESEL ', NULL, '-', '', '', 'ANAND', 'NA', 'M M VOHRA', 'KATHLAL', 'TAHIR ', 2147483647, 'CHOLAMANDALAM', 'KHEDA ', 'GJ-07', 'pending', NULL, 'REGULAR', '', '', '', NULL, NULL, NULL, 737700, 48600.00, 30000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 816300.00, 6300.00, 0.00, 0.00, 810000.00, 0.00, 0.00, 810000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-29 05:19:54', '2025-10-30 06:09:16', 'sold', 'delivered'),
 (356, '156328', 'sales', '2025-10-29', '2025-11-13', 'KULDEEP ANILKUMAR', '9950269761', 'KATHLAL-387630', 'KATHLAL ', 'kathlal', '387630', 'tahir3mansuri@gmail.com', '2000-05-20', 'wife', 'NIRMLADEVI', '1980-06-01', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY STD CNG', 'WHITE', '', '', NULL, 'RJ04', '-', '-', 'HIMATNGAR ', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', '', 'RJ04', 'pending', 'pending', 'REGULAR', '', '', '', '6901b28947f61_1761718921.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-10-29 06:22:01', '2025-11-12 11:41:12', 'unsold', 'cancel'),
-(357, '685956', 'sales', '0000-00-00', '2025-11-12', 'SHEKH SULTANMIYA RAHIMMIYA', '9687389202', '468,GHANCHIWALI FALIYU VASO', 'KHEDA THASRA', 'THASRA', '388245', 'SULTANSHAIKH@GMAIL.COM', '1985-10-10', 'wife', 'NAJIMABANU', '1993-09-15', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE', '', '', NULL, '-', '-', '-', 'HIMMATNAGAR', 'AU SMALL FINANCE LTD', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ-07', 'pending', 'pending', 'REGULAR', '15000', 'SAJIF SHAIKH', '', '690838f7274e1_1762146551.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 15000.00, 11500.00, 15703.00, 631000.00, 0.00, 0.00, 631000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:08:17', '2025-11-08 10:47:09', 'sold', 'delivered'),
-(358, '326631', 'sales', '0000-00-00', '2025-11-20', 'JAGDISHBHAI JASHUBHAI KAPATEL', '8320315064', 'A-73 SOMNATHNAGAR SOCIETY RATNAKAR MATA ROAD KAPADWANJ', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1984-03-28', 'brother', 'SURESHBHAI', '1980-06-01', 'INNOVA CRYSTA ', 'GX PLUS 8 SEATER ', 'WHITE', '', 'DIESEL', NULL, 'GJ07', '-', '-', 'BHOPAL', 'PENDING', 'RAJPAL TOYOTA', 'KATHLAL', 'AAMIR', 2147483647, 'TATA 3+3', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE', '0', 'DIRECT', '', NULL, NULL, NULL, 2039700, 95000.00, 160000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20397.00, 8500, 0.00, 10000.00, 2333597.00, 2597.00, 0.00, 0.00, 2331000.00, 0.00, 0.00, 2331000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:18:21', '2025-11-17 12:43:42', 'sold', 'delivered'),
-(359, '408750', 'sales', '0000-00-00', '2025-11-13', 'RATHI PRAKASHKUMAR JAMNADAS', '8735880271', '3,MAHALAXMI SOCIETY KATHLAL KHEDA ', 'KATHLAL ', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1983-07-17', 'wife', 'HETALBEN', '1983-12-22', 'HYUNDAI ', 'AURA SX CNG', 'GREY', NULL, NULL, NULL, '-', '-', '-', 'ahmedabad', 'BOB SELF', 'CONCEPT', 'KATHLAL-', 'TAHIR ', 2147483647, '-', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', NULL, NULL, NULL, 841635, 47195.00, 56088.00, 0.00, 0.00, 12000.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 957918.00, 106918.00, 0.00, 0.00, 851000.00, 0.00, 0.00, 851000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:25:47', '2025-11-20 08:36:15', 'sold', 'delivered'),
-(360, '115132', 'sales', '0000-00-00', '0000-00-00', 'SOLANKI CHIRAG PRABHATBBAI', '9909386233', '315,TULSIWADI KARELIBAUGH VADODARA GUJARAT', 'VADODRA-390006', 'VADODARA', '390006', 'tahir3mansuri@gmail.com', '1994-08-24', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE', NULL, NULL, NULL, '-', '-', '-', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1076300, 48927.00, 44322.00, 19245.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1229557.00, 29557.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:29:57', '2025-11-12 13:01:29', 'sold', 'cancel'),
+(357, '685956', 'sales', NULL, '2025-11-12', 'SHEKH SULTANMIYA RAHIMMIYA', '9687389202', '468,GHANCHIWALI FALIYU VASO', 'KHEDA THASRA', 'THASRA', '388245', 'SULTANSHAIKH@GMAIL.COM', '1985-10-10', 'wife', 'NAJIMABANU', '1993-09-15', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE', '', '', NULL, '-', '-', '-', 'HIMMATNAGAR', 'AU SMALL FINANCE LTD', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ-07', 'pending', 'pending', 'REGULAR', '15000', 'SAJIF SHAIKH', '', '690838f7274e1_1762146551.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 15000.00, 11500.00, 15703.00, 631000.00, 0.00, 0.00, 631000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:08:17', '2025-11-08 10:47:09', 'sold', 'delivered'),
+(358, '326631', 'sales', NULL, '2025-11-20', 'JAGDISHBHAI JASHUBHAI KAPATEL', '8320315064', 'A-73 SOMNATHNAGAR SOCIETY RATNAKAR MATA ROAD KAPADWANJ', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1984-03-28', 'brother', 'SURESHBHAI', '1980-06-01', 'INNOVA CRYSTA ', 'GX PLUS 8 SEATER ', 'WHITE', '', 'DIESEL', NULL, 'GJ07', '-', '-', 'BHOPAL', 'PENDING', 'RAJPAL TOYOTA', 'KATHLAL', 'AAMIR', 2147483647, 'TATA 3+3', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE', '0', 'DIRECT', '', NULL, NULL, NULL, 2039700, 95000.00, 160000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20397.00, 8500, 0.00, 10000.00, 2333597.00, 2597.00, 0.00, 0.00, 2331000.00, 0.00, 0.00, 2331000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:18:21', '2025-11-17 12:43:42', 'sold', 'delivered'),
+(359, '408750', 'sales', NULL, '2025-11-13', 'RATHI PRAKASHKUMAR JAMNADAS', '8735880271', '3,MAHALAXMI SOCIETY KATHLAL KHEDA ', 'KATHLAL ', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1983-07-17', 'wife', 'HETALBEN', '1983-12-22', 'HYUNDAI ', 'AURA SX CNG', 'GREY', NULL, NULL, NULL, '-', '-', '-', 'ahmedabad', 'BOB SELF', 'CONCEPT', 'KATHLAL-', 'TAHIR ', 2147483647, '-', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', NULL, NULL, NULL, 841635, 47195.00, 56088.00, 0.00, 0.00, 12000.00, 0.00, 0.00, 0.00, 0, 0.00, 1000.00, 957918.00, 106918.00, 0.00, 0.00, 851000.00, 0.00, 0.00, 851000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:25:47', '2025-11-20 08:36:15', 'sold', 'delivered'),
+(360, '115132', 'sales', NULL, NULL, 'SOLANKI CHIRAG PRABHATBBAI', '9909386233', '315,TULSIWADI KARELIBAUGH VADODARA GUJARAT', 'VADODRA-390006', 'VADODARA', '390006', 'tahir3mansuri@gmail.com', '1994-08-24', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA VXI O  CNG', 'WHITE', NULL, NULL, NULL, '-', '-', '-', '', '', '', '', '', 0, '', '', '', NULL, NULL, '', '', '', '', NULL, NULL, NULL, 1076300, 48927.00, 44322.00, 19245.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1229557.00, 29557.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 1200000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:29:57', '2025-11-12 13:01:29', 'sold', 'cancel'),
 (361, '649458', 'sales', '2025-11-03', '2025-11-10', 'SOLANKI DASHRATHBHAI CHATURBHAI', '7862859921', 'LALJI NI MUVADI', 'DEVKARAN NA MUVADA/GANDHINAGAR', 'GANDHINAGAR', '382308', 'tahir3mansuri@gmail.com', '1993-06-01', 'wife', 'KRISHBEN', '1997-06-01', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ18', '--', '--', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6908443340f9d_1762149427.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 15549.00, 0.00, 690000.00, 0.00, 0.00, 690000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 05:57:07', '2025-11-08 05:20:06', 'sold', 'cancel'),
 (362, '205522', 'sales', '2025-11-03', '2025-11-18', 'BARAIYA GAUTAMBHAI KESHABHAI', '7069792384', 'SIM VISTAR ', 'CHAKALIYA NA KUVA/KANITEL', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1999-06-01', 'brother', 'VIJAYBHAI', '2002-06-01', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE', '', '', NULL, 'GJ07', '---', '-', 'NADIAD', 'CHOLA MANDALAM', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '69084a481a078_1762150984.pdf', NULL, NULL, 635800, 36349.00, 43509.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 715658.00, 0.00, 0.00, 0.00, 715658.00, 0.00, 0.00, 715658.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 06:23:04', '2025-11-15 10:10:16', 'sold', 'delivered'),
 (363, '978598', 'sales', '2025-11-03', '2025-11-15', 'YADAV RAKESHKUMAR MANSIN', '6352100533', 'MARVAD NAGAR/', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1981-02-25', 'brother', 'RAJKUMAR', '1985-05-25', 'TOYOTA', 'FORTUNER 4*2', 'SILVER', NULL, NULL, NULL, 'GJ07', '-', '-', '', 'HDFC BANK LTD', '', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA  AIG', 'KHEDA', 'GJ07', 'pending', 'pending', '-', '', '-', '-', '690852af4f284_1762153135.pdf', NULL, NULL, 3428000, 150919.00, 142847.00, 0.00, 0.00, 0.00, 0.00, 0.00, 34280.00, 0, 0.00, 0.00, 3756046.00, 0.00, 0.00, 0.00, 3756046.00, 0.00, 0.00, 3756046.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-03 06:58:55', '2025-11-12 10:37:47', 'sold', 'cancel'),
@@ -12246,7 +12213,7 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (374, '850428', 'sales', '2025-11-05', '2025-11-20', 'CHAUHAN RAMESHBHAI BHATHIBHAI', '9979136169', 'GAUTAM NAGAR /MODAJ', 'MODAJ', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1982-01-01', 'son', 'HASMUKHBHAI', '1999-06-16', 'MARUTI SUZUKI ', 'SUPER CARRY CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', '', '--', '-', '', '690c93f4845b8_1762431988.pdf', NULL, NULL, 611900, 36814.00, 22216.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 670930.00, 15000.00, 0.00, 4930.00, 651000.00, 0.00, 0.00, 651000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-06 12:26:28', '2025-11-11 07:28:36', 'sold', 'cancel'),
 (375, '323161', 'sales', '2025-11-05', '2025-11-19', 'CHAMPALAL RAJARAM ', '9265334695', 'MARU KUMHARO KA BAS', 'MANIHARI /PALI', 'RAJASTHAN', '306401', 'tahir3mansuri@gmail.com', '1996-11-18', 'brother', 'RUPARAM', '1996-11-18', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '690c9558292c7_1762432344.pdf', NULL, NULL, 635500, 35129.00, 34620.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 735249.00, 45248.00, 0.00, 0.00, 690001.00, 0.00, 0.00, 690001.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-06 12:32:24', '2025-11-17 11:12:46', 'sold', 'delivered'),
 (376, '599819', 'sales', '2025-11-07', '2025-11-15', 'BHOI  ALPESHBHAI  BABUBHAI', '7359045449', 'BHOIVAS ', 'NIZAMPURA', 'KHEDA', '387340', 'tahir3mansuri@gmail.com', '1985-09-09', 'brother', 'ALPESHBHAI', '1993-05-11', 'MARUTI SUZUKI ', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'CHOLA MANDALAM', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', '', 'pending', 'pending', 'REGULAR', '--', '', '', '690dd2b08d126_1762513584.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-07 11:06:24', '2025-11-12 11:39:12', 'sold', 'cancel'),
-(377, '296359', 'sales', '2025-11-10', '0000-00-00', 'ZALA HITESHKUMAR NARENDRASINH', '8200294420', 'KALESAR ', 'CHHIPDI   KHEDA ', 'KATHALAL', '387635', 'tahir3mansuri@gmail.com', '2004-02-10', 'wife', 'LAXMIBEN', '2002-06-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'BANK OF INDIA', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6911c810a420d_1762773008.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 25000.00, 0.00, 0.00, 680549.00, 0.00, 0.00, 680549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-10 11:10:08', '2025-12-30 07:05:50', 'sold', 'cancel'),
+(377, '296359', 'sales', '2025-11-10', NULL, 'ZALA HITESHKUMAR NARENDRASINH', '8200294420', 'KALESAR ', 'CHHIPDI   KHEDA ', 'KATHALAL', '387635', 'tahir3mansuri@gmail.com', '2004-02-10', 'wife', 'LAXMIBEN', '2002-06-01', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'NADIAD', 'BANK OF INDIA', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6911c810a420d_1762773008.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 25000.00, 0.00, 0.00, 680549.00, 0.00, 0.00, 680549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-10 11:10:08', '2025-12-30 07:05:50', 'sold', 'cancel'),
 (378, '555231', 'sales', '2025-11-12', '2025-11-01', 'KULDEEP ANILKUMAR', '9950269761', 'SUNDARNAGAR,', 'CHOH, BARMER', 'RAJASTHAN,', '344702', 'tahir3mansuri@gmail.com', '2005-05-20', 'father', 'ANILKUMAR', '1979-09-29', 'MARUTI SUZUKI INDIA LTD', 'SUPER CARRY STD CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE LTD', 'KIRAN MOTARS ', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'GJ07', 'GJ07', 'pending', 'pending', '', '-', '-', '-', '69142c6c64a5e_1762929772.pdf', NULL, NULL, 611900, 36814.00, 22216.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 670930.00, 30930.00, 0.00, 0.00, 640000.00, 0.00, 0.00, 640000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-12 06:42:52', '2026-01-03 05:16:44', 'sold', 'delivered'),
 (379, '259374', 'sales', '2025-11-12', '2025-11-18', 'JADAV RASIKBHAI CHANDUBHAI', '7016695909', '1822, WARD NO. 07 CHAKLASI ( JADAVPURA),  ', 'NEAR , DOODHNI DERI , ', 'nadiad', '387315', 'tahir3mansuri@gmail.com', '1997-12-21', 'mother', 'SUDHABEN ', '1974-12-05', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FINANCE LTD', 'POPULAR MOTORS', 'KATHLAL', 'TAHIR ', 2147483647, '-', 'GJ07', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '691449c68e83a_1762937286.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 45000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 750549.00, 35549.00, 0.00, 0.00, 715000.00, 0.00, 0.00, 715000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-12 08:48:06', '2025-11-27 06:12:33', 'sold', 'delivered'),
 (380, '583104', 'sales', '2025-11-12', '2025-11-16', 'MEHRA SUMANBEN GOPALBHAI', '7874508989', '962, 3 NAVA BHOIVADA ', 'RAJPUR ROAD, BALASINOR, ', 'KHEDA', '388255', 'tahir3mansuri@gmail.com', '1971-06-01', 'son', 'DIGVIJAY', '1997-12-27', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, '-', '-', '-', 'NADIAD', 'HDFC', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, '', 'GJ34', 'GJ34', 'pending', 'pending', '-', '-', '-', '', '69146800d3ed6_1762945024.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1210312.00, 30000.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-12 10:57:04', '2025-11-14 05:32:31', 'sold', 'delivered'),
@@ -12268,9 +12235,9 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (396, '302421', 'sales', '2025-11-26', '2025-11-30', 'SOLANKI MAHESHSINH PUNJAJI', '7203948371', 'LALUJI NA MUVADA', 'DEVKARAN NA MUVADA', 'GANDHINAGAR', '382308', 'tahir3mansuri@gmail.com', '1999-06-01', 'wife', 'PAYALBEN', '1999-06-25', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'GJ18', '-', '-', 'AHMEDAVAD', 'HDFC BANK LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', 'REGULAR', '*', '-', '', '6926e4513c135_1764156497.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 45000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 750549.00, 40549.00, 0.00, 0.00, 710000.00, 0.00, 0.00, 710000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-26 11:28:17', '2025-12-03 08:46:01', 'sold', 'delivered'),
 (397, '433862', 'sales', '2025-11-26', '2025-12-05', 'PATHAN MAJIDKHAN YUSUFKHAN ', '9924173578', '432/MALEK FALIYU  ', 'KUNI/KHEDA', 'KHEDA', '388255', 'tahir3mansuri@gmail.com', '1989-09-04', 'brother', 'IMRANBHAI', '1991-09-01', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'SAJIDBHAI', '-', '6926e5fe88de6_1764156926.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-26 11:35:26', '2025-12-04 09:02:35', 'sold', 'delivered'),
 (398, '953505', 'sales', '2025-11-27', '2025-12-06', 'RATHOD SURESHBHAI KANTIBHAI ', '9723123292', 'ANAGADVADI PASE', 'SARALI/KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1983-05-11', 'wife', 'RAMILABEN', '1988-06-01', 'HYUNDAI MOTOR INDIA LTD', 'CRETA E', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', '-', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '-3895', '-', '-', '-', '692828c5cd224_1764239557.pdf', NULL, NULL, 1290000, 0.00, 0.00, 0.00, 0.00, 55000.00, 0.00, 0.00, 0.00, 8500, 0.00, 0.00, 1353500.00, 0.00, 0.00, 0.00, 1353500.00, 0.00, 0.00, 1353500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-27 10:32:37', '2026-01-15 06:40:48', 'sold', 'delivered'),
-(399, '288986', 'sales', '2025-11-27', '0202-12-07', 'BRAHMBHATT RAMESHBHAI CHHOTALAL', '', 'B.15 KRISHNA VIHAR SOCIETY,', 'NAVA NARODA ,AHMEDABAD ', ' AHMEDABAD ', '382345', 'tahir3mansuri@gmail.com', '1970-11-02', NULL, '', '0000-00-00', 'HYUNDAI MOTOR INDIA LTD', 'AURA S ', 'WHITE', '', '', NULL, 'REGULAR', '-', '-', 'HIMATNGAR ', '-', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, '', 'AHMEDABAD', '', 'pending', 'pending', '-', '-', '-', '', '692924cd3067a_1764304077.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 04:27:57', '2025-12-18 04:40:47', 'unsold', 'cancel'),
+(399, '288986', 'sales', '2025-11-27', '0202-12-07', 'BRAHMBHATT RAMESHBHAI CHHOTALAL', '', 'B.15 KRISHNA VIHAR SOCIETY,', 'NAVA NARODA ,AHMEDABAD ', ' AHMEDABAD ', '382345', 'tahir3mansuri@gmail.com', '1970-11-02', NULL, '', NULL, 'HYUNDAI MOTOR INDIA LTD', 'AURA S ', 'WHITE', '', '', NULL, 'REGULAR', '-', '-', 'HIMATNGAR ', '-', 'BHURAVALA', 'KATHLAL', 'TAHIR ', 2147483647, '', 'AHMEDABAD', '', 'pending', 'pending', '-', '-', '-', '', '692924cd3067a_1764304077.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 04:27:57', '2025-12-18 04:40:47', 'unsold', 'cancel'),
 (400, '603310', 'sales', '2025-11-27', '2025-12-05', 'RATHOD JITUBHAI UDABHAI ', '9712710506', 'TANTARIYA /BAGDOL', 'BAGDOL/KHEDA', 'KHEDA ', '387630', 'tahir3mansuri@gmail.com', '1994-06-01', 'brother', 'BHAGABAI ', '1994-01-01', 'HYUNDAI MOTOR INDIA LTD', 'CRETA E', 'BLACK ', '', '', NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', '-', 'HUNDAI MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE', '-', '', '', '692941635b885_1764311395.pdf', NULL, NULL, 1224947, 57943.00, 35000.00, 0.00, 0.00, 51000.00, 0.00, 0.00, 12250.00, 0, 0.00, 1000.00, 1382140.00, 92140.00, 0.00, 0.00, 1290000.00, 0.00, 0.00, 1290000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 06:29:55', '2026-01-02 10:34:16', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (401, '219437', 'sales', '2025-11-28', '2025-12-03', 'MIRZA VASIMBHAI  IQBALBHAI', '9662317517', 'ISLAMPURA ', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1983-06-12', 'wife', 'PARVINBANU', '1986-09-22', 'MAHINDRA&MAHINDRA LIMITED', 'XUV 700 AX-7 (L) MT', 'BLUE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', 'ANAND', 'ICICI BANK LTD', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', '1506', '', '-', '', '6929436d1b742_1764311917.pdf', NULL, NULL, 2096600, 100000.00, 87000.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 20966.00, 5500, 0.00, 6000.00, 2351066.00, 51000.00, 0.00, 0.00, 2300066.00, 0.00, 0.00, 2300066.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 06:38:37', '2025-12-12 03:42:58', 'sold', 'delivered'),
 (402, '261841', 'sales', '2025-11-28', '2025-12-25', 'JOSHI ATULKUMAR RAMANLAL', '9586405405', '3-4 -258 LIMJI BHAI NI CHALI', 'JUNA RASTA/ANAND', 'ANANAD', '388001', 'tahir3mansuri@gmail.com', '1970-04-08', 'wife', 'sandhyaben', '1978-08-17', 'HYUNDAI MOTOR INDIA LTD', 'ALCAZAR', 'BLACK', '', '', NULL, 'GJ23', '-', '-', 'HIMMATNAGAR', '', 'HUNDAI MOTERS', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'ANAND', 'GJ23', 'pending', 'pending', 'choice-5220', '-', '-', '', '692972cc1ca12_1764324044.pdf', NULL, NULL, 1892118, 94241.00, 102059.00, 0.00, 0.00, 0.00, 0.00, 0.00, 18921.00, 0, 0.00, 0.00, 2107339.00, 127339.00, 0.00, 0.00, 1980000.00, 0.00, 0.00, 1980000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 10:00:44', '2025-12-25 07:20:15', 'sold', 'delivered'),
 (403, '614008', 'sales', '2025-11-28', '2026-01-15', 'DALWADI NIRMAL  DINESHBHAI', '9409525168', '11 NIRMAN SOCIETY  ', 'NADIYAD  ROAD/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '2001-04-12', 'father', 'DINESHBHAI', '1968-10-08', 'HYUNDAI MOTOR INDIA LTD', 'EXTER SX ', 'WHITE  ', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'GANDHINAGAR', 'HDFC BANK LTD', 'PUNJAB CARS ', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '69298dc422358_1764330948.pdf', NULL, NULL, 858274, 56971.00, 57157.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 972402.00, 77402.00, 0.00, 0.00, 895000.00, 0.00, 0.00, 895000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-11-28 11:55:48', '2026-01-03 05:15:03', 'sold', 'delivered'),
@@ -12279,22 +12246,22 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (406, '348918', 'sales', '2025-12-05', '2025-12-17', 'ZALA HARSHRAJSINH JAYDIPSINH', '8320455907', 'GOPAL MEHTA NI  KHADKI', 'KHADAL', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '2003-12-14', 'father', 'JAYDIPSINH', '1981-12-28', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FINANCE LTD', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '*', 'HIRENBHAI', '', '69317e4a019f0_1764851274.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 740549.00, 45549.00, 0.00, 0.00, 695000.00, 0.00, 0.00, 695000.00, 635800.00, 33535.00, 27722.00, 0.00, 0.00, 7920.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 704977.00, 25000.00, 0.00, 22000.00, 657977.00, 0.00, 0.00, 657977.00, '2025-12-04 12:27:54', '2026-01-15 06:34:51', 'sold', 'delivered'),
 (407, '221378', 'sales', '2025-12-05', '2025-12-14', 'VISHALBHAI  DALSUKHBHAI CHHATRIGARA', '9725397254', '49 RAMBAG SOCIETY ', 'KAPADVANJ ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1988-11-26', 'wife', 'HETALBEN', '1990-09-26', 'MARUTI SUZUKI-2025', 'ERTIGA VXI', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'HDB FINANCIAL SERVICES LTD', 'POPULAR MOTORS', 'KATHLAL-', '', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE 0652', '*', 'NAIMBHAI KPD', '', '6932a61b558cb_1764927003.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1210312.00, 50312.00, 0.00, 0.00, 1160000.00, 0.00, 0.00, 1160000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-05 09:30:03', '2025-12-12 13:10:50', 'sold', 'delivered'),
 (408, '579749', 'sales', '2025-12-05', '2025-12-11', 'SODHAPARMAR GANPATBHAI SAMATBHAI', '63515124554', 'RAPUR NI MUVADI ', 'VAJEVAD/GOLAJ...', 'KHEDA', '388250', 'tahir3mansuri@gmail.com', '1980-08-16', 'wife', 'MANISHABEN ', '1985-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'nadiad', 'SK FINANCE', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', 'MAYUDDIN SK', '-', '6933c023071a5_1764999203.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 25000.00, 0.00, 14549.00, 666000.00, 0.00, 0.00, 666000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-06 05:33:23', '2025-12-10 07:05:12', 'sold', 'delivered'),
-(409, '641552', 'sales', '2025-12-05', '2025-12-08', 'RABARI JAGDISHKUMAR RATILAL', '9638587284', '603 AMBE TRISHUL ', 'RUPPURA OVER BRIDGE PASE', 'ANAND', '388001', 'tahir3mansuri@gmail.com', '1986-08-25', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'DZIRE VXI', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'nadiad', 'SHRI RAM FINANCE', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'ANAND', 'GJ23', 'pending', 'pending', 'CHOICE-2028', '*', 'IRFANBHAI SHRI RAM', '-', '6933f8b8da5ba_1765013688.pdf', NULL, NULL, 803100, 44636.00, 38766.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 886502.00, 46502.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-06 09:34:48', '2025-12-08 05:05:43', 'sold', 'delivered'),
-(410, '191324', 'sales', '2025-12-06', '0000-00-00', 'SHAIKH MIZAN  ILYASBHAI', '9624061820', 'GHANCHIWADA', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1996-12-16', 'father', 'ILYASBHAI', '1972-09-28', 'MARUTI SUZUKI-2025', 'BALENO DELTA CNG', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'PEOPLES BANK', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6933fba3c0efd_1765014435.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-06 09:47:15', '2026-01-01 06:31:49', 'sold', 'cancel'),
+(409, '641552', 'sales', '2025-12-05', '2025-12-08', 'RABARI JAGDISHKUMAR RATILAL', '9638587284', '603 AMBE TRISHUL ', 'RUPPURA OVER BRIDGE PASE', 'ANAND', '388001', 'tahir3mansuri@gmail.com', '1986-08-25', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'DZIRE VXI', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'nadiad', 'SHRI RAM FINANCE', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'ANAND', 'GJ23', 'pending', 'pending', 'CHOICE-2028', '*', 'IRFANBHAI SHRI RAM', '-', '6933f8b8da5ba_1765013688.pdf', NULL, NULL, 803100, 44636.00, 38766.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 886502.00, 46502.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-06 09:34:48', '2025-12-08 05:05:43', 'sold', 'delivered'),
+(410, '191324', 'sales', '2025-12-06', NULL, 'SHAIKH MIZAN  ILYASBHAI', '9624061820', 'GHANCHIWADA', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1996-12-16', 'father', 'ILYASBHAI', '1972-09-28', 'MARUTI SUZUKI-2025', 'BALENO DELTA CNG', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'PEOPLES BANK', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6933fba3c0efd_1765014435.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-06 09:47:15', '2026-01-01 06:31:49', 'sold', 'cancel'),
 (412, '642593', 'sales', '2025-12-08', '2025-12-14', 'PATEL SANDIPKUMAR SOMABHAI', ' 7016496497', 'VASNA', 'VASNA/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1994-02-05', 'wife', 'HETALBEN', '1999-03-06', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'CHOLA  MANDALAM ', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '693663e71fa9c_1765172199.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 35000.00, 0.00, 0.00, 0, 0.00, 0.00, 740549.00, 25000.00, 0.00, 20000.00, 695549.00, 0.00, 0.00, 695549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 05:36:39', '2025-12-12 13:09:33', 'sold', 'delivered'),
-(413, '888534', 'sales', '2025-12-08', '0000-00-00', 'PUROHIT SAGARKUMAR PRAVINBHAI', '7043451426', 'CHORAVALI KHADKI ', 'SALUN/TALPAD', 'KHED', '387001', 'tahir3mansuri@gmail.com', '1993-09-20', 'wife', 'tejalben', '2003-06-11', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG (0)', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6936755405a91_1765176660.pdf', NULL, NULL, 770900, 41998.00, 38967.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 882750.00, 42750.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 06:51:00', '2025-12-12 10:28:16', 'sold', 'cancel'),
+(413, '888534', 'sales', '2025-12-08', NULL, 'PUROHIT SAGARKUMAR PRAVINBHAI', '7043451426', 'CHORAVALI KHADKI ', 'SALUN/TALPAD', 'KHED', '387001', 'tahir3mansuri@gmail.com', '1993-09-20', 'wife', 'tejalben', '2003-06-11', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG (0)', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6936755405a91_1765176660.pdf', NULL, NULL, 770900, 41998.00, 38967.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 882750.00, 42750.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 840000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 06:51:00', '2025-12-12 10:28:16', 'sold', 'cancel'),
 (414, '738146', 'sales', '2025-12-08', '2025-12-10', 'PATEL KETANKUMAR NATVARBHAI', '9714993411', 'KARKARIYA ', 'KARKARIYA/KHEDA', 'KHEDA', '387610', 'tahir3mansuri@gmail.com', '1982-12-29', 'wife', 'VAISHALIBEN', '1989-06-01', 'MARUTI SUZUKI-2025', 'VICTORIS ZXI', 'MEGMA GREY', NULL, NULL, NULL, 'GJ27', '', '', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'AHMEDABAD', 'GJ27', 'pending', 'pending', 'REGULAR', '*', '', '-', '69367b813901f_1765178241.pdf', NULL, NULL, 1456900, 65239.00, 54149.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14569.00, 0, 0.00, 0.00, 1590857.00, 15000.00, 0.00, 0.00, 1575857.00, 0.00, 0.00, 1575857.00, 1456900.00, 64739.00, 50121.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14569.00, 0, 0.00, 0.00, 1586329.00, 0.00, 15000.00, 0.00, 1571329.00, 0.00, 0.00, 1571329.00, '2025-12-08 07:17:21', '2026-01-09 13:27:53', 'sold', 'delivered'),
-(415, '670157', 'sales', '2025-12-08', '0000-00-00', 'PATEL KINJALKUMAR PARESHKUMAR ', '9099765333', 'MALEKVADO', 'SASTAPUR/KHEDA', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1986-09-21', 'wife', 'RIKISHABEN', '1984-01-15', 'MARUTI SUZUKI-2025', 'FRONX SIGMA', 'BLUE', NULL, NULL, NULL, 'GJ07', '', '-', 'AHMEDAVAD', 'NA', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-5242', '*', '-', '-', '6936b24777d17_1765192263.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 11:11:03', '2025-12-25 11:19:15', 'sold', 'cancel'),
-(416, '741916', 'sales', '2025-12-08', '0000-00-00', 'CHUNARA ARVINDBHAI RAMESHBHAI', '6352183286', 'BALIYADEV PACHHAD ', 'DETHLI/KHEDA', 'KHEDA', '387210', 'tahir3mansuri@gmail.com', '2001-12-10', 'brother', 'PRAVINBHAI', '1989-07-14', 'NEXA', 'BALENO SIGMA PETROL', '', NULL, NULL, NULL, 'GJ07', '-', '-', '', '-', 'POPULAR MOTORS', 'KATHLAL-', '', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6936ba4fd29c0_1765194319.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 11:45:19', '2025-12-12 10:15:36', 'sold', 'cancel'),
+(415, '670157', 'sales', '2025-12-08', NULL, 'PATEL KINJALKUMAR PARESHKUMAR ', '9099765333', 'MALEKVADO', 'SASTAPUR/KHEDA', 'KHEDA', '387335', 'tahir3mansuri@gmail.com', '1986-09-21', 'wife', 'RIKISHABEN', '1984-01-15', 'MARUTI SUZUKI-2025', 'FRONX SIGMA', 'BLUE', NULL, NULL, NULL, 'GJ07', '', '-', 'AHMEDAVAD', 'NA', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-5242', '*', '-', '-', '6936b24777d17_1765192263.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 11:11:03', '2025-12-25 11:19:15', 'sold', 'cancel'),
+(416, '741916', 'sales', '2025-12-08', NULL, 'CHUNARA ARVINDBHAI RAMESHBHAI', '6352183286', 'BALIYADEV PACHHAD ', 'DETHLI/KHEDA', 'KHEDA', '387210', 'tahir3mansuri@gmail.com', '2001-12-10', 'brother', 'PRAVINBHAI', '1989-07-14', 'NEXA', 'BALENO SIGMA PETROL', '', NULL, NULL, NULL, 'GJ07', '-', '-', '', '-', 'POPULAR MOTORS', 'KATHLAL-', '', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6936ba4fd29c0_1765194319.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-08 11:45:19', '2025-12-12 10:15:36', 'sold', 'cancel'),
 (417, '920886', 'sales', '2025-12-09', '2025-12-19', 'ZALA HARDIKKUMAR LAXMANSINH ', '7041397486', '1665,,RAJNAGAR', 'VALAND NO KUVO CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '2003-08-24', 'mother', 'ALPABEN', '1987-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'CHOLA MANDALAM ', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '', '6937b32c9e0a8_1765258028.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 20000.00, 30000.00, 0.00, 0.00, 0, 0.00, 0.00, 755549.00, 57549.00, 0.00, 0.00, 698000.00, 0.00, 0.00, 698000.00, 635800.00, 33476.00, 28944.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 698220.00, 25000.00, 0.00, 22000.00, 651220.00, 0.00, 0.00, 651220.00, '2025-12-09 05:27:08', '2026-01-09 14:12:43', 'sold', 'delivered'),
 (418, '343855', 'sales', '2025-12-09', '2025-12-14', 'VADI YATINBHAI AMRABHAI', '8780359164', 'SUTHAR TEKRA', 'DEV KARAN NA MUVADA', 'GANDHINAGAR', '382308', 'tahir3mansuri@gmail.com', '1993-02-15', 'mother', 'MANGUBEN', '1972-12-14', 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11 SF ', 'BLACK ', NULL, NULL, NULL, 'GJ18', '-', '-', 'UJJAIN', 'ICICI BANK LTD', 'BHAGIRATH', 'KATHLAL-', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', 'CHOICE-1412', '*', '', '-', '6937bd0a85c83_1765260554.pdf', NULL, NULL, 1670200, 80000.00, 66000.00, 0.00, 0.00, 3500.00, 0.00, 0.00, 4500.00, 16702, 0.00, 6000.00, 1846902.00, 85902.00, 0.00, 0.00, 1761000.00, 0.00, 0.00, 1761000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-09 06:09:14', '2025-12-12 07:45:23', 'sold', 'delivered'),
-(419, '582282', 'sales', '2025-12-08', '0000-00-00', 'PRAJAPATI PUNAMBHAI KANTIBHAI', '9106804738', '170,PRAJAPTI VAS ', 'MAHADEV NU MANDIR PASE', 'NIRMALI/KHEDA', '387650', 'tahir3mansuri@gmail.com', '1989-12-12', 'wife', 'PINKYBEN', '1998-12-12', 'MARUTI SUZUKI-2025', 'FRONX  SIGMA', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'AHMEDAVAD', 'BANK OF BARODA', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6937d1645f0dd_1765265764.pdf', NULL, NULL, 684900, 37626.00, 34686.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 787212.00, 65000.00, 0.00, 0.00, 722212.00, 0.00, 0.00, 722212.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-09 07:36:04', '2026-01-12 05:39:54', 'sold', 'cancel'),
-(420, '684900', 'sales', '2025-12-09', '0000-00-00', 'THAKAR NAKUL BHAI HARESHBHAI', '9725464276', '14/896 RAGHUVIR APARTMENT ', 'MAHAVIR NAGAR BAPUNAGAR/AHMEDABAD', 'AHMEDABAD', '382345', 'tahir3mansuri@gmail.com', '1993-03-14', NULL, '', '0000-00-00', 'HYUNDAI ', 'AURA SX CNG', 'WHITE  ', '', '', NULL, '', '-', '-', 'SURAT ', '', 'MONARCH', 'KATHLAL-', 'TAHIR ', 2147483647, '', '', '', 'pending', 'pending', '', '', '', '', '693816b2e9355_1765283506.pdf', NULL, NULL, 766720, 52136.00, 52500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 2500.00, 873856.00, 0.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-09 12:31:47', '2025-12-25 12:10:15', 'sold', 'cancel'),
+(419, '582282', 'sales', '2025-12-08', NULL, 'PRAJAPATI PUNAMBHAI KANTIBHAI', '9106804738', '170,PRAJAPTI VAS ', 'MAHADEV NU MANDIR PASE', 'NIRMALI/KHEDA', '387650', 'tahir3mansuri@gmail.com', '1989-12-12', 'wife', 'PINKYBEN', '1998-12-12', 'MARUTI SUZUKI-2025', 'FRONX  SIGMA', 'WHITE', NULL, NULL, NULL, 'GJ07', '', '-', 'AHMEDAVAD', 'BANK OF BARODA', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '-', '6937d1645f0dd_1765265764.pdf', NULL, NULL, 684900, 37626.00, 34686.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 787212.00, 65000.00, 0.00, 0.00, 722212.00, 0.00, 0.00, 722212.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-09 07:36:04', '2026-01-12 05:39:54', 'sold', 'cancel'),
+(420, '684900', 'sales', '2025-12-09', NULL, 'THAKAR NAKUL BHAI HARESHBHAI', '9725464276', '14/896 RAGHUVIR APARTMENT ', 'MAHAVIR NAGAR BAPUNAGAR/AHMEDABAD', 'AHMEDABAD', '382345', 'tahir3mansuri@gmail.com', '1993-03-14', NULL, '', NULL, 'HYUNDAI ', 'AURA SX CNG', 'WHITE  ', '', '', NULL, '', '-', '-', 'SURAT ', '', 'MONARCH', 'KATHLAL-', 'TAHIR ', 2147483647, '', '', '', 'pending', 'pending', '', '', '', '', '693816b2e9355_1765283506.pdf', NULL, NULL, 766720, 52136.00, 52500.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 2500.00, 873856.00, 0.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-09 12:31:47', '2025-12-25 12:10:15', 'sold', 'cancel'),
 (421, '260849', 'sales', '2025-12-10', '2025-12-14', 'CHAVDA DIPAK VITTHALBHAI', '7817824274', '354,ROHITVAS', 'MAHOLEL', 'MAHOLEL/KHEDA', '387330', 'tahir3mansuri@gmail.com', '1993-07-11', 'wife', 'NISHABEN', '1996-09-20', 'MARUTI SUZUKI-2025', 'VICTORIS ZXI', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AXIS BANK LIMITED', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '*', '-', '', '69395926e0a70_1765366054.pdf', NULL, NULL, 1456900, 65239.00, 72310.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14569.00, 0, 0.00, 0.00, 1609018.00, 29018.00, 0.00, 0.00, 1580000.00, 0.00, 0.00, 1580000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-10 11:27:34', '2025-12-12 13:00:40', 'sold', 'delivered'),
 (422, '523231', 'sales', '2025-12-10', '2026-01-02', 'PATEL KIRTANKUMAR  MAHESHBHAI', '9904646179', '122,SULTANPURA SIHOR', 'SIHOR/KHEDA', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1994-10-19', 'father', 'MAHESHBHAI', '1969-06-01', 'MARUTI SUZUKI-2025', 'BREZZA LXI CNG', 'WHITE  ', '2025', 'CNG', NULL, 'GJ07', '-', '-', 'nadiad', 'BANK OF BARODA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', 'NAIM KAKA', '', '69395c3d0bf39_1765366845.pdf', NULL, NULL, 916900, 36554.00, 42096.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 995550.00, 25550.00, 0.00, 9000.00, 961000.00, 0.00, 0.00, 961000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-10 11:40:45', '2026-01-02 06:41:09', 'sold', 'delivered'),
-(423, '925198', 'sales', '2025-12-10', '0000-00-00', 'PATEL NARENDRAKUMAR KESHAVBHAI ', '6352765540', 'VACHLI FALI JALOYA', 'UKARDI NA MUVADA', 'KHEDA', '387610', 'tahir3mansuri@gmail.com', '1995-08-04', 'wife', 'SEJALBEN', '1991-09-25', 'HUNDAI', 'NIOS SPORT CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '', 'SURAT ', 'BANK OF BARODA', 'MONARCH ', 'KATHLAL-', 'TAHIR ', 2147483647, 'SBI GENARAL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', '-', '693963913ed5c_1765368721.pdf', NULL, NULL, 766720, 52500.00, 52136.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 2500.00, 873856.00, 0.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-10 12:12:01', '2025-12-13 12:02:10', 'sold', 'cancel'),
+(423, '925198', 'sales', '2025-12-10', NULL, 'PATEL NARENDRAKUMAR KESHAVBHAI ', '6352765540', 'VACHLI FALI JALOYA', 'UKARDI NA MUVADA', 'KHEDA', '387610', 'tahir3mansuri@gmail.com', '1995-08-04', 'wife', 'SEJALBEN', '1991-09-25', 'HUNDAI', 'NIOS SPORT CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '', 'SURAT ', 'BANK OF BARODA', 'MONARCH ', 'KATHLAL-', 'TAHIR ', 2147483647, 'SBI GENARAL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', '-', '693963913ed5c_1765368721.pdf', NULL, NULL, 766720, 52500.00, 52136.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 2500.00, 873856.00, 0.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 873856.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-10 12:12:01', '2025-12-13 12:02:10', 'sold', 'cancel'),
 (424, '192618', 'sales', '2025-12-11', '2025-12-21', 'SOLANKI YUVRAJ VIJAYSINH ', '7567824576', '25,SHIVDADANU FALIYU ', 'DEROLI-2', 'DEROLI ARVALLI', '383330', 'tahir3mansuri@gmail.com', '1999-04-30', 'wife', 'KRISHNA BEN ', '2002-03-17', 'MARUTI SUZUKI INDIA LTD', 'BREAZZ ZXI CNG', 'WHITE', '2025', ' CNG', NULL, 'GJ07', '-', '-', '', 'BANK OF BARODA', '', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '--', '', '-', '693a74add22fe_1765438637.pdf', NULL, NULL, 1130900, 51267.00, 42362.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11309.00, 0, 0.00, 0.00, 1235838.00, 10000.00, 0.00, 15000.00, 1210838.00, 0.00, 0.00, 1210838.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-11 07:37:17', '2025-12-16 09:50:23', 'sold', 'not_delivered'),
-(425, '283624', 'sales', '2025-12-11', '2025-12-14', 'BHARVAD PIYUSH BALDEVBHAI', '8758615035', 'DEVDAS ROAD BEHIND RADHAKRUSHNA MANDIR GUPTANAGAR VASNA', 'AHMEDABAD CITY ', 'AHMEDABADD', '380007', 'tahir3mansuri@gmail.com', '2000-05-22', NULL, '', '0000-00-00', 'MARUTI SUZUKI INDIA LTD', 'BALENO SIGMA', 'WHITE', '', '', NULL, '-', '-', '-', 'AHMEDABAD', '-', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', '-', '-', 'pending', 'pending', '-', '-', '-', '-', '693a8cef34a58_1765444847.pdf', NULL, NULL, 598900, 31352.00, 33253.00, 12714.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 676219.00, 30000.00, 15000.00, 13219.00, 618000.00, 0.00, 0.00, 618000.00, 598900.00, 33053.00, 27053.00, 12714.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 671720.00, 30000.00, 25000.00, 0.00, 616720.00, 0.00, 0.00, 616720.00, '2025-12-11 09:20:47', '2026-01-09 13:17:57', 'sold', 'delivered'),
+(425, '283624', 'sales', '2025-12-11', '2025-12-14', 'BHARVAD PIYUSH BALDEVBHAI', '8758615035', 'DEVDAS ROAD BEHIND RADHAKRUSHNA MANDIR GUPTANAGAR VASNA', 'AHMEDABAD CITY ', 'AHMEDABADD', '380007', 'tahir3mansuri@gmail.com', '2000-05-22', NULL, '', NULL, 'MARUTI SUZUKI INDIA LTD', 'BALENO SIGMA', 'WHITE', '', '', NULL, '-', '-', '-', 'AHMEDABAD', '-', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', '-', '-', 'pending', 'pending', '-', '-', '-', '-', '693a8cef34a58_1765444847.pdf', NULL, NULL, 598900, 31352.00, 33253.00, 12714.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 676219.00, 30000.00, 15000.00, 13219.00, 618000.00, 0.00, 0.00, 618000.00, 598900.00, 33053.00, 27053.00, 12714.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 671720.00, 30000.00, 25000.00, 0.00, 616720.00, 0.00, 0.00, 616720.00, '2025-12-11 09:20:47', '2026-01-09 13:17:57', 'sold', 'delivered'),
 (426, '530547', 'sales', '2025-12-11', '2026-01-15', 'DURGVEER  SINGH  VIRENDRASINH CHAUHAN', '7014917368', 'PISHAL', 'SABARLKANTHA', 'SABARKANTHA', '', 'tahir3mansuri@gmail.com', '2003-07-01', 'mother', 'MEENABEN', '1977-01-01', 'MARUTI SUZUKI INDIA LTD', 'BALENO SIGMA', 'GREY', '2025', 'CNG', NULL, '-', '-', '-', 'AHMEDABAD', 'M&M FINANCIAL SERVICES LTD', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'BAYAD', 'GJ31', 'pending', 'pending', 'CHOICE', '-', '-', '-', '693a8f2130976_1765445409.pdf', NULL, NULL, 598900, 33253.00, 31352.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 663505.00, 30000.00, 10000.00, 23505.00, 600000.00, 0.00, 0.00, 600000.00, 598900.00, 32753.00, 26279.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 657932.00, 30000.00, 0.00, 25000.00, 602932.00, 0.00, 0.00, 602932.00, '2025-12-11 09:30:09', '2026-01-15 06:19:21', 'sold', 'delivered'),
 (427, '373155', 'sales', '2025-12-12', '2025-12-14', 'PATHAN RUBIYABANU BURHANKHAN', '7698306223', 'MOHAMMADI SOCIETY ', 'RAJA MOHALLAH /BORSAD', 'BORSAD', '388540', 'tahir3mansuri@gmail.com', '1990-04-03', 'husband', 'BURHANKHAN', '1987-09-15', 'MARUTI SUZUKI 25', 'ERTIGA ZXI   CNG', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'AHMEDABAD', 'PUNJAN NATIONAL BANK', 'POPULAR MOTORS', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'ANAND', 'GJ23', 'pending', 'pending', 'CHOICE-1213', '-', 'DHAVAL SHAH', '-', '693bb2b023624_1765520048.pdf', NULL, NULL, 1182500, 53479.00, 47196.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 11825.00, 0, 885.00, 0.00, 1325885.00, 55000.00, 0.00, 0.00, 1270885.00, 0.00, 0.00, 1270885.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-12 06:14:08', '2025-12-12 10:41:55', 'sold', 'delivered'),
 (428, '740938', 'sales', '2025-12-12', '2025-12-16', 'VALAND  RAJESHKUMAR DHULABHAI ', '9974685590', 'A-5 SHRIJI RESIDENCY ', 'RICE MILL NI PACHHAD /BALASINOR', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1983-05-16', 'wife', 'REKHABEN', '1983-05-16', 'MARUTI SUZUKI', 'WAGONR VXI  6 airbag', 'CNG', '2025', '', NULL, 'GJ35', '-', '-', 'nadiad', 'SHRIRAM FIANNCE LTD', 'KATARIA  AUTOMOBILES ', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', 'REGULAR', '-', '-', '', '693bbb3b6a9ea_1765522235.pdf', NULL, NULL, 641900, 35439.00, 24704.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 702043.00, 30000.00, 22043.00, 0.00, 650000.00, 0.00, 0.00, 650000.00, 641900.00, 34934.00, 22759.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 699593.00, 30000.00, 20000.00, 0.00, 649593.00, 0.00, 0.00, 649593.00, '2025-12-12 06:50:35', '2026-01-09 13:08:43', 'sold', 'delivered'),
@@ -12302,281 +12269,278 @@ INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `de
 (430, '898764', 'sales', '2025-12-13', '2026-01-01', 'PAREKH HARDIK HARSHADBHAI ', '9998944076', '5591/GORVAD', 'HOLI CHAKLA,/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1989-09-25', 'wife', 'SHREYA PAREKH', '2001-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC TAXI CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', '-', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '693d32f76b84a_1765618423.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 9000.00, 0, 0.00, 0.00, 714549.00, 25000.00, 29549.00, 0.00, 660000.00, 0.00, 0.00, 660000.00, 635800.00, 34979.00, 33281.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 704060.00, 25000.00, 0.00, 40000.00, 639060.00, 0.00, 0.00, 639060.00, '2025-12-13 09:33:43', '2026-01-09 13:58:40', 'sold', 'delivered'),
 (431, '400568', 'sales', '2025-12-13', '2025-12-26', 'MIRZA NAVSHADBEG  HUSENBEG ', '9979862803', '1694,CHAUHANVADO', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1980-05-01', 'wife', 'RUBINABANU', '1988-09-06', 'MARUTI SUZUKI-2025', 'BREZZA VXI', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '', '693d4e11ad1fe_1765625361.pdf', NULL, NULL, 1016900, 46381.00, 38949.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10169.00, 0, 0.00, 0.00, 1112399.00, 25000.00, 0.00, 5399.00, 1082000.00, 0.00, 0.00, 1082000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-13 11:29:21', '2026-01-01 05:21:47', 'sold', 'delivered'),
 (432, '525409', 'sales', '2025-12-13', '2025-12-25', 'MANSURI MOHAMMAD TALHA RIYAZ', '7405380823', '10 DIPAK SICETY', 'GAYAKVAD HAVELI PASE,RAYKHAD/AHMEDABAD', 'AHMEDABAD', '380001', 'tahir3mansuri@gmail.com', '1995-04-02', 'father', 'MO RIYAZ MANSURI', '1972-06-01', 'HUNDAI', 'CRETA S O', 'KNIGHT EDITION BLACK', '2025', 'DIESEL', NULL, 'GJ01', '-', '-', 'HIMMATNAGAR', 'NA', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'AHMEDABAD', 'GJ01', 'pending', 'pending', 'REGULAR', '--', '-', '', '693d5ba7f3fd0_1765628839.pdf', NULL, NULL, 1564229, 72438.00, 36062.00, 30751.00, 0.00, 0.00, 0.00, 0.00, 15642.00, 0, 0.00, 1000.00, 1720122.00, 60122.00, 0.00, 0.00, 1660000.00, 0.00, 0.00, 1660000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-13 12:27:20', '2025-12-25 07:12:21', 'sold', 'delivered'),
-(433, '996388', 'sales', '2025-12-15', '0000-00-00', 'ZALA DILIPSINH BHEMSINH', '9904611960', 'GOGJIPURA/', 'CHHIPDI /KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1978-09-07', 'wife', 'PADMABEN', '1980-12-04', 'MARUTI SUZUKI-2025', 'ERTIGA VXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'NA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', 'JASHPAL ZALA', '-', '693fa47799d88_1765778551.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 30000.00, 0.00, 0.00, 1150312.00, 0.00, 0.00, 1150312.00, 1076300.00, 46845.00, 38342.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10744.00, 0, 0.00, 0.00, 1172231.00, 10000.00, 0.00, 15000.00, 1147231.00, 0.00, 0.00, 1147231.00, '2025-12-15 06:02:31', '2026-01-09 13:52:28', 'sold', 'delivered'),
-(434, '916631', 'sales', '2025-12-13', '2025-12-15', 'KATARIA RAJUBHAI JIVABHAI ', '09662225909', '620 NAVI VASAHAT ', 'ROHITVAS /BALASINOR', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1974-05-09', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA ZXI  CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '693fa93bd04cc_1765779771.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-15 06:22:51', '2025-12-15 06:23:08', 'unsold', 'delivered'),
-(435, '746610', 'sales', '2025-12-13', '2025-12-15', 'SHAIKH SHIFABEN MAHAMMAD TOFIK', '-', '3235/2 NIRMAN SOCIETY ', 'KAPADVANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1997-08-13', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'DZIRE VXI', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KH', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '693fae2239fb9_1765781026.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-15 06:43:46', '2025-12-15 06:43:56', 'unsold', 'delivered'),
+(433, '996388', 'sales', '2025-12-15', NULL, 'ZALA DILIPSINH BHEMSINH', '9904611960', 'GOGJIPURA/', 'CHHIPDI /KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1978-09-07', 'wife', 'PADMABEN', '1980-12-04', 'MARUTI SUZUKI-2025', 'ERTIGA VXI CNG ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'NA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', 'JASHPAL ZALA', '-', '693fa47799d88_1765778551.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 30000.00, 0.00, 0.00, 1150312.00, 0.00, 0.00, 1150312.00, 1076300.00, 46845.00, 38342.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10744.00, 0, 0.00, 0.00, 1172231.00, 10000.00, 0.00, 15000.00, 1147231.00, 0.00, 0.00, 1147231.00, '2025-12-15 06:02:31', '2026-01-09 13:52:28', 'sold', 'delivered'),
+(434, '916631', 'sales', '2025-12-13', '2025-12-15', 'KATARIA RAJUBHAI JIVABHAI ', '09662225909', '620 NAVI VASAHAT ', 'ROHITVAS /BALASINOR', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1974-05-09', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA ZXI  CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', '', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '693fa93bd04cc_1765779771.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-15 06:22:51', '2025-12-15 06:23:08', 'unsold', 'delivered'),
+(435, '746610', 'sales', '2025-12-13', '2025-12-15', 'SHAIKH SHIFABEN MAHAMMAD TOFIK', '-', '3235/2 NIRMAN SOCIETY ', 'KAPADVANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1997-08-13', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'DZIRE VXI', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', '-', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KH', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '693fae2239fb9_1765781026.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-15 06:43:46', '2025-12-15 06:43:56', 'unsold', 'delivered'),
 (436, '735659', 'sales', '2025-12-15', '2025-12-27', 'PATEL PINAKIN  HASMUKHBHAI', '9099925688', 'UNDI KHADKI', 'TORNA/KHEDA', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '0983-11-06', 'wife', 'JALPABEN', '1985-06-12', 'TATA', 'NEXON FEARLESSS 45', 'WHITE  ', '2025', 'EV', NULL, 'GJ07', '-', '-', '-', 'HDFC BANK LTD', '-', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-6028', '--', '-', '', '693ff048716e5_1765797960.pdf', NULL, NULL, 1499000, 16176.00, 86983.00, 0.00, 0.00, 0.00, 0.00, 0.00, 14990.00, 0, 0.00, 0.00, 1617149.00, 102149.00, 3000.00, 0.00, 1512000.00, 0.00, 0.00, 1512000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-15 11:26:00', '2025-12-25 12:21:34', 'sold', 'delivered'),
-(437, '509288', 'sales', '2025-12-14', '0000-00-00', 'CHAUHAN SAYEEDBHAI  NASIRBHAI ', '9723218370', '3533/NADI DARVAJ BAHAR', 'KATATARIAARA /KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1988-01-01', 'wife', 'NILOFERBANU ', '1991-05-18', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '694116334778f_1765873203.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-16 08:20:03', '2025-12-16 08:21:40', 'sold', 'not_delivered'),
+(437, '509288', 'sales', '2025-12-14', NULL, 'CHAUHAN SAYEEDBHAI  NASIRBHAI ', '9723218370', '3533/NADI DARVAJ BAHAR', 'KATATARIAARA /KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1988-01-01', 'wife', 'NILOFERBANU ', '1991-05-18', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'NADIAD', 'AU SMALL FINANCE', 'KIRAN MOTORS ', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '694116334778f_1765873203.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-16 08:20:03', '2025-12-16 08:21:40', 'sold', 'not_delivered'),
 (438, '408557', 'sales', '2025-12-16', '2025-12-20', 'VYAS RUTVIK  SHAILESHBHAI', '9825537370', 'AZAD POLE ', 'KATHLAL/', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '2000-03-22', 'father', 'SHAILESHBHAI', '1963-12-21', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', '2025', ' CNG', NULL, 'GJ07', '', '-', 'AHMEDABAD', 'AU SMALL FINANCE', 'POPULAR MOTORS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-9094', '--', '-', '', '694261587b82d_1765957976.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 18000.00, 0.00, 0.00, 1162312.00, 0.00, 0.00, 1162312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 07:52:56', '2025-12-20 08:34:52', 'sold', 'delivered'),
 (439, '980635', 'sales', '2025-12-17', '2026-01-03', 'BIHOLA PARTHSINH GIRVATSINH', '8200746810', 'KALETAR', 'TORNA/KHEDA', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1998-05-08', 'brother', 'DHARMESHSINH', '2000-08-07', 'HUNDAI', 'VANUE HX2', 'BLACK ', NULL, NULL, NULL, 'GJ07', '', '-', 'HIMMATNAGAR', 'AU SMALL FINANCE', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6942925439cd8_1765970516.pdf', NULL, NULL, 969900, 53717.00, 60944.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 1084561.00, 14561.00, 0.00, 5000.00, 1065000.00, 0.00, 0.00, 1065000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:21:56', '2026-01-03 05:24:24', 'sold', 'delivered'),
-(440, '831614', 'sales', '2025-12-17', '0000-00-00', 'PATEL ANAN HASMUKHBHAI', '7984303838', 'BAROTVADO', 'TORNA/KHEDA', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1993-09-05', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', 'AU SMALL FINANCE', '-', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '694293d62a156_1765970902.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:28:22', '2025-12-17 11:29:27', 'sold', 'not_delivered'),
+(440, '831614', 'sales', '2025-12-17', NULL, 'PATEL ANAN HASMUKHBHAI', '7984303838', 'BAROTVADO', 'TORNA/KHEDA', 'KHEDA', '387365', 'tahir3mansuri@gmail.com', '1993-09-05', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', 'AU SMALL FINANCE', '-', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '694293d62a156_1765970902.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:28:22', '2025-12-17 11:29:27', 'sold', 'not_delivered'),
 (441, '332971', 'sales', '2025-12-17', '2025-12-29', 'DABHI GHANSHYAMBHAI BHAGVANBHAI', '9328298519', 'SAMANT PURA', 'BHARKUNDA', 'KHEDA', '387430', 'tahir3mansuri@gmail.com', '2001-05-25', 'wife', 'BHAVIKABEN', '2002-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'AU SMALL FINANCE', '-', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '694295b5871d5_1765971381.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 15000.00, 30000.00, 0.00, 0.00, 0, 0.00, 0.00, 750549.00, 25000.00, 0.00, 27549.00, 698000.00, 0.00, 0.00, 698000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:36:21', '2026-01-15 05:29:23', 'sold', 'delivered'),
-(442, '655795', 'sales', '0000-00-00', '2025-12-20', 'VAHORA IRFANBHAI IKBALBHAI ', '9727846700', 'B202/ SHRI RAM COMPLEX ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1990-02-21', 'wife', 'ARFINABEN', '1990-07-20', 'TOYOTA', 'HYCROSS ZX', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', 'HDFC BANK LTD', '-', '', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-3833', '--', '-', '-', '694298109f65c_1765971984.pdf', NULL, NULL, 3082900, 137814.00, 77000.00, 0.00, 44060.00, 15000.00, 0.00, 0.00, 30829.00, 19000, 8500.00, 5000.00, 3420103.00, 103.00, 0.00, 0.00, 3420000.00, 0.00, 0.00, 3420000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:46:24', '2025-12-20 11:43:57', 'sold', 'delivered'),
+(442, '655795', 'sales', NULL, '2025-12-20', 'VAHORA IRFANBHAI IKBALBHAI ', '9727846700', 'B202/ SHRI RAM COMPLEX ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1990-02-21', 'wife', 'ARFINABEN', '1990-07-20', 'TOYOTA', 'HYCROSS ZX', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', 'HDFC BANK LTD', '-', '', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-3833', '--', '-', '-', '694298109f65c_1765971984.pdf', NULL, NULL, 3082900, 137814.00, 77000.00, 0.00, 44060.00, 15000.00, 0.00, 0.00, 30829.00, 19000, 8500.00, 5000.00, 3420103.00, 103.00, 0.00, 0.00, 3420000.00, 0.00, 0.00, 3420000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-17 11:46:24', '2025-12-20 11:43:57', 'sold', 'delivered'),
 (443, '204948', 'sales', '2025-12-18', '2026-01-20', 'LALWANI SAURAV PRAKASHBHAI', '9173140500', 'B-7   KUBER NAGAR', 'KAPADVANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '2002-02-13', 'father', 'PRAKASHBHAI', '1976-02-08', 'HYUNDAI MOTOR INDIA LTD', 'VENUE HX5 1.2 MANUAL', 'WHITE  ', '2025', 'PETROL', NULL, 'BH PARCING', '-', '-', 'HIMMATNAGAR', 'BANK OF BARODA', 'BHAGIRATH', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'BH PARCING', 'GJ', NULL, NULL, 'REGULAR', '', '', '', '6943a0f1d40bf_1766039793.pdf', NULL, NULL, 914900, 20000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 934900.00, 0.00, 0.00, 0.00, 934900.00, 0.00, 0.00, 934900.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-18 06:20:24', '2026-01-08 05:09:31', 'sold', 'delivered'),
-(444, '848339', 'sales', '2025-12-18', '2026-01-10', 'MAHESHWARI SANDEEPKUMAR  NARAINDAS', '9974184696', 'B-13 SHREEJI SOCIETY', 'NADIAD ROAD/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1987-03-26', 'father', 'NARAINDAS`', '1964-04-08', 'HYUNDAI MOTOR INDIA LTD', 'VENUE HX 5 MANUAL ', 'BLACK', '', '', NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', '', '6943a08276f2d_1766039682.pdf', NULL, NULL, 914900, 50920.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 965820.00, 0.00, 0.00, 0.00, 965820.00, 0.00, 0.00, 965820.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-18 06:34:42', '2026-01-07 05:46:15', 'sold', 'delivered'),
+(444, '848339', 'sales', '2025-12-18', '2026-01-10', 'MAHESHWARI SANDEEPKUMAR  NARAINDAS', '9974184696', 'B-13 SHREEJI SOCIETY', 'NADIAD ROAD/KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1987-03-26', 'father', 'NARAINDAS"', '1964-04-08', 'HYUNDAI MOTOR INDIA LTD', 'VENUE HX 5 MANUAL ', 'BLACK', '', '', NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '', '-', '', '6943a08276f2d_1766039682.pdf', NULL, NULL, 914900, 50920.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 965820.00, 0.00, 0.00, 0.00, 965820.00, 0.00, 0.00, 965820.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-18 06:34:42', '2026-01-07 05:46:15', 'sold', 'delivered'),
 (445, '527186', 'sales', '2025-12-18', '2026-01-10', 'PRAJAPATI CHETNA PIYUSH ', '9924371676', '157 /SWAGAT CITY ', 'ISO PETROL PUMP SAME ADALAJ/GHANDHINAGAR', 'GHANDHINAGAR', '382421', 'tahir3mansuri@gmail.com', '1985-07-27', 'husband', 'PIYUSHBHAI', '1985-06-16', 'HYUNDAI MOTOR INDIA LTD', 'CRETA SX (0) AUTO', 'BLACK ', '', '', NULL, 'GJ18', '-', '-', 'HIMMATNAGAR', 'KALUPUR BANK', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'GANDHINAGAR', 'GJ18', 'pending', 'pending', 'REGULAR', '--', '-', '', '6943a2e4d2404_1766040292.pdf', NULL, NULL, 1930931, 88000.00, 40000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 19309.00, 0, 0.00, 0.00, 2078240.00, 78240.00, 0.00, 0.00, 2000000.00, 0.00, 0.00, 2000000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-18 06:44:52', '2026-01-07 05:48:37', 'sold', 'delivered'),
 (446, '303144', 'sales', '2025-12-18', '2025-12-27', 'VAHORA MUSTUFA GANIBHAI', '9998047688', '5728/NR NAGINA MASJID', 'ODE BAJAR/UMRETH', 'ANAND', '388250', 'tahir3mansuri@gmail.com', '1981-03-19', 'wife', 'SAMIRABEN', '1987-06-04', 'MARUTI SUZUKI-2025', 'G VITARA DELTA', 'BLACK', NULL, NULL, NULL, 'GJ23', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'POPULAR MOTORS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'ANAND', 'GJ23', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6943a7f4864d6_1766041588.pdf', NULL, NULL, 1299700, 58501.00, 41697.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 12997.00, 885, 0.00, 0.00, 1443780.00, 129780.00, 0.00, 0.00, 1314000.00, 0.00, 0.00, 1314000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-18 07:06:28', '2025-12-26 07:44:47', 'sold', 'delivered'),
 (447, '606665', 'sales', '2025-12-18', '2026-01-10', 'VHORA SARTAJBHAI SIRAJBHAI', '9998883648', '71-1  INDIRANAGARI /KHEDA', 'KHEDA', 'KHEDA', '387411', 'tahir3mansuri@gmail.com', '1990-03-05', 'wife', 'AKHTARIBANU', '0092-12-27', 'MARUTI SUZUKI-2025', 'SWIFT VXI CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'CHOICE-2128', '--', '-', '=', '6943e0d5b3936_1766056149.pdf', NULL, NULL, 770900, 41998.00, 38967.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 851865.00, 25000.00, 5000.00, 17865.00, 804000.00, 0.00, 0.00, 804000.00, 770900.00, 41496.00, 35026.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 847422.00, 25000.00, 0.00, 20000.00, 802422.00, 0.00, 0.00, 802422.00, '2025-12-18 11:09:09', '2026-01-12 09:29:42', 'sold', 'delivered'),
 (448, '374236', 'sales', '2025-12-19', '2025-12-21', 'CHAUHAN SWARUPSIN BALWANTSINH', '8140394945', 'BAPUNAGAR/BHANER ', 'BHANER', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1994-01-16', 'wife', 'SURBHIBEN', '1995-05-02', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'HDFC BANK LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6944e6db10f84_1766123227.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 885, 0.00, 0.00, 1211197.00, 40000.00, 0.00, 1197.00, 1170000.00, 0.00, 0.00, 1170000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-19 05:47:07', '2025-12-23 13:48:07', 'sold', 'delivered'),
-(449, '407299', 'sales', '2025-12-19', '0000-00-00', 'AHIR JITENDRABHAI DAHYABHAI', '9099688686', 'DANADRA', 'KAPADWANJ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1990-06-01', 'wife', 'SANJUBEN', '1990-05-21', 'NEXA', 'FRONX DELTA CNG', 'BLUE', NULL, NULL, NULL, 'GJ07', '-', '--', 'NADIAD', 'BANK OF BARODA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6944eb4732124_1766124359.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-19 06:05:59', '2025-12-27 07:13:01', 'sold', 'cancel'),
-(450, '705581', 'sales', '2025-12-19', '0000-00-00', 'SINDHI MANJURHUSEN SAFIMAHAMMAD APDE LOAN KARELI CHE BHAI', '9723510218', '', 'VASNA/KAPADVANJ', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1990-02-08', 'wife', 'SAMIMBANU', '1990-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'CHOLA MANDALAM ', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '69452f81a28b6_1766141825.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 885.00, 0.00, 0.00, 0.00, 885.00, 0.00, 0.00, 885.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-19 10:57:05', '2026-01-02 06:24:34', 'sold', 'delivered'),
+(449, '407299', 'sales', '2025-12-19', NULL, 'AHIR JITENDRABHAI DAHYABHAI', '9099688686', 'DANADRA', 'KAPADWANJ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1990-06-01', 'wife', 'SANJUBEN', '1990-05-21', 'NEXA', 'FRONX DELTA CNG', 'BLUE', NULL, NULL, NULL, 'GJ07', '-', '--', 'NADIAD', 'BANK OF BARODA', 'KIRAN MOTORS ', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6944eb4732124_1766124359.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-19 06:05:59', '2025-12-27 07:13:01', 'sold', 'cancel'),
+(450, '705581', 'sales', '2025-12-19', NULL, 'SINDHI MANJURHUSEN SAFIMAHAMMAD APDE LOAN KARELI CHE BHAI', '9723510218', '', 'VASNA/KAPADVANJ', 'KHEDA', '387650', 'tahir3mansuri@gmail.com', '1990-02-08', 'wife', 'SAMIMBANU', '1990-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'CHOLA MANDALAM ', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '69452f81a28b6_1766141825.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 885.00, 0.00, 885.00, 0.00, 0.00, 0.00, 885.00, 0.00, 0.00, 885.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-19 10:57:05', '2026-01-02 06:24:34', 'sold', 'delivered'),
 (451, '568282', 'sales', '2025-12-19', '2025-12-25', 'SODHA  PARMAR BHARATSINH ADESINH', '7990717715', 'CHAMPAJI NI MUVADI', 'SANALI/MAHUDHA', 'KHEDA', '387330', 'tahir3mansuri@gmail.com', '2000-02-16', 'son', 'DHANANJAY', '2000-06-01', 'MARUTI SUZUKI-2025', 'BALENO ZETA CNG', 'BLACK ', '2025', ' CNG', NULL, 'GJ07', '-', '-', '', 'BANK OF BARODA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE-1699', '', '-', '', '6945367927643_1766143609.pdf', NULL, NULL, 859900, 46524.00, 38773.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 945197.00, 55000.00, 0.00, 0.00, 890197.00, 0.00, 0.00, 890197.00, 859900.00, 46024.00, 33216.00, 0.00, 0.00, 0.00, 0.00, 0.00, 300.00, 0, 0.00, 0.00, 939440.00, 30000.00, 25000.00, 0.00, 884440.00, 0.00, 0.00, 884440.00, '2025-12-19 11:26:49', '2026-01-09 14:09:33', 'sold', 'delivered'),
 (452, '249569', 'sales', '2025-12-22', '2025-12-29', 'SODHAPARMAR ANILKUMAR AMBALAL', '9714866163', '862/SHANDEV CHOVAD /', 'SARSAVANI/KHEDA', 'KHEDA', '387430', 'tahir3mansuri@gmail.com', '1992-06-25', 'wife', 'NAYNABEN', '1996-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '', '-', 'AHMEDABAD', '-', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6948d13b3c0fd_1766379835.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 15000.00, 30000.00, 0.00, 0.00, 885.00, 0, 0.00, 0.00, 751434.00, 25000.00, 28434.00, 0.00, 698000.00, 0.00, 0.00, 698000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-22 05:03:55', '2025-12-29 06:30:39', 'sold', 'delivered'),
-(453, '328636', 'sales', '2025-12-22', '0000-00-00', 'SHAIKH BISMILLA BHAI  HAJI UMARBHAI ', '9725796772', '380 HARIJAN VAS ', 'DAHIUP/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1979-02-07', 'wife', 'ASMABEN', '1983-07-24', 'MARUTI SUZUKI-2025', 'G VITARA ZETA', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '', 'AHMEDABAD', 'NA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6948d4477217c_1766380615.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-22 05:16:55', '2025-12-22 10:31:54', 'sold', 'cancel'),
+(453, '328636', 'sales', '2025-12-22', NULL, 'SHAIKH BISMILLA BHAI  HAJI UMARBHAI ', '9725796772', '380 HARIJAN VAS ', 'DAHIUP/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1979-02-07', 'wife', 'ASMABEN', '1983-07-24', 'MARUTI SUZUKI-2025', 'G VITARA ZETA', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '', 'AHMEDABAD', 'NA', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '6948d4477217c_1766380615.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-22 05:16:55', '2025-12-22 10:31:54', 'sold', 'cancel'),
 (454, '648429', 'sales', '2025-12-22', '2025-12-29', 'PATEL HENISHKUMAR  RAJESHBHAI', '9537209186', 'SINOR/VADODARA', 'VADODARA', 'VADODARA', '391250', 'tahir3mansuri@gmail.com', '1987-10-15', 'wife', 'ANITABEN PATEL', '1989-07-30', 'HUNDAY MOTROS ', 'VANUE HX 5 AUTO', 'WHITE  ', NULL, NULL, NULL, 'GJ06', '-', '-', 'HIMMATNAGAR', 'BANK OF INDIA', 'BHURAWALA HYUNDAI', 'KATHLAL-', 'TAHIR', 2147483647, 'TATA INSURANCE', 'VADODARA', 'GJ06', 'pending', 'pending', 'CHOICE-9199', '--', '-', '-', '69491ed43244f_1766399700.pdf', NULL, NULL, 1158400, 63302.00, 69466.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11584.00, 0, 0.00, 1500.00, 1304252.00, 0.00, 15000.00, 0.00, 1289252.00, 0.00, 0.00, 1289252.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-22 10:35:00', '2025-12-25 06:52:22', 'sold', 'delivered'),
 (455, '124627', 'sales', '2025-12-22', '2025-12-29', 'SHAIKH MUSEFBHAI FAKIRMAHAMMAD', '7600395050', 'MAHAMMAD PARK SOCIETY ', 'MOTIPURA', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1997-10-06', 'father', 'FAKIRMAHAMMAD ', '1971-11-28', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'PEOPLES BANK', 'STARLINE', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '694920ce1903a_1766400206.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 25000.00, 0.00, 35549.00, 645000.00, 0.00, 0.00, 645000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-22 10:43:26', '2025-12-29 06:27:59', 'sold', 'delivered'),
-(456, '335897', 'sales', '2025-12-25', '0000-00-00', 'PATEL BIPINKUMAR  CHIMANBHAI ', '9408598090', 'B1-21  SHIVALAY BANGLOWS -1', '  OPP   SHUBH VASTU BANGLOWS /DEHGAM', 'GANDHINAGAR', '382305', 'tahir3mansuri@gmail.com', '1992-04-08', 'wife', 'NISHABEN', '1991-10-15', 'HYUNDAI MOTOR INDIA LTD', 'VENUE HX2 MT PETROL ', 'BLACK', '2025', 'PETROL', NULL, 'GJ18', '-', '-', 'HIMATNGAR ', 'BANK OF INDIA', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '--', 'JASHPALBHAI ZALA', '', '694d29b0781e4_1766664624.pdf', NULL, NULL, 769900, 41948.00, 35395.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 847243.00, 53000.00, 0.00, 0.00, 794243.00, 0.00, 0.00, 794243.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-25 12:10:24', '2026-01-06 06:32:42', 'sold', 'not_delivered'),
+(456, '335897', 'sales', '2025-12-25', NULL, 'PATEL BIPINKUMAR  CHIMANBHAI ', '9408598090', 'B1-21  SHIVALAY BANGLOWS -1', '  OPP   SHUBH VASTU BANGLOWS /DEHGAM', 'GANDHINAGAR', '382305', 'tahir3mansuri@gmail.com', '1992-04-08', 'wife', 'NISHABEN', '1991-10-15', 'HYUNDAI MOTOR INDIA LTD', 'VENUE HX2 MT PETROL ', 'BLACK', '2025', 'PETROL', NULL, 'GJ18', '-', '-', 'HIMATNGAR ', 'BANK OF INDIA', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '--', 'JASHPALBHAI ZALA', '', '694d29b0781e4_1766664624.pdf', NULL, NULL, 769900, 41948.00, 35395.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 847243.00, 53000.00, 0.00, 0.00, 794243.00, 0.00, 0.00, 794243.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-25 12:10:24', '2026-01-06 06:32:42', 'sold', 'not_delivered'),
 (457, '605176', 'sales', '2025-12-25', '2026-01-03', 'MALEK  MUSTAKIMHUSEN GULAMHUSEN ', '9574680086', '63 TEKRA FALIYU ', 'VASO/KHEDA', 'KHEDA', '388245', 'tahir3mansuri@gmail.com', '1993-04-30', 'wife', 'UJMABANU', '2004-07-18', 'MARUTI SUZUKI-2025', 'ERTIGA VXI   CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDABAD', 'BANK OF BARODA', 'POPULAR MOTORS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', 'SAJIDBHAI NADIAD', '-', '694e1a69499e6_1766726249.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1210312.00, 40312.00, 0.00, 0.00, 1170000.00, 0.00, 0.00, 1170000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-26 05:17:29', '2026-01-02 04:49:58', 'sold', 'delivered');
-INSERT INTO `new_cars` (`id`, `docket_number`, `entry_type`, `booking_date`, `delivery_date`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `city_name`, `pincode`, `email`, `customer_dob`, `nominee_relationship`, `nominee_name`, `nominee_dob`, `manufacturer_name`, `model_name`, `color`, `manufacture_year`, `fuel_type`, `running_kilometer`, `registration_no`, `chassis_no`, `engine_no`, `location`, `hp_name`, `dealer_name`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `parsing_status`, `number_plate`, `choice_number`, `scheme`, `broker_name`, `other_remarks`, `kyc`, `deal_agreement`, `main_image`, `ex_showroom_price`, `rto_tax`, `insurance`, `amc_gmc_tax`, `ext_warranty`, `accessories`, `krunal_accessories`, `fast_tag`, `tcs`, `trc`, `loyalty_card`, `driver_price`, `total_on_road`, `consumer_offer`, `corporate_discount`, `other_discount`, `net_on_road`, `disbursement`, `down_payment`, `net_short_payment`, `dealer_ex_showroom_price`, `dealer_rto_tax`, `dealer_insurance`, `dealer_amc_gmc_tax`, `dealer_ext_warranty`, `dealer_accessories`, `dealer_krunal_accessories`, `dealer_fast_tag`, `dealer_tcs`, `dealer_trc`, `dealer_loyalty_card`, `dealer_driver_price`, `dealer_total_on_road`, `dealer_consumer_offer`, `dealer_corporate_discount`, `dealer_other_discount`, `dealer_net_on_road`, `dealer_disbursement`, `dealer_down_payment`, `dealer_net_short_payment`, `created_at`, `updated_at`, `status`, `Delivery_status`) VALUES
+INSERT INTO "new_cars" ("id", "docket_number", "entry_type", "booking_date", "delivery_date", "customer_name", "customer_phone", "customer_address1", "customer_address2", "city_name", "pincode", "email", "customer_dob", "nominee_relationship", "nominee_name", "nominee_dob", "manufacturer_name", "model_name", "color", "manufacture_year", "fuel_type", "running_kilometer", "registration_no", "chassis_no", "engine_no", "location", "hp_name", "dealer_name", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "parsing_status", "number_plate", "choice_number", "scheme", "broker_name", "other_remarks", "kyc", "deal_agreement", "main_image", "ex_showroom_price", "rto_tax", "insurance", "amc_gmc_tax", "ext_warranty", "accessories", "krunal_accessories", "fast_tag", "tcs", "trc", "loyalty_card", "driver_price", "total_on_road", "consumer_offer", "corporate_discount", "other_discount", "net_on_road", "disbursement", "down_payment", "net_short_payment", "dealer_ex_showroom_price", "dealer_rto_tax", "dealer_insurance", "dealer_amc_gmc_tax", "dealer_ext_warranty", "dealer_accessories", "dealer_krunal_accessories", "dealer_fast_tag", "dealer_tcs", "dealer_trc", "dealer_loyalty_card", "dealer_driver_price", "dealer_total_on_road", "dealer_consumer_offer", "dealer_corporate_discount", "dealer_other_discount", "dealer_net_on_road", "dealer_disbursement", "dealer_down_payment", "dealer_net_short_payment", "created_at", "updated_at", "status", "Delivery_status") VALUES
 (458, '492798', 'sales', '2025-12-29', '2026-01-03', 'MALEK  SADIKHUSEN AIYUBBHAI', '8160275329', '08,ALI BANGLOWS', 'NR MASJID TUBA/KHEDA', 'KHEDA', '387411', 'tahir3mansuri@gmail.com', '1993-04-10', 'brother', 'MALEK IRFAN ', '1995-02-24', 'TOYOTA', 'INNOVA CRYSTA GX+ 8 STR ', 'SUPER WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'MP SATNA', 'NA', 'D V TOYOTA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '695216a483d3a_1766987428.pdf', NULL, NULL, 2030900, 100000.00, 100000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 20309.00, 0, 0.00, 8791.00, 2260000.00, 0.00, 0.00, 0.00, 2260000.00, 0.00, 0.00, 2260000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-29 05:50:28', '2026-01-02 04:49:13', 'sold', 'delivered'),
-(459, '613460', 'sales', '2025-12-23', '0000-00-00', 'ZALA RANJITBHAI  GABABHAI', '9712030109', 'GOGJIPURA', 'CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1992-12-19', 'father', 'GABABHAI', '1972-06-01', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', 'BANK OF INDIA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '695220380e11d_1766989880.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-29 06:31:20', '2025-12-29 06:33:37', 'sold', 'not_delivered'),
+(459, '613460', 'sales', '2025-12-23', NULL, 'ZALA RANJITBHAI  GABABHAI', '9712030109', 'GOGJIPURA', 'CHHIPDI', 'KHEDA', '387635', 'tahir3mansuri@gmail.com', '1992-12-19', 'father', 'GABABHAI', '1972-06-01', 'MARUTI SUZUKI-2025', 'SUPER CARRY CNG', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', 'BANK OF INDIA', 'KIRAN MOTERS', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '--', '-', '-', '695220380e11d_1766989880.pdf', NULL, NULL, 611900, 36814.00, 24489.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 673203.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-29 06:31:20', '2025-12-29 06:33:37', 'sold', 'not_delivered'),
 (460, '493746', 'sales', '2025-12-30', '2025-12-31', 'KADVA VASUDEV RAJULAL', '9428531563', '7/B NIRMAN SOCIETY KAPADWANJ KHEDA 387620', 'KAPADWANJ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1963-08-08', 'son', 'PARESH', '1980-06-01', 'MARUTI SUZUKI ind ltd', 'SWIFT VXI  CNG', 'WHITE  ', '2025', ' CNG', NULL, 'GJO7', 'NA', 'NA', 'AHMEDABAD', 'BANK OF INDIA', 'KATARIA', 'KATHLAL', 'TAHIR', 2147483647, 'MSIL', 'KHEDA ', 'GJ-07', 'pending', 'pending', '-', '', '', '', NULL, NULL, NULL, 744900, 40174.00, 31869.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 816943.00, 36260.00, 0.00, 0.00, 780683.00, 0.00, 0.00, 780683.00, 744900.00, 40176.00, 31869.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 816945.00, 25000.00, 20000.00, 0.00, 771945.00, 0.00, 0.00, 771945.00, '2025-12-30 07:42:25', '2026-01-09 13:37:13', 'sold', 'delivered'),
-(461, '622868', 'sales', '2025-12-30', '2026-01-09', 'BHARVAD BHARATBHAI DEVKARANBHAI', '7574084592', 'NAVI NAGRI', 'BALADHA/KHEDA', 'KHEDA', '388235', 'tahir3mansuri@gmail.com', '2002-08-01', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'CHOLA  MANDALAM ', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6953be6fe039b_1767095919.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 36000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 741549.00, 41549.00, 0.00, 0.00, 700000.00, 0.00, 0.00, 700000.00, 635800.00, 34629.00, 27722.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 698151.00, 25000.00, 40000.00, 0.00, 633151.00, 0.00, 0.00, 633151.00, '2025-12-30 11:58:39', '2026-01-09 13:15:35', 'sold', 'delivered'),
-(462, '777212', 'sales', '2025-12-31', '2026-01-06', 'PUROHIT PRAVINBHAI PITHARAM', '9909599557', '50/MADHUVAN PARK ', 'UMRETH ', 'ANAND', '388220', 'tahir3mansuri@gmail.com', '1980-11-30', 'brother', 'SHYAMRAJ PUROHIT', '0000-00-00', 'MARUTI SUZUKI-2025', 'G VITARA DELTA', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'AHMEDAVAD', 'HDFC BANK LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'ANAND', 'GJ23', NULL, 'pending', 'CHOICE-7200', '--', '-', '-', '6954fb0e6079e_1767176974.pdf', NULL, NULL, 1299700, 58501.00, 50927.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 12997.00, 0, 885.00, 0.00, 1453010.00, 138000.00, 0.00, 0.00, 1315010.00, 0.00, 0.00, 1315010.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-31 10:29:34', '2026-01-02 07:21:53', 'sold', 'delivered'),
+(461, '622868', 'sales', '2025-12-30', '2026-01-09', 'BHARVAD BHARATBHAI DEVKARANBHAI', '7574084592', 'NAVI NAGRI', 'BALADHA/KHEDA', 'KHEDA', '388235', 'tahir3mansuri@gmail.com', '2002-08-01', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'EECO 5 STR AC', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'CHOLA  MANDALAM ', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6953be6fe039b_1767095919.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 36000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 741549.00, 41549.00, 0.00, 0.00, 700000.00, 0.00, 0.00, 700000.00, 635800.00, 34629.00, 27722.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 698151.00, 25000.00, 40000.00, 0.00, 633151.00, 0.00, 0.00, 633151.00, '2025-12-30 11:58:39', '2026-01-09 13:15:35', 'sold', 'delivered'),
+(462, '777212', 'sales', '2025-12-31', '2026-01-06', 'PUROHIT PRAVINBHAI PITHARAM', '9909599557', '50/MADHUVAN PARK ', 'UMRETH ', 'ANAND', '388220', 'tahir3mansuri@gmail.com', '1980-11-30', 'brother', 'SHYAMRAJ PUROHIT', NULL, 'MARUTI SUZUKI-2025', 'G VITARA DELTA', 'WHITE', NULL, NULL, NULL, 'GJ23', '-', '-', 'AHMEDAVAD', 'HDFC BANK LTD', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'ANAND', 'GJ23', NULL, 'pending', 'CHOICE-7200', '--', '-', '-', '6954fb0e6079e_1767176974.pdf', NULL, NULL, 1299700, 58501.00, 50927.00, 0.00, 0.00, 30000.00, 0.00, 0.00, 12997.00, 0, 885.00, 0.00, 1453010.00, 138000.00, 0.00, 0.00, 1315010.00, 0.00, 0.00, 1315010.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2025-12-31 10:29:34', '2026-01-02 07:21:53', 'sold', 'delivered'),
 (463, '869025', 'sales', '2026-01-01', '2026-01-04', 'RATHOD RAJUBHAI RAMANBHAI ', '8849655370', 'NISHADVADU FALIYU', 'FULCHHATRAPURA/KHEDA', 'KHEDA', '387630', 'tahir3mansuri@gmail.com', '1990-11-20', 'wife', 'ARUNABEN', '1995-03-16', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC ', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE', 'KATARIA  AUTOMOBILES ', 'KATHLAL-', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '69560239401f9_1767244345.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 37000.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 742549.00, 42549.00, 0.00, 0.00, 700000.00, 0.00, 0.00, 700000.00, 635800.00, 34629.00, 27722.00, 0.00, 0.00, 0.00, 0.00, 0.00, 300.00, 0, 0.00, 0.00, 698451.00, 25000.00, 0.00, 40000.00, 633451.00, 0.00, 0.00, 633451.00, '2026-01-01 05:12:25', '2026-01-09 13:46:17', 'sold', 'delivered'),
-(465, '877179', 'sales', '2026-01-01', '0000-00-00', 'ZALA INDRAVIJAYBHAI RAMSINH', '7285090386', '214 CHORAVADU FALIYU', 'DAHIUP', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1986-11-19', 'son', 'PRUTHVIRAJSINH', '2007-12-18', 'MARUTI SUZUKI-2025', 'EECO 5 SEATER AC ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', '-', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '69562ff0a002a_1767256048.pdf', NULL, NULL, 635800, 35129.00, 0.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 706058.00, 0.00, 0.00, 0.00, 706058.00, 0.00, 0.00, 706058.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-01 08:27:28', '2026-01-06 08:34:23', 'sold', 'cancel'),
+(465, '877179', 'sales', '2026-01-01', NULL, 'ZALA INDRAVIJAYBHAI RAMSINH', '7285090386', '214 CHORAVADU FALIYU', 'DAHIUP', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1986-11-19', 'son', 'PRUTHVIRAJSINH', '2007-12-18', 'MARUTI SUZUKI-2025', 'EECO 5 SEATER AC ', 'WHITE', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', '-', 'POPULAR MOTORS', 'KATHLAL-', 'TAHIR', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '69562ff0a002a_1767256048.pdf', NULL, NULL, 635800, 35129.00, 0.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 706058.00, 0.00, 0.00, 0.00, 706058.00, 0.00, 0.00, 706058.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-01 08:27:28', '2026-01-06 08:34:23', 'sold', 'cancel'),
 (466, '441042', 'sales', '2026-01-01', '2026-01-16', 'PRAJAPATI DEVARAM DUNGARAMAJI ', '9714999150', 'HAMIRPURA ', 'ATARSUMBA ,KHEDA ', 'ATARSUMBA ,KHEDA ', '387610', 'tahir3mansuri@gmail.com', '1985-02-15', 'son', 'MUKESHBHAI', '2005-12-29', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI CNG', 'WHITE', '2025', 'CNG', NULL, '-', '-', '-', 'AHMEDAVAD', 'STATE BANK OF INDIA', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA ', 'GJ07', 'pending', 'pending', '-', '-', '-', '', '69564dfec8e85_1767263742.pdf', NULL, NULL, 1076300, 48927.00, 45612.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1181602.00, 40602.00, 0.00, 0.00, 1141000.00, 0.00, 0.00, 1141000.00, 1076300.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1087063.00, 0.00, 0.00, 0.00, 1087063.00, 0.00, 0.00, 1087063.00, '2026-01-01 10:35:42', '2026-01-10 05:57:20', 'sold', 'delivered'),
 (467, '552767', 'sales', '2026-01-02', '2026-01-10', 'CHAUHAN  RAKESHKUMAR UMEDBHAI', '9870017621', 'GAGARNA MUVADA,  RALIYATA', 'BALASINOR  ,JANOD  ', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1996-05-03', 'wife', 'RITABEN  CHAUHAN', '1995-03-02', 'MARUTI SUZUKI INDIA LTD', 'ERTIGA VXI CNG', 'WHITE', '2026', 'CNG', NULL, '-', '-', '-', '-', 'AU SMALL FINANCE LTD', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'BALASINOR', 'GJ35', 'pending', 'pending', '-', '-', '-', '', '695783569d343_1767342934.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 885.00, 0.00, 1181197.00, 36197.00, 0.00, 0.00, 1145000.00, 0.00, 0.00, 1145000.00, 1076300.00, 48427.00, 38902.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 300, 0.00, 0.00, 1174692.00, 10000.00, 0.00, 35000.00, 1129692.00, 0.00, 0.00, 1129692.00, '2026-01-02 08:35:34', '2026-01-09 14:05:19', 'sold', 'delivered'),
-(468, '310533', 'sales', '0025-01-02', '0000-00-00', 'ZALA  MAHENDRASINH  NATVARSINH ', '9974839247', 'BAR NA MUVADA ', 'JARAVAT', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1997-06-01', 'brother', 'VIJAYBHAI', '1993-06-15', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 SEATER AC TAXI', 'WHITE', '2025', 'CNG', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6957919aa42ad_1767346586.pdf', NULL, NULL, 635800, 34629.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705558.00, 0.00, 0.00, 0.00, 705558.00, 0.00, 0.00, 705558.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-02 09:36:26', '2026-01-02 09:39:31', 'sold', 'not_delivered'),
-(469, '916818', 'sales', '2026-01-03', '0000-00-00', 'SIDDI MUSTAKBHAI MURADBHAI', '9879045098', 'PTC FALIYA DANGARIYA, ', 'TRAINING COLLEGE, DAHOD, ', 'DAHOD ', '389380', 'tahir3mansuri@gmail.com', '1979-03-07', 'wife', 'SAMIMBANU', '1983-01-01', 'MARUTI SUZUKI INDIA', 'ERTIGA VXI CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ20', '-', '-', 'AHMEDAVAD', 'AXIS BANK', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'DAHOD ', 'GJ20', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6958e643ded44_1767433795.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-03 09:49:56', '2026-01-03 10:00:26', 'sold', 'not_delivered'),
-(470, '640294', 'sales', '2026-01-05', '0000-00-00', 'CHAUHAN MADHUBEN BHAIJIBHAI', '9328239667/814093065', 'KAILASHPURA/MANKWA', 'KHEDA', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1960-05-15', 'son', 'KETANKUMAR', '2000-06-19', 'MAHINDRA&MAHINDRA LIMITED', 'XUV 700 AX-7 (L) MT', 'WHITE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'BANK OF BARODA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '695b839c1c28c_1767605148.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 09:25:48', '2026-01-12 05:40:36', 'sold', 'cancel'),
-(471, '300894', 'sales', '2026-01-05', '2026-01-08', 'KHACHHAR JAGUBHAI VIHABHAI', '9924702702', 'SUDADAMA', 'SURENDRANAGAR', 'SURENDRANAGAR', '363440', 'tahir3mansuri@gmail.com', '1965-06-10', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11  CC', 'BLACK ', '2025', 'DIESEL ', NULL, 'GJ09', '-', '-', '-', 'BANK OF BARODA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'SURENDRANAGAR', 'GJ13', 'pending', 'pending', 'REGULAR', '-', '-', '', '695b8b48d6679_1767607112.pdf', NULL, NULL, 1670500, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 5500, 0.00, 0.00, 1692705.00, 97705.00, 0.00, 0.00, 1595000.00, 0.00, 0.00, 1595000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 09:58:32', '2026-01-15 06:25:10', 'sold', 'delivered'),
-(472, '622970', 'sales', '2026-01-05', '0000-00-00', 'ROSHANKHAN DINAKHAN', '7742255286', 'NADI DARWAJA', 'KAPADVANJ ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1994-01-01', NULL, '', '0000-00-00', 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11 ', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', '-', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '695b8e6b7bb71_1767607915.pdf', NULL, NULL, 1670500, 80000.00, 55000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 6000.00, 1828205.00, 88205.00, 0.00, 0.00, 1740000.00, 0.00, 0.00, 1740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 10:11:55', '2026-01-09 08:13:53', 'sold', 'not_delivered'),
+(468, '310533', 'sales', '0025-01-02', NULL, 'ZALA  MAHENDRASINH  NATVARSINH ', '9974839247', 'BAR NA MUVADA ', 'JARAVAT', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1997-06-01', 'brother', 'VIJAYBHAI', '1993-06-15', 'MARUTI SUZUKI INDIA LTD', 'EECO 5 SEATER AC TAXI', 'WHITE', '2025', 'CNG', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'INDUSIND BANK', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6957919aa42ad_1767346586.pdf', NULL, NULL, 635800, 34629.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705558.00, 0.00, 0.00, 0.00, 705558.00, 0.00, 0.00, 705558.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-02 09:36:26', '2026-01-02 09:39:31', 'sold', 'not_delivered'),
+(469, '916818', 'sales', '2026-01-03', NULL, 'SIDDI MUSTAKBHAI MURADBHAI', '9879045098', 'PTC FALIYA DANGARIYA, ', 'TRAINING COLLEGE, DAHOD, ', 'DAHOD ', '389380', 'tahir3mansuri@gmail.com', '1979-03-07', 'wife', 'SAMIMBANU', '1983-01-01', 'MARUTI SUZUKI INDIA', 'ERTIGA VXI CNG', 'WHITE', '2025', 'PETROL/CNG', NULL, 'GJ20', '-', '-', 'AHMEDAVAD', 'AXIS BANK', 'KATARIA', 'KATHLAL', 'TAHIR ', 2147483647, 'MSIL', 'DAHOD ', 'GJ20', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6958e643ded44_1767433795.pdf', NULL, NULL, 1076300, 48927.00, 44322.00, 0.00, 0.00, 0.00, 0.00, 0.00, 10763.00, 0, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 1180312.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-03 09:49:56', '2026-01-03 10:00:26', 'sold', 'not_delivered'),
+(470, '640294', 'sales', '2026-01-05', NULL, 'CHAUHAN MADHUBEN BHAIJIBHAI', '9328239667/814093065', 'KAILASHPURA/MANKWA', 'KHEDA', 'KHEDA', '387130', 'tahir3mansuri@gmail.com', '1960-05-15', 'son', 'KETANKUMAR', '2000-06-19', 'MAHINDRA&MAHINDRA LIMITED', 'XUV 700 AX-7 (L) MT', 'WHITE', '2025', 'DIESEL', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'BANK OF BARODA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '695b839c1c28c_1767605148.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 09:25:48', '2026-01-12 05:40:36', 'sold', 'cancel'),
+(471, '300894', 'sales', '2026-01-05', '2026-01-08', 'KHACHHAR JAGUBHAI VIHABHAI', '9924702702', 'SUDADAMA', 'SURENDRANAGAR', 'SURENDRANAGAR', '363440', 'tahir3mansuri@gmail.com', '1965-06-10', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11  CC', 'BLACK ', '2025', 'DIESEL ', NULL, 'GJ09', '-', '-', '-', 'BANK OF BARODA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'SURENDRANAGAR', 'GJ13', 'pending', 'pending', 'REGULAR', '-', '-', '', '695b8b48d6679_1767607112.pdf', NULL, NULL, 1670500, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 5500, 0.00, 0.00, 1692705.00, 97705.00, 0.00, 0.00, 1595000.00, 0.00, 0.00, 1595000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 09:58:32', '2026-01-15 06:25:10', 'sold', 'delivered'),
+(472, '622970', 'sales', '2026-01-05', NULL, 'ROSHANKHAN DINAKHAN', '7742255286', 'NADI DARWAJA', 'KAPADVANJ ', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1994-01-01', NULL, '', NULL, 'MAHINDRA&MAHINDRA LIMITED', 'SCORPIO S11 ', 'BLACK ', NULL, NULL, NULL, 'GJ07', '-', '-', '-', '-', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR ', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '695b8e6b7bb71_1767607915.pdf', NULL, NULL, 1670500, 80000.00, 55000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 16705.00, 0, 0.00, 6000.00, 1828205.00, 88205.00, 0.00, 0.00, 1740000.00, 0.00, 0.00, 1740000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-05 10:11:55', '2026-01-09 08:13:53', 'sold', 'not_delivered'),
 (473, '855566', 'sales', '2026-01-08', '2026-01-09', 'PATEL KETANKUMAR KANAIYALAL', '9099425031', '38 RAGHUNANDAN SOCIETY ', 'BALASINOR ROAD /KATHLAL', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1994-01-07', 'son', 'PRIYANSHBHAI', '2002-03-28', 'MAHINDRA& MAHINDARA LIMITD', 'BOLERO MAXX HD 2.0 SXCBC', 'WHITE', NULL, NULL, NULL, 'GJ07', '-', '-', 'ANAND', 'BANK OF BARODA', 'MAHINDRA & MAHINDRA', 'KATHLAL', 'TAHIR', 2147483647, 'CHOLAMANDALM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '695f9a1b3ffdf_1767873051.pdf', NULL, NULL, 991000, 60100.00, 40000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 500.00, 1091600.00, 24000.00, 4600.00, 15000.00, 1048000.00, 0.00, 0.00, 1048000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-08 11:50:51', '2026-01-09 05:45:28', 'sold', 'delivered'),
-(474, '135470', 'sales', '2026-01-09', '0000-00-00', 'PATEL HARESHBHAI RAMESHBHAI ', '7990112736', 'HOUSE NUMBER -1-34 PATEL FALIYU RANECHI ,SABARKANT', 'PATEL FALIYU RANECHI ,SABARKANTH ', 'SABARKANTHA', '383325', 'tahir3mansuri@gmail.com', '1978-07-01', NULL, '', '0000-00-00', 'HYUNDAI MOTOR INDIA LTD', 'CRETA 1.5 KING ', 'BLACK', '2025', 'DIESEL', NULL, '-', '-', '-', '', 'BOB', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, '-', '-', '-', 'pending', 'pending', '-', '-', '-', '', '69609e7f47d16_1767939711.pdf', NULL, NULL, 1880000, 93121.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 18800.00, 0, 0.00, 0.00, 2041921.00, 23921.00, 0.00, 0.00, 2018000.00, 0.00, 0.00, 2018000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 06:21:51', '2026-01-09 09:24:49', 'sold', 'not_delivered'),
-(475, '987602', 'sales', '2026-01-09', '0000-00-00', 'SODHA MAHENDRAKUMAR SHANABHAI ', '9913000198', 'BAGDU ,KHUNTAJ ,', 'KHEDA ', 'KEDHA ', '387430', 'tahir3mansuri@gmail.com', '1970-06-01', 'wife', 'KAILASHBEN', '1976-01-01', 'MARUTI SUZUKI-2025', 'BREZZA ZXI CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AXIS BENK LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'KHEDA', 'GJ07', 'pending', 'pending', '2298', '-', '', '', '6960c50f0e18a_1767949583.pdf', NULL, NULL, 1130900, 51267.00, 42362.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11309.00, 0, 0.00, 0.00, 1235838.00, 0.00, 0.00, 0.00, 1235838.00, 0.00, 0.00, 1235838.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 09:06:23', '2026-01-09 09:23:54', 'sold', 'not_delivered'),
-(476, '875913', 'sales', '2026-01-09', '0000-00-00', 'PARMAR HASMUKHBHAI KISHORBHAI ', '7698365951', 'DUKANVALU FALIYU GHADIYA ', 'ANGHADI/KHEDA', 'THASRA', '388250', 'tahir3mansuri@gmail.com', '1991-11-26', 'wife', 'ANITABEN ', '1995-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', '', 'GJ07', 'pending', 'pending', '-', '', '', '', '6960c7fb32ecd_1767950331.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 09:18:51', '2026-01-09 09:22:06', 'sold', 'not_delivered'),
-(477, '337429', 'sales', '2026-01-09', '0000-00-00', 'SOLANKI BHIKHABHAI SHAMALJI ', '9723102125/932851849', 'SURAVAT,KATHLAL,KHEDA ', 'SANDESAR', 'KATHLAL', '387610', 'tahir3mansuri@gmail.com', '1980-01-01', 'wife', 'JOSHNABEN ', '1990-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6960dcde0a0ab_1767955678.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 10:47:58', '2026-01-09 10:48:45', 'sold', 'not_delivered'),
-(478, '138396', 'sales', '2026-01-09', '0000-00-00', 'GAUR ANISH RAGHUVIRPRASAD', '8905792065', 'ASLARI ROAD,NAROL', 'NAROL/AHMEDABAD', 'ahmedabad', '380001', 'tahir3mansuri@gmail.com', '1993-06-09', NULL, '', '0000-00-00', 'MARUTI SUZUKI-2025', 'DESIRE TOUR', '', NULL, NULL, NULL, 'GJ23', '-', '-', '', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'AHMEDABAD', 'GJ23', 'pending', 'pending', '-', '', '', '', '6960e84154d4e_1767958593.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 11:36:33', '2026-01-09 11:36:50', 'unsold', 'not_delivered'),
-(479, '915182', 'sales', '2026-01-10', '0000-00-00', 'PATEL PIYUSHBHAI BHARATBHAI', '7383411982', 'PLOT -22  VIMAL PARK SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1982-07-23', 'brother', 'PATEL TARESHBHAI', '1987-03-18', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO 1.7 9 FT', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'ANAND', 'AU SMALL FINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 2147483647, 'CHOLAMANDALM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6962224a7137e_1768038986.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-10 09:56:26', '2026-01-10 09:56:49', 'sold', 'not_delivered'),
-(480, '657699', 'sales', '2026-01-12', '0000-00-00', 'AMOL SUBHASHRAV NIMBALKAR', '7984425513', 'G-102///SOREL,', 'APPLEWOODS,TOWNSHIP SHANTIPUR ,BOPAL/AHMEDABAD', 'AHMEDABAD', '380058', 'tahir3mansuri@gmail.com', '1981-09-12', 'wife', 'DARSHNABEN', '1987-07-10', 'HUNDAI', 'NIOS SPORT CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ38', '-', '-', 'HIMMATNAGAR', 'AXIS BANK LIMITED', 'HUNDAI MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'AHMEDABAD', 'GJ38', 'pending', 'pending', 'CHOICE-3900', '-', '-', '-', '69648341199fd_1768194881.pdf', NULL, NULL, 735500, 50698.00, 49948.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 836146.00, 65000.00, 0.00, 0.00, 771146.00, 0.00, 0.00, 771146.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 05:14:41', '2026-01-12 05:15:44', 'sold', 'not_delivered'),
-(481, '380146', 'sales', '2026-01-12', '0000-00-00', 'DESAI UDAY NARHARIBHAI', '9662033823', '13 KIRTI TENAMENTS  NANI RATNAKAR ROAD ', 'NARMAD VASAHAT NI SAME /KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1973-08-03', 'wife', 'DIPALIBEN', '1975-06-16', 'HUNDAI MOTORS', 'VENUE HX4 MT', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', 'SBI BANK', 'HUNDAI MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE-8500', '-', '-', '-', '6964a14178224_1768202561.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 07:22:41', '2026-01-12 07:22:49', 'unsold', 'not_delivered'),
-(482, '932775', 'sales', '2026-01-13', '0000-00-00', 'KURESHI SHAHIDNAJIR MAKSUDMIYA', '6351488573', 'BHULI FALI./JUNA CHORA PACHHAD /', 'DAHIUP/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1997-02-07', 'wife', 'ALFINABANU', '2000-03-27', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '6964cdb026355_1768213936.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 10:32:16', '2026-01-12 10:33:21', 'sold', 'not_delivered');
+(474, '135470', 'sales', '2026-01-09', NULL, 'PATEL HARESHBHAI RAMESHBHAI ', '7990112736', 'HOUSE NUMBER -1-34 PATEL FALIYU RANECHI ,SABARKANT', 'PATEL FALIYU RANECHI ,SABARKANTH ', 'SABARKANTHA', '383325', 'tahir3mansuri@gmail.com', '1978-07-01', NULL, '', NULL, 'HYUNDAI MOTOR INDIA LTD', 'CRETA 1.5 KING ', 'BLACK', '2025', 'DIESEL', NULL, '-', '-', '-', '', 'BOB', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, '-', '-', '-', 'pending', 'pending', '-', '-', '-', '', '69609e7f47d16_1767939711.pdf', NULL, NULL, 1880000, 93121.00, 50000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 18800.00, 0, 0.00, 0.00, 2041921.00, 23921.00, 0.00, 0.00, 2018000.00, 0.00, 0.00, 2018000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 06:21:51', '2026-01-09 09:24:49', 'sold', 'not_delivered'),
+(475, '987602', 'sales', '2026-01-09', NULL, 'SODHA MAHENDRAKUMAR SHANABHAI ', '9913000198', 'BAGDU ,KHUNTAJ ,', 'KHEDA ', 'KEDHA ', '387430', 'tahir3mansuri@gmail.com', '1970-06-01', 'wife', 'KAILASHBEN', '1976-01-01', 'MARUTI SUZUKI-2025', 'BREZZA ZXI CNG', 'WHITE  ', '', '', NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AXIS BENK LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'KHEDA', 'GJ07', 'pending', 'pending', '2298', '-', '', '', '6960c50f0e18a_1767949583.pdf', NULL, NULL, 1130900, 51267.00, 42362.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11309.00, 0, 0.00, 0.00, 1235838.00, 0.00, 0.00, 0.00, 1235838.00, 0.00, 0.00, 1235838.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 09:06:23', '2026-01-09 09:23:54', 'sold', 'not_delivered'),
+(476, '875913', 'sales', '2026-01-09', NULL, 'PARMAR HASMUKHBHAI KISHORBHAI ', '7698365951', 'DUKANVALU FALIYU GHADIYA ', 'ANGHADI/KHEDA', 'THASRA', '388250', 'tahir3mansuri@gmail.com', '1991-11-26', 'wife', 'ANITABEN ', '1995-01-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', '', 'GJ07', 'pending', 'pending', '-', '', '', '', '6960c7fb32ecd_1767950331.pdf', NULL, NULL, 635800, 34620.00, 35129.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 09:18:51', '2026-01-09 09:22:06', 'sold', 'not_delivered'),
+(477, '337429', 'sales', '2026-01-09', NULL, 'SOLANKI BHIKHABHAI SHAMALJI ', '9723102125/932851849', 'SURAVAT,KATHLAL,KHEDA ', 'SANDESAR', 'KATHLAL', '387610', 'tahir3mansuri@gmail.com', '1980-01-01', 'wife', 'JOSHNABEN ', '1990-06-01', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '', '6960dcde0a0ab_1767955678.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 10:47:58', '2026-01-09 10:48:45', 'sold', 'not_delivered'),
+(478, '138396', 'sales', '2026-01-09', NULL, 'GAUR ANISH RAGHUVIRPRASAD', '8905792065', 'ASLARI ROAD,NAROL', 'NAROL/AHMEDABAD', 'ahmedabad', '380001', 'tahir3mansuri@gmail.com', '1993-06-09', NULL, '', NULL, 'MARUTI SUZUKI-2025', 'DESIRE TOUR', '', NULL, NULL, NULL, 'GJ23', '-', '-', '', '-', 'BHURAWALA HYUNDAI', 'KATHLAL', 'TAHIR', 2147483647, 'MSL', 'AHMEDABAD', 'GJ23', 'pending', 'pending', '-', '', '', '', '6960e84154d4e_1767958593.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-09 11:36:33', '2026-01-09 11:36:50', 'unsold', 'not_delivered'),
+(479, '915182', 'sales', '2026-01-10', NULL, 'PATEL PIYUSHBHAI BHARATBHAI', '7383411982', 'PLOT -22  VIMAL PARK SOCIETY ', 'KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1982-07-23', 'brother', 'PATEL TARESHBHAI', '1987-03-18', 'MAHINDRA&MAHINDRA LIMITED', 'BOLERO 1.7 9 FT', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'ANAND', 'AU SMALL FINANCE', 'MAHINDRA & MAHINDRA', 'KATHLAL-', 'TAHIR', 2147483647, 'CHOLAMANDALM', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '-', '-', '6962224a7137e_1768038986.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-10 09:56:26', '2026-01-10 09:56:49', 'sold', 'not_delivered'),
+(480, '657699', 'sales', '2026-01-12', NULL, 'AMOL SUBHASHRAV NIMBALKAR', '7984425513', 'G-102///SOREL,', 'APPLEWOODS,TOWNSHIP SHANTIPUR ,BOPAL/AHMEDABAD', 'AHMEDABAD', '380058', 'tahir3mansuri@gmail.com', '1981-09-12', 'wife', 'DARSHNABEN', '1987-07-10', 'HUNDAI', 'NIOS SPORT CNG', 'WHITE  ', NULL, NULL, NULL, 'GJ38', '-', '-', 'HIMMATNAGAR', 'AXIS BANK LIMITED', 'HUNDAI MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'ICICI LOMBARD', 'AHMEDABAD', 'GJ38', 'pending', 'pending', 'CHOICE-3900', '-', '-', '-', '69648341199fd_1768194881.pdf', NULL, NULL, 735500, 50698.00, 49948.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 836146.00, 65000.00, 0.00, 0.00, 771146.00, 0.00, 0.00, 771146.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 05:14:41', '2026-01-12 05:15:44', 'sold', 'not_delivered'),
+(481, '380146', 'sales', '2026-01-12', NULL, 'DESAI UDAY NARHARIBHAI', '9662033823', '13 KIRTI TENAMENTS  NANI RATNAKAR ROAD ', 'NARMAD VASAHAT NI SAME /KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1973-08-03', 'wife', 'DIPALIBEN', '1975-06-16', 'HUNDAI MOTORS', 'VENUE HX4 MT', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'HIMMATNAGAR', 'SBI BANK', 'HUNDAI MOTERS', 'KATHLAL', 'TAHIR', 2147483647, 'TATA INSURANCE', 'KHEDA', 'GJ07', 'pending', 'pending', 'CHOICE-8500', '-', '-', '-', '6964a14178224_1768202561.pdf', NULL, NULL, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, NULL, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 07:22:41', '2026-01-12 07:22:49', 'unsold', 'not_delivered'),
+(482, '932775', 'sales', '2026-01-13', NULL, 'KURESHI SHAHIDNAJIR MAKSUDMIYA', '6351488573', 'BHULI FALI./JUNA CHORA PACHHAD /', 'DAHIUP/KHEDA', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1997-02-07', 'wife', 'ALFINABANU', '2000-03-27', 'MARUTI SUZUKI-2025', 'EECO 5 STR AC CNG ', 'WHITE  ', NULL, NULL, NULL, 'GJ07', '-', '-', 'AHMEDAVAD', 'AU SMALL FINANCE LTD', 'KATARIA  AUTOMOBILES -ahmedabad', 'KATHLAL', 'TAHIR', 0, 'MSIL', 'KHEDA', 'GJ07', 'pending', 'pending', 'REGULAR', '-', '', '-', '6964cdb026355_1768213936.pdf', NULL, NULL, 635800, 35129.00, 34620.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 705549.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, '2026-01-12 10:32:16', '2026-01-12 10:33:21', 'sold', 'not_delivered');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_car_images`
+-- Table structure for table "new_car_images"
 --
 
-CREATE TABLE `new_car_images` (
-  `id` int(11) NOT NULL,
-  `new_car_id` int(11) NOT NULL,
-  `image_url` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "new_car_images" (
+  "id" SERIAL PRIMARY KEY,
+  "new_car_id" INTEGER NOT NULL,
+  "image_url" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL 
+);
 --
--- Dumping data for table `new_car_images`
+-- Dumping data for table "new_car_images"
 --
 
-INSERT INTO `new_car_images` (`id`, `new_car_id`, `image_url`, `created_at`, `updated_at`) VALUES
+INSERT INTO "new_car_images" ("id", "new_car_id", "image_url", "created_at", "updated_at") VALUES
 (13, 28, '67b6bc1605184_1740028950.pdf', '2025-02-20 05:22:30', '2025-02-20 05:22:30'),
 (14, 49, '67d3bcb25b66f_1741929650.pdf', '2025-03-14 05:20:50', '2025-03-14 05:20:50');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `old_cars`
+-- Table structure for table "old_cars"
 --
 
-CREATE TABLE `old_cars` (
-  `id` int(11) NOT NULL,
-  `docket_number` varchar(20) NOT NULL,
-  `original_price` int(11) NOT NULL,
-  `current_price` int(11) NOT NULL,
-  `customer_name` varchar(100) NOT NULL,
-  `customer_phone` varchar(20) NOT NULL,
-  `customer_address1` varchar(255) NOT NULL,
-  `customer_address2` varchar(255) DEFAULT NULL,
-  `pincode` varchar(10) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `customer_dob` date NOT NULL,
-  `color` varchar(50) NOT NULL,
-  `registration_no` varchar(20) DEFAULT NULL,
-  `chassis_no` varchar(50) NOT NULL,
-  `engine_no` varchar(50) NOT NULL,
-  `insurance_expiry_date` date DEFAULT NULL,
-  `location` varchar(100) NOT NULL,
-  `dealer_name` varchar(255) NOT NULL,
-  `parsing_status` enum('pending','completed') NOT NULL,
-  `number_plate` enum('received','pending') NOT NULL,
-  `scheme` varchar(100) DEFAULT NULL,
-  `broker_name` varchar(100) DEFAULT NULL,
-  `broker_brokerage` int(255) NOT NULL,
-  `broker_number` int(255) NOT NULL,
-  `other_remarks` text DEFAULT NULL,
-  `rc_book` varchar(255) DEFAULT NULL,
-  `insurance_doc` varchar(255) DEFAULT NULL,
-  `pan_card` varchar(255) DEFAULT NULL,
-  `aadhar_card` varchar(255) DEFAULT NULL,
-  `noc` varchar(255) DEFAULT NULL,
-  `form_35` varchar(255) DEFAULT NULL,
-  `purchase_agreement` varchar(255) DEFAULT NULL,
-  `owner_id_proof` varchar(255) DEFAULT NULL,
-  `main_image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('sold','unsold') NOT NULL DEFAULT 'unsold',
-  `city_name` varchar(255) DEFAULT NULL,
-  `manufacturer_name` varchar(255) DEFAULT NULL,
-  `model_name` varchar(255) DEFAULT NULL,
-  `manufacture_year` varchar(255) NOT NULL,
-  `fuel_type` varchar(255) NOT NULL,
-  `running_kilometer` int(11) DEFAULT NULL,
-  `no_of_owners` int(11) DEFAULT NULL,
-  `executive_branch_name` varchar(255) DEFAULT NULL,
-  `executive_name` varchar(255) DEFAULT NULL,
-  `executive_number` int(255) NOT NULL,
-  `insurance_company_name` varchar(255) DEFAULT NULL,
-  `rto_name` varchar(255) DEFAULT NULL,
-  `rto_code` varchar(255) NOT NULL,
-  `hp_name` varchar(255) DEFAULT NULL,
-  `delivery_date` date DEFAULT NULL,
-  `delivery_status` varchar(255) NOT NULL DEFAULT 'pending',
-  `booking_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "old_cars" (
+  "id" SERIAL PRIMARY KEY,
+  "docket_number" VARCHAR(20) NULL,
+  "original_price" INTEGER NULL,
+  "current_price" INTEGER NULL,
+  "customer_name" VARCHAR(100) NULL,
+  "customer_phone" VARCHAR(20) NULL,
+  "customer_address1" VARCHAR(255) NULL,
+  "customer_address2" VARCHAR(255) DEFAULT NULL,
+  "pincode" VARCHAR(10) NULL,
+  "email" VARCHAR(100) DEFAULT NULL,
+  "customer_dob" DATE NULL,
+  "color" VARCHAR(50) NULL,
+  "registration_no" VARCHAR(20) DEFAULT NULL,
+  "chassis_no" VARCHAR(50) NULL,
+  "engine_no" VARCHAR(50) NULL,
+  "insurance_expiry_date" DATE DEFAULT NULL,
+  "location" VARCHAR(100) NULL,
+  "dealer_name" VARCHAR(255) NULL,
+  "parsing_status" VARCHAR(50) CHECK (parsing_status IN ('pending','completed')) NOT NULL,
+  "number_plate" VARCHAR(50) CHECK (number_plate IN ('received','pending')) NOT NULL,
+  "scheme" VARCHAR(100) DEFAULT NULL,
+  "broker_name" VARCHAR(100) DEFAULT NULL,
+  "broker_brokerage" INTEGER NULL,
+  "broker_number" INTEGER NULL,
+  "other_remarks" TEXT DEFAULT NULL,
+  "rc_book" VARCHAR(255) DEFAULT NULL,
+  "insurance_doc" VARCHAR(255) DEFAULT NULL,
+  "pan_card" VARCHAR(255) DEFAULT NULL,
+  "aadhar_card" VARCHAR(255) DEFAULT NULL,
+  "noc" VARCHAR(255) DEFAULT NULL,
+  "form_35" VARCHAR(255) DEFAULT NULL,
+  "purchase_agreement" VARCHAR(255) DEFAULT NULL,
+  "owner_id_proof" VARCHAR(255) DEFAULT NULL,
+  "main_image" VARCHAR(255) DEFAULT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  "status" VARCHAR(50) CHECK (status IN ('sold','unsold')) NOT NULL DEFAULT 'unsold',
+  "city_name" VARCHAR(255) DEFAULT NULL,
+  "manufacturer_name" VARCHAR(255) DEFAULT NULL,
+  "model_name" VARCHAR(255) DEFAULT NULL,
+  "manufacture_year" VARCHAR(255) NULL,
+  "fuel_type" VARCHAR(255) NULL,
+  "running_kilometer" INTEGER DEFAULT NULL,
+  "no_of_owners" INTEGER DEFAULT NULL,
+  "executive_branch_name" VARCHAR(255) DEFAULT NULL,
+  "executive_name" VARCHAR(255) DEFAULT NULL,
+  "executive_number" INTEGER NULL,
+  "insurance_company_name" VARCHAR(255) DEFAULT NULL,
+  "rto_name" VARCHAR(255) DEFAULT NULL,
+  "rto_code" VARCHAR(255) NULL,
+  "hp_name" VARCHAR(255) DEFAULT NULL,
+  "delivery_date" DATE DEFAULT NULL,
+  "delivery_status" VARCHAR(255) NULL DEFAULT 'pending',
+  "booking_date" DATE DEFAULT NULL
+);
 --
--- Dumping data for table `old_cars`
+-- Dumping data for table "old_cars"
 --
 
-INSERT INTO `old_cars` (`id`, `docket_number`, `original_price`, `current_price`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `pincode`, `email`, `customer_dob`, `color`, `registration_no`, `chassis_no`, `engine_no`, `insurance_expiry_date`, `location`, `dealer_name`, `parsing_status`, `number_plate`, `scheme`, `broker_name`, `broker_brokerage`, `broker_number`, `other_remarks`, `rc_book`, `insurance_doc`, `pan_card`, `aadhar_card`, `noc`, `form_35`, `purchase_agreement`, `owner_id_proof`, `main_image`, `created_at`, `updated_at`, `status`, `city_name`, `manufacturer_name`, `model_name`, `manufacture_year`, `fuel_type`, `running_kilometer`, `no_of_owners`, `executive_branch_name`, `executive_name`, `executive_number`, `insurance_company_name`, `rto_name`, `rto_code`, `hp_name`, `delivery_date`, `delivery_status`, `booking_date`) VALUES
+INSERT INTO "old_cars" ("id", "docket_number", "original_price", "current_price", "customer_name", "customer_phone", "customer_address1", "customer_address2", "pincode", "email", "customer_dob", "color", "registration_no", "chassis_no", "engine_no", "insurance_expiry_date", "location", "dealer_name", "parsing_status", "number_plate", "scheme", "broker_name", "broker_brokerage", "broker_number", "other_remarks", "rc_book", "insurance_doc", "pan_card", "aadhar_card", "noc", "form_35", "purchase_agreement", "owner_id_proof", "main_image", "created_at", "updated_at", "status", "city_name", "manufacturer_name", "model_name", "manufacture_year", "fuel_type", "running_kilometer", "no_of_owners", "executive_branch_name", "executive_name", "executive_number", "insurance_company_name", "rto_name", "rto_code", "hp_name", "delivery_date", "delivery_status", "booking_date") VALUES
 (81, '156162', 0, 0, 'rama ben mathur bhai meda', '-', 'garbada dahod', 'dahod gujrat', '389155', 'aamirmansuri6125@gmail.com', '0001-01-01', 'white', 'gj20ah9984', 'ma3erlf1s00880629', 'g12bn886100', '2026-02-01', '', '', 'completed', 'received', '-', 'farhan bhai', 5000, 2147483647, '--', '684d141d284d6_1749881885.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-11 15:00:10', '2025-06-14 06:18:05', 'unsold', 'DAHOD', 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', '2020 / 21', 'petrol  / cng', 51000, 0, 'KATHLAL', 'AAMIR', 2147483647, '-', 'DAHOD', 'GJ20', 'cholamandalam', '2025-02-05', 'delivered', '2025-01-05'),
-(82, '361484', 0, 545000, 'pramukh swami trading and co', '9426680827', 'ground floor shop no 2 nr torna, bus stop at torna ta ,kapadwanj, kheda-gujarat-387365', 'torna', '387365', 'aamirmansuri6125@gmail.com', '0001-01-01', 'white', 'gj07tu0091', '24754', '79202', '0001-01-01', '', '', 'completed', 'received', '-', 'bhavesh bhai mas fainance kathlal', 6000, 2147483647, 'noc baki che mas fainance kathlal', '684d01e04953e_1749877216.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '684d22d75fbb8_1749885655.pdf', NULL, '2025-06-11 15:33:05', '2025-06-15 03:47:46', 'unsold', 'kapadwanj', 'mahindra&mahindra', 'Bolero mexi truck plus ', '2020 / 21', 'diesel', 45000, 0, 'KATHLAL', 'AAMIR', 2147483647, '-', 'nadiad', 'GJ07', 'mas fainacial servieses ltd', '0000-00-00', 'pending', '0000-00-00'),
-(103, '831920', 0, 0, 'ISHAKALI MAJARALI KHOKHAR', '9909267868', 'VAD VALU FALIYU KHOKHARWADA KATHLAL KHEDA GUJRAT', NULL, '387630', NULL, '0000-00-00', 'WHITE', 'GJ07DD5635', '805026', '1060484', '2026-05-27', '', '', 'completed', 'received', NULL, NULL, 0, 0, '', '684d2ca6a0e1d_1749888166.pdf', '684d2ba704c1f_1749887911.pdf', NULL, NULL, NULL, NULL, NULL, '684d2ca6a1147_1749888166.pdf', NULL, '2025-06-14 07:50:06', '2025-06-14 08:02:46', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT ZXI+ DUAL TONE', '2021', 'PETROL', 49000, 1, 'KATHLAL', 'AAMIR', 2147483647, 'ACKO', NULL, '', 'NA', '2025-06-12', 'delivered', '2025-06-11'),
-(104, '992057', 0, 185000, 'kailasben p patel', '9428504884', 'a 302 ,swagat rain forest 4,gandhinagar gandhinagar gj 382010', NULL, '382010', NULL, '0000-00-00', 'white', 'gj18bf2546', '48067', '09941', '2025-02-10', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'karan na bhag ma lidhi che gadi', '684e4002bc64e_1749958658.pdf', '684e3f8f618e5_1749958543.pdf', NULL, NULL, NULL, NULL, NULL, '684e3f8f621a4_1749958543.pdf', NULL, '2025-06-15 03:21:28', '2025-06-17 13:51:52', 'unsold', NULL, 'MARUTI SUZUKI ind ltd', 'alto 800 lxi', '2016', 'pet/cng', 0, 1, 'KATHLAL', 'AAMIR/ karan panchal', 2147483647, '-', NULL, '', 'NA', '2025-06-10', 'delivered', '2025-06-09'),
-(105, '917324', 0, 0, 'naitik kumar bhikha bhai patel ', '9099911735', '1237-tekra valu falyu torna kapadwanj', NULL, '387635', NULL, '0000-00-00', 'white', 'gj07yz1973', '70306', '72139', '2025-01-12', '', '', 'pending', 'received', NULL, NULL, 0, 0, 'noc baki shriram fainance kapadwanj branch', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 03:27:10', '2025-06-15 03:27:10', 'unsold', NULL, 'mahindra&mahindra', 'Bolero mexi truck plus ', '2015', 'diesel', 0, 1, 'KATHLAL', 'AAMIR', 2147483647, '-', NULL, '', 'shri ram fainance  kapadwanj brach', NULL, 'pending', NULL),
-(106, '933622', 0, 0, 'chauhan naresh kumar mohbatsinh', '', 'amrutpura dakor ', NULL, '388225', NULL, '0000-00-00', 'white', 'gj07da1859', '88179', '64868', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'noc baki kogta fainance   nadiad branch noc levani baki che', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 03:31:03', '2025-06-15 03:31:03', 'unsold', NULL, 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', '2016', 'petrol  / cng', 85000, 2, 'KATHLAL', 'AAMIR', 2147483647, '-', NULL, '', 'kogta fainance nadiad branch', NULL, 'pending', NULL),
-(107, '911044', 0, 0, '', '', '', NULL, '', NULL, '0000-00-00', '', '', '', '', '0000-00-00', '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:32:16', '2025-06-15 08:32:16', 'unsold', NULL, '', '', '', '', 0, 0, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
-(108, '853446', 0, 0, 'vishal vinodbhai thakkar', '9978086798', '12 karmyogpark vibhag 2, near takshshila school, vastral ,ahmedabad(east)-gujarat-382418', NULL, '382418', NULL, '0000-00-00', 'white', '', '', '', '0000-00-00', '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:39:26', '2025-06-15 08:39:26', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'EECO 5 SEATER AC ', '', '', 0, 1, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
-(109, '909635', 0, 0, 'vishal vinodbhai thakkar', '9978086798', '12 karmyogpark vibhag 2, near takshshila school, vastral ,ahmedabad(east)-gujarat-382418', NULL, '382418', NULL, '0000-00-00', 'white', 'gj27ed2853', '51495', '37566', '2026-02-10', '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:50:30', '2025-06-15 08:50:30', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'EECO 5 SEATER AC ', '2023', 'petrol  / cng', 0, 1, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
-(110, '925940', 0, 301000, 'TRUPTI BEN PRAKASH BHAI TRIVEDI', '9909479871', 'DAKOR GOPALPURA BAHUCHAR MATA NO KHANCHO', NULL, '388225', NULL, '0000-00-00', 'WHITE  ', 'GJ07DA5946', '45463', '22892', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 2147483647, 'EXCHANGE XI6 NEW PETROL', '68500b3b54e90_1750076219.pdf', NULL, '68510356d11f5_1750139734.pdf', '68500bf112bd0_1750076401.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-16 12:11:46', '2025-06-17 05:55:34', 'unsold', NULL, 'MARUTI SUZUKI ind ltd', 'EECO 5 STR AC CNG ', '', '', 75000, 1, 'AAMIR', 'AAMIR', 2147483647, 'Na ', NULL, '', 'NA', '2025-06-19', 'pending', '2025-06-16'),
-(111, '389395', 0, 280000, 'baray ratan sinh mangal bhai', '9023779200', 'pithai baraiya pura kathlal', NULL, '387630', NULL, '0000-00-00', 'WHITE', 'gj006pc5932', '21031', '06352', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'memo check karavana che', '685127ac43929_1750149036.pdf', '6851282002495_1750149152.pdf', NULL, NULL, NULL, NULL, NULL, '6851282002789_1750149152.pdf', NULL, '2025-06-17 07:31:44', '2025-06-17 08:36:27', 'unsold', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', '2020', 'PETROL/CNG ', 75000, 2, 'KATHLAL', 'TAHIR ', 2147483647, '-', NULL, '', 'NA', '2025-06-17', 'delivered', '2025-06-17'),
-(112, '648162', 0, 175000, 'joshi japan dipak bhai', '9974607033    //// 7', 'KAPADWANJ indraprasht societey nani ratnakar mata road kapadwanj', NULL, '387620', NULL, '0000-00-00', 'WHITE', 'gj07db2301', '45179', '01290', '0000-00-00', '', '', 'completed', 'received', NULL, NULL, 0, 0, '', '68a40bedbbd31_1755581421.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-19 04:47:57', '2025-08-19 05:30:21', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'ALTO LXI', '2018', 'PETROL  CNG', 78000, 1, 'KATHLAL', 'AAMIR', 2147483647, '', NULL, '', 'NA', '2025-08-15', 'delivered', '2025-08-14'),
-(115, '349298', 0, 200000, 'jaydip sinh bhavan sinh zala', '9998999780', 'chhipdi kathlal', NULL, '387635', NULL, '0000-00-00', 'grey', 'gj07br2091', '12498', '66501', '2026-07-22', '', '', 'completed', 'received', NULL, NULL, 0, 2147483647, 'noc baaki', '68a41247f314c_1755583047.pdf', '68a41247f36fc_1755583047.pdf', '68a41247f3c60_1755583047.pdf', NULL, NULL, NULL, NULL, '68a41247f3aeb_1755583047.pdf', NULL, '2025-08-19 05:47:20', '2025-08-19 05:57:28', 'unsold', NULL, 'MARUTI SUZUKI', 'WAGONR VXI ', '2015', 'PETROL  CNG', 0, 1, 'KATHLAL-', 'TAHIR ', 2147483647, 'bajaj alinaj', NULL, '', 'mahindraa and mahiandra', '2025-08-19', 'delivered', '2025-08-18'),
-(116, '736319', 0, 207000, 'KIRIT KUMAR RAMAN BHAI ZALA', '7359687735', 'LALJIPURA GOGJIPURA CHHIPDI KATHLAL', NULL, '387635', NULL, '0000-00-00', 'WHITE  ', 'GJ07BR5993', '386726', '880104', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-23 05:12:37', '2025-08-23 05:15:47', 'unsold', NULL, 'HUNDAI', 'GRAND I10 MAGNA', '2015/16', 'PETROL', 107000, 1, 'KATHLAL-', 'AAMIR', 2147483647, '-', NULL, '', 'NA', '2025-08-15', 'delivered', '2025-08-15'),
-(117, '697839', 0, 0, 'Sahjanand travels', '', 'Vadodra', NULL, '390023', NULL, '0000-00-00', 'White ', 'Gj06bv8130', '45206', '31600', '2025-10-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:44:52', '2025-10-11 12:46:18', 'unsold', NULL, 'MARUTI SUZUKI', 'DEZIRE VXI', '2023', 'Petrol', 73000, 1, 'KATHLAL', 'Aamir ', 2147483647, '-', NULL, '', 'INDUSIND BANK', '0000-00-00', 'pending', '2025-10-09'),
-(118, '554035', 0, 0, 'Sahjanand travels ', '', 'Vadodra ', NULL, '.', NULL, '0000-00-00', 'White ', 'Gj06bv8406', '45463', '31927', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:50:07', '2025-10-11 12:50:07', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT VXI PETROL', '2023', 'Petrol ', 55000, 1, 'KATHLAL', 'Aamir ', 2147483647, '.', NULL, '', 'INDUSIND BANK', NULL, 'pending', NULL),
-(119, '479296', 0, 0, 'Sahjanand travels ', '.', 'Vadodara ', NULL, '.', NULL, '0000-00-00', 'White ', 'Gj06bv8431', '45389', '31796', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:52:45', '2025-10-11 12:52:45', 'unsold', NULL, 'MARUTI SUZUKI', 'DEZIRE VXI', '2023', 'Petrol ', 82000, 1, 'Kathlal ', 'Aamir ', 2147483647, '.', NULL, '', 'Indusind bank ', NULL, 'pending', NULL),
-(120, '779278', 0, 0, 'Sahjanand travels ruchir patel', '.', 'Vadodra ', NULL, '.', NULL, '0000-00-00', 'White ', 'Gj06bv8385', '45506', '94276', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:55:22', '2025-10-11 12:56:07', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT VXI PETROL', '2023', 'Petrol ', 75000, 1, 'Kathlal ', 'Aamir ', 2147483647, '.', NULL, '', 'Indusind bank ', '0000-00-00', 'pending', '0000-00-00');
+(82, '361484', 0, 545000, 'pramukh swami trading and co', '9426680827', 'ground floor shop no 2 nr torna, bus stop at torna ta ,kapadwanj, kheda-gujarat-387365', 'torna', '387365', 'aamirmansuri6125@gmail.com', '0001-01-01', 'white', 'gj07tu0091', '24754', '79202', '0001-01-01', '', '', 'completed', 'received', '-', 'bhavesh bhai mas fainance kathlal', 6000, 2147483647, 'noc baki che mas fainance kathlal', '684d01e04953e_1749877216.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '684d22d75fbb8_1749885655.pdf', NULL, '2025-06-11 15:33:05', '2025-06-15 03:47:46', 'unsold', 'kapadwanj', 'mahindra&mahindra', 'Bolero mexi truck plus ', '2020 / 21', 'diesel', 45000, 0, 'KATHLAL', 'AAMIR', 2147483647, '-', 'nadiad', 'GJ07', 'mas fainacial servieses ltd', NULL, 'pending', NULL),
+(103, '831920', 0, 0, 'ISHAKALI MAJARALI KHOKHAR', '9909267868', 'VAD VALU FALIYU KHOKHARWADA KATHLAL KHEDA GUJRAT', NULL, '387630', NULL, NULL, 'WHITE', 'GJ07DD5635', '805026', '1060484', '2026-05-27', '', '', 'completed', 'received', NULL, NULL, 0, 0, '', '684d2ca6a0e1d_1749888166.pdf', '684d2ba704c1f_1749887911.pdf', NULL, NULL, NULL, NULL, NULL, '684d2ca6a1147_1749888166.pdf', NULL, '2025-06-14 07:50:06', '2025-06-14 08:02:46', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT ZXI+ DUAL TONE', '2021', 'PETROL', 49000, 1, 'KATHLAL', 'AAMIR', 2147483647, 'ACKO', NULL, '', 'NA', '2025-06-12', 'delivered', '2025-06-11'),
+(104, '992057', 0, 185000, 'kailasben p patel', '9428504884', 'a 302 ,swagat rain forest 4,gandhinagar gandhinagar gj 382010', NULL, '382010', NULL, NULL, 'white', 'gj18bf2546', '48067', '09941', '2025-02-10', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'karan na bhag ma lidhi che gadi', '684e4002bc64e_1749958658.pdf', '684e3f8f618e5_1749958543.pdf', NULL, NULL, NULL, NULL, NULL, '684e3f8f621a4_1749958543.pdf', NULL, '2025-06-15 03:21:28', '2025-06-17 13:51:52', 'unsold', NULL, 'MARUTI SUZUKI ind ltd', 'alto 800 lxi', '2016', 'pet/cng', 0, 1, 'KATHLAL', 'AAMIR/ karan panchal', 2147483647, '-', NULL, '', 'NA', '2025-06-10', 'delivered', '2025-06-09'),
+(105, '917324', 0, 0, 'naitik kumar bhikha bhai patel ', '9099911735', '1237-tekra valu falyu torna kapadwanj', NULL, '387635', NULL, NULL, 'white', 'gj07yz1973', '70306', '72139', '2025-01-12', '', '', 'pending', 'received', NULL, NULL, 0, 0, 'noc baki shriram fainance kapadwanj branch', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 03:27:10', '2025-06-15 03:27:10', 'unsold', NULL, 'mahindra&mahindra', 'Bolero mexi truck plus ', '2015', 'diesel', 0, 1, 'KATHLAL', 'AAMIR', 2147483647, '-', NULL, '', 'shri ram fainance  kapadwanj brach', NULL, 'pending', NULL),
+(106, '933622', 0, 0, 'chauhan naresh kumar mohbatsinh', '', 'amrutpura dakor ', NULL, '388225', NULL, NULL, 'white', 'gj07da1859', '88179', '64868', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'noc baki kogta fainance   nadiad branch noc levani baki che', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 03:31:03', '2025-06-15 03:31:03', 'unsold', NULL, 'MARUTI SUZUKI', 'EECO 5 STR AC CNG', '2016', 'petrol  / cng', 85000, 2, 'KATHLAL', 'AAMIR', 2147483647, '-', NULL, '', 'kogta fainance nadiad branch', NULL, 'pending', NULL),
+(107, '911044', 0, 0, '', '', '', NULL, '', NULL, NULL, '', '', '', '', NULL, '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:32:16', '2025-06-15 08:32:16', 'unsold', NULL, '', '', '', '', 0, 0, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
+(108, '853446', 0, 0, 'vishal vinodbhai thakkar', '9978086798', '12 karmyogpark vibhag 2, near takshshila school, vastral ,ahmedabad(east)-gujarat-382418', NULL, '382418', NULL, NULL, 'white', '', '', '', NULL, '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:39:26', '2025-06-15 08:39:26', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'EECO 5 SEATER AC ', '', '', 0, 1, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
+(109, '909635', 0, 0, 'vishal vinodbhai thakkar', '9978086798', '12 karmyogpark vibhag 2, near takshshila school, vastral ,ahmedabad(east)-gujarat-382418', NULL, '382418', NULL, NULL, 'white', 'gj27ed2853', '51495', '37566', '2026-02-10', '', '', 'pending', 'received', NULL, NULL, 0, 0, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-15 08:50:30', '2025-06-15 08:50:30', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'EECO 5 SEATER AC ', '2023', 'petrol  / cng', 0, 1, '', '', 0, '', NULL, '', '', NULL, 'pending', NULL),
+(110, '925940', 0, 301000, 'TRUPTI BEN PRAKASH BHAI TRIVEDI', '9909479871', 'DAKOR GOPALPURA BAHUCHAR MATA NO KHANCHO', NULL, '388225', NULL, NULL, 'WHITE  ', 'GJ07DA5946', '45463', '22892', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 2147483647, 'EXCHANGE XI6 NEW PETROL', '68500b3b54e90_1750076219.pdf', NULL, '68510356d11f5_1750139734.pdf', '68500bf112bd0_1750076401.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-16 12:11:46', '2025-06-17 05:55:34', 'unsold', NULL, 'MARUTI SUZUKI ind ltd', 'EECO 5 STR AC CNG ', '', '', 75000, 1, 'AAMIR', 'AAMIR', 2147483647, 'Na ', NULL, '', 'NA', '2025-06-19', 'pending', '2025-06-16'),
+(111, '389395', 0, 280000, 'baray ratan sinh mangal bhai', '9023779200', 'pithai baraiya pura kathlal', NULL, '387630', NULL, NULL, 'WHITE', 'gj006pc5932', '21031', '06352', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'memo check karavana che', '685127ac43929_1750149036.pdf', '6851282002495_1750149152.pdf', NULL, NULL, NULL, NULL, NULL, '6851282002789_1750149152.pdf', NULL, '2025-06-17 07:31:44', '2025-06-17 08:36:27', 'unsold', NULL, 'MARUTI SUZUKI INDIA LTD', 'EECO 5 STR AC CNG ', '2020', 'PETROL/CNG ', 75000, 2, 'KATHLAL', 'TAHIR ', 2147483647, '-', NULL, '', 'NA', '2025-06-17', 'delivered', '2025-06-17'),
+(112, '648162', 0, 175000, 'joshi japan dipak bhai', '9974607033    //// 7', 'KAPADWANJ indraprasht societey nani ratnakar mata road kapadwanj', NULL, '387620', NULL, NULL, 'WHITE', 'gj07db2301', '45179', '01290', NULL, '', '', 'completed', 'received', NULL, NULL, 0, 0, '', '68a40bedbbd31_1755581421.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-19 04:47:57', '2025-08-19 05:30:21', 'unsold', NULL, 'MARUTI SUZUKI indla ltd', 'ALTO LXI', '2018', 'PETROL  CNG', 78000, 1, 'KATHLAL', 'AAMIR', 2147483647, '', NULL, '', 'NA', '2025-08-15', 'delivered', '2025-08-14'),
+(115, '349298', 0, 200000, 'jaydip sinh bhavan sinh zala', '9998999780', 'chhipdi kathlal', NULL, '387635', NULL, NULL, 'grey', 'gj07br2091', '12498', '66501', '2026-07-22', '', '', 'completed', 'received', NULL, NULL, 0, 2147483647, 'noc baaki', '68a41247f314c_1755583047.pdf', '68a41247f36fc_1755583047.pdf', '68a41247f3c60_1755583047.pdf', NULL, NULL, NULL, NULL, '68a41247f3aeb_1755583047.pdf', NULL, '2025-08-19 05:47:20', '2025-08-19 05:57:28', 'unsold', NULL, 'MARUTI SUZUKI', 'WAGONR VXI ', '2015', 'PETROL  CNG', 0, 1, 'KATHLAL-', 'TAHIR ', 2147483647, 'bajaj alinaj', NULL, '', 'mahindraa and mahiandra', '2025-08-19', 'delivered', '2025-08-18'),
+(116, '736319', 0, 207000, 'KIRIT KUMAR RAMAN BHAI ZALA', '7359687735', 'LALJIPURA GOGJIPURA CHHIPDI KATHLAL', NULL, '387635', NULL, NULL, 'WHITE  ', 'GJ07BR5993', '386726', '880104', '0001-01-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-23 05:12:37', '2025-08-23 05:15:47', 'unsold', NULL, 'HUNDAI', 'GRAND I10 MAGNA', '2015/16', 'PETROL', 107000, 1, 'KATHLAL-', 'AAMIR', 2147483647, '-', NULL, '', 'NA', '2025-08-15', 'delivered', '2025-08-15'),
+(117, '697839', 0, 0, 'Sahjanand travels', '', 'Vadodra', NULL, '390023', NULL, NULL, 'White ', 'Gj06bv8130', '45206', '31600', '2025-10-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:44:52', '2025-10-11 12:46:18', 'unsold', NULL, 'MARUTI SUZUKI', 'DEZIRE VXI', '2023', 'Petrol', 73000, 1, 'KATHLAL', 'Aamir ', 2147483647, '-', NULL, '', 'INDUSIND BANK', NULL, 'pending', '2025-10-09'),
+(118, '554035', 0, 0, 'Sahjanand travels ', '', 'Vadodra ', NULL, '.', NULL, NULL, 'White ', 'Gj06bv8406', '45463', '31927', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:50:07', '2025-10-11 12:50:07', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT VXI PETROL', '2023', 'Petrol ', 55000, 1, 'KATHLAL', 'Aamir ', 2147483647, '.', NULL, '', 'INDUSIND BANK', NULL, 'pending', NULL),
+(119, '479296', 0, 0, 'Sahjanand travels ', '.', 'Vadodara ', NULL, '.', NULL, NULL, 'White ', 'Gj06bv8431', '45389', '31796', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:52:45', '2025-10-11 12:52:45', 'unsold', NULL, 'MARUTI SUZUKI', 'DEZIRE VXI', '2023', 'Petrol ', 82000, 1, 'Kathlal ', 'Aamir ', 2147483647, '.', NULL, '', 'Indusind bank ', NULL, 'pending', NULL),
+(120, '779278', 0, 0, 'Sahjanand travels ruchir patel', '.', 'Vadodra ', NULL, '.', NULL, NULL, 'White ', 'Gj06bv8385', '45506', '94276', '2025-09-01', '', '', 'completed', 'received', NULL, NULL, 0, 0, 'Noc baaki indusind bank ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-11 12:55:22', '2025-10-11 12:56:07', 'unsold', NULL, 'MARUTI SUZUKI', 'SWIFT VXI PETROL', '2023', 'Petrol ', 75000, 1, 'Kathlal ', 'Aamir ', 2147483647, '.', NULL, '', 'Indusind bank ', NULL, 'pending', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `old_cars_sell`
+-- Table structure for table "old_cars_sell"
 --
 
-CREATE TABLE `old_cars_sell` (
-  `id` int(11) NOT NULL,
-  `docket_number` varchar(20) NOT NULL,
-  `original_price` int(11) NOT NULL,
-  `current_price` int(11) NOT NULL,
-  `customer_name` varchar(100) NOT NULL,
-  `customer_phone` varchar(20) NOT NULL,
-  `customer_address1` varchar(255) NOT NULL,
-  `customer_address2` varchar(255) DEFAULT NULL,
-  `pincode` varchar(10) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `customer_dob` date NOT NULL,
-  `color` varchar(50) NOT NULL,
-  `registration_no` varchar(20) NOT NULL,
-  `chassis_no` varchar(50) NOT NULL,
-  `engine_no` varchar(50) NOT NULL,
-  `insurance_expiry_date` date DEFAULT NULL,
-  `location` varchar(100) NOT NULL,
-  `dealer_name` varchar(255) NOT NULL,
-  `parsing_status` enum('pending','completed') NOT NULL,
-  `number_plate` enum('received','pending') NOT NULL,
-  `scheme` varchar(100) DEFAULT NULL,
-  `broker_name` varchar(100) DEFAULT NULL,
-  `other_remarks` text DEFAULT NULL,
-  `rc_book` varchar(255) DEFAULT NULL,
-  `insurance_doc` varchar(255) DEFAULT NULL,
-  `pan_card` varchar(255) DEFAULT NULL,
-  `aadhar_card` varchar(255) DEFAULT NULL,
-  `noc` varchar(255) DEFAULT NULL,
-  `form_35` varchar(255) DEFAULT NULL,
-  `purchase_agreement` varchar(255) DEFAULT NULL,
-  `owner_id_proof` varchar(255) DEFAULT NULL,
-  `main_image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('sold','unsold') NOT NULL DEFAULT 'unsold',
-  `city_name` varchar(255) DEFAULT NULL,
-  `manufacturer_name` varchar(255) DEFAULT NULL,
-  `model_name` varchar(255) DEFAULT NULL,
-  `manufacture_year` varchar(255) NOT NULL,
-  `fuel_type` varchar(255) NOT NULL,
-  `running_kilometer` int(11) DEFAULT NULL,
-  `executive_branch_name` varchar(255) DEFAULT NULL,
-  `executive_name` varchar(255) DEFAULT NULL,
-  `insurance_company_name` varchar(255) DEFAULT NULL,
-  `rto_name` varchar(255) DEFAULT NULL,
-  `rto_code` varchar(255) NOT NULL,
-  `hp_name` varchar(255) DEFAULT NULL,
-  `executive_number` int(255) NOT NULL,
-  `broker_number` int(255) NOT NULL,
-  `broker_brokerage` int(255) NOT NULL,
-  `delivery_date` date DEFAULT NULL,
-  `delivery_status` varchar(255) DEFAULT 'pending',
-  `booking_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "old_cars_sell" (
+  "id" SERIAL PRIMARY KEY,
+  "docket_number" VARCHAR(20) NULL,
+  "original_price" INTEGER NULL,
+  "current_price" INTEGER NULL,
+  "customer_name" VARCHAR(100) NULL,
+  "customer_phone" VARCHAR(20) NULL,
+  "customer_address1" VARCHAR(255) NULL,
+  "customer_address2" VARCHAR(255) DEFAULT NULL,
+  "pincode" VARCHAR(10) NULL,
+  "email" VARCHAR(100) DEFAULT NULL,
+  "customer_dob" DATE NULL,
+  "color" VARCHAR(50) NULL,
+  "registration_no" VARCHAR(20) NULL,
+  "chassis_no" VARCHAR(50) NULL,
+  "engine_no" VARCHAR(50) NULL,
+  "insurance_expiry_date" DATE DEFAULT NULL,
+  "location" VARCHAR(100) NULL,
+  "dealer_name" VARCHAR(255) NULL,
+  "parsing_status" VARCHAR(50) CHECK (parsing_status IN ('pending','completed')) NOT NULL,
+  "number_plate" VARCHAR(50) CHECK (number_plate IN ('received','pending')) NOT NULL,
+  "scheme" VARCHAR(100) DEFAULT NULL,
+  "broker_name" VARCHAR(100) DEFAULT NULL,
+  "other_remarks" TEXT DEFAULT NULL,
+  "rc_book" VARCHAR(255) DEFAULT NULL,
+  "insurance_doc" VARCHAR(255) DEFAULT NULL,
+  "pan_card" VARCHAR(255) DEFAULT NULL,
+  "aadhar_card" VARCHAR(255) DEFAULT NULL,
+  "noc" VARCHAR(255) DEFAULT NULL,
+  "form_35" VARCHAR(255) DEFAULT NULL,
+  "purchase_agreement" VARCHAR(255) DEFAULT NULL,
+  "owner_id_proof" VARCHAR(255) DEFAULT NULL,
+  "main_image" VARCHAR(255) DEFAULT NULL,
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  "status" VARCHAR(50) CHECK (status IN ('sold','unsold')) NOT NULL DEFAULT 'unsold',
+  "city_name" VARCHAR(255) DEFAULT NULL,
+  "manufacturer_name" VARCHAR(255) DEFAULT NULL,
+  "model_name" VARCHAR(255) DEFAULT NULL,
+  "manufacture_year" VARCHAR(255) NULL,
+  "fuel_type" VARCHAR(255) NULL,
+  "running_kilometer" INTEGER DEFAULT NULL,
+  "executive_branch_name" VARCHAR(255) DEFAULT NULL,
+  "executive_name" VARCHAR(255) DEFAULT NULL,
+  "insurance_company_name" VARCHAR(255) DEFAULT NULL,
+  "rto_name" VARCHAR(255) DEFAULT NULL,
+  "rto_code" VARCHAR(255) NULL,
+  "hp_name" VARCHAR(255) DEFAULT NULL,
+  "executive_number" INTEGER NULL,
+  "broker_number" INTEGER NULL,
+  "broker_brokerage" INTEGER NULL,
+  "delivery_date" DATE DEFAULT NULL,
+  "delivery_status" VARCHAR(255) DEFAULT 'pending',
+  "booking_date" DATE DEFAULT NULL
+);
 --
--- Dumping data for table `old_cars_sell`
+-- Dumping data for table "old_cars_sell"
 --
 
-INSERT INTO `old_cars_sell` (`id`, `docket_number`, `original_price`, `current_price`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `pincode`, `email`, `customer_dob`, `color`, `registration_no`, `chassis_no`, `engine_no`, `insurance_expiry_date`, `location`, `dealer_name`, `parsing_status`, `number_plate`, `scheme`, `broker_name`, `other_remarks`, `rc_book`, `insurance_doc`, `pan_card`, `aadhar_card`, `noc`, `form_35`, `purchase_agreement`, `owner_id_proof`, `main_image`, `created_at`, `updated_at`, `status`, `city_name`, `manufacturer_name`, `model_name`, `manufacture_year`, `fuel_type`, `running_kilometer`, `executive_branch_name`, `executive_name`, `insurance_company_name`, `rto_name`, `rto_code`, `hp_name`, `executive_number`, `broker_number`, `broker_brokerage`, `delivery_date`, `delivery_status`, `booking_date`) VALUES
+INSERT INTO "old_cars_sell" ("id", "docket_number", "original_price", "current_price", "customer_name", "customer_phone", "customer_address1", "customer_address2", "pincode", "email", "customer_dob", "color", "registration_no", "chassis_no", "engine_no", "insurance_expiry_date", "location", "dealer_name", "parsing_status", "number_plate", "scheme", "broker_name", "other_remarks", "rc_book", "insurance_doc", "pan_card", "aadhar_card", "noc", "form_35", "purchase_agreement", "owner_id_proof", "main_image", "created_at", "updated_at", "status", "city_name", "manufacturer_name", "model_name", "manufacture_year", "fuel_type", "running_kilometer", "executive_branch_name", "executive_name", "insurance_company_name", "rto_name", "rto_code", "hp_name", "executive_number", "broker_number", "broker_brokerage", "delivery_date", "delivery_status", "booking_date") VALUES
 (8, '805043', 0, 590000, 'ZALA MAHESHBHAI BHALSINH', '8141243123', 'BAYAD', 'BAYAD', '-', 'tahir3mansuri@gmail.com', '1966-01-01', 'WHITE', 'GJ27EC3359', 'B49949', '36213', '0001-01-01', '-', '-', 'completed', 'pending', '-', '-', '-', NULL, NULL, '67c004e2bad93_1740637410.pdf', '67c004e2bafc5_1740637410.pdf', '67c004e2bb1da_1740637410.jpeg', '67c004e2bb37e_1740637410.jpeg', '67c004e2bb4f9_1740637410.jpeg', '67c004e2bab25_1740637410.jpeg', NULL, '2025-02-22 04:30:58', '2025-03-08 05:02:47', 'sold', 'ARAVALLI', 'MARUTI SUZUKI-2025', 'EECO 5 SEATER ACO ', '2023', 'CNG', 25000, 'KATHLAL', 'AAMIR', 'CHOLAMANDALAM', 'BAYAD', 'GJ18', 'SK FINANCE', 2147483647, 0, 0, '2025-02-28', 'delivered', NULL),
-(13, '506365', 0, 571000, 'jakirhusen shaikh', '9016784672', 'nijampur kathlal', 'kathlal-387630', '387630', 'tahir3mansuri@gmail.com', '1992-01-01', 'WHITE', 'GJ01KT0845', 'M151612', 'M309200', '0000-00-00', '', '', 'completed', 'received', '-', 'SHAHNAWAZ FORMEN', 'INS AND PARSSING DONE BY US', '67ceb424b99fb_1741599780.pdf', '67ceb424b9cd7_1741599780.pdf', '67ceb424bab37_1741599780.pdf', NULL, NULL, NULL, '67ceb424bacf3_1741599780.pdf', '67ceb424ba479_1741599780.pdf', '67ceb424bb0bb_1741599780.jpeg', '2025-03-05 06:06:44', '2025-03-10 09:43:00', 'sold', 'kathlal', NULL, 'aura s cng', '2022', 'PETROL  CNG', 95000, 'KATHLAL', 'AAMIR', 'PENDING', '-', '-', 'M&M FINANCIAL SERVICES LTD', 2147483647, 2147483647, 5000, '2025-03-08', 'delivered', NULL),
-(15, '170315', 0, 515000, 'CHAUHAN VISHNUKMAR MAHENDRASINH', '8153928375', 'AMRUTPURA TA THASRA AMRUTPURA', 'KHEDA GUJARAT 388225', '7339394150', 'tahir3mansuri@gmail.com', '1988-01-01', 'WHITE', 'GJ07DB6538', '', '', '0000-00-00', '', '', 'completed', 'received', '0', 'LAL BHAI', 'CNG ENTRY KHARCHO PARIVAR MOTORS NO REHS CNG NI ENTRY KARI NE APVANI CHE', '67cab901afac3_1741338881.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '67cab901afd9b_1741338881.pdf', NULL, '2025-03-07 09:14:41', '2025-03-19 05:49:48', 'sold', 'Thasra', NULL, 'EECO 5 SEATER AC', '2022', 'PETROL  CNG', 77000, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', 'NA', 2147483647, 2147483647, 7000, '2025-03-17', 'delivered', '2025-03-07'),
-(17, '225510', 0, 721000, 'PARMAR JORSING BHAI NANJIBHAI', '9825835041', 'VIJAGADH    DAHOD', 'DAHOD 389152', '389152', 'tahir3mansuri@gmail.com', '1977-01-01', 'WHITE', 'GJ07YZ9765', 'A28199', 'A75049', '0000-00-00', '', '', 'completed', 'received', '-', 'LOCAL DAHOD', '', '67cfe3bc7da19_1741677500.pdf', '67cfe3bc7e06e_1741677500.pdf', '67cfd5ab6f0e7_1741673899.pdf', '67cfe3bc7ea3f_1741677500.pdf', NULL, NULL, '67cfe3bc7efcd_1741677500.pdf', '67cfe3bc7e3f4_1741677500.pdf', '67cfe3bc7f468_1741677500.jpeg', '2025-03-08 12:33:26', '2025-03-11 07:18:20', 'sold', 'DAHOD', NULL, 'BMT MAXX CITY PICK UP', '2020', 'DIESEL', 0, 'KATHLAL', 'AAMIR', 'CHOLAMANDALAM', 'GJ07', 'GJ07', 'S K FINANCE', 2147483647, 0, 0, '2025-03-08', 'delivered', '2025-12-12'),
+(13, '506365', 0, 571000, 'jakirhusen shaikh', '9016784672', 'nijampur kathlal', 'kathlal-387630', '387630', 'tahir3mansuri@gmail.com', '1992-01-01', 'WHITE', 'GJ01KT0845', 'M151612', 'M309200', NULL, '', '', 'completed', 'received', '-', 'SHAHNAWAZ FORMEN', 'INS AND PARSSING DONE BY US', '67ceb424b99fb_1741599780.pdf', '67ceb424b9cd7_1741599780.pdf', '67ceb424bab37_1741599780.pdf', NULL, NULL, NULL, '67ceb424bacf3_1741599780.pdf', '67ceb424ba479_1741599780.pdf', '67ceb424bb0bb_1741599780.jpeg', '2025-03-05 06:06:44', '2025-03-10 09:43:00', 'sold', 'kathlal', NULL, 'aura s cng', '2022', 'PETROL  CNG', 95000, 'KATHLAL', 'AAMIR', 'PENDING', '-', '-', 'M&M FINANCIAL SERVICES LTD', 2147483647, 2147483647, 5000, '2025-03-08', 'delivered', NULL),
+(15, '170315', 0, 515000, 'CHAUHAN VISHNUKMAR MAHENDRASINH', '8153928375', 'AMRUTPURA TA THASRA AMRUTPURA', 'KHEDA GUJARAT 388225', '7339394150', 'tahir3mansuri@gmail.com', '1988-01-01', 'WHITE', 'GJ07DB6538', '', '', NULL, '', '', 'completed', 'received', '0', 'LAL BHAI', 'CNG ENTRY KHARCHO PARIVAR MOTORS NO REHS CNG NI ENTRY KARI NE APVANI CHE', '67cab901afac3_1741338881.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '67cab901afd9b_1741338881.pdf', NULL, '2025-03-07 09:14:41', '2025-03-19 05:49:48', 'sold', 'Thasra', NULL, 'EECO 5 SEATER AC', '2022', 'PETROL  CNG', 77000, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', 'NA', 2147483647, 2147483647, 7000, '2025-03-17', 'delivered', '2025-03-07'),
+(17, '225510', 0, 721000, 'PARMAR JORSING BHAI NANJIBHAI', '9825835041', 'VIJAGADH    DAHOD', 'DAHOD 389152', '389152', 'tahir3mansuri@gmail.com', '1977-01-01', 'WHITE', 'GJ07YZ9765', 'A28199', 'A75049', NULL, '', '', 'completed', 'received', '-', 'LOCAL DAHOD', '', '67cfe3bc7da19_1741677500.pdf', '67cfe3bc7e06e_1741677500.pdf', '67cfd5ab6f0e7_1741673899.pdf', '67cfe3bc7ea3f_1741677500.pdf', NULL, NULL, '67cfe3bc7efcd_1741677500.pdf', '67cfe3bc7e3f4_1741677500.pdf', '67cfe3bc7f468_1741677500.jpeg', '2025-03-08 12:33:26', '2025-03-11 07:18:20', 'sold', 'DAHOD', NULL, 'BMT MAXX CITY PICK UP', '2020', 'DIESEL', 0, 'KATHLAL', 'AAMIR', 'CHOLAMANDALAM', 'GJ07', 'GJ07', 'S K FINANCE', 2147483647, 0, 0, '2025-03-08', 'delivered', '2025-12-12'),
 (21, '886509', 0, 650000, 'TALPADA KETAN KANUBHAI', '9106721955', 'BORDI VISTAR', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '2021-12-05', 'WHITE  ', 'REGULAR  GJ07', '-', '-', '2026-03-11', '', '', 'completed', 'received', '-', '-', '-', '67cff03f971d8_1741680703.pdf', NULL, '67cff03f96d91_1741680703.pdf', '67cff03f96fd9_1741680703.pdf', NULL, NULL, NULL, '67cff03f97889_1741680703.pdf', NULL, '2025-03-11 08:11:43', '2025-04-16 08:14:08', 'sold', 'KATHLAL', NULL, 'SWIFT VXI CNG ', '2022', 'CNG', 0, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'KHEDA', 'GJ07', 'SHRI RAM', 2147483647, 0, 0, '2025-04-15', 'delivered', '2025-03-15'),
 (24, '591119', 0, 821000, 'TALPADA DHANJIBHAI SHANKARBHAI', '9723109082', 'BHANER KATHLAL-387630', 'BHANER KATHLAL-387630', '387630', 'tahir3mansuri@gmail.com', '1980-01-01', 'WHITE', 'GJ23CC6612', '245836', '99211', '2025-03-13', '', '', 'pending', 'received', '-', 'DIRECT', '', '67d3d5bb4af9a_1741936059.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '67d3d5bb4b1c3_1741936059.pdf', NULL, '2025-03-14 06:56:08', '2025-03-14 08:48:47', 'sold', 'kathlal', NULL, 'XL-6 ZETA PETROL CNG W/O ENTRY', '2021', 'PETROL  CNG', 58700, 'KATHLAL', 'TAHIR ', 'ICICI LOMBARD', '-', '-', 'NA', 2147483647, 0, 0, '2025-03-14', 'delivered', '2025-03-14'),
 (27, '543807', 0, 490000, 'SHEKH TOFIKBHAI YAKUBBHAI', '9265868849', 'INDIRANAGRI', 'AATARSUMBA', '387610', 'tahir3mansuri@gmail.com', '1998-11-17', 'WHITE  ', 'GJ03MB1075', '43887', '61061', '2026-03-16', '', '', 'completed', 'received', '-', '-', '-', '67d7ef197fcb0_1742204697.pdf', NULL, '67d7ef197edd5_1742204697.pdf', '67d7ef197f1d1_1742204697.pdf', '67d7ef197f4f5_1742204697.pdf', '67d7ef197f8d7_1742204697.pdf', NULL, '67d7ef19801c9_1742204697.pdf', NULL, '2025-03-17 09:44:57', '2025-03-20 04:53:14', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG(0)CNG', '2021', 'PETROL  CNG', 87, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'Rajkot RTO', 'GJ03', 'SK FINANCE', 2147483647, 0, 0, '2025-03-18', 'delivered', '2025-03-18'),
 (28, '425632', 0, 550000, 'PATHAN SAHBAZKHAN YUSUFKHAN', '9998771350', 'TALIB NAGAR  ', 'AATARSUMBA ROAD ,KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1990-08-07', 'WHITE  ', 'GJ07DC5074', '500056', '3555831', '2025-01-01', '', '', 'completed', 'received', '-', '-', '-', '67dd422432872_1742553636.pdf', NULL, '67dd422431c39_1742553636.pdf', '67dd422431fb3_1742553636.pdf', '67dd4224322a7_1742553636.pdf', NULL, '67dd422432592_1742553636.pdf', '67dd422432c98_1742553636.pdf', NULL, '2025-03-21 10:40:36', '2025-04-05 05:03:57', 'sold', 'KAPADWANJ', NULL, '2019', '2019', 'DIESEL', 95000, 'KATHLAL', 'AAMIR', 'IFCO TOKIO', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-03-26', 'delivered', '2025-03-19'),
 (30, '710324', 0, 380000, 'RATHOD ARVINDBHAIN PRATAPBHAI', '6354095074', 'RATHOD FADYU GRAM POST NANADARA', 'NANADARA THASRA', '388250', 'tahir3mansuri@gmail.com', '1988-01-01', 'grey', 'GJ07DB0914', '90380', '67878', '2026-03-23', '', '', 'completed', 'received', '', '', '', '67e1220d047f2_1742807565.pdf', '67e1220d04146_1742807565.pdf', NULL, '67e1220d046af_1742807565.pdf', NULL, NULL, NULL, NULL, NULL, '2025-03-24 09:12:45', '2025-04-01 08:40:19', 'sold', 'THASRA', NULL, 'EECO 5 STR AC CNG', '', 'CNG', 75507, 'KATHLAL', 'TAHIR ', 'SHRIRAM FINANCE', 'KHEDA', 'GJ07', 'CHOLA  MANDALAM ', 0, 0, 0, '2025-03-24', 'delivered', '2025-03-20'),
 (32, '967547', 0, 600000, 'PARMAR KEVALSINH RAMSINH', '8469464245', 'SABARKANTHA', 'BAYAD', '383340', 'tahir3mansuri@gmail.com', '1973-12-31', 'WHITE  ', 'GJ07DE1822', '47630', '78971', '2025-03-29', '', '', 'completed', 'received', '-', 'LINKANBHAI', '-', '67e78b4b7a5c8_1743227723.pdf', NULL, '67e78b4b79571_1743227723.pdf', '67e78b4b796e1_1743227723.pdf', '67e78b4b79b48_1743227723.pdf', '67e78b4b79f48_1743227723.pdf', '67e78b4b7a21d_1743227723.pdf', '67e78b4b7aa70_1743227723.pdf', '67e78b4b792fc_1743227723.jpeg', '2025-03-29 05:55:23', '2025-04-10 04:52:13', 'sold', 'BAYAD', NULL, 'SWIFT 2022', '2022', 'PETROL', 95000, 'KATHLAL', 'AAMIR', 'TATA  AIG', 'KHEDA', 'GJ07', 'KOTAK MAHINDRA', 2147483647, 2147483647, 5000, '2025-03-28', 'delivered', '2025-03-25'),
-(33, '320193', 0, 1300000, 'MALEK ISLAMUDDIN USMANGANI', '9724410218', 'SHALIMAR SOCIETY ', 'KHEDA', '387411', 'tahir3mansuri@gmail.com', '1987-07-23', 'AVANTI GRADE BRONZE', 'REGULAR  GJ07', '4*0317', '83613', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', '67e7915e98fb5_1743229278.pdf', NULL, '67e7915e98c93_1743229278.pdf', '67e7915e98e44_1743229278.pdf', NULL, NULL, NULL, NULL, NULL, '2025-03-29 06:21:18', '2025-04-01 07:23:57', 'sold', 'KHEDA', NULL, 'Innova', '2017', 'DIESEL', 1, 'KATHLAL', 'AAMIR', 'TATA  AIG', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-03-29', 'delivered', '2025-03-25'),
+(33, '320193', 0, 1300000, 'MALEK ISLAMUDDIN USMANGANI', '9724410218', 'SHALIMAR SOCIETY ', 'KHEDA', '387411', 'tahir3mansuri@gmail.com', '1987-07-23', 'AVANTI GRADE BRONZE', 'REGULAR  GJ07', '4*0317', '83613', NULL, '', '', 'completed', 'received', '-', '-', '-', '67e7915e98fb5_1743229278.pdf', NULL, '67e7915e98c93_1743229278.pdf', '67e7915e98e44_1743229278.pdf', NULL, NULL, NULL, NULL, NULL, '2025-03-29 06:21:18', '2025-04-01 07:23:57', 'sold', 'KHEDA', NULL, 'Innova', '2017', 'DIESEL', 1, 'KATHLAL', 'AAMIR', 'TATA  AIG', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-03-29', 'delivered', '2025-03-25'),
 (34, '951993', 0, 940000, 'PARAMAR AARVINDBHAI CHATURBHAI', '9925754051', 'KALAJI', 'KAPADWANJ', '387620', 'tahir3mansuri@gmail.com', '1976-06-01', 'POLAR WHITE 2', 'GJ23CD8449', '331843', '62755', '2026-03-28', '', '', 'completed', 'received', '-', '-', '-', '67e912ec97714_1743327980.pdf', '67e912ec96145_1743327980.pdf', '67e912ec96c9a_1743327980.pdf', '67e912ec96f91_1743327980.pdf', NULL, NULL, '67e912ec973b9_1743327980.pdf', '67e912ec97bb4_1743327980.pdf', '67e912ec95db7_1743327980.jpeg', '2025-03-30 09:46:20', '2025-04-03 05:05:20', 'sold', 'KHEDA', NULL, 'venue 1.2 MT SX', '2022', 'DIESEL', 75507, 'KATHLAL', 'AAMIR', 'TATA  AIG', 'AANAND', 'GJ23CD8449', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-03-30', 'delivered', '2025-03-20'),
-(36, '831065', 0, 545000, 'CHAVADA  SHABHAIBHAI RUMALBHAI', '6352530894', 'SHAMAPURA ,RAVALIA', 'THASRA', '388225', 'tahir3mansuri@gmail.com', '1970-12-15', 'SUPERIOR WHITE', 'GJ18BR7851', '63518', '62491', '0000-00-00', '', '', 'pending', 'received', '-', '-', '-', '67ebd5bb014be_1743508923.pdf', NULL, NULL, '67ebd5bb0111b_1743508923.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-01 12:02:03', '2025-04-03 05:03:52', 'sold', 'KHEDA', NULL, 'WAGON R LXI ', '2022', 'CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-04-02', 'delivered', '2025-04-01'),
-(39, '461565', 0, 715000, 'RATI RAM BABURAM ', '6351082881', 'JORAWAR NAGAR', 'JODHAPUR', '342307', 'tahir3mansuri@gmail.com', '1992-01-01', 'WHITE  ', 'GJ07YZ6880', '80641', '85743', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '67ee2b40114ee_1743661888.pdf', '67ee2b401035a_1743661888.pdf', '67ee2b4010ab6_1743661888.pdf', '67ee2b4010c10_1743661888.pdf', '67ee2b401108f_1743661888.pdf', '67ee2b40112a0_1743661888.pdf', NULL, NULL, NULL, '2025-04-03 06:31:28', '2025-04-05 06:15:41', 'sold', 'RAJASTHAN', NULL, 'BOLERO  PIK-UPMS 1.3', '2018', 'DIESEL', 95000, 'KATHLAL', 'TAHIR', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-03-28', 'delivered', '2025-03-25'),
-(43, '317627', 0, 490000, 'SABIR HUSEN GULAMMIYA MALEK', '8401378440', 'BAHIYEL', 'GANDHINAGR', '387620', 'tahir3mansuri@gmail.com', '1974-05-01', 'BLAZING RED', 'GJ01RZ9995', '64174', '25171', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '67ee32abf1817_1743663787.pdf', NULL, '67ee32abf1260_1743663787.pdf', '67ee32abf1554_1743663787.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-03 07:03:07', '2025-04-12 11:03:38', 'sold', 'GANDHINAGAR', NULL, 'BREZZA LDI', '2017', 'DIESEL', 0, 'KATHLAL', 'AAMIR', '-', 'GANDHINAGAR', 'GJ18', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-03-31', 'delivered', '2025-03-31'),
+(36, '831065', 0, 545000, 'CHAVADA  SHABHAIBHAI RUMALBHAI', '6352530894', 'SHAMAPURA ,RAVALIA', 'THASRA', '388225', 'tahir3mansuri@gmail.com', '1970-12-15', 'SUPERIOR WHITE', 'GJ18BR7851', '63518', '62491', NULL, '', '', 'pending', 'received', '-', '-', '-', '67ebd5bb014be_1743508923.pdf', NULL, NULL, '67ebd5bb0111b_1743508923.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-01 12:02:03', '2025-04-03 05:03:52', 'sold', 'KHEDA', NULL, 'WAGON R LXI ', '2022', 'CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-04-02', 'delivered', '2025-04-01'),
+(39, '461565', 0, 715000, 'RATI RAM BABURAM ', '6351082881', 'JORAWAR NAGAR', 'JODHAPUR', '342307', 'tahir3mansuri@gmail.com', '1992-01-01', 'WHITE  ', 'GJ07YZ6880', '80641', '85743', NULL, '', '', 'pending', 'pending', '-', '-', '-', '67ee2b40114ee_1743661888.pdf', '67ee2b401035a_1743661888.pdf', '67ee2b4010ab6_1743661888.pdf', '67ee2b4010c10_1743661888.pdf', '67ee2b401108f_1743661888.pdf', '67ee2b40112a0_1743661888.pdf', NULL, NULL, NULL, '2025-04-03 06:31:28', '2025-04-05 06:15:41', 'sold', 'RAJASTHAN', NULL, 'BOLERO  PIK-UPMS 1.3', '2018', 'DIESEL', 95000, 'KATHLAL', 'TAHIR', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-03-28', 'delivered', '2025-03-25'),
+(43, '317627', 0, 490000, 'SABIR HUSEN GULAMMIYA MALEK', '8401378440', 'BAHIYEL', 'GANDHINAGR', '387620', 'tahir3mansuri@gmail.com', '1974-05-01', 'BLAZING RED', 'GJ01RZ9995', '64174', '25171', NULL, '', '', 'pending', 'pending', '-', '-', '-', '67ee32abf1817_1743663787.pdf', NULL, '67ee32abf1260_1743663787.pdf', '67ee32abf1554_1743663787.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-03 07:03:07', '2025-04-12 11:03:38', 'sold', 'GANDHINAGAR', NULL, 'BREZZA LDI', '2017', 'DIESEL', 0, 'KATHLAL', 'AAMIR', '-', 'GANDHINAGAR', 'GJ18', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-03-31', 'delivered', '2025-03-31'),
 (44, '205676', 0, 147500, 'valand himanshu bhai punam bhai', '8469547557', 'VALAND FALIYU KHUTAJ', 'KHUTAJ', '387430', 'tahir3mansuri@gmail.com', '2000-07-07', 'GREY', 'GJ05CR9086', '99535', '54954', '2025-12-19', '', '', 'completed', 'received', '0', 'KARAN BHAI PANCHAL', '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-04 08:10:56', '2025-04-04 08:13:43', 'sold', 'KHEDA', NULL, 'I10 ERA', '2011', 'PETROL/CNG', 85000, 'KATHLAL', 'AAMIR', 'ICIC LOMBARD', 'KHEDA', 'GJ07', 'NA', 2147483647, 2147483647, 12500, '2025-04-04', 'delivered', '2025-03-30'),
-(45, '549746', 0, 401111, 'BARAIYA KIRITSINGH JIVANBHAI', '9727489329', 'KUHA', 'AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1990-08-01', 'STAR DUST', 'GJ27CF6204', '23503', '58324', '0000-00-00', '', '', 'pending', 'pending', 'AGRICULTURE ', '-', '-', '67ef9f1dad88e_1743757085.pdf', NULL, '67ef9f1dad09b_1743757085.pdf', '67ef9f1dad30f_1743757085.pdf', NULL, NULL, '67ef9f1dad5e6_1743757085.pdf', '67ef9f1dadb62_1743757085.pdf', '67ef9f1dacd52_1743757085.pdf', '2025-04-04 08:58:05', '2025-04-05 04:55:20', 'sold', 'ahmedabad', NULL, 'GRAND I10 SPORTZ 1 2', '2018', 'PETROL  CNG', 87, 'KATHLAL', 'AAMIR', '-', 'AHMEDABAD', 'GJ-27', '-', 2147483647, 0, 0, '2025-04-04', 'delivered', '2025-04-04'),
+(45, '549746', 0, 401111, 'BARAIYA KIRITSINGH JIVANBHAI', '9727489329', 'KUHA', 'AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1990-08-01', 'STAR DUST', 'GJ27CF6204', '23503', '58324', NULL, '', '', 'pending', 'pending', 'AGRICULTURE ', '-', '-', '67ef9f1dad88e_1743757085.pdf', NULL, '67ef9f1dad09b_1743757085.pdf', '67ef9f1dad30f_1743757085.pdf', NULL, NULL, '67ef9f1dad5e6_1743757085.pdf', '67ef9f1dadb62_1743757085.pdf', '67ef9f1dacd52_1743757085.pdf', '2025-04-04 08:58:05', '2025-04-05 04:55:20', 'sold', 'ahmedabad', NULL, 'GRAND I10 SPORTZ 1 2', '2018', 'PETROL  CNG', 87, 'KATHLAL', 'AAMIR', '-', 'AHMEDABAD', 'GJ-27', '-', 2147483647, 0, 0, '2025-04-04', 'delivered', '2025-04-04'),
 (46, '214243', 0, 280000, 'PARMAR NATVARBHAI DHULABHAI', '9825899903', 'NAVAGAM', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1975-06-01', 'WHITE  ', 'GJ07BR6417', '48697', '07083', '2026-04-07', '', '', 'completed', 'received', '-', '-', '-', '67f36737c29be_1744004919.pdf', NULL, '67f36737c2251_1744004919.pdf', '67f36737c24c4_1744004919.pdf', NULL, NULL, '67f36737c270a_1744004919.pdf', '67f36737c2d03_1744004919.pdf', '67f36737c1d97_1744004919.pdf', '2025-04-07 05:48:39', '2025-04-11 11:40:01', 'sold', 'KHEDA', NULL, 'I10 SPORTZ 1.1', '2015', 'PETROL', 0, 'KATHLAL', 'AAMIR', '', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-04-06', 'delivered', '2025-04-06'),
 (47, '936214', 0, 600000, 'DABHI MAYURKUMAR KALUSINH ', '9023598412', 'RATANPUR', 'MOTI MUDEL /KHEDA', '387635', 'tahir3mansuri@gmail.com', '2005-08-24', 'WHITE  ', 'GJ07DE7401', '64041', '04625', '2026-04-09', '', '', 'completed', 'received', '-', '-', '-', '67f4f2373a0a9_1744106039.pdf', NULL, '67f4f23739802_1744106039.pdf', '67f4f23739ca6_1744106039.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-08 09:53:59', '2025-04-23 06:23:14', 'sold', 'KHEDA', NULL, 'HUNDAI  GRAND I 10 NIOS', '2022', 'PETROL  CNG', 95000, 'KATHLAL', 'AAMIR', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-04-09', 'delivered', '2025-04-06'),
 (48, '527914', 0, 345000, 'CHAVADA SHAILESHAKUMAR RUPSHINH', '9904113647', 'SHAMARPURA', 'RAVALIYA', '388225', 'tahir3mansuri@gmail.com', '1986-12-23', 'SUPERIOR WHITE', 'GJ01WB2523', '42968', '894134', '2025-04-11', '', '', 'completed', 'received', '-', '-', '-', '67f8dab0e9fd7_1744362160.pdf', '67f90c16eb97f_1744374806.pdf', '67f90c16eca42_1744374806.pdf', '67f90c16ecd02_1744374806.pdf', NULL, NULL, '67f8dab0e9cb9_1744362160.pdf', '67f90c16ec772_1744374806.pdf', '67f8dab0e8c80_1744362160.pdf', '2025-04-11 09:02:40', '2025-04-11 12:33:26', 'sold', 'Thasra', NULL, 'ALTO LXI', '2021', 'PETROL', 25000, 'KATHLAL', 'TAHIR ', '', 'AHMEDABAD', 'GJ01', '-', 2147483647, 0, 0, '2025-04-11', 'delivered', '2025-04-10'),
-(50, '971971', 0, 500000, 'BHOI  RAMESHBHAI ISHVARBHAI', '9724829303', 'MALPUR', 'DAMPAT', '387630', 'tahir3mansuri@gmail.com', '1979-01-01', 'WHITE  ', 'GJ07DD9481', '56550', '77183', '0000-00-00', '', '', 'completed', 'received', '0', '-', '-', '68021411baa45_1744966673.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-18 08:57:53', '2025-04-23 06:21:07', 'sold', 'DAMPAT', NULL, 'EECO 5 SEATER AC', '2021', 'PETROL  CNG', 87, 'KATHLAL', 'TAHIR ', '-', 'nadiad', 'GJ07', '-', 2147483647, 0, 0, '2025-04-23', 'delivered', '2025-04-20'),
-(53, '580344', 0, 420000, 'ZALA  MAHESHKUMAR  CHATURSINH ', '7016477354', 'KHUMJINA MUVADA /BHUTIYA ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1997-10-11', 'WHITE  ', 'GJ02BP5730', '027295J', '215201', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', '6806113fb7c52_1745228095.pdf', NULL, '6806113fb74ed_1745228095.pdf', '6806113fb78f5_1745228095.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-21 09:34:55', '2025-04-24 08:39:25', 'unsold', 'KHEDA', NULL, 'HUNDAI I 20 MEGNA', '2014', 'DIESEL', 142000, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'MAHESANA', 'GJ02', 'CHOLA  MANDALAM ', 2147483647, 0, 0, '2025-04-24', 'delivered', '2025-04-20'),
-(55, '390682', 0, 0, 'JADAV RAMNBHAI HARAMANBHAI', '9925802014', 'CHAKLASHI', 'NADIAD', '387315', 'tahir3mansuri@gmail.com', '1974-08-04', 'POLAR WWHITE 2', 'GJ07DA9981', '27329', '61461', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '680ca1f5a35f2_1745658357.pdf', NULL, '680ca1f5a2e24_1745658357.jpeg', '680ca1f5a3092_1745658357.pdf', NULL, NULL, '680ca1f5a3234_1745658357.pdf', NULL, NULL, '2025-04-26 09:05:57', '2025-05-09 06:11:26', 'unsold', 'nadiad', NULL, 'VERNA 1.6 SX ', '2017', 'DIESEL', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', '', 2147483647, 0, 0, '2025-04-07', 'cancelled', '2025-04-05'),
-(56, '460197', 0, 530000, 'KHANT MAHESHKUMAR CHANDRASINH', '9313262431', 'SARALI ', 'KATHLLAL', '387630', 'tahir3mansuri@gmail.com', '1983-06-01', 'SILVER', 'GJ31N4308', '48139', '13300', '0000-00-00', '', '', 'completed', 'received', '-', 'HASMUKHBHAI', '-', '6810885374312_1745913939.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68108853745c8_1745913939.pdf', NULL, '2025-04-29 08:05:39', '2025-05-26 05:58:32', 'unsold', 'kathlal', NULL, 'SWIFT 2021', '2021', 'PETROL  CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'MODASA', 'GJ31', '', 2147483647, 0, 0, '2025-05-26', 'delivered', '2025-04-24'),
+(50, '971971', 0, 500000, 'BHOI  RAMESHBHAI ISHVARBHAI', '9724829303', 'MALPUR', 'DAMPAT', '387630', 'tahir3mansuri@gmail.com', '1979-01-01', 'WHITE  ', 'GJ07DD9481', '56550', '77183', NULL, '', '', 'completed', 'received', '0', '-', '-', '68021411baa45_1744966673.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-18 08:57:53', '2025-04-23 06:21:07', 'sold', 'DAMPAT', NULL, 'EECO 5 SEATER AC', '2021', 'PETROL  CNG', 87, 'KATHLAL', 'TAHIR ', '-', 'nadiad', 'GJ07', '-', 2147483647, 0, 0, '2025-04-23', 'delivered', '2025-04-20'),
+(53, '580344', 0, 420000, 'ZALA  MAHESHKUMAR  CHATURSINH ', '7016477354', 'KHUMJINA MUVADA /BHUTIYA ', 'KHEDA', '387620', 'tahir3mansuri@gmail.com', '1997-10-11', 'WHITE  ', 'GJ02BP5730', '027295J', '215201', NULL, '', '', 'completed', 'received', '-', '-', '-', '6806113fb7c52_1745228095.pdf', NULL, '6806113fb74ed_1745228095.pdf', '6806113fb78f5_1745228095.pdf', NULL, NULL, NULL, NULL, NULL, '2025-04-21 09:34:55', '2025-04-24 08:39:25', 'unsold', 'KHEDA', NULL, 'HUNDAI I 20 MEGNA', '2014', 'DIESEL', 142000, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'MAHESANA', 'GJ02', 'CHOLA  MANDALAM ', 2147483647, 0, 0, '2025-04-24', 'delivered', '2025-04-20'),
+(55, '390682', 0, 0, 'JADAV RAMNBHAI HARAMANBHAI', '9925802014', 'CHAKLASHI', 'NADIAD', '387315', 'tahir3mansuri@gmail.com', '1974-08-04', 'POLAR WWHITE 2', 'GJ07DA9981', '27329', '61461', NULL, '', '', 'pending', 'pending', '-', '-', '-', '680ca1f5a35f2_1745658357.pdf', NULL, '680ca1f5a2e24_1745658357.jpeg', '680ca1f5a3092_1745658357.pdf', NULL, NULL, '680ca1f5a3234_1745658357.pdf', NULL, NULL, '2025-04-26 09:05:57', '2025-05-09 06:11:26', 'unsold', 'nadiad', NULL, 'VERNA 1.6 SX ', '2017', 'DIESEL', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', '', 2147483647, 0, 0, '2025-04-07', 'cancelled', '2025-04-05'),
+(56, '460197', 0, 530000, 'KHANT MAHESHKUMAR CHANDRASINH', '9313262431', 'SARALI ', 'KATHLLAL', '387630', 'tahir3mansuri@gmail.com', '1983-06-01', 'SILVER', 'GJ31N4308', '48139', '13300', NULL, '', '', 'completed', 'received', '-', 'HASMUKHBHAI', '-', '6810885374312_1745913939.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68108853745c8_1745913939.pdf', NULL, '2025-04-29 08:05:39', '2025-05-26 05:58:32', 'unsold', 'kathlal', NULL, 'SWIFT 2021', '2021', 'PETROL  CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'MODASA', 'GJ31', '', 2147483647, 0, 0, '2025-05-26', 'delivered', '2025-04-24'),
 (57, '461246', 0, 611000, 'RATHOD SURESHBHAI  KANTIBHAI', '7861919864', 'BORDI ', 'KHEDA', '388225', 'tahir3mansuri@gmail.com', '1990-10-19', 'WHITE', 'GJ07DG4507', 'D33390', '258339', '2025-06-27', '', '', 'completed', 'received', '-', 'HARDIK PATEL', '-', '6811fd9756c0b_1746009495.pdf', '6811fd9755a1a_1746009495.PDF', '6811fd9755fcd_1746009495.pdf', '6811fd975639c_1746009495.pdf', NULL, NULL, '6811fd97566e3_1746009495.pdf', '6811fd9757044_1746009495.pdf', '6811fd975560f_1746009495.jpeg', '2025-04-30 10:38:15', '2025-04-30 10:41:11', 'unsold', 'KHEDA', NULL, 'EECO 5 SEATER AC 2024', '2024', 'PETROL  CNG', 58700, 'KATHLAL', 'AAMIR', 'MSIL', 'KHEDA', 'GJ07', 'NA', 2147483647, 2147483647, 0, '2025-04-30', 'delivered', '2025-04-30'),
-(58, '459122', 0, 0, 'SOLANKI  VIJAYSINH BHARATSINH', '9327492882', 'DHOLAKUVA', 'KOSAM', '387610', 'tahir3mansuri@gmail.com', '1995-12-20', 'WHITE', 'GJ23CC6698', '882728', '889450', '0000-00-00', '', '', 'completed', 'received', '-', 'ANANTBHAI', '-', '68149739be22b_1746179897.pdf', NULL, '68149739bd9e4_1746179897.pdf', '68149739bdf6c_1746179897.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-02 09:58:17', '2025-05-22 06:57:13', 'unsold', 'KHEDA', NULL, 'EECO 5 SEATER AC 2020', '2020', 'PETROL', 0, 'KATHLAL', 'AAMIR', 'IFFCOTOKIO', 'AANAND', 'gj23cc6698', 'SK FINANCE', 2147483647, 0, 0, '2025-05-10', 'cancelled', '2025-05-01'),
+(58, '459122', 0, 0, 'SOLANKI  VIJAYSINH BHARATSINH', '9327492882', 'DHOLAKUVA', 'KOSAM', '387610', 'tahir3mansuri@gmail.com', '1995-12-20', 'WHITE', 'GJ23CC6698', '882728', '889450', NULL, '', '', 'completed', 'received', '-', 'ANANTBHAI', '-', '68149739be22b_1746179897.pdf', NULL, '68149739bd9e4_1746179897.pdf', '68149739bdf6c_1746179897.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-02 09:58:17', '2025-05-22 06:57:13', 'unsold', 'KHEDA', NULL, 'EECO 5 SEATER AC 2020', '2020', 'PETROL', 0, 'KATHLAL', 'AAMIR', 'IFFCOTOKIO', 'AANAND', 'gj23cc6698', 'SK FINANCE', 2147483647, 0, 0, '2025-05-10', 'cancelled', '2025-05-01'),
 (59, '224229', 0, 270000, 'PARMAR NILESHKUMAR CHANDRASINH', '6353921809', 'BHAGHVAN JI NA MUVADA ', 'MANJIPURA/KHEDA', '388230', 'tahir3mansuri@gmail.com', '1989-01-25', 'WHITE', 'GJ09BC9019', '37197', '27296', '2025-05-01', '', '', 'completed', 'received', '-', '-', '-', '681b1ce4aebd2_1746607332.pdf', NULL, '681b1ce4ae82b_1746607332.pdf', '681b1ce4aea82_1746607332.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-07 08:42:12', '2025-05-26 05:39:27', 'unsold', 'KHEDA', NULL, 'WAGON R  VXI', '2015', 'PETROL  CNG', 65000, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'HIMMATNAGAR', 'GJ09', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-05-19', 'delivered', '0205-05-06'),
-(60, '921022', 0, 860000, 'MALEK FIROJMIYA CHHOTUMIYA', '9574541382', 'KATHVADA ', 'DASKROI', '382430', 'tahir3mansuri@gmail.com', '1976-06-01', 'PEARL ARCTIC WHITE', 'GJO07DG8217', '365892', '67778', '0000-00-00', '', '', 'pending', 'received', '-', '-', '-', '681de36b49b5e_1746789227.pdf', NULL, NULL, '681de36b4a15e_1746789227.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-09 10:51:24', '2025-06-04 05:39:59', 'unsold', 'AHMEDABAD', NULL, 'FRONX DELTA CNG', '2024', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-05-08', 'delivered', '2025-05-08'),
+(60, '921022', 0, 860000, 'MALEK FIROJMIYA CHHOTUMIYA', '9574541382', 'KATHVADA ', 'DASKROI', '382430', 'tahir3mansuri@gmail.com', '1976-06-01', 'PEARL ARCTIC WHITE', 'GJO07DG8217', '365892', '67778', NULL, '', '', 'pending', 'received', '-', '-', '-', '681de36b49b5e_1746789227.pdf', NULL, NULL, '681de36b4a15e_1746789227.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-09 10:51:24', '2025-06-04 05:39:59', 'unsold', 'AHMEDABAD', NULL, 'FRONX DELTA CNG', '2024', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-05-08', 'delivered', '2025-05-08'),
 (63, '431778', 0, 795000, 'DABHI BABARSINH  KESHARSINH', '9624129213', 'CHIPADI', 'CHIPDI ', '387632', 'tahir3mansuri@gmail.com', '1965-09-24', 'POLAR WHITE 2', 'GJ07DA9981', '27329', '61461', '2026-05-01', '', '', 'completed', 'received', '-', 'KARANBHAI  KANHA', '-', '6821c318aabbf_1747043096.pdf', '6821c318ab1aa_1747043096.pdf', NULL, '6821c318ab9e0_1747043096.pdf', NULL, NULL, NULL, '6821c318ab68e_1747043096.pdf', NULL, '2025-05-12 09:37:18', '2025-06-03 11:26:56', 'sold', 'kathlal', NULL, 'VARNA 1.6 SX (0)', '2017', 'DIESEL', 87, 'KATHLAL', 'AAMIR', 'IFFCOTOKIO', 'KHEDA', 'GJ07DA9981', 'NA', 2147483647, 0, 0, '2025-05-31', 'delivered', '2025-04-26'),
-(64, '913719', 0, 610000, 'MALEK YAKUBIMIYA FAKRIMOHAMMAD', '09662225909', 'MOTI BAGDOL', 'VADHTHAL', '387335', 'tahir3mansuri@gmail.com', '1975-01-01', 'SUPEROL WHITE', 'GJ18ED8177', '14439', '11666', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-14 12:51:24', '2025-05-18 05:41:03', 'sold', 'kheda mahudha', NULL, 'EECO 5 STR AC CNG ', '2023', 'PETROL  CNG', 0, 'KATHLAL-', 'TAHIR ', '-', 'MAHUDHA', 'GJ18', '-', 2147483647, 0, 0, '2025-05-15', 'delivered', '2025-05-12'),
-(65, '726539', 0, 1030000, 'SHAIKH JAKIRBHAI AHEMADBHAI', '7623074167', 'JUMMA MASJID PASE  ', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1992-12-15', 'WHITE', 'GJ02EC8320', '', '', '0000-00-00', '', '', 'pending', 'received', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-14 13:04:18', '2025-06-05 05:13:37', 'sold', 'balasinor', NULL, 'ERTIGA VXI O  CNG', '2024', 'PETROL  CNG', 0, '', 'TAHIR ', '', '', '', '', 0, 0, 0, '2025-05-10', 'delivered', '2025-05-10'),
-(66, '598097', 0, 490000, 'KANGASIYA KISHANBHAI', '7984431843', 'BORSAD ', 'BHADRAN', '383530', 'tahir3mansuri@gmail.com', '2002-04-07', 'SUPERIOR WHITE', 'GJ23CC6698', '82728', '89450', '0000-00-00', '', '', 'pending', 'received', '-', '-', '', NULL, NULL, '6826c4e0a1c59_1747371232.jpeg', '6826c4e0a1ef1_1747371232.jpeg', '6826c4e0a2060_1747371232.pdf', '6826c4e0a243b_1747371232.pdf', NULL, NULL, NULL, '2025-05-16 04:53:52', '2025-05-26 06:06:19', 'sold', 'ANAND', NULL, 'EECO 5 STR AC petrol', '2020', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', '', 'AANAND', 'GJ-23', 'AXIS BENK LTD', 2147483647, 0, 0, '2025-05-21', 'delivered', '2025-05-14'),
+(64, '913719', 0, 610000, 'MALEK YAKUBIMIYA FAKRIMOHAMMAD', '09662225909', 'MOTI BAGDOL', 'VADHTHAL', '387335', 'tahir3mansuri@gmail.com', '1975-01-01', 'SUPEROL WHITE', 'GJ18ED8177', '14439', '11666', NULL, '', '', 'pending', 'pending', '-', '-', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-14 12:51:24', '2025-05-18 05:41:03', 'sold', 'kheda mahudha', NULL, 'EECO 5 STR AC CNG ', '2023', 'PETROL  CNG', 0, 'KATHLAL-', 'TAHIR ', '-', 'MAHUDHA', 'GJ18', '-', 2147483647, 0, 0, '2025-05-15', 'delivered', '2025-05-12'),
+(65, '726539', 0, 1030000, 'SHAIKH JAKIRBHAI AHEMADBHAI', '7623074167', 'JUMMA MASJID PASE  ', 'BALASINOR', '388255', 'tahir3mansuri@gmail.com', '1992-12-15', 'WHITE', 'GJ02EC8320', '', '', NULL, '', '', 'pending', 'received', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-14 13:04:18', '2025-06-05 05:13:37', 'sold', 'balasinor', NULL, 'ERTIGA VXI O  CNG', '2024', 'PETROL  CNG', 0, '', 'TAHIR ', '', '', '', '', 0, 0, 0, '2025-05-10', 'delivered', '2025-05-10'),
+(66, '598097', 0, 490000, 'KANGASIYA KISHANBHAI', '7984431843', 'BORSAD ', 'BHADRAN', '383530', 'tahir3mansuri@gmail.com', '2002-04-07', 'SUPERIOR WHITE', 'GJ23CC6698', '82728', '89450', NULL, '', '', 'pending', 'received', '-', '-', '', NULL, NULL, '6826c4e0a1c59_1747371232.jpeg', '6826c4e0a1ef1_1747371232.jpeg', '6826c4e0a2060_1747371232.pdf', '6826c4e0a243b_1747371232.pdf', NULL, NULL, NULL, '2025-05-16 04:53:52', '2025-05-26 06:06:19', 'sold', 'ANAND', NULL, 'EECO 5 STR AC petrol', '2020', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', '', 'AANAND', 'GJ-23', 'AXIS BENK LTD', 2147483647, 0, 0, '2025-05-21', 'delivered', '2025-05-14'),
 (68, '697654', 0, 160000, 'CHAUHAN VIJAYBHAI  MANUBHAI', '8799465218', 'SAMANTSINH VADU FALIYU', 'RAMNAGAR', '388340', 'tahir3mansuri@gmail.com', '1995-06-12', 'WHITE', 'GJ23AF5019', 'M256495', 'M230930', '2026-03-02', '', '', 'pending', 'received', '', '-', '-', '682eb958d0854_1747892568.pdf', '682eb958cef3f_1747892568.pdf', '682eb958d045d_1747892568.pdf', '682eb958d0661_1747892568.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-22 05:42:48', '2025-05-26 05:56:47', 'sold', 'ANAND', NULL, 'EON D LITE PLUS', '2013', 'CNG', 87, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'AANAND', 'GJ23', 'CHOLA  MANDALAM ', 2147483647, 0, 0, '2025-05-26', 'delivered', '2025-05-20'),
-(69, '353105', 0, 385000, 'FAKIR SOINSA PIRUSHA', '8140752817', 'TADAV TEKRO', 'KUHA/AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1992-05-29', 'SILKY SILVER', 'GJ01WA5777', 'M399421', 'N8460109', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', '682ec77b9415b_1747896187.pdf', NULL, '682ec77b938d9_1747896187.pdf', '682ec77b93d4c_1747896187.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-22 06:43:07', '2025-05-26 06:05:29', 'sold', 'ahmedabad', NULL, 'WAGON R  VXI', '2020', 'PETROL', 75507, 'KATHLAL-', 'AAMIR', 'TATA INSURANCE', 'AHMEDABAD', 'GJ01', '', 2147483647, 0, 0, '2025-05-25', 'delivered', '2025-05-19'),
-(71, '287164', 0, 425000, 'SOLANKI ARJUNBHAI ABHESIH', '9327445643', 'RAMPURA', 'CHANDASAR /KHEDA', '387620', 'tahir3mansuri@gmail.com', '1973-05-13', 'WHITE', 'GJ07BR3875', '980335', '76642', '0000-00-00', '', '', 'completed', 'received', '-', '-', '', '6831bb815e52a_1748089729.pdf', NULL, '6831bb815e1de_1748089729.pdf', '6831bb815e373_1748089729.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-24 12:28:49', '2025-06-16 06:41:29', 'unsold', 'KHEDA', NULL, 'SWIFT  VDI', '2015', 'DIESEL', 87, 'KATHLAL-', 'AAMIR', 'TATA INSURANCE', 'KHEDA', 'GJ07BR3875', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-05-30', 'cancelled', '2025-05-24'),
-(72, '318264', 0, 925000, 'ZALA AMRUTBHAI SOMABHAI', '6352561014', 'GRAM FATEPURA VANTA ', 'KAVATH', '387620', 'tahir3mansuri@gmail.com', '1978-06-01', 'WHITE', 'GJ38T8254', '30975', '49138', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '6837fd246d831_1748499748.pdf', NULL, NULL, '6837fd246be9a_1748499748.pdf', '6837fd246c7e3_1748499748.pdf', NULL, '6837fd246d341_1748499748.pdf', NULL, NULL, '2025-05-29 06:22:28', '2025-06-18 09:49:24', 'sold', 'KAVATH', NULL, 'BOLERO PIK UP FB PS 1.7T XL', '2022', 'DIESEL', 75507, 'KATHLAL', 'TAHIR', 'CHOLAMANDALAM', 'BAVDA', 'GJ38', 'KOFTA', 2147483647, 0, 0, '2025-05-29', 'delivered', '2025-05-25'),
-(73, '993170', 0, 545000, 'ZALA RANJITSINH JAINTIBHAI', '7990285420', 'VAGHAS', 'VAGHAS', '387620', 'tahir3mansuri@gmail.com', '0000-00-00', 'MAGMA GRAY', 'GJ27EA9253', 'A63233', '272474', '0000-00-00', '', '', 'pending', 'received', '-', 'LINKANBHAI', '-', '683801c27a7e3_1748500930.pdf', NULL, '683801c27ab98_1748500930.pdf', '683801c27ae5a_1748500930.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-29 06:33:28', '2025-06-04 05:38:17', 'sold', 'KHEDA', NULL, 'SWIFT VXI PETROL', '', '', 87, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', 'AHMEDABAD', 'GJ27', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-05-31', 'delivered', '2025-05-25'),
-(74, '859797', 0, 301000, 'PATEL BACHUBHAI  SHANKARBHAI', '7016108015', 'UKARDINA MUVADA', 'AATARSUMBA', '387610', 'tahir3mansuri@gmail.com', '1956-05-31', 'WHITE  ', 'GJ07DC4066', 'E77178', '229366', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', '683958fc8ac4c_1748588796.pdf', NULL, '683958fc89ebb_1748588796.pdf', '683958fc8a306_1748588796.pdf', NULL, NULL, '683958fc8a872_1748588796.pdf', NULL, NULL, '2025-05-30 07:06:36', '2025-06-02 12:16:36', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2019', 'PETROL', 77000, 'KATHLAL-', 'TAHIR ', 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-05-30', 'delivered', '2025-05-30'),
+(69, '353105', 0, 385000, 'FAKIR SOINSA PIRUSHA', '8140752817', 'TADAV TEKRO', 'KUHA/AHMEDABAD', '382433', 'tahir3mansuri@gmail.com', '1992-05-29', 'SILKY SILVER', 'GJ01WA5777', 'M399421', 'N8460109', NULL, '', '', 'completed', 'received', '-', '-', '-', '682ec77b9415b_1747896187.pdf', NULL, '682ec77b938d9_1747896187.pdf', '682ec77b93d4c_1747896187.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-22 06:43:07', '2025-05-26 06:05:29', 'sold', 'ahmedabad', NULL, 'WAGON R  VXI', '2020', 'PETROL', 75507, 'KATHLAL-', 'AAMIR', 'TATA INSURANCE', 'AHMEDABAD', 'GJ01', '', 2147483647, 0, 0, '2025-05-25', 'delivered', '2025-05-19'),
+(71, '287164', 0, 425000, 'SOLANKI ARJUNBHAI ABHESIH', '9327445643', 'RAMPURA', 'CHANDASAR /KHEDA', '387620', 'tahir3mansuri@gmail.com', '1973-05-13', 'WHITE', 'GJ07BR3875', '980335', '76642', NULL, '', '', 'completed', 'received', '-', '-', '', '6831bb815e52a_1748089729.pdf', NULL, '6831bb815e1de_1748089729.pdf', '6831bb815e373_1748089729.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-24 12:28:49', '2025-06-16 06:41:29', 'unsold', 'KHEDA', NULL, 'SWIFT  VDI', '2015', 'DIESEL', 87, 'KATHLAL-', 'AAMIR', 'TATA INSURANCE', 'KHEDA', 'GJ07BR3875', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-05-30', 'cancelled', '2025-05-24'),
+(72, '318264', 0, 925000, 'ZALA AMRUTBHAI SOMABHAI', '6352561014', 'GRAM FATEPURA VANTA ', 'KAVATH', '387620', 'tahir3mansuri@gmail.com', '1978-06-01', 'WHITE', 'GJ38T8254', '30975', '49138', NULL, '', '', 'pending', 'pending', '-', '-', '-', '6837fd246d831_1748499748.pdf', NULL, NULL, '6837fd246be9a_1748499748.pdf', '6837fd246c7e3_1748499748.pdf', NULL, '6837fd246d341_1748499748.pdf', NULL, NULL, '2025-05-29 06:22:28', '2025-06-18 09:49:24', 'sold', 'KAVATH', NULL, 'BOLERO PIK UP FB PS 1.7T XL', '2022', 'DIESEL', 75507, 'KATHLAL', 'TAHIR', 'CHOLAMANDALAM', 'BAVDA', 'GJ38', 'KOFTA', 2147483647, 0, 0, '2025-05-29', 'delivered', '2025-05-25'),
+(73, '993170', 0, 545000, 'ZALA RANJITSINH JAINTIBHAI', '7990285420', 'VAGHAS', 'VAGHAS', '387620', 'tahir3mansuri@gmail.com', NULL, 'MAGMA GRAY', 'GJ27EA9253', 'A63233', '272474', NULL, '', '', 'pending', 'received', '-', 'LINKANBHAI', '-', '683801c27a7e3_1748500930.pdf', NULL, '683801c27ab98_1748500930.pdf', '683801c27ae5a_1748500930.pdf', NULL, NULL, NULL, NULL, NULL, '2025-05-29 06:33:28', '2025-06-04 05:38:17', 'sold', 'KHEDA', NULL, 'SWIFT VXI PETROL', '', '', 87, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', 'AHMEDABAD', 'GJ27', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-05-31', 'delivered', '2025-05-25'),
+(74, '859797', 0, 301000, 'PATEL BACHUBHAI  SHANKARBHAI', '7016108015', 'UKARDINA MUVADA', 'AATARSUMBA', '387610', 'tahir3mansuri@gmail.com', '1956-05-31', 'WHITE  ', 'GJ07DC4066', 'E77178', '229366', NULL, '', '', 'completed', 'received', '-', '-', '-', '683958fc8ac4c_1748588796.pdf', NULL, '683958fc89ebb_1748588796.pdf', '683958fc8a306_1748588796.pdf', NULL, NULL, '683958fc8a872_1748588796.pdf', NULL, NULL, '2025-05-30 07:06:36', '2025-06-02 12:16:36', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2019', 'PETROL', 77000, 'KATHLAL-', 'TAHIR ', 'IFFCOTOKIO', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-05-30', 'delivered', '2025-05-30'),
 (82, '259940', 0, 305500, 'SODHA DASHRATHBHAI BABABHAI', '9313412461', 'NAVAGAM', 'BHIMPURA KHEDA', '387620', 'tahir3mansuri@gmail.com', '1976-06-01', 'WHITE  ', 'GJ05JB2433', 'M072808', '124572', '2026-04-18', '', '', 'completed', 'received', '-', '-', '', '683aaaad84552_1748675245.pdf', NULL, '683aaaad839a9_1748675245.pdf', '683aaaad83d17_1748675245.pdf', NULL, NULL, '683aaaad84114_1748675245.pdf', NULL, NULL, '2025-05-31 07:07:25', '2025-06-29 07:06:17', 'sold', 'KHEDA', NULL, 'VERNA CRDI EX', '2012', 'DIESEL', 87, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDALAM', 'SURAT', 'GJ05', 'NA', 2147483647, 0, 0, '2025-05-31', 'delivered', '2025-05-26'),
-(83, '469683', 0, 480000, 'PRAJAPATI RAHULBHAI NARESHBHAI', '6353785293', 'AFWA', 'DAHOD', '389190', 'tahir3mansuri@gmail.com', '2000-05-21', 'WHITE', 'GJ17BN1036', '25507', '12168', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', '683eb1a41bc7c_1748939172.pdf', NULL, '683eb1a41afd6_1748939172.pdf', '683eb1a41b71d_1748939172.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-03 08:26:22', '2025-06-18 09:47:25', 'sold', 'DAHOD', NULL, 'EECO 5 SEATER AC 2020', '2020', 'PETROL/CNG', 75507, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'GODHARA', 'GJ17', 'SK FINANCE', 2147483647, 0, 0, '2025-06-15', 'delivered', '2025-06-03'),
+(83, '469683', 0, 480000, 'PRAJAPATI RAHULBHAI NARESHBHAI', '6353785293', 'AFWA', 'DAHOD', '389190', 'tahir3mansuri@gmail.com', '2000-05-21', 'WHITE', 'GJ17BN1036', '25507', '12168', NULL, '', '', 'completed', 'received', '-', '-', '-', '683eb1a41bc7c_1748939172.pdf', NULL, '683eb1a41afd6_1748939172.pdf', '683eb1a41b71d_1748939172.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-03 08:26:22', '2025-06-18 09:47:25', 'sold', 'DAHOD', NULL, 'EECO 5 SEATER AC 2020', '2020', 'PETROL/CNG', 75507, 'KATHLAL-', 'AAMIR', 'IFFCOTOKIO', 'GODHARA', 'GJ17', 'SK FINANCE', 2147483647, 0, 0, '2025-06-15', 'delivered', '2025-06-03'),
 (84, '388970', 0, 340000, 'VAGHELA AJAYSINH FULSINH ', '9979560615', 'VADOL', 'VADOL/KHEDA', '387640', 'tahir3mansuri@gmail.com', '1986-05-09', 'GRANITE GREY', 'GJ07DE1926', 'K00178', '43893', '2026-06-01', '', '', 'completed', 'received', '-', '-', '', '683fdef6a642b_1749016310.pdf', NULL, '683fdef6a51a8_1749016310.pdf', '683fdef6a53e0_1749016310.pdf', '683fdef6a5c51_1749016310.pdf', NULL, NULL, '683fdef6a6872_1749016310.pdf', NULL, '2025-06-04 05:51:53', '2025-06-16 08:06:51', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2022', 'PETROL', 75507, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-06-12', 'delivered', '2025-06-01'),
 (85, '525379', 0, 400000, 'ZALA RAMESHBHAI MANGALBHAI', '8140595406', 'SWAMINAGAR NAGAR', 'KALESAR/CHHIPDI', '387630', 'tahir3mansuri@gmail.com', '1970-06-01', 'MAGMA GRAY', 'GJ07DF1090', 'L25697', '65088', '2026-03-31', '', '', 'completed', 'received', '-', '-', '-', '684a69693b0e8_1749707113.pdf', '684a69693b389_1749707113.pdf', '684a69693b971_1749707113.pdf', '684a69693bb50_1749707113.pdf', NULL, NULL, NULL, '684a69693b81e_1749707113.pdf', NULL, '2025-06-12 05:42:29', '2025-06-16 09:05:30', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2023', 'PETROL/CNG', 77000, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-06-13', 'delivered', '2025-06-13'),
 (86, '635719', 0, 455000, 'KURESHI M IDRIS M SIDDIK', '9879439042', '5231/KURESHI MAHOLLA', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1996-08-08', 'WHITE  ', 'GJ07DE1503', 'A12047', '52222', '2025-06-01', '', '', 'completed', 'received', '-', '-', '-', '684a8b3607eee_1749715766.pdf', NULL, '684a8b3607a2a_1749715766.pdf', '684a8b3607d3a_1749715766.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-12 08:09:26', '2025-06-29 07:02:43', 'sold', 'KAPADVANJ', NULL, 'EECO 5 STR AC CNG', '2022', 'PETROL/CNG', 58700, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'KHEDA', 'GJ07DE1503', '-', 2147483647, 0, 0, '2025-06-16', 'delivered', '2025-06-14'),
 (88, '259658', 0, 330000, 'TALPADA  MUKESHBHAI  BABRBHA', '9106424123', 'BHANER /KATHLAL', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1990-04-01', 'WHITE', 'GJ07DA1859', '488179', '64868', '2025-06-01', '', '', 'completed', 'received', '-', '-', '-', '684fb0f3ee4cd_1750053107.pdf', NULL, '684fb0f3ee023_1750053107.pdf', '684fb0f3ee375_1750053107.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-16 05:51:47', '2025-07-02 08:12:51', 'sold', 'kathlal', NULL, 'EECO 5 STR AC CNG', '2019', ' CNG', 58700, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'MAHISAGAR', 'gj35', 'SK FINANCE', 2147483647, 0, 0, '2025-06-27', 'delivered', '2025-06-20'),
-(89, '767587', 0, 143000, 'SOLANKI BHARATSINH KANSINH', '8780694599', 'KAKARKHAD', 'KAKARKHAD /KHEDA', '387630', 'tahir3mansuri@gmail.com', '1998-01-13', 'WHITE  ', 'GJ18BA3660', '', '', '0000-00-00', '', '', 'completed', 'received', '-', '', '', NULL, NULL, NULL, '685397914718f_1750308753.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-19 04:52:33', '2025-06-29 07:00:39', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2012', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', '', '', 'GJ18', '-', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-23'),
-(90, '810462', 0, 540000, 'DABHI NARENDRAKUMAR PRAVINSINH', '8758310302', 'PANKOR NAKA ', 'CHHIPDI/KHEDA', '387635', 'tahir3mansuri@gmail.com', '1999-10-14', 'WHITE  ', 'GJ27ED2853', 'B51495', '37566', '0000-00-00', '', '', 'completed', 'received', '-', '', '-', '6853a144842c1_1750311236.pdf', NULL, NULL, '6853a14483f41_1750311236.pdf', NULL, NULL, NULL, '6853a1448483f_1750311236.pdf', NULL, '2025-06-19 05:33:56', '2025-07-17 04:58:37', 'unsold', 'CHHIPDI', NULL, 'EECO 5 STR AC CNG', '2023', 'PETROL  CNG', 77000, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'AHMEDABAD', 'GJ-27', 'SK FINANCE', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-10'),
-(91, '637388', 0, 600000, 'KHOKHAR FARUKMAHAMMAD  NURMAHAMMAD', '9825980357', '  NEAR  PRIMARY   SCHOOL ', 'KHOKHARWADA', '387630', 'tahir3mansuri@gmail.com', '1971-01-01', 'WHITE& BLACK', 'GJ07DD5635', 'E805026', '60484', '0000-00-00', '', '', 'completed', 'received', '-', '', '-', '6853b0ad5e941_1750315181.pdf', '6853b0ad5d90f_1750315181.pdf', '6853b0ad5e58e_1750315181.pdf', '6853b0ad5e76a_1750315181.pdf', NULL, NULL, NULL, '6853b0ad5ed9d_1750315181.pdf', NULL, '2025-06-19 06:39:41', '2025-06-29 06:51:40', 'sold', 'kathlal', NULL, 'SWIFT ZXI+ DUAL TONE', '2021', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', 'ACKO', 'KHEDA', 'GJ07DD5635', '-', 2147483647, 0, 0, '2025-06-23', 'delivered', '2025-06-23'),
-(93, '394098', 0, 430000, 'MALEK ASPAKBHAI  SABIRBHAI ', '6352163940', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '0000-00-00', 'WHITE', 'GJ35H2475', '782141', '66895', '2025-06-01', '', '', 'completed', 'received', '-', '-', '-', '68553be045371_1750416352.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68553be04572d_1750416352.pdf', NULL, '2025-06-20 10:45:52', '2025-06-29 06:59:34', 'sold', 'KAPADVANJ', NULL, 'EECO 7 STD O', '2019', 'PETROL  CNG', 0, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'BA;ASINOR', 'gj35', '-', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-24'),
+(89, '767587', 0, 143000, 'SOLANKI BHARATSINH KANSINH', '8780694599', 'KAKARKHAD', 'KAKARKHAD /KHEDA', '387630', 'tahir3mansuri@gmail.com', '1998-01-13', 'WHITE  ', 'GJ18BA3660', '', '', NULL, '', '', 'completed', 'received', '-', '', '', NULL, NULL, NULL, '685397914718f_1750308753.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-19 04:52:33', '2025-06-29 07:00:39', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2012', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', '', '', 'GJ18', '-', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-23'),
+(90, '810462', 0, 540000, 'DABHI NARENDRAKUMAR PRAVINSINH', '8758310302', 'PANKOR NAKA ', 'CHHIPDI/KHEDA', '387635', 'tahir3mansuri@gmail.com', '1999-10-14', 'WHITE  ', 'GJ27ED2853', 'B51495', '37566', NULL, '', '', 'completed', 'received', '-', '', '-', '6853a144842c1_1750311236.pdf', NULL, NULL, '6853a14483f41_1750311236.pdf', NULL, NULL, NULL, '6853a1448483f_1750311236.pdf', NULL, '2025-06-19 05:33:56', '2025-07-17 04:58:37', 'unsold', 'CHHIPDI', NULL, 'EECO 5 STR AC CNG', '2023', 'PETROL  CNG', 77000, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'AHMEDABAD', 'GJ-27', 'SK FINANCE', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-10'),
+(91, '637388', 0, 600000, 'KHOKHAR FARUKMAHAMMAD  NURMAHAMMAD', '9825980357', '  NEAR  PRIMARY   SCHOOL ', 'KHOKHARWADA', '387630', 'tahir3mansuri@gmail.com', '1971-01-01', 'WHITE& BLACK', 'GJ07DD5635', 'E805026', '60484', NULL, '', '', 'completed', 'received', '-', '', '-', '6853b0ad5e941_1750315181.pdf', '6853b0ad5d90f_1750315181.pdf', '6853b0ad5e58e_1750315181.pdf', '6853b0ad5e76a_1750315181.pdf', NULL, NULL, NULL, '6853b0ad5ed9d_1750315181.pdf', NULL, '2025-06-19 06:39:41', '2025-06-29 06:51:40', 'sold', 'kathlal', NULL, 'SWIFT ZXI+ DUAL TONE', '2021', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', 'ACKO', 'KHEDA', 'GJ07DD5635', '-', 2147483647, 0, 0, '2025-06-23', 'delivered', '2025-06-23'),
+(93, '394098', 0, 430000, 'MALEK ASPAKBHAI  SABIRBHAI ', '6352163940', 'KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', NULL, 'WHITE', 'GJ35H2475', '782141', '66895', '2025-06-01', '', '', 'completed', 'received', '-', '-', '-', '68553be045371_1750416352.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68553be04572d_1750416352.pdf', NULL, '2025-06-20 10:45:52', '2025-06-29 06:59:34', 'sold', 'KAPADVANJ', NULL, 'EECO 7 STD O', '2019', 'PETROL  CNG', 0, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'BA;ASINOR', 'gj35', '-', 2147483647, 0, 0, '2025-06-25', 'delivered', '2025-06-24'),
 (95, '582734', 0, 661786, 'PARMAR AJMELKUMAR BUDHABHAI ', '9429106065', 'TANTARIYA /BAGDOL', 'SARALI/KHEDA', '387630', 'tahir3mansuri@gmail.com', '1986-01-01', 'WHITE', 'GJ07TU0091', 'A24754', 'M79202', '2026-06-27', '', '', 'completed', 'received', '', 'HARIBHAI BHARVAD', '-', '685a825c6b6c2_1750762076.pdf', NULL, '685a825c6ad91_1750762076.pdf', '685a825c6b23c_1750762076.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-24 10:47:56', '2025-06-29 06:55:59', 'sold', 'KHEDA', NULL, 'BMT + PS 1.2 T ', '2020', 'DIESEL ', 75507, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-06-24', 'delivered', '2025-06-24'),
 (96, '793529', 0, 750000, 'SHAIKH  M AFNAN M ASLAM ', '8160012317', 'MAHAMMAD SHERI ', 'KAPADVANJ ', '387620', 'tahir3mansuri@gmail.com', '1999-08-11', 'BLUE', 'GJ38BG7360', '152760', '52868', '2025-08-27', '', '', 'completed', 'received', '-', '-', '-', '686221d2095ff_1751261650.pdf', '686221d2083a9_1751261650.pdf', '686221d2089fa_1751261650.pdf', '686221d208faf_1751261650.pdf', NULL, NULL, NULL, '686221d2098f4_1751261650.pdf', NULL, '2025-06-30 05:34:10', '2025-08-06 04:53:56', 'sold', 'KAPADVANJ', NULL, 'SWIFT ZXI+', '2024', 'PETROL/CNG', 75507, 'KATHLAL-', 'TAHIR ', 'MSIL', 'AHMEDABAD', 'GJ38', 'NA', 2147483647, 0, 0, '2025-06-22', 'delivered', '2025-06-22'),
 (97, '895126', 0, 340000, 'PARMAR BALVANTBHAI ABHABHAI', '8320929122', 'MAL ITADI ', 'BARAIYA BHAG /KHEDA', '387640', 'tahir3mansuri@gmail.com', '1996-06-03', 'WHITE  ', 'GJ27BL3509', '542636', '519880', '2025-06-01', '', '', 'completed', 'received', '-', '', '-', '6862782cb9596_1751283756.pdf', NULL, '6862782cb83fd_1751283756.pdf', '6862782cb8e07_1751283756.pdf', NULL, NULL, NULL, NULL, NULL, '2025-06-30 11:42:36', '2025-07-12 08:57:26', 'unsold', 'KHEDA', NULL, 'EECO 5 STR AC CNG', '2017', 'PETROL  CNG', 142000, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'AHMEDABAD', 'GJ27', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-07-03', 'delivered', '2025-06-29'),
@@ -12591,19 +12555,19 @@ INSERT INTO `old_cars_sell` (`id`, `docket_number`, `original_price`, `current_p
 (108, '549422', 0, 455000, 'VADI  JIGARBHAI  KANUBHAI', '9737275597', 'VADOL/KAPADVANJ', 'KAPADVANJ', '387640', 'tahir3mansuri@gmail.com', '2004-08-06', 'WHITE', 'GJ23CD6563', '919389', '933583', '2026-06-22', '', '', 'completed', 'received', '-', '-', '-', '68748bb6842ab_1752468406.pdf', NULL, '68748bb6835ba_1752468406.pdf', '68748bb683c2b_1752468406.pdf', NULL, NULL, '68748bb6840d1_1752468406.pdf', '68748bb684525_1752468406.pdf', NULL, '2025-07-14 04:46:46', '2025-07-17 05:05:22', 'sold', 'KAPADVANJ', NULL, 'EECO 5 STR AC CNG', '2021', 'PETROL/CNG', 87, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'AANAND', 'GJ23', 'VASTU FINANCER PVT LTD', 2147483647, 0, 0, '2025-07-01', 'delivered', '2025-06-25'),
 (109, '272518', 0, 351000, 'RAVAL BABUBHAI JENABHAI', '8140261424', 'NAVCHETAN /VANSONI', 'VANSOL/KHEDA ', '387335', 'tahir3mansuri@gmail.com', '1984-07-21', 'WHITE', 'GJ07DA5946', '545463', 'N522892', '2025-07-22', '', '', 'completed', 'received', '-', '-', '-', '6874f41ad7560_1752495130.pdf', '6874f41ad68d2_1752495130.pdf', '6874f41ad6d9b_1752495130.pdf', '6874f41ad71ce_1752495130.pdf', NULL, NULL, NULL, '6874f41ad789e_1752495130.pdf', NULL, '2025-07-14 12:12:10', '2025-08-24 05:04:02', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG', '2017', '', 75507, 'KATHLAL-', 'TAHIR ', 'ICICI LOMBARD', 'KHEDA', 'GJ07', 'SK FINANCE', 2147483647, 0, 0, '2025-07-18', 'delivered', '2025-07-14'),
 (110, '822646', 0, 300000, 'MACHHI MAYANKKUMAR RATILAL', '9825794663', 'MACHHI FALIYU', 'AGARWADA', '388270', 'tahir3mansuri@gmail.com', '2000-08-29', 'WHITE', 'GJ18BD5810', '00398211', '374662', '2025-07-19', '', '', 'completed', 'received', '-', '-', '-', '6878e9ef8ccda_1752754671.pdf', NULL, '6878e9ef8bf05_1752754671.pdf', '6878e9ef8c6a1_1752754671.pdf', NULL, NULL, NULL, NULL, NULL, '2025-07-17 12:17:51', '2025-08-20 05:34:23', 'sold', 'PANCHMAHAL', NULL, 'EECO 5 STR AC CNG', '2015', 'PETROL/CNG', 75507, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'GANDHINAGAR', 'GJ18', 'SK FINANCE', 2147483647, 0, 0, '2025-06-16', 'delivered', '2025-06-14'),
-(111, '502429', 0, 460000, 'SEVAK JAYESHKUMAR GAURISHANKAR', '7016428993', 'VAGHJIPUR ', 'ATARSUMBA', '387620', 'tahir3mansuri@gmail.com', '1972-05-13', 'WHITE', 'GJ20AH9984', '80629', '886100', '0000-00-00', '', '', 'completed', 'received', '', '-', '-', '687a42336c9da_1752842803.pdf', NULL, '687a42336b918_1752842803.pdf', '687a42336bbb5_1752842803.pdf', '687a42336bd1f_1752842803.pdf', '687a42336c37b_1752842803.pdf', NULL, NULL, NULL, '2025-07-18 12:46:43', '2025-08-27 06:31:12', 'sold', 'KAPADVANJ', NULL, 'EECO 5 STR AC CNG', '2020', 'PETROL/CNG', 32000, 'KATHLAL-', 'TAHIR ', '', 'DAHOD', 'GJ20', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-06-15', 'delivered', '2025-06-10'),
+(111, '502429', 0, 460000, 'SEVAK JAYESHKUMAR GAURISHANKAR', '7016428993', 'VAGHJIPUR ', 'ATARSUMBA', '387620', 'tahir3mansuri@gmail.com', '1972-05-13', 'WHITE', 'GJ20AH9984', '80629', '886100', NULL, '', '', 'completed', 'received', '', '-', '-', '687a42336c9da_1752842803.pdf', NULL, '687a42336b918_1752842803.pdf', '687a42336bbb5_1752842803.pdf', '687a42336bd1f_1752842803.pdf', '687a42336c37b_1752842803.pdf', NULL, NULL, NULL, '2025-07-18 12:46:43', '2025-08-27 06:31:12', 'sold', 'KAPADVANJ', NULL, 'EECO 5 STR AC CNG', '2020', 'PETROL/CNG', 32000, 'KATHLAL-', 'TAHIR ', '', 'DAHOD', 'GJ20', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-06-15', 'delivered', '2025-06-10'),
 (112, '574348', 0, 0, 'PARMAR FULSINH PRATAPSINH', '9725384405', 'LETTER/KHEDA', 'KAPADVANJ ', '387620', 'tahir3mansuri@gmail.com', '1983-07-15', 'SILKY SILVER', 'GJ23CC1404', 'G246475', '123523', '2025-07-01', '', '', 'completed', 'received', '-', '-', '-', '687dd283e11a5_1753076355.pdf', NULL, '687dd283e0c1e_1753076355.pdf', '687dd283e0f23_1753076355.pdf', NULL, NULL, NULL, '687dd283e1592_1753076355.pdf', NULL, '2025-07-21 05:39:15', '2025-08-06 04:54:09', 'unsold', 'KHEDA', NULL, 'ERTIGA VXI O  CNG', '2020', 'PETROL/CNG', 25000, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'AANAND', 'GJ23', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-07-28', 'delivered', '2025-07-20'),
 (113, '267714', 0, 0, 'KHOKHAR  IRFANMIYA ALAUDDINMIYA', '8128454639', '12 JAMALPUR', 'KAPADVANJ ', '387620', 'tahir3mansuri@gmail.com', '1984-01-01', 'GREY', 'GJ27', 'B51865', '37971', '2025-07-01', '', '', 'completed', 'received', '-', '-', '-', '6880758d316a0_1753249165.pdf', NULL, '6880758d31223_1753249165.pdf', '6880758d314eb_1753249165.pdf', NULL, NULL, NULL, NULL, NULL, '2025-07-23 05:39:25', '2025-07-28 05:42:02', 'unsold', 'KAPADWANJ', NULL, 'EECO 5 STR AC CNG', '2023', 'PETROL/CNG', 87, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'AHMEDABAD', 'GJ27', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-07-25', 'cancelled', '2025-07-22'),
 (114, '272098', 0, 740000, 'NAYAK PIYUSHKUMAR  PRAMODBHAI', '9327439959', 'NAYAKWAS', 'PATAN ', '384255', 'tahir3mansuri@gmail.com', '1993-10-15', 'BLUE', 'GJ35', 'B00902', '306031', '2025-07-01', '', '', 'completed', 'received', '-', '-', '-', '6880ae69f0987_1753263721.pdf', '6880ae69eface_1753263721.pdf', '6880ae69f01d1_1753263721.pdf', '6880ae69f0398_1753263721.pdf', NULL, NULL, '6880ae69f0547_1753263721.pdf', NULL, NULL, '2025-07-23 09:42:02', '2025-08-20 05:41:04', 'sold', 'PATAN', NULL, 'SWIFT ZXI ', '2022', 'PETROL/CNG', 75507, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'BALASINOR', 'gj35', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-07-15', 'delivered', '2025-07-10'),
-(115, '219125', 0, 390000, 'BHARWAD  BHURABHAI KABABHAI', '6355311839', 'CHIKHLOD', 'CHIKHLOD', '362310', 'tahir3mansuri@gmail.com', '0000-00-00', 'WHITE', 'GJ07BR3875', '80335', '76642', '0000-00-00', '', '', 'completed', 'received', '-', 'HARIBHAI BHARVAD', '-', '6880d2e7bdb0e_1753273063.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '6880d2e7be047_1753273063.pdf', NULL, '2025-07-23 12:17:43', '2025-07-29 11:04:20', 'unsold', 'KAPADWANJ', NULL, 'SWIFT VDI', '2015', 'DIESEL ', 65830, 'KATHLAL', 'TAHIR ', '-', '', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-07-26', 'delivered', '2025-07-25'),
+(115, '219125', 0, 390000, 'BHARWAD  BHURABHAI KABABHAI', '6355311839', 'CHIKHLOD', 'CHIKHLOD', '362310', 'tahir3mansuri@gmail.com', NULL, 'WHITE', 'GJ07BR3875', '80335', '76642', NULL, '', '', 'completed', 'received', '-', 'HARIBHAI BHARVAD', '-', '6880d2e7bdb0e_1753273063.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '6880d2e7be047_1753273063.pdf', NULL, '2025-07-23 12:17:43', '2025-07-29 11:04:20', 'unsold', 'KAPADWANJ', NULL, 'SWIFT VDI', '2015', 'DIESEL ', 65830, 'KATHLAL', 'TAHIR ', '-', '', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-07-26', 'delivered', '2025-07-25'),
 (116, '485917', 0, 585000, 'VAGHELA MAHESHBHAI CHIMANBHAI', '9265115631', 'PARMAR VAS', 'NIZAMPUR', '387340', 'tahir3mansuri@gmail.com', '1986-03-15', 'WHITE', 'GJ35B 1743', '99165', '82637', '2025-07-01', '', '', 'completed', 'received', '', '', '-', '68835f1d7086e_1753440029.pdf', NULL, '68835f1d6f6b3_1753440029.pdf', '68835f1d7005d_1753440029.pdf', NULL, NULL, NULL, '68835f1d70daa_1753440029.pdf', NULL, '2025-07-25 10:40:29', '2025-08-20 06:08:11', 'sold', 'KHEDA', NULL, 'ERTIGA VDI ', '2016', 'DIESEL', 58700, 'KATHLAL-', '', 'IFCO TOKIO', 'BALASINOR', 'GJ35', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-07-27', 'delivered', '2025-07-25'),
 (117, '850273', 0, 0, 'MOTIBUJ  BAGUDA ', '8238393428', 'TAHSIL ANANDPURI/ DHANKOO', 'BANSWARA /RAJASTHAN', '327031', 'tahir3mansuri@gmail.com', '1969-01-01', 'WHITE', 'GJ20X2675', 'D36067', '96144', '2025-07-01', '', '', 'completed', 'received', '', 'BHOI KISHAN', '-', NULL, NULL, NULL, '68887ca86d2f7_1753775272.pdf', NULL, NULL, NULL, NULL, NULL, '2025-07-29 07:47:52', '2025-08-20 05:41:29', 'unsold', 'RAJASHTAN', NULL, 'BMT PLUS  PS 1 2T', '2021', 'DIESEL ', 58700, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDALAM', '', 'GJ20', 'SK FINANCE', 2147483647, 0, 0, '2025-07-01', 'cancelled', '2025-07-01'),
 (118, '989768', 0, 491000, 'MADARI SANJAYNATH  JAFARNATH', '9773024469', 'MADARI VAS /', 'KHADAL', '387620', 'tahir3mansuri@gmail.com', '1993-01-01', 'GREY', 'GJ01RU8886', '4202335', '3405409', '2025-08-01', '', '', 'completed', 'received', '-', 'HIREN', '-', '688df03b61681_1754132539.pdf', NULL, '688df03b6024d_1754132539.pdf', '688df03b60539_1754132539.pdf', '688df03b6078a_1754132539.pdf', '688df03b60ebe_1754132539.pdf', NULL, '688df03b61a21_1754132539.pdf', NULL, '2025-08-02 11:02:19', '2025-08-20 05:47:01', 'sold', 'KAPADVANJ', NULL, 'HONDA CITY', '2016', 'DIESEL ', 85000, 'KATHLAL-', 'TAHIR ', 'TATA INSURANCE', 'AHMEDABAD', 'GJ01', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-08-06', 'delivered', '2025-08-02'),
 (119, '266115', 0, 360000, 'BHOI MUKESHKUMAR SHANABHAI', '6355357384', 'BHOIVAS ', 'NIZAMPUR', '387340', 'tahir3mansuri@gmail.com', '1989-12-26', 'WHITE', 'GJ07DA3324', '13161', '89749', '2025-08-05', '', '', 'completed', 'received', '-', '-', '-', '689197c9ef2c1_1754372041.pdf', NULL, NULL, '689197c9eec4e_1754372041.pdf', NULL, NULL, NULL, NULL, NULL, '2025-08-05 05:34:02', '2025-09-11 06:42:28', 'sold', 'KHEDA', NULL, 'EECO 5 STR', '', 'PETROL', 25000, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-08-15', 'delivered', '2025-08-04'),
-(121, '450857', 0, 360000, 'BHOI GANPATBHAI PUNAMBHAI', '7984682484', '485 RAGHUNATHPURA', 'MAHISA', '387340', 'tahir3mansuri@gmail.com', '1983-01-15', 'WHITE', 'GJ07DC0559', '01448', '82111', '0000-00-00', '', '', 'pending', 'received', '', '-', '-', '689486f840a69_1754564344.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-07 10:59:04', '2025-08-20 05:58:31', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG ', '2019', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'GJ07', 'GJ07', 'CHOLA  MANDALAM ', 2147483647, 0, 0, '2025-01-09', 'delivered', '2025-07-05'),
+(121, '450857', 0, 360000, 'BHOI GANPATBHAI PUNAMBHAI', '7984682484', '485 RAGHUNATHPURA', 'MAHISA', '387340', 'tahir3mansuri@gmail.com', '1983-01-15', 'WHITE', 'GJ07DC0559', '01448', '82111', NULL, '', '', 'pending', 'received', '', '-', '-', '689486f840a69_1754564344.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-08-07 10:59:04', '2025-08-20 05:58:31', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG ', '2019', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'GJ07', 'GJ07', 'CHOLA  MANDALAM ', 2147483647, 0, 0, '2025-01-09', 'delivered', '2025-07-05'),
 (122, '265336', 0, 225000, 'BHOI   HITESHBHAI BABUBHAI', '7359045449', 'BHOI VAS', 'NIZAMPUR ', '387340', 'tahir3mansuri@gmail.com', '2025-05-11', 'WHITE  ', 'GJ18BF2546', '948067', '0994101', '2026-08-01', '', '', 'completed', 'received', '-', '-', '-', '68997a27e0fe0_1754888743.pdf', NULL, '68997a27dfe10_1754888743.pdf', '68997a27e074c_1754888743.pdf', NULL, NULL, NULL, NULL, NULL, '2025-08-11 05:05:43', '2025-08-20 05:59:00', 'sold', 'kheda mahudha', NULL, 'alto 800 lxi', '2016', 'PETROL/CNG', 58700, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'GANDHINAGAR', 'GJ18', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-08-10', 'delivered', '2025-08-09'),
 (123, '491959', 0, 523000, 'TALPADA DHARMESHBHAI MAHIPATBHAI', '9714553735', 'BHANER', 'BHANER', '387630', 'tahir3mansuri@gmail.com', '1986-12-20', 'WHITE', 'GJ07DE4790', 'A73886', '138865', '2026-08-01', '', '', 'completed', 'received', '', '', '-', '6899838f4325a_1754891151.pdf', '6899838f41e81_1754891151.pdf', '6899838f42c93_1754891151.pdf', '6899838f42f19_1754891151.pdf', NULL, NULL, NULL, '6899838f4360b_1754891151.pdf', NULL, '2025-08-11 05:45:51', '2025-09-05 07:08:44', 'unsold', 'BHANER/KATHLAL', NULL, 'EECO 5 STR AC CNG', '2020', 'PETROL', 75507, 'KATHLAL-', '', 'IFCO TOKIO', 'KHEDA', 'GJ07DE4790', 'SK FINANCE', 2147483647, 0, 0, '2025-08-15', 'cancelled', '2025-08-07');
-INSERT INTO `old_cars_sell` (`id`, `docket_number`, `original_price`, `current_price`, `customer_name`, `customer_phone`, `customer_address1`, `customer_address2`, `pincode`, `email`, `customer_dob`, `color`, `registration_no`, `chassis_no`, `engine_no`, `insurance_expiry_date`, `location`, `dealer_name`, `parsing_status`, `number_plate`, `scheme`, `broker_name`, `other_remarks`, `rc_book`, `insurance_doc`, `pan_card`, `aadhar_card`, `noc`, `form_35`, `purchase_agreement`, `owner_id_proof`, `main_image`, `created_at`, `updated_at`, `status`, `city_name`, `manufacturer_name`, `model_name`, `manufacture_year`, `fuel_type`, `running_kilometer`, `executive_branch_name`, `executive_name`, `insurance_company_name`, `rto_name`, `rto_code`, `hp_name`, `executive_number`, `broker_number`, `broker_brokerage`, `delivery_date`, `delivery_status`, `booking_date`) VALUES
+INSERT INTO "old_cars_sell" ("id", "docket_number", "original_price", "current_price", "customer_name", "customer_phone", "customer_address1", "customer_address2", "pincode", "email", "customer_dob", "color", "registration_no", "chassis_no", "engine_no", "insurance_expiry_date", "location", "dealer_name", "parsing_status", "number_plate", "scheme", "broker_name", "other_remarks", "rc_book", "insurance_doc", "pan_card", "aadhar_card", "noc", "form_35", "purchase_agreement", "owner_id_proof", "main_image", "created_at", "updated_at", "status", "city_name", "manufacturer_name", "model_name", "manufacture_year", "fuel_type", "running_kilometer", "executive_branch_name", "executive_name", "insurance_company_name", "rto_name", "rto_code", "hp_name", "executive_number", "broker_number", "broker_brokerage", "delivery_date", "delivery_status", "booking_date") VALUES
 (124, '449058', 0, 950000, 'KHOKHAR IRFANMIYA ALAUDINMIYA', '8128454639', '12 RUSTAMMIYA', 'JAMALPUR', '387620', 'tahir3mansuri@gmail.com', '1984-01-01', 'WHITE', 'GJ07TU9198', 'L90278', 'L64209', '2026-08-12', '', '', 'completed', 'received', '-', '-', '-', '6899eacd3e638_1754917581.pdf', NULL, '6899eacd3d612_1754917581.pdf', '6899eacd3def6_1754917581.pdf', NULL, NULL, NULL, NULL, NULL, '2025-08-11 13:06:21', '2025-08-27 06:30:33', 'sold', 'KAPADVANJ', NULL, 'BOLLERO MAXX', '2023/2024', 'DIESEL', 58700, 'KATHLAL-', '', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-08-15', 'delivered', '2025-08-05'),
 (125, '337357', 0, 0, 'PARMAR SURESHBHAI VAJABHAI ', '7203825056', 'KALAJI', 'KHEDA ', '387620', 'tahir3mansuri@gmail.com', '1986-09-12', 'GLISTENINGGREY', 'GJ23CF8435', 'D08271', 'N4226826', '2025-08-10', '', '', 'completed', 'received', '-', '-', '-', '68a2d78c44588_1755502476.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68a2d78c44c4c_1755502476.pdf', NULL, '2025-08-18 07:34:36', '2025-08-27 06:27:41', 'sold', 'KAPADWANJ', NULL, 'EECO 5 STR AC CNG ', '2019', 'PETROL/CNG', 65830, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-08-29', 'cancelled', '2025-08-18'),
 (126, '154709', 0, 0, 'VANKAR SUNILBHAI AMBALAL ', '9601506594', 'VANKAR VAS ', 'HALDARVAS ', '387110', 'tahir3mansuri@gmail.com', '1986-09-12', 'WHITE', '3678', '-', '-', '2025-08-10', '', '', 'pending', 'received', '-', '-', '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '68a56b942ff02_1755671444.pdf', NULL, '2025-08-20 06:30:44', '2025-08-23 04:56:21', 'unsold', 'KATHLAL ', NULL, 'EECO 5 STR AC CNG ', '2019', 'PETROL/CNG', 65830, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-08-30', 'cancelled', '2025-08-21'),
@@ -12620,40 +12584,40 @@ INSERT INTO `old_cars_sell` (`id`, `docket_number`, `original_price`, `current_p
 (138, '942164', 0, 0, 'BHURIYA MANGABHAI BIJIYABHAI ', '9016537592', 'KHAJURIYA FALIYU ', 'ITAWA', '389154', 'tahir3mansuri@gmail.com', '1994-06-15', 'WHITE', 'GJ07YZ6974', '-', '*', '2025-08-07', '', '', 'pending', 'received', '-', '-', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '68ca9a321e780_1758108210.pdf', NULL, '2025-09-17 11:23:30', '2025-11-11 06:12:25', 'unsold', 'DOHAD ', NULL, 'BOL MAXX PUP ', '2018', 'DIESEL', 65830, 'KATHLAL', 'TAHIR ', '', 'DAHOD ', 'GJ20', '-', 2147483647, 0, 0, '2025-09-25', 'cancelled', '2025-09-17'),
 (139, '273979', 0, 0, 'BHAVWAD LAXMANBHAI  JAGABHAI ', '9427024423', 'CHIKHLOD ', 'CHIKHLOD', '387640', 'tahir3mansuri@gmail.com', '1973-01-01', 'WHITE', 'GJ07DD7089', 'H90460', '536850', '2025-08-07', '', '', 'completed', 'received', '-', '-', '', '68cba8a91b69d_1758177449.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68cba8a91bd3e_1758177449.pdf', NULL, '2025-09-18 06:37:29', '2025-10-23 05:58:07', 'unsold', 'KAPADWANJ', NULL, 'ALTO LXI', '2021', 'PETROL', 65830, 'KATHLAL-', 'TAHIR ', '', 'KHEDA ', 'GJ07', 'KOTAK MAHINDRA', 2147483647, 0, 0, '2025-09-25', 'cancelled', '2025-09-18'),
 (140, '297911', 0, 440000, 'GOHIL BHARATBHAI PUJABHAI ', '6351532451', 'SHIVPURA ', 'MAL ITADI', '387640', 'tahir3mansuri@gmail.com', '1974-01-01', 'WHITE  ', 'GJ23CC0647', '829583', 'N817089', '2026-09-27', '', '', 'completed', 'received', '-', '-', '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:02:45', '2025-12-12 04:00:15', 'sold', 'KHEDA ', NULL, 'EECO 5 STR AC CNG', '2020', 'PETROL  CNG', 95000, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', 'KHEDA ', 'GJ23CC0647', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-09-28', 'delivered', '2025-09-26'),
-(141, '251551', 0, 500000, 'KAZI SAHILMAHMAD MAHAMDANIF ', '9316199854', 'INDIRA NAGAR KATHLAL ', 'KATHLAL ', '387620', 'tahir3mansuri@gmail.com', '1999-08-23', 'WHITE  ', 'GJ23CE2159', '-', '-', '0000-00-00', '', '', 'completed', 'received', '-', '-', '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:15:27', '2025-12-03 12:21:46', 'sold', 'KATHLAL ', NULL, 'EECO 5 STR AC CNG', '2022', 'PETROL  CNG', 95000, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', 'KHEDA ', 'GJ23CCE3359', 'SK FINANCE', 2147483647, 0, 0, '2025-09-30', 'delivered', '2025-09-26'),
+(141, '251551', 0, 500000, 'KAZI SAHILMAHMAD MAHAMDANIF ', '9316199854', 'INDIRA NAGAR KATHLAL ', 'KATHLAL ', '387620', 'tahir3mansuri@gmail.com', '1999-08-23', 'WHITE  ', 'GJ23CE2159', '-', '-', NULL, '', '', 'completed', 'received', '-', '-', '-', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-09-28 07:15:27', '2025-12-03 12:21:46', 'sold', 'KATHLAL ', NULL, 'EECO 5 STR AC CNG', '2022', 'PETROL  CNG', 95000, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', 'KHEDA ', 'GJ23CCE3359', 'SK FINANCE', 2147483647, 0, 0, '2025-09-30', 'delivered', '2025-09-26'),
 (142, '841690', 0, 0, 'CHAUHAN JAYDIPSINH ABHESINH', '09724311773', '537 JETHAPURA BAGDOL', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '1990-09-03', 'WHITE', 'GJ07DG5642', 'A72531', '1137014', '2026-10-05', '', '', 'completed', 'received', '-', 'ARVINDBHAI ', '', '68e79f6fe69c4_1760010095.pdf', '68e79f6fe5301_1760010095.pdf', NULL, NULL, NULL, NULL, NULL, '68e79f6fe860f_1760010095.pdf', NULL, '2025-10-09 11:41:35', '2025-10-09 11:45:38', 'unsold', 'kathlal', NULL, 'EECO 5 STR AC CNG', '2022', 'PETROL/CNG', 65830, 'KATHLAL', 'TAHIR ', 'IFFCO TOKIO', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-06', 'delivered', '2025-09-30'),
 (143, '506666', 0, 500000, 'PARMAR KIRANBHAI RAMANBHAI', '9737583783', 'GHOGHAVADA', 'KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1994-02-05', 'WHITE  ', 'GJ24AM5605', '933690', '951392', '2026-10-13', '', '', 'completed', 'received', '*', '-', '-', '68ee424fbed28_1760445007.pdf', '68ee424fbdbfb_1760445007.pdf', '68ee424fbdfb8_1760445007.pdf', '68ee424fbe650_1760445007.pdf', NULL, NULL, NULL, NULL, NULL, '2025-10-14 12:30:07', '2025-10-23 06:05:53', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG', '2021', 'PETROL/CNG', 87, 'KATHLAL-', 'AAMIR', 'IFCO TOKIO', 'PATAN', 'GJ24', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-14', 'delivered', '2025-10-12'),
 (144, '878411', 0, 260000, 'PARMAR KALPESHKUMAR DALPATBHAI ', '7990789985', 'MALNA MUVADA', 'DHANITRA,PANCHMAHALS', '389001', 'tahir3mansuri@gmail.com', '1993-02-22', 'WHITE', 'GJ07BR1342', '401759', '378381', '2026-11-05', '', '', 'completed', 'received', '-', 'DARBAR KAKA', '', '68ef81d3363b7_1760526803.pdf', NULL, NULL, '68ef81d3355af_1760526803.pdf', NULL, NULL, '68ef81d335e44_1760526803.pdf', NULL, NULL, '2025-10-15 11:13:23', '2025-11-08 05:33:07', 'sold', 'GODHRA ', NULL, 'EECO 5 STR AC CNG ', '2020', 'PETROL', 0, 'KATHLAL', 'AAMIR', '', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-07', 'delivered', '2025-10-15'),
-(145, '594010', 0, 550000, 'PARMAR PRATAPSINH HIMMATBHAI', '8140137743', 'DAMPAT KHEDA', 'KHEDA-387630', '387620', 'tahir3mansuri@gmail.com', '1991-07-23', 'GREY', 'GJ27EG3678', '-', '-', '0000-00-00', '', '', 'pending', 'received', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-21 04:46:37', '2025-10-31 05:16:04', 'sold', 'KHEDA ', NULL, 'MARUTI EECO CNG', '2023', 'PETROL/CNG', 52000, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', '', 'GJ-27', '', 2147483647, 0, 0, '2025-10-29', 'delivered', '2025-10-25'),
-(146, '468659', 0, 305000, 'CHAUHAN BHAGVANSINH MANGALBHAI ', '9904237727', 'VANTDA ', 'KHADAL,', '387365', 'tahir3mansuri@gmail.com', '1993-12-10', 'WHITE', 'GJ07DD7089', 'H90460', '536850', '0000-00-00', '', '', 'completed', 'received', '-', '', '', '68fcb90939cd3_1761392905.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68fcb9093a30d_1761392905.pdf', NULL, '2025-10-25 11:48:25', '2025-10-31 09:14:19', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2021', 'PETROL', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ07', '', 2147483647, 0, 0, '2025-10-27', 'delivered', '2025-10-25'),
-(147, '275146', 0, 450000, 'CHAVDA MAHENDRASINH PRAVINSINH ', '6353286537', 'MAHADEVNA MUVDA', 'NAVAGAMA', '388255', 'tahir3mansuri@gmail.com', '1992-06-24', 'WHITE', 'GJ07DC7488', '792910', '807715', '0000-00-00', '', '', 'completed', 'received', '-', '-', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '68ff02c7b481e_1761542855.pdf', NULL, '2025-10-27 05:27:35', '2025-10-31 05:13:45', 'sold', 'MAHISAGAR', NULL, 'EECO 5 SEATER AC CNG', '2020', 'PETROL', 65830, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-28', 'delivered', '2025-10-25'),
-(148, '542769', 0, 260000, 'PARMAR AJAYKUMAR MAHENDRABHI ', '7621889759', 'RABARIVALU FALIYU ', 'DHUNDI ', '388250', 'tahir3mansuri@gmail.com', '2000-06-07', 'WHITE', 'GJ18BD5904', '397784', '374419', '0000-00-00', '', '', 'completed', 'received', '-7621', '', '', '68ff566887e46_1761564264.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68ff566888aa8_1761564264.pdf', NULL, '2025-10-27 11:24:24', '2025-10-31 05:12:39', 'sold', 'JALANAGAE', NULL, 'EECO 5 STR AC CNG 2 AIRBAG', '2015', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ18', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-29', 'delivered', '2025-10-27'),
-(149, '665948', 0, 650000, 'PARMAR KALPESHKUMAR ARVINDBHAI ', '7046453313', 'LIMDIVALU FALIYU ', 'BHANER ', '387630', 'tahir3mansuri@gmail.com', '1997-11-26', 'WHITE', 'GJ07DE6407', 'A82642', '289647', '0000-00-00', '', '', 'completed', 'received', '-', '-', '', '6905c8b8da3e5_1761986744.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '6905c8b8dac1f_1761986744.pdf', NULL, '2025-11-01 08:45:44', '2025-12-05 04:57:32', 'sold', 'KATHLAL ', NULL, 'SWIFT VXI CNG ', '2022', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ07', '-', 2147483647, 0, 0, '2025-10-30', 'delivered', '2025-11-01'),
-(150, '679857', 0, 225000, 'VANKAR BHULABHAI VALABHAI ', '7990214741', 'JALIYA ', 'KATHLAL ', '387335', '', '0000-00-00', 'WHITE', 'GJ07DB3031', '852672', '5076708', '0000-00-00', '', '', 'completed', 'received', '-', '', '', '690d87d08f87a_1762494416.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-07 05:46:56', '2025-11-12 09:08:40', 'sold', 'KHEDA', NULL, 'MARUTI OMNI E MPI STD .BSIV', '2018', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-11-12', 'delivered', '2025-11-06'),
+(145, '594010', 0, 550000, 'PARMAR PRATAPSINH HIMMATBHAI', '8140137743', 'DAMPAT KHEDA', 'KHEDA-387630', '387620', 'tahir3mansuri@gmail.com', '1991-07-23', 'GREY', 'GJ27EG3678', '-', '-', NULL, '', '', 'pending', 'received', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-21 04:46:37', '2025-10-31 05:16:04', 'sold', 'KHEDA ', NULL, 'MARUTI EECO CNG', '2023', 'PETROL/CNG', 52000, 'KATHLAL', 'TAHIR ', 'IFFCOTOKIO', '', 'GJ-27', '', 2147483647, 0, 0, '2025-10-29', 'delivered', '2025-10-25'),
+(146, '468659', 0, 305000, 'CHAUHAN BHAGVANSINH MANGALBHAI ', '9904237727', 'VANTDA ', 'KHADAL,', '387365', 'tahir3mansuri@gmail.com', '1993-12-10', 'WHITE', 'GJ07DD7089', 'H90460', '536850', NULL, '', '', 'completed', 'received', '-', '', '', '68fcb90939cd3_1761392905.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68fcb9093a30d_1761392905.pdf', NULL, '2025-10-25 11:48:25', '2025-10-31 09:14:19', 'sold', 'KHEDA', NULL, 'ALTO LXI', '2021', 'PETROL', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ07', '', 2147483647, 0, 0, '2025-10-27', 'delivered', '2025-10-25'),
+(147, '275146', 0, 450000, 'CHAVDA MAHENDRASINH PRAVINSINH ', '6353286537', 'MAHADEVNA MUVDA', 'NAVAGAMA', '388255', 'tahir3mansuri@gmail.com', '1992-06-24', 'WHITE', 'GJ07DC7488', '792910', '807715', NULL, '', '', 'completed', 'received', '-', '-', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '68ff02c7b481e_1761542855.pdf', NULL, '2025-10-27 05:27:35', '2025-10-31 05:13:45', 'sold', 'MAHISAGAR', NULL, 'EECO 5 SEATER AC CNG', '2020', 'PETROL', 65830, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-28', 'delivered', '2025-10-25'),
+(148, '542769', 0, 260000, 'PARMAR AJAYKUMAR MAHENDRABHI ', '7621889759', 'RABARIVALU FALIYU ', 'DHUNDI ', '388250', 'tahir3mansuri@gmail.com', '2000-06-07', 'WHITE', 'GJ18BD5904', '397784', '374419', NULL, '', '', 'completed', 'received', '-7621', '', '', '68ff566887e46_1761564264.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '68ff566888aa8_1761564264.pdf', NULL, '2025-10-27 11:24:24', '2025-10-31 05:12:39', 'sold', 'JALANAGAE', NULL, 'EECO 5 STR AC CNG 2 AIRBAG', '2015', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ18', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-10-29', 'delivered', '2025-10-27'),
+(149, '665948', 0, 650000, 'PARMAR KALPESHKUMAR ARVINDBHAI ', '7046453313', 'LIMDIVALU FALIYU ', 'BHANER ', '387630', 'tahir3mansuri@gmail.com', '1997-11-26', 'WHITE', 'GJ07DE6407', 'A82642', '289647', NULL, '', '', 'completed', 'received', '-', '-', '', '6905c8b8da3e5_1761986744.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '6905c8b8dac1f_1761986744.pdf', NULL, '2025-11-01 08:45:44', '2025-12-05 04:57:32', 'sold', 'KATHLAL ', NULL, 'SWIFT VXI CNG ', '2022', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'MSIL', 'KHEDA ', 'GJ07', '-', 2147483647, 0, 0, '2025-10-30', 'delivered', '2025-11-01'),
+(150, '679857', 0, 225000, 'VANKAR BHULABHAI VALABHAI ', '7990214741', 'JALIYA ', 'KATHLAL ', '387335', '', NULL, 'WHITE', 'GJ07DB3031', '852672', '5076708', NULL, '', '', 'completed', 'received', '-', '', '', '690d87d08f87a_1762494416.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-07 05:46:56', '2025-11-12 09:08:40', 'sold', 'KHEDA', NULL, 'MARUTI OMNI E MPI STD .BSIV', '2018', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-11-12', 'delivered', '2025-11-06'),
 (151, '885318', 0, 301000, 'SOLANKI MANHARBHAI  ARJUNBHAI ', '9723504795', 'LIMDIWADU FALIYU /BHANER', 'BHANER', '387630', 'tahir3mansuri@gmail.com', '1983-06-01', 'P WHITE', 'GJ07BN2086', '466544', '402587', '2025-12-05', '', '', 'completed', 'received', '--', '-', '-', '690d8bb6b782e_1762495414.pdf', '690d8bb6b6f7a_1762495414.pdf', '690d8bb6b73c2_1762495414.pdf', '690d8bb6b7630_1762495414.pdf', NULL, NULL, NULL, '690d8bb6b7b80_1762495414.pdf', NULL, '2025-11-07 06:03:34', '2025-11-08 05:27:44', 'sold', 'kathlal', NULL, 'SWIFT ZDI', '2013', 'DIESEL', 0, 'KATHLAL-', 'TAHIR ', 'ZUNO', 'KHEDA', 'GJ07BN2086', 'NA', 2147483647, 0, 0, '2025-11-06', 'delivered', '2025-11-05'),
 (152, '477552', 0, 575000, 'ZALA SURESHKUMAR KANTIBHAI', '6354568254', 'DHEKIYANA MUVADA VAGHAS  ', 'VAGHAS/KHEDA', '387620', 'tahir3mansuri@gmail.com', '1970-01-01', 'WHITE', 'GJ27EA5039', 'A02793', '219313', '2025-11-01', '', '', 'completed', 'received', '--', '-', '-', '690de522c285c_1762518306.pdf', NULL, '69327bf084cfb_1764916208.pdf', '69327bf085324_1764916208.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-07 12:25:06', '2025-12-05 06:30:08', 'sold', 'KHEDA', NULL, 'SWIFT VXI PETROL', '2022', 'PETROL', 0, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDAN', 'AHMEDABAD', 'GJ27', '-', 2147483647, 0, 0, '2025-11-07', 'delivered', '2025-11-05'),
-(153, '946640', 0, 450000, 'ZALA  GIRISHBHAI VAJABHAI', '8347292070', 'VAGHAS/KHEDA', 'VAGHAS', '387620', 'tahir3mansuri@gmail.com', '0000-00-00', 'WHITE', 'GJ07DB1099', '404021', '360125', '2026-11-16', '', '', 'completed', 'received', '--', '-', '', '690de7ec636e0_1762519020.pdf', '6926859c470d4_1764132252.pdf', '690de7ec62e31_1762519020.pdf', NULL, NULL, NULL, NULL, '690de7ec63b93_1762519020.pdf', NULL, '2025-11-07 12:37:00', '2025-12-05 06:51:18', 'sold', 'KHEDA', NULL, 'I 20 MAGMA', '2017', 'DIESEL', 0, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-11-07', 'cancelled', '2025-11-05'),
+(153, '946640', 0, 450000, 'ZALA  GIRISHBHAI VAJABHAI', '8347292070', 'VAGHAS/KHEDA', 'VAGHAS', '387620', 'tahir3mansuri@gmail.com', NULL, 'WHITE', 'GJ07DB1099', '404021', '360125', '2026-11-16', '', '', 'completed', 'received', '--', '-', '', '690de7ec636e0_1762519020.pdf', '6926859c470d4_1764132252.pdf', '690de7ec62e31_1762519020.pdf', NULL, NULL, NULL, NULL, '690de7ec63b93_1762519020.pdf', NULL, '2025-11-07 12:37:00', '2025-12-05 06:51:18', 'sold', 'KHEDA', NULL, 'I 20 MAGMA', '2017', 'DIESEL', 0, 'KATHLAL-', 'TAHIR ', 'CHOLAMANDALAM', 'KHEDA', 'GJ07', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-11-07', 'cancelled', '2025-11-05'),
 (154, '738907', 0, 235000, 'DIVAN SAMIRSHA  MAHAMADSHA', '9016597123', 'DESAR', 'VADODARA', '391774', 'tahir3mansuri@gmail.com', '2003-01-01', 'SILKY SILVER', 'GJ35B6879', 'C50518', '6007226', '2025-11-01', '', '', 'completed', 'received', '--', '-', '-', '690f366670a6d_1762604646.pdf', '690f36666eb84_1762604646.pdf', '690f36666f338_1762604646.pdf', '690f3666704a1_1762604646.pdf', NULL, NULL, NULL, '690f366670ebe_1762604646.pdf', NULL, '2025-11-08 12:24:06', '2025-11-10 05:03:15', 'sold', 'Vadodara', NULL, 'ALTO VXI', '2018', 'PETROL/CNG', 0, 'KATHLAL-', 'TAHIR ', 'IFCO TOKIO', 'BALASINOR', 'GJ35B6978', 'NA', 2147483647, 0, 0, '2025-11-07', 'delivered', '2025-11-07'),
-(155, '969773', 0, 629000, 'PAGI  KHUMANSINH VAJESINH ', '9586262270', 'MANDIR FALIYU PALIKHADA ', 'BHADRALA PANCHMAHAL ', '389210', 'tahir3mansuri@gmail.com', '1997-06-01', 'WHITE', 'GJ07YZ6974', 'K65321', '4K61510', '0000-00-00', '', '', 'completed', 'received', '-', '', '', '69117f53ebeb0_1762754387.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '69117f53ec536_1762754387.pdf', NULL, '2025-11-10 05:59:47', '2025-11-20 08:49:57', 'unsold', 'PANCHMAHAL', NULL, 'MAHINDRA BOLERO MAXI TRUCK PLU ', '2018', 'DIESEL', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-20', 'delivered', '2025-10-18'),
+(155, '969773', 0, 629000, 'PAGI  KHUMANSINH VAJESINH ', '9586262270', 'MANDIR FALIYU PALIKHADA ', 'BHADRALA PANCHMAHAL ', '389210', 'tahir3mansuri@gmail.com', '1997-06-01', 'WHITE', 'GJ07YZ6974', 'K65321', '4K61510', NULL, '', '', 'completed', 'received', '-', '', '', '69117f53ebeb0_1762754387.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '69117f53ec536_1762754387.pdf', NULL, '2025-11-10 05:59:47', '2025-11-20 08:49:57', 'unsold', 'PANCHMAHAL', NULL, 'MAHINDRA BOLERO MAXI TRUCK PLU ', '2018', 'DIESEL', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-20', 'delivered', '2025-10-18'),
 (156, '797281', 0, 651000, 'SUTHAR GOPALBHI GUNVANTRAY ', '7359581005', 'JUNI DERI PASE ', 'BALASINOR ', '388255', 'tahir3mansuri@gmail.com', '1981-01-01', 'WHITE', 'GJ18BQ3922', '255661', '101142', '2026-04-27', '', '', 'completed', 'received', '-', '', '', '6914168b3d375_1762924171.pdf', '691417ca73854_1762924490.pdf', NULL, NULL, NULL, NULL, NULL, '6914168b3d932_1762924171.pdf', NULL, '2025-11-12 05:09:31', '2025-11-13 06:35:24', 'sold', 'KHEDA', NULL, 'DEZIRE VXI CNG ', '2022', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', 'CHOLAMANDALM', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-11', 'delivered', '2025-11-10'),
 (158, '506736', 0, 0, 'BHOI SANJAYKUMAR NATVARBHAI', '6352953477', 'NISHALNI SAME,', 'MU.PORDA BHATERA, PORDA, ', '387630', 'tahir3mansuri@gmail.com', '1996-06-20', 'GREY', 'GJ07DA9056', '726594', '628707', '2025-11-11', '', '', 'completed', 'received', '-', '-', '-', '691462417fe47_1762943553.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '6914624180532_1762943553.pdf', NULL, '2025-11-12 10:16:07', '2025-11-13 06:00:00', 'unsold', 'KATHALAL', NULL, 'GRAND I10 MAGNA', '', '', 0, 'KATHLAL', 'TAHIR ', '', 'GJ07', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '0001-01-01', 'cancelled', '0025-11-01'),
-(159, '211933', 0, 0, 'RATHOD VIJAYKUMAR PRABHATSINH', '7863890634', 'MU,FULA MOGHA NA MUVADA, ', 'FAGVEL, KHEDA,', '387640', 'tahir3mansuri@gmail.com', '1987-01-01', 'SUPERIOR WHITE', 'GJ07DE8268', 'MA3JMTB1SNG721164', 'K10CNC117399', '0000-00-00', '', '', 'pending', 'received', '-', '-', '-', NULL, NULL, '691c476e654e2_1763460974.pdf', '691c476e658d5_1763460974.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-18 10:16:19', '2025-11-26 10:15:41', 'unsold', 'KHEDA', NULL, 'WAGON R LXI CNG ', '2022', 'CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ7', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-11-06', 'cancelled', '2025-11-26'),
+(159, '211933', 0, 0, 'RATHOD VIJAYKUMAR PRABHATSINH', '7863890634', 'MU,FULA MOGHA NA MUVADA, ', 'FAGVEL, KHEDA,', '387640', 'tahir3mansuri@gmail.com', '1987-01-01', 'SUPERIOR WHITE', 'GJ07DE8268', 'MA3JMTB1SNG721164', 'K10CNC117399', NULL, '', '', 'pending', 'received', '-', '-', '-', NULL, NULL, '691c476e654e2_1763460974.pdf', '691c476e658d5_1763460974.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-18 10:16:19', '2025-11-26 10:15:41', 'unsold', 'KHEDA', NULL, 'WAGON R LXI CNG ', '2022', 'CNG', 0, 'KATHLAL', 'TAHIR ', '', 'KHEDA', 'GJ7', 'HDFC BANK LTD', 2147483647, 0, 0, '2025-11-06', 'cancelled', '2025-11-26'),
 (161, '237901', 0, 440000, 'BHOI SANJYAKUMAR NATVARBHAI', '6352953477', 'NISHAL NI SAME , MU , PORADA BHATERA, ', 'PORADA BHATERA  ', '387630', 'tahir3mansuri@gmail.com', '1996-06-20', 'WHITE', 'GJ07DB3746', 'MA3ERLF1S00A55402', 'G12BN1113612', '2026-11-11', '', '', 'pending', 'received', '-', '-', '-', '6926bf6bf2725_1764147051.pdf', '6926c42dae812_1764148269.pdf', '69219f80b3a44_1763811200.pdf', '69219f80b4069_1763811200.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-19 05:55:27', '2025-12-12 03:58:04', 'sold', 'KHEDA', NULL, 'EECO 5 STR AC CNG ', '', '', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-26', 'delivered', '2025-11-19'),
-(162, '447404', 0, 297000, 'RATHOD  DILIPBHAI MANILAL', '9724764978', 'KANIYEL, SIMADO, ', 'KANIYEL , ', '382433', 'tahir3mansuri@gmail.com', '1977-06-01', 'WHITE', 'GJ07DC6761', '52679', '6303399', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '6936c5d52c740_1765197269.pdf', '6937a685a3d80_1765254789.pdf', '6936c5d52d479_1765197269.pdf', '6936c5d52dbdc_1765197269.pdf', NULL, NULL, NULL, '6936c5d52ce1b_1765197269.pdf', NULL, '2025-11-19 08:40:08', '2026-01-03 05:41:59', 'sold', 'AHMEDABAD,', NULL, 'ALTO LXI   CNG', '', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-28', 'delivered', '2025-11-18'),
+(162, '447404', 0, 297000, 'RATHOD  DILIPBHAI MANILAL', '9724764978', 'KANIYEL, SIMADO, ', 'KANIYEL , ', '382433', 'tahir3mansuri@gmail.com', '1977-06-01', 'WHITE', 'GJ07DC6761', '52679', '6303399', NULL, '', '', 'pending', 'pending', '-', '-', '-', '6936c5d52c740_1765197269.pdf', '6937a685a3d80_1765254789.pdf', '6936c5d52d479_1765197269.pdf', '6936c5d52dbdc_1765197269.pdf', NULL, NULL, NULL, '6936c5d52ce1b_1765197269.pdf', NULL, '2025-11-19 08:40:08', '2026-01-03 05:41:59', 'sold', 'AHMEDABAD,', NULL, 'ALTO LXI   CNG', '', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA ', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-11-28', 'delivered', '2025-11-18'),
 (163, '432475', 0, 0, 'PARMAR MAHENDRAKUMAR GHANSHYAMBHAI', '6353359626', 'PAGI VAGO, LASUNDRA', 'LASUNDRA KHEDA,', '387640', 'tahir3mansuri@gmail.com', '1994-12-31', 'WHITE', 'GJ07DE4670', 'MA3ERLF1S00A55402', 'G12BN1113612', '2026-11-11', '', '', 'pending', 'pending', '-', '-', '-', '691d924c3ec4b_1763545676.pdf', '691d924c3e6b6_1763545676.pdf', '691d924c3e9b3_1763545676.pdf', NULL, NULL, NULL, NULL, '691d924c3ef4e_1763545676.pdf', NULL, '2025-11-19 09:47:56', '2025-11-24 05:01:43', 'unsold', 'KHEDA', NULL, 'EECO 5 STR AC CNG ', '', '', 0, 'KATHLAL', 'TAHIR ', 'IFCO TOKIO', 'KHEDA', 'GJ07', 'CHOLA MANDALAM', 2147483647, 0, 0, '2025-11-01', 'cancelled', '2025-11-01'),
-(164, '723245', 0, 109000, 'ZALA JAYESHBHAI JESANGBHAI ', '7698910042', 'GOGJIPURA , NAVA GHARA,', 'CHHIPDI   KHEDA', '387635', 'tahir3mansuri@gmail.com', '1988-04-01', 'WHITE', 'GJ18AM5973', 'MA3EAA61SO1888376', 'F8DN4659060', '0000-00-00', '', '', 'pending', 'received', '', '', '-', '692053cc2065a_1763726284.pdf', '6921af689b8a8_1763815272.pdf', '692053cc1f723_1763726284.pdf', '692053cc20174_1763726284.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-21 11:58:04', '2025-11-22 12:41:12', 'unsold', 'KHEDA', NULL, 'MARUTI ALTO LXI ', '2011', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-11-21', 'delivered', '2025-11-21'),
+(164, '723245', 0, 109000, 'ZALA JAYESHBHAI JESANGBHAI ', '7698910042', 'GOGJIPURA , NAVA GHARA,', 'CHHIPDI   KHEDA', '387635', 'tahir3mansuri@gmail.com', '1988-04-01', 'WHITE', 'GJ18AM5973', 'MA3EAA61SO1888376', 'F8DN4659060', NULL, '', '', 'pending', 'received', '', '', '-', '692053cc2065a_1763726284.pdf', '6921af689b8a8_1763815272.pdf', '692053cc1f723_1763726284.pdf', '692053cc20174_1763726284.pdf', NULL, NULL, NULL, NULL, NULL, '2025-11-21 11:58:04', '2025-11-22 12:41:12', 'unsold', 'KHEDA', NULL, 'MARUTI ALTO LXI ', '2011', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2025-11-21', 'delivered', '2025-11-21'),
 (167, '272082', 0, 70000, 'RATHOD KARANSINH ARJUNSINH', '6353673812 /  756751', '77, GAMTAL, ANIYAD ANIAD ', 'PANCHMAHAL, 389210', '389210', 'tahir3mansuri@gmail.com', '1978-04-01', 'ECO GREEN', 'GJ07TV2434', 'MBX0006DFYB998165', 'TBP3SBX3001952', '2025-11-11', '', '', 'completed', 'received', '-', '-', '-', '692820f731dd3_1764237559.pdf', '693bc5adeeef5_1765524909.pdf', '692820f7301b1_1764237559.pdf', '692820f7309ac_1764237559.pdf', '692820f731065_1764237559.pdf', '693bc5adef9e0_1765524909.pdf', '693bc5adf01a6_1765524909.pdf', NULL, NULL, '2025-11-27 09:59:19', '2025-12-12 07:35:09', 'sold', 'PANCHMAHAL', NULL, 'APE CITY CNG', '2020', 'PETROL/CNG', 0, 'KATHLAL', 'TAHIR ', '-', 'PANCHMAHAL', 'GJ17', 'HINDUJA LEYLAND', 2147483647, 0, 0, '2025-11-27', 'delivered', '2025-11-24'),
 (168, '315726', 0, 721000, 'CHAUHAN RANJITKUMAR RAMANSINH ', '9157366584', 'PARABIPASE, BARDOLI, BARIYA,', 'BARDOLI, BARIA, GANDHINAGAR,', '382308', 'tahir3mansuri@gmail.com', '2001-10-06', 'POLAR WHITE 2', 'GJ07DC8595', '126679', '734445', '2026-03-22', '', '', 'pending', 'pending', '-', '-', '-', '692ab7d8154b1_1764407256.pdf', '692ab7d812d7f_1764407256.pdf', '692ab7d813c77_1764407256.pdf', '692ab7d814900_1764407256.pdf', '6943c5d1eeb86_1766049233.pdf', NULL, NULL, '692ab7d815992_1764407256.pdf', NULL, '2025-11-29 09:07:36', '2025-12-25 12:28:04', 'unsold', 'GANDHINAGAR', NULL, 'VARNA 1.6 SX (0)', '2019', 'DIESEL', 0, 'KATHLAL', 'TAHIR ', 'TATA INSURANCE', 'GANDHINAGAR', 'GJ18', 'AU SMALL FAINANCE', 2147483647, 0, 0, '2025-12-25', 'delivered', '2025-11-29'),
-(169, '786244', 0, 0, 'RAJUNATH SETANNATH MADARI', '9574120506 /   63545', '17,, BHARVAD  MADARIVAS , SARSAVANI, ', 'SARSAVANI KHEDA. ', '387430', 'tahir3mansuri@gmail.com', '1980-01-01', 'STAR DUST', 'GJ01HY5140', '23352', '51014', '0000-00-00', '', '', 'completed', 'received', '-', '-', '', '692ecfefc2887_1764675567.pdf', NULL, '692ecfefc15a2_1764675567.pdf', '692ecfefc200f_1764675567.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-02 11:39:27', '2025-12-03 05:24:07', 'sold', 'KHEDA', NULL, 'HUNDAI  GRAND I 10 NIOS', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-12', 'cancelled', '2025-12-02'),
-(170, '540247', 0, 995000, 'RUKSHANABANU  IMRANKHA  SHEKH', '9724786901', '491, GHANCHI WADO,  VASO 2, , VASO', 'VASO, KHEDA , 388245', '388245', 'tahir3mansuri@gmail.com', '1992-08-13', 'PEARL ARCTIC WHITE', 'GJ07DG9791', '17344', '9643076', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '69314d9720094_1764838807.pdf', '693d4a66064ed_1765624422.pdf', '69314d971e010_1764838807.pdf', '69314d971f029_1764838807.pdf', '693d4a6607740_1765624422.pdf', '693d4a660839e_1765624422.pdf', NULL, '693d4a6606be0_1765624422.pdf', NULL, '2025-12-04 09:00:07', '2025-12-18 12:53:54', 'unsold', 'KHEDA', NULL, '2024', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-12-18', 'delivered', '2025-12-04'),
+(169, '786244', 0, 0, 'RAJUNATH SETANNATH MADARI', '9574120506 /   63545', '17,, BHARVAD  MADARIVAS , SARSAVANI, ', 'SARSAVANI KHEDA. ', '387430', 'tahir3mansuri@gmail.com', '1980-01-01', 'STAR DUST', 'GJ01HY5140', '23352', '51014', NULL, '', '', 'completed', 'received', '-', '-', '', '692ecfefc2887_1764675567.pdf', NULL, '692ecfefc15a2_1764675567.pdf', '692ecfefc200f_1764675567.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-02 11:39:27', '2025-12-03 05:24:07', 'sold', 'KHEDA', NULL, 'HUNDAI  GRAND I 10 NIOS', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-12', 'cancelled', '2025-12-02'),
+(170, '540247', 0, 995000, 'RUKSHANABANU  IMRANKHA  SHEKH', '9724786901', '491, GHANCHI WADO,  VASO 2, , VASO', 'VASO, KHEDA , 388245', '388245', 'tahir3mansuri@gmail.com', '1992-08-13', 'PEARL ARCTIC WHITE', 'GJ07DG9791', '17344', '9643076', NULL, '', '', 'pending', 'pending', '-', '-', '-', '69314d9720094_1764838807.pdf', '693d4a66064ed_1765624422.pdf', '69314d971e010_1764838807.pdf', '69314d971f029_1764838807.pdf', '693d4a6607740_1765624422.pdf', '693d4a660839e_1765624422.pdf', NULL, '693d4a6606be0_1765624422.pdf', NULL, '2025-12-04 09:00:07', '2025-12-18 12:53:54', 'unsold', 'KHEDA', NULL, '2024', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-12-18', 'delivered', '2025-12-04'),
 (171, '842063', 0, 420000, 'ZALA HIMMATBHAI RAMANBHAI', '9327697966', 'DHEKIYANA MUVADA VAGHAS  ', 'VAGHAS/KHEDA', '387620', 'tahir3mansuri@gmail.com', '1983-06-01', 'PEARL ARCTIC WHITE', 'GJ07DB1099', '404024', '360125', '2026-11-16', '', '', 'pending', 'pending', '-', '-', '-', '69327ecf6698a_1764916943.pdf', NULL, '69327ecf661a3_1764916943.pdf', '69327ecf6665c_1764916943.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-05 06:42:23', '2025-12-22 06:58:37', 'sold', 'KHEDA', NULL, 'I 20 MAGNA EXECUTIVE ', '2017', 'DIESEL', 0, '', '', '', 'nadiad', 'GJ7', 'AU SMALL FINANCE LTD', 0, 0, 0, '2025-12-10', 'delivered', '2025-12-09'),
-(172, '746124', 0, 800000, 'PANDYA PARESHBHAI RAMANLAL', '9638610999', '890, MU-MAHI  KOTARIYA, MAHI ITADI', 'MAHI ITADI KHEDA ,  THASRA   ', '388235', 'tahir3mansuri@gmail.com', '1977-05-30', 'PEARL ARCTIC WHITE', 'GJ07DE3467', '417960', '9217537', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '693811797c664_1765282169.pdf', '6943c34d299e5_1766048589.pdf', '6943c3f5b34ad_1766048757.pdf', '6943c4aa13077_1766048938.pdf', '6943c4aa13588_1766048938.pdf', NULL, NULL, '6943c3f5b2fe4_1766048757.pdf', NULL, '2025-12-09 12:09:29', '2025-12-18 12:57:58', 'sold', 'KHEDA', NULL, ' 2021', '2018', 'PETROL/CNG', 0, 'KATHLAL', 'AAMIR', 'CHOLAMANDALM', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-19', 'delivered', '2025-12-09'),
-(173, '978136', 0, 550000, 'CHAUHAN ANANDKUMAR KISHORKUMAR', '9714281018', 'ANIYAD  ', 'PANCHMAHAL  ', '389210', 'tahir3mansuri@gmail.com', '0000-00-00', 'PEARL ARCTIC WHITE', 'GJ07DJ1097', '845506', '7394276', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '693bef111fb34_1765535505.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-12 10:31:45', '2025-12-18 13:00:10', 'sold', 'PANCHMAHAL', NULL, 'DEZIRE VXI', '2023', 'PETROL', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'PANCHMAHAL', 'GJ17', '-', 2147483647, 0, 0, '2025-12-18', 'delivered', '2025-12-17'),
-(174, '761267', 0, 870000, 'ZALA HARDIPSINH PRABHATSINH', '09725852233', 'PATHAVAT TARAF HALDARVAS', 'MAHEMDAVAD , HALDARVAS ', '387110', 'tahir3mansuri@gmail.com', '1994-12-08', 'PEARL ARCTIC WHITE', 'GJ06BV8024', '-', '-', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', NULL, NULL, '694397c47d3a9_1766037444.pdf', '694397c47db2f_1766037444.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-18 05:57:24', '2026-01-08 12:08:13', 'sold', 'KHEDA', NULL, 'ERTIGA VXI   CNG', '2023', 'PETROL/CNG ', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2026-01-08', 'delivered', '2025-12-17'),
-(175, '737199', 0, 440000, 'AMIN TRILOKBHAI SUBHASHBHAI ', '9023285847', 'KANKUPURALAT , GADHAVADA ', 'BALASINOR  GADHAVADA , MAHISAGAR, ', '388255', 'tahir3mansuri@gmail.com', '1990-09-22', 'SUPERIOR WHITE', 'GJ07DE8268', '721164', '117399', '0000-00-00', '', '', 'completed', 'received', '-', '-', '', '6943f4a7b54f3_1766061223.pdf', NULL, '6943f4a7b4e6b_1766061223.pdf', '6943f4a7b524e_1766061223.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-18 12:33:43', '2025-12-22 07:02:44', 'sold', 'MAHISAGAR', NULL, 'WAGON R LXI CNG ', '2022', 'PETROL/CNG', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'MAHISAGAR', 'gj35', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-12-21', 'delivered', '2025-12-19'),
-(176, '925064', 0, 0, 'PARMAR MOHAMMADI ABBASBHAI', '', 'BANDUKWALA  SHERI  NANI VAHORVAD , KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1991-06-01', 'WHITE', 'GJ07TU2276', '63247', '77066', '0000-00-00', '', '', 'pending', 'received', '-', '-', '-', '6943f8195c438_1766062105.pdf', '6952457b76f1c_1766999419.PDF', '6952451beaec3_1766999323.pdf', '6952451beb5a0_1766999323.pdf', '6952451bebacd_1766999323.pdf', '6952451bec797_1766999323.pdf', NULL, NULL, NULL, '2025-12-18 12:48:25', '2026-01-03 05:42:38', 'unsold', 'KHEDA', NULL, 'BALERO PIK-UP ', '2022', 'DIESEL', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-01', 'cancelled', '2025-12-01'),
-(177, '828043', 0, 0, 'BARAIYA VIPULBHAI SHARADBHAI ', '6359318911', 'BAJARVADA ', 'BAJARVADA', '389170', 'tahir3mansuri@gmail.com', '2000-05-07', 'WHITE', 'GJ06BV8997', 'G91973', 'G68345', '0000-00-00', '', '', 'completed', 'received', '-', 'HANIFBHAI ', '', '694e175d6d155_1766725469.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '694e175d6d77f_1766725469.pdf', NULL, '2025-12-26 05:04:29', '2025-12-26 05:04:29', 'unsold', 'DAHOD ', NULL, 'MAHINDRA BOLERO NEO N4 ', '2023', 'DIESEL', 0, 'KATHLAL', 'AAMIR', '-', 'DAHOD ', 'GJ20', 'SELF ', 2147483647, 2147483647, 0, NULL, 'pending', NULL),
-(178, '914239', 0, 345000, 'KARIGAR  MANSURTHUSEN  VILAYATHUSEN', '6357831271', 'KADIYAWAD KATHLAL', 'KHEDA  KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1987-01-01', 'STAR DUST', 'GJ01HY5140', '923352', '51014', '0000-00-00', '', '', 'pending', 'pending', '-', '-', '-', '69536414b6352_1767072788.pdf', NULL, '69536414b5acc_1767072788.pdf', '69536414b604d_1767072788.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-30 05:33:08', '2026-01-06 08:27:22', 'sold', 'KHEDA', NULL, 'GRAND I10', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'DAHOD ', 'GJ07', 'SK FINANCE ', 2147483647, 0, 0, '2026-01-01', 'delivered', '2025-12-29'),
+(172, '746124', 0, 800000, 'PANDYA PARESHBHAI RAMANLAL', '9638610999', '890, MU-MAHI  KOTARIYA, MAHI ITADI', 'MAHI ITADI KHEDA ,  THASRA   ', '388235', 'tahir3mansuri@gmail.com', '1977-05-30', 'PEARL ARCTIC WHITE', 'GJ07DE3467', '417960', '9217537', NULL, '', '', 'pending', 'pending', '-', '-', '-', '693811797c664_1765282169.pdf', '6943c34d299e5_1766048589.pdf', '6943c3f5b34ad_1766048757.pdf', '6943c4aa13077_1766048938.pdf', '6943c4aa13588_1766048938.pdf', NULL, NULL, '6943c3f5b2fe4_1766048757.pdf', NULL, '2025-12-09 12:09:29', '2025-12-18 12:57:58', 'sold', 'KHEDA', NULL, ' 2021', '2018', 'PETROL/CNG', 0, 'KATHLAL', 'AAMIR', 'CHOLAMANDALM', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-19', 'delivered', '2025-12-09'),
+(173, '978136', 0, 550000, 'CHAUHAN ANANDKUMAR KISHORKUMAR', '9714281018', 'ANIYAD  ', 'PANCHMAHAL  ', '389210', 'tahir3mansuri@gmail.com', NULL, 'PEARL ARCTIC WHITE', 'GJ07DJ1097', '845506', '7394276', NULL, '', '', 'pending', 'pending', '-', '-', '-', '693bef111fb34_1765535505.pdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-12 10:31:45', '2025-12-18 13:00:10', 'sold', 'PANCHMAHAL', NULL, 'DEZIRE VXI', '2023', 'PETROL', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'PANCHMAHAL', 'GJ17', '-', 2147483647, 0, 0, '2025-12-18', 'delivered', '2025-12-17'),
+(174, '761267', 0, 870000, 'ZALA HARDIPSINH PRABHATSINH', '09725852233', 'PATHAVAT TARAF HALDARVAS', 'MAHEMDAVAD , HALDARVAS ', '387110', 'tahir3mansuri@gmail.com', '1994-12-08', 'PEARL ARCTIC WHITE', 'GJ06BV8024', '-', '-', NULL, '', '', 'pending', 'pending', '-', '-', '-', NULL, NULL, '694397c47d3a9_1766037444.pdf', '694397c47db2f_1766037444.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-18 05:57:24', '2026-01-08 12:08:13', 'sold', 'KHEDA', NULL, 'ERTIGA VXI   CNG', '2023', 'PETROL/CNG ', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2026-01-08', 'delivered', '2025-12-17'),
+(175, '737199', 0, 440000, 'AMIN TRILOKBHAI SUBHASHBHAI ', '9023285847', 'KANKUPURALAT , GADHAVADA ', 'BALASINOR  GADHAVADA , MAHISAGAR, ', '388255', 'tahir3mansuri@gmail.com', '1990-09-22', 'SUPERIOR WHITE', 'GJ07DE8268', '721164', '117399', NULL, '', '', 'completed', 'received', '-', '-', '', '6943f4a7b54f3_1766061223.pdf', NULL, '6943f4a7b4e6b_1766061223.pdf', '6943f4a7b524e_1766061223.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-18 12:33:43', '2025-12-22 07:02:44', 'sold', 'MAHISAGAR', NULL, 'WAGON R LXI CNG ', '2022', 'PETROL/CNG', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'MAHISAGAR', 'gj35', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2025-12-21', 'delivered', '2025-12-19'),
+(176, '925064', 0, 0, 'PARMAR MOHAMMADI ABBASBHAI', '', 'BANDUKWALA  SHERI  NANI VAHORVAD , KAPADVANJ', 'KAPADVANJ', '387620', 'tahir3mansuri@gmail.com', '1991-06-01', 'WHITE', 'GJ07TU2276', '63247', '77066', NULL, '', '', 'pending', 'received', '-', '-', '-', '6943f8195c438_1766062105.pdf', '6952457b76f1c_1766999419.PDF', '6952451beaec3_1766999323.pdf', '6952451beb5a0_1766999323.pdf', '6952451bebacd_1766999323.pdf', '6952451bec797_1766999323.pdf', NULL, NULL, NULL, '2025-12-18 12:48:25', '2026-01-03 05:42:38', 'unsold', 'KHEDA', NULL, 'BALERO PIK-UP ', '2022', 'DIESEL', 0, 'KATHLAL', 'AAMIR', 'MSIL', 'KHEDA', 'GJ07', '-', 2147483647, 0, 0, '2025-12-01', 'cancelled', '2025-12-01'),
+(177, '828043', 0, 0, 'BARAIYA VIPULBHAI SHARADBHAI ', '6359318911', 'BAJARVADA ', 'BAJARVADA', '389170', 'tahir3mansuri@gmail.com', '2000-05-07', 'WHITE', 'GJ06BV8997', 'G91973', 'G68345', NULL, '', '', 'completed', 'received', '-', 'HANIFBHAI ', '', '694e175d6d155_1766725469.pdf', NULL, NULL, NULL, NULL, NULL, NULL, '694e175d6d77f_1766725469.pdf', NULL, '2025-12-26 05:04:29', '2025-12-26 05:04:29', 'unsold', 'DAHOD ', NULL, 'MAHINDRA BOLERO NEO N4 ', '2023', 'DIESEL', 0, 'KATHLAL', 'AAMIR', '-', 'DAHOD ', 'GJ20', 'SELF ', 2147483647, 2147483647, 0, NULL, 'pending', NULL),
+(178, '914239', 0, 345000, 'KARIGAR  MANSURTHUSEN  VILAYATHUSEN', '6357831271', 'KADIYAWAD KATHLAL', 'KHEDA  KATHLAL', '387630', 'tahir3mansuri@gmail.com', '1987-01-01', 'STAR DUST', 'GJ01HY5140', '923352', '51014', NULL, '', '', 'pending', 'pending', '-', '-', '-', '69536414b6352_1767072788.pdf', NULL, '69536414b5acc_1767072788.pdf', '69536414b604d_1767072788.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-30 05:33:08', '2026-01-06 08:27:22', 'sold', 'KHEDA', NULL, 'GRAND I10', '2018', 'PETROL', 0, 'KATHLAL', 'AAMIR', '-', 'DAHOD ', 'GJ07', 'SK FINANCE ', 2147483647, 0, 0, '2026-01-01', 'delivered', '2025-12-29'),
 (179, '425169', 0, 240000, 'SOLANKI  NIMISHABEN  SHANABHAI', '6351818225', 'MANDIR VALU FALIYU  ABVEL ', 'ABVEL  KHEDA', '387650', 'tahir3mansuri@gmail.com', '2002-05-12', '-', 'GJ18BL0265', '21370', '44512', '2026-12-30', '', '', 'pending', 'received', '-', '-', '-', '69536c5855a29_1767074904.pdf', NULL, '69536c5855366_1767074904.pdf', '69536c5855780_1767074904.pdf', NULL, NULL, NULL, NULL, NULL, '2025-12-30 06:08:24', '2026-01-03 05:43:41', 'unsold', 'KHEDA', NULL, 'MAHINDRA JEEP', '2005', 'DIESEL', 0, 'KATHLAL', 'AAMIR', 'MAGMA ', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '0026-12-20', 'pending', '2025-12-23'),
 (181, '617426', 0, 700000, 'ZALA GIRISHBHAI VAJABHAI', '09327697966', 'MU DHEKIYANA MUWADA VAGHAS', 'KHEDA VAGHAS', '387620', 'tahir3mansuri@gmail.com', '1970-01-01', 'WHITE', 'GJ20X2675', '36067', '96144', '2026-12-30', '', '', 'pending', 'received', '-', '-', '-', '695b65b5435a9_1767597493.pdf', '695cf1a79ab97_1767698855.pdf', '695b65b542f92_1767597493.pdf', '695b65b54337c_1767597493.pdf', '695cf2ef0022d_1767699183.pdf', '695cf2ef02d5e_1767699183.pdf', NULL, '695cf1a79b4b9_1767698855.pdf', NULL, '2026-01-05 07:18:13', '2026-01-06 11:33:03', 'unsold', 'KHEDA', NULL, 'BMT PLS PS ', '2021', 'DIESEL', 0, 'KATHLAL', 'AAMIR', '-', 'KHEDA', 'GJ07', 'NA', 2147483647, 0, 0, '2026-01-04', 'pending', '2026-01-04'),
 (182, '647223', 0, 450000, 'TALPADA KISHANKUMAR DASHRATHBHAI  ', '9726967064', 'BEHIND PRAIMARY SCHOOL ', 'KATHLAL ', '387630', 'tahir3mansuri@gmail.com', '2005-04-17', 'SUPERIOR WHITE', 'GJ38T8004', '229415', '61802', '2026-05-06', '', '', 'pending', 'received', '-', '-', '-', '695cebc79f4f0_1767697351.pdf', '695cebc79ced4_1767697351.pdf', '695cebc79dab6_1767697351.pdf', '695cebc79e631_1767697351.pdf', NULL, NULL, NULL, '695cebc7a0713_1767697351.pdf', NULL, '2026-01-06 11:02:31', '2026-01-07 06:19:08', 'sold', 'KHEDA', NULL, 'SUPER CARRY STD CNG', '2022', 'CNG', 0, 'KATHLAL', 'AAMIR', 'ICIC  LOMBARD ', 'KHEDA', 'GJ07', 'AU SMALL FINANCE LTD', 2147483647, 0, 0, '2026-01-07', 'delivered', '2026-06-06');
@@ -12661,72 +12625,70 @@ INSERT INTO `old_cars_sell` (`id`, `docket_number`, `original_price`, `current_p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `old_car_buyers`
+-- Table structure for table "old_car_buyers"
 --
 
-CREATE TABLE `old_car_buyers` (
-  `id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `contact` varchar(15) NOT NULL,
-  `address_line_1` varchar(255) NOT NULL,
-  `address_line_2` varchar(255) DEFAULT NULL,
-  `city_name` varchar(100) NOT NULL,
-  `pincode` varchar(10) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `dob` date NOT NULL,
-  `pan_card` varchar(255) NOT NULL,
-  `aadhar_card` varchar(255) NOT NULL,
-  `driving_license` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "old_car_buyers" (
+  "id" SERIAL PRIMARY KEY,
+  "sale_id" INTEGER NOT NULL,
+  "name" VARCHAR(255) NOT NULL,
+  "contact" VARCHAR(15) NOT NULL,
+  "address_line_1" VARCHAR(255) NOT NULL,
+  "address_line_2" VARCHAR(255) DEFAULT NULL,
+  "city_name" VARCHAR(100) NOT NULL,
+  "pincode" VARCHAR(10) NOT NULL,
+  "email" VARCHAR(255) DEFAULT NULL,
+  "dob" DATE NOT NULL,
+  "pan_card" VARCHAR(255) NOT NULL,
+  "aadhar_card" VARCHAR(255) NOT NULL,
+  "driving_license" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `old_car_buyers`
+-- Dumping data for table "old_car_buyers"
 --
 
-INSERT INTO `old_car_buyers` (`id`, `sale_id`, `name`, `contact`, `address_line_1`, `address_line_2`, `city_name`, `pincode`, `email`, `dob`, `pan_card`, `aadhar_card`, `driving_license`, `created_at`, `updated_at`) VALUES
+INSERT INTO "old_car_buyers" ("id", "sale_id", "name", "contact", "address_line_1", "address_line_2", "city_name", "pincode", "email", "dob", "pan_card", "aadhar_card", "driving_license", "created_at", "updated_at") VALUES
 (5, 29, 'abc abd', '1255314', 'nadiad', 'nadiad', 'nadiad', '486929', 'adb2@gmail.com', '1011-01-01', '67a58ff1e5552_1738903537.jpg', '67a58ff1e5817_1738903537.jpg', '67a58ff1e5a1f_1738903537.jpg', '2025-02-07 04:45:37', '2025-02-07 04:45:37');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `old_car_images`
+-- Table structure for table "old_car_images"
 --
 
-CREATE TABLE `old_car_images` (
-  `id` int(11) NOT NULL,
-  `old_car_id` int(11) NOT NULL,
-  `image_url` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `old_cars_sell_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE "old_car_images" (
+  "id" SERIAL PRIMARY KEY,
+  "old_car_id" INTEGER NOT NULL,
+  "image_url" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL ,
+  "old_cars_sell_id" INTEGER DEFAULT NULL
+);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_installments`
+-- Table structure for table "payment_installments"
 --
 
-CREATE TABLE `payment_installments` (
-  `id` int(11) NOT NULL,
-  `full_payment_id` int(11) NOT NULL,
-  `note` varchar(255) DEFAULT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `payment_date` datetime DEFAULT NULL,
-  `payment_method` enum('check','cash','online','bank') DEFAULT NULL,
-  `payment_status` varchar(50) NOT NULL DEFAULT 'completed',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+CREATE TABLE "payment_installments" (
+  "id" SERIAL PRIMARY KEY,
+  "full_payment_id" INTEGER NULL,
+  "note" VARCHAR(255) DEFAULT NULL,
+  "amount" DECIMAL(10,2) NULL,
+  "payment_date" TIMESTAMP DEFAULT NULL,
+  "payment_method" VARCHAR(50) NULL,
+  "payment_status" VARCHAR(50) NULL DEFAULT 'completed',
+  "created_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `payment_installments`
+-- Dumping data for table "payment_installments"
 --
 
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (13, 17, '27', 2000.00, '2025-02-07 00:00:00', 'check', 'completed', '2025-02-07 04:46:01', '2025-02-07 04:46:01'),
 (16, 20, '', 0.00, '2025-02-07 00:00:00', 'check', 'completed', '2025-02-07 14:42:44', '2025-02-08 07:30:30'),
 (17, 20, 'kathlal rojmed', 5000.00, '2025-02-08 00:00:00', 'cash', 'completed', '2025-02-08 07:14:32', '2025-02-08 07:14:32'),
@@ -13179,7 +13141,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (467, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01'),
 (468, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01'),
 (469, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (470, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01'),
 (471, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01'),
 (472, 86, '', 0.00, '2025-04-04 00:00:00', 'cash', 'completed', '2025-04-04 11:23:18', '2025-04-04 11:50:01'),
@@ -13610,7 +13572,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (897, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51'),
 (898, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51'),
 (899, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (900, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51'),
 (901, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51'),
 (902, 128, '', 0.00, '2025-06-02 00:00:00', 'cash', 'completed', '2025-05-28 06:33:52', '2025-06-02 04:55:51'),
@@ -14047,7 +14009,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (1333, 170, NULL, 0.00, NULL, NULL, 'completed', '2025-07-10 12:23:27', '2025-07-10 12:23:27'),
 (1334, 170, NULL, 0.00, NULL, NULL, 'completed', '2025-07-10 12:23:27', '2025-07-10 12:23:27'),
 (1335, 170, NULL, 0.00, NULL, NULL, 'completed', '2025-07-10 12:23:27', '2025-07-10 12:23:27');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (1336, 170, NULL, 0.00, NULL, NULL, 'completed', '2025-07-10 12:23:27', '2025-07-10 12:23:27'),
 (1337, 170, NULL, 0.00, NULL, NULL, 'completed', '2025-07-10 12:23:27', '2025-07-10 12:23:27'),
 (1338, 171, 'HDB FINANCIAL SERVICES LTD', 602401.00, '2025-07-10 00:00:00', 'bank', 'completed', '2025-07-11 06:39:10', '2025-07-11 06:40:49'),
@@ -14495,7 +14457,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (1780, 213, '', 0.00, '2025-08-17 00:00:00', 'cash', 'completed', '2025-08-17 06:52:05', '2025-08-17 06:54:22'),
 (1781, 213, '', 0.00, '2025-08-17 00:00:00', 'cash', 'completed', '2025-08-17 06:52:05', '2025-08-17 06:54:22'),
 (1782, 213, '', 0.00, '2025-08-17 00:00:00', 'cash', 'completed', '2025-08-17 06:52:05', '2025-08-17 06:54:22');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (1783, 213, '', 0.00, '2025-08-17 00:00:00', 'cash', 'completed', '2025-08-17 06:52:05', '2025-08-17 06:54:22'),
 (1784, 213, '', 0.00, '2025-08-17 00:00:00', 'cash', 'completed', '2025-08-17 06:52:05', '2025-08-17 06:54:22'),
 (1785, 214, 'au bank online', 138000.00, '2025-08-17 00:00:00', 'online', 'completed', '2025-08-17 06:58:30', '2025-08-17 07:07:43'),
@@ -14976,7 +14938,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (2260, 259, 'KATHLAL ROJMED', 570000.00, '2025-10-18 00:00:00', 'bank', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55'),
 (2261, 259, '', 0.00, '2025-10-18 00:00:00', 'cash', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55'),
 (2262, 259, '', 0.00, '2025-10-18 00:00:00', 'cash', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (2263, 259, '', 0.00, '2025-10-18 00:00:00', 'cash', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55'),
 (2264, 259, '', 0.00, '2025-10-18 00:00:00', 'cash', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55'),
 (2265, 259, '', 0.00, '2025-10-18 00:00:00', 'cash', 'completed', '2025-09-26 06:38:04', '2025-10-18 12:11:55'),
@@ -15430,7 +15392,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (2713, 300, 'OLD CAR JAMA ...', 180000.00, '2025-10-14 00:00:00', 'cash', 'completed', '2025-10-14 14:11:14', '2025-10-14 14:11:14'),
 (2714, 259, 'CASH ', 89000.00, '2025-10-15 00:00:00', 'cash', 'completed', '2025-10-15 10:42:25', '2025-10-18 12:11:55'),
 (2715, 301, NULL, 0.00, NULL, NULL, 'completed', '2025-10-15 14:05:08', '2025-10-15 14:05:08');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (2716, 301, NULL, 0.00, NULL, NULL, 'completed', '2025-10-15 14:05:08', '2025-10-15 14:05:08'),
 (2717, 301, NULL, 0.00, NULL, NULL, 'completed', '2025-10-15 14:05:08', '2025-10-15 14:05:08'),
 (2718, 301, NULL, 0.00, NULL, NULL, 'completed', '2025-10-15 14:05:08', '2025-10-15 14:05:08'),
@@ -15880,7 +15842,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (3162, 343, '', 0.00, '2025-11-15 00:00:00', 'cash', 'completed', '2025-11-12 12:10:28', '2025-11-15 11:13:18'),
 (3163, 343, '', 0.00, '2025-11-15 00:00:00', 'cash', 'completed', '2025-11-12 12:10:28', '2025-11-15 11:13:18'),
 (3164, 343, '', 0.00, '2025-11-15 00:00:00', 'cash', 'completed', '2025-11-12 12:10:28', '2025-11-15 11:13:18');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (3165, 343, '', 0.00, '2025-11-15 00:00:00', 'cash', 'completed', '2025-11-12 12:10:28', '2025-11-15 11:13:18'),
 (3166, 342, 'hdfc bank do', 687825.00, '2025-11-12 00:00:00', 'bank', 'completed', '2025-11-12 12:11:00', '2025-11-13 11:18:10'),
 (3167, 344, '', 0.00, '2025-12-04 00:00:00', 'cash', 'completed', '2025-11-13 10:31:23', '2025-12-04 10:04:12'),
@@ -16320,7 +16282,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (3601, 383, 'popular ', 90000.00, '2025-12-12 00:00:00', 'online', 'completed', '2025-12-10 12:28:42', '2025-12-12 14:05:01'),
 (3602, 383, 'axis bank do ', 1146300.00, '2025-12-12 00:00:00', 'bank', 'completed', '2025-12-10 12:28:42', '2025-12-12 14:05:01'),
 (3603, 383, 'QR CODE-ONLINE', 2000.00, '2025-12-10 00:00:00', 'online', 'completed', '2025-12-10 12:29:17', '2025-12-10 12:29:17');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (3604, 383, 'QR CODE-ONLINE', 30000.00, '2025-12-10 00:00:00', 'online', 'completed', '2025-12-10 12:29:34', '2025-12-10 12:29:34'),
 (3605, 383, 'QR CODE-ONLINE', 49000.00, '2025-12-10 00:00:00', 'online', 'completed', '2025-12-10 12:30:24', '2025-12-10 12:30:24'),
 (3606, 384, NULL, 0.00, NULL, NULL, 'completed', '2025-12-10 13:13:45', '2025-12-10 13:13:45'),
@@ -16765,7 +16727,7 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 (4045, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12'),
 (4046, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12'),
 (4047, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12');
-INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `payment_date`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+INSERT INTO "payment_installments" ("id", "full_payment_id", "note", "amount", "payment_date", "payment_method", "payment_status", "created_at", "updated_at") VALUES
 (4048, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12'),
 (4049, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12'),
 (4050, 426, NULL, 0.00, NULL, NULL, 'completed', '2026-01-02 10:37:12', '2026-01-02 10:37:12'),
@@ -16912,24 +16874,23 @@ INSERT INTO `payment_installments` (`id`, `full_payment_id`, `note`, `amount`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `remember_tokens`
+-- Table structure for table "remember_tokens"
 --
 
-CREATE TABLE `remember_tokens` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `token` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `expires_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `is_valid` tinyint(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "remember_tokens" (
+  "id" SERIAL PRIMARY KEY,
+  "user_id" INTEGER DEFAULT NULL,
+  "token" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL ,
+  "expires_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "is_valid" SMALLINT DEFAULT 1
+);
 --
--- Dumping data for table `remember_tokens`
+-- Dumping data for table "remember_tokens"
 --
 
-INSERT INTO `remember_tokens` (`id`, `user_id`, `token`, `created_at`, `updated_at`, `expires_at`, `is_valid`) VALUES
+INSERT INTO "remember_tokens" ("id", "user_id", "token", "created_at", "updated_at", "expires_at", "is_valid") VALUES
 (20, 2, '1f432f8d88dba887f7964288e3196c0763470e40477ed0cda428083b02ef9cf2', '2025-02-06 18:58:04', '2025-02-07 05:29:09', '2025-03-09 05:29:09', 1),
 (21, 2, '466f51218e2004043b9f49aeb8c78b74a82a850076452322a4064203015b97eb', '2025-02-07 05:30:07', '2025-02-07 05:30:07', '2025-02-14 05:30:07', 1),
 (25, 2, '358f1fb4e064a7b44a872d30ec50a37678383f66c09daf81153922835da85da8', '2025-02-07 05:58:38', '2025-02-07 05:58:38', '2025-02-14 05:58:38', 1),
@@ -16958,19 +16919,18 @@ INSERT INTO `remember_tokens` (`id`, `user_id`, `token`, `created_at`, `updated_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rto`
+-- Table structure for table "rto"
 --
 
-CREATE TABLE `rto` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "rto" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `rto`
+-- Dumping data for table "rto"
 --
 
-INSERT INTO `rto` (`id`, `name`) VALUES
+INSERT INTO "rto" ("id", "name") VALUES
 (12, 'Rajkot RTO'),
 (13, 'Porbandar RTO'),
 (21, 'amreli'),
@@ -17029,19 +16989,18 @@ INSERT INTO `rto` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rto_codes`
+-- Table structure for table "rto_codes"
 --
 
-CREATE TABLE `rto_codes` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "rto_codes" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL
+);
 --
--- Dumping data for table `rto_codes`
+-- Dumping data for table "rto_codes"
 --
 
-INSERT INTO `rto_codes` (`id`, `name`) VALUES
+INSERT INTO "rto_codes" ("id", "name") VALUES
 (1, 'GJ03'),
 (2, 'gj14'),
 (3, '07'),
@@ -17103,26 +17062,25 @@ INSERT INTO `rto_codes` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sales`
+-- Table structure for table "sales"
 --
 
-CREATE TABLE `sales` (
-  `id` int(11) NOT NULL,
-  `car_type` enum('new','old') NOT NULL,
-  `car_id` int(11) NOT NULL,
-  `sale_type` enum('full','loan') NOT NULL,
-  `total_price` decimal(10,2) NOT NULL,
-  `sale_date` datetime NOT NULL,
-  `buyer_name` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "sales" (
+  "id" SERIAL PRIMARY KEY,
+  "car_type" VARCHAR(50) CHECK (car_type IN ('new','old')) NOT NULL,
+  "car_id" INTEGER NULL,
+  "sale_type" VARCHAR(50) CHECK (sale_type IN ('full','loan')) NOT NULL,
+  "total_price" DECIMAL(10,2) NULL,
+  "sale_date" TIMESTAMP NULL,
+  "buyer_name" VARCHAR(255) DEFAULT NULL,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
 --
--- Dumping data for table `sales`
+-- Dumping data for table "sales"
 --
 
-INSERT INTO `sales` (`id`, `car_type`, `car_id`, `sale_type`, `total_price`, `sale_date`, `buyer_name`, `created_at`, `updated_at`) VALUES
+INSERT INTO "sales" ("id", "car_type", "car_id", "sale_type", "total_price", "sale_date", "buyer_name", "created_at", "updated_at") VALUES
 (29, 'old', 31, 'full', 200000.00, '2002-01-12 00:00:00', 'abc abd', '2025-02-07 04:45:37', '2025-02-07 04:45:37'),
 (32, 'new', 18, 'full', 925265.00, '2025-03-03 00:00:00', 'asd', '2025-02-07 09:46:46', '2025-03-03 06:15:17'),
 (48, 'new', 26, 'full', 10006.00, '2025-02-13 00:00:00', NULL, '2025-02-13 14:40:11', '2025-02-13 15:00:09'),
@@ -17533,26 +17491,25 @@ INSERT INTO `sales` (`id`, `car_type`, `car_id`, `sale_type`, `total_price`, `sa
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table "users"
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `full_name` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `last_login` timestamp NULL DEFAULT NULL,
-  `status` enum('active','inactive') DEFAULT 'active',
-  `role` enum('admin','user','Insurance') NOT NULL DEFAULT 'user'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE "users" (
+  "id" SERIAL PRIMARY KEY,
+  "email" VARCHAR(255) NOT NULL,
+  "password" VARCHAR(255) NOT NULL,
+  "full_name" VARCHAR(100) DEFAULT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NULL DEFAULT NULL ,
+  "last_login" TIMESTAMP NULL DEFAULT NULL,
+  "status" VARCHAR(50) CHECK (status IN ('active','inactive')) DEFAULT 'active',
+  "role" VARCHAR(50) CHECK (role IN ('admin','user','Insurance')) NOT NULL DEFAULT 'user'
+);
 --
--- Dumping data for table `users`
+-- Dumping data for table "users"
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `created_at`, `updated_at`, `last_login`, `status`, `role`) VALUES
+INSERT INTO "users" ("id", "email", "password", "full_name", "created_at", "updated_at", "last_login", "status", "role") VALUES
 (2, 'tahir3mansuri@gmail.com', '$2y$10$UnFNVL0C6xUeUBWXRiHPVOJ4Ed1toOmoeGL33CauO8xEJFWhyl8D.', 'Tahir Mansuri', '2025-01-09 01:20:00', '2026-01-15 07:13:10', '2026-01-15 07:13:10', 'active', 'admin'),
 (12, 'payal@parivar.com', '$2y$10$6JPvjwQMLCvkGZKroOB19O4pRAw0NzwrASQ8HQicW2sjB.Rm0Im6O', 'payal sodha', '2025-03-10 04:07:34', '2026-01-13 05:31:58', '2026-01-13 05:31:58', 'active', 'Insurance'),
 (14, 'soniya@parivar.com', '$2y$10$13f62cZGxtUFMtw3w6odNeH2EBN65mC4wowlJQ3bBVSR/qYSBLlmS', 'soniya vohra', '2025-03-11 10:41:07', '2026-01-15 09:20:26', '2026-01-15 09:20:26', 'active', 'user'),
@@ -17564,474 +17521,396 @@ INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `created_at`, `upda
 --
 
 --
--- Indexes for table `car_dealers`
+-- Indexes for table "car_dealers"
 --
-ALTER TABLE `car_dealers`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `car_documents`
+-- Indexes for table "car_documents"
 --
-ALTER TABLE `car_documents`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cities`
+-- Indexes for table "cities"
 --
-ALTER TABLE `cities`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `dealer_full_payment_details`
+-- Indexes for table "dealer_full_payment_details"
 --
-ALTER TABLE `dealer_full_payment_details`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `dealer_full_payment_details_ibfk_1` (`sale_id`);
+  -- ADD KEY "dealer_full_payment_details_ibfk_1" ("sale_id");
 
 --
--- Indexes for table `dealer_payment_installments`
+-- Indexes for table "dealer_payment_installments"
 --
-ALTER TABLE `dealer_payment_installments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_payment_installment_payment` (`dealer_full_payment_id`),
-  ADD KEY `idx_payment_date` (`payment_date`),
-  ADD KEY `idx_payment_method` (`payment_method`);
+  -- ADD KEY "idx_payment_installment_payment" ("dealer_full_payment_id");
+  -- ADD KEY "idx_payment_date" ("payment_date");
+  -- ADD KEY "idx_payment_method" ("payment_method");
 
 --
--- Indexes for table `executives`
+-- Indexes for table "executives"
 --
-ALTER TABLE `executives`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `executive_branches`
+-- Indexes for table "executive_branches"
 --
-ALTER TABLE `executive_branches`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `extra_charges`
+-- Indexes for table "extra_charges"
 --
-ALTER TABLE `extra_charges`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `extra_charges_ibfk_1` (`old_car_id`);
+  -- ADD KEY "extra_charges_ibfk_1" ("old_car_id");
 
 --
--- Indexes for table `finances`
+-- Indexes for table "finances"
 --
-ALTER TABLE `finances`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `full_payment_details`
+-- Indexes for table "full_payment_details"
 --
-ALTER TABLE `full_payment_details`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_full_payment_sale` (`sale_id`);
+  -- ADD KEY "idx_full_payment_sale" ("sale_id");
 
 --
--- Indexes for table `hire_purchase`
+-- Indexes for table "hire_purchase"
 --
-ALTER TABLE `hire_purchase`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `inquiries`
+-- Indexes for table "inquiries"
 --
-ALTER TABLE `inquiries`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `installments`
+-- Indexes for table "installments"
 --
-ALTER TABLE `installments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `loan_id` (`loan_id`);
+  -- ADD KEY "loan_id" ("loan_id");
 
 --
--- Indexes for table `insurancedocument`
+-- Indexes for table "insurancedocument"
 --
-ALTER TABLE `insurancedocument`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `insurances`
+-- Indexes for table "insurances"
 --
-ALTER TABLE `insurances`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `insurance_companies`
+-- Indexes for table "insurance_companies"
 --
-ALTER TABLE `insurance_companies`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `insurance_payment`
+-- Indexes for table "insurance_payment"
 --
-ALTER TABLE `insurance_payment`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `loan_details`
+-- Indexes for table "loan_details"
 --
-ALTER TABLE `loan_details`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `sale_id` (`sale_id`);
+  -- ADD KEY "sale_id" ("sale_id");
 
 --
--- Indexes for table `manufacturers`
+-- Indexes for table "manufacturers"
 --
-ALTER TABLE `manufacturers`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `models`
+-- Indexes for table "models"
 --
-ALTER TABLE `models`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `new_cars`
+-- Indexes for table "new_cars"
 --
-ALTER TABLE `new_cars`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `new_car_images`
+-- Indexes for table "new_car_images"
 --
-ALTER TABLE `new_car_images`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `new_car_images_ibfk_1` (`new_car_id`);
+  -- ADD KEY "new_car_images_ibfk_1" ("new_car_id");
 
 --
--- Indexes for table `old_cars`
+-- Indexes for table "old_cars"
 --
-ALTER TABLE `old_cars`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `old_cars_sell`
+-- Indexes for table "old_cars_sell"
 --
-ALTER TABLE `old_cars_sell`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `old_car_buyers`
+-- Indexes for table "old_car_buyers"
 --
-ALTER TABLE `old_car_buyers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ibfk_buyer_sale_id` (`sale_id`);
+  -- ADD KEY "ibfk_buyer_sale_id" ("sale_id");
 
 --
--- Indexes for table `old_car_images`
+-- Indexes for table "old_car_images"
 --
-ALTER TABLE `old_car_images`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `old_car_images_ibfk_1` (`old_car_id`);
+  -- ADD KEY "old_car_images_ibfk_1" ("old_car_id");
 
 --
--- Indexes for table `payment_installments`
+-- Indexes for table "payment_installments"
 --
-ALTER TABLE `payment_installments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_payment_installment_payment` (`full_payment_id`),
-  ADD KEY `idx_payment_date` (`payment_date`),
-  ADD KEY `idx_payment_method` (`payment_method`);
+  -- ADD KEY "idx_payment_installment_payment" ("full_payment_id");
+  -- ADD KEY "idx_payment_date" ("payment_date");
+  -- ADD KEY "idx_payment_method" ("payment_method");
 
 --
--- Indexes for table `remember_tokens`
+-- Indexes for table "remember_tokens"
 --
-ALTER TABLE `remember_tokens`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  -- ADD KEY "user_id" ("user_id");
 
 --
--- Indexes for table `rto`
+-- Indexes for table "rto"
 --
-ALTER TABLE `rto`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `rto_codes`
+-- Indexes for table "rto_codes"
 --
-ALTER TABLE `rto_codes`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `sales`
+-- Indexes for table "sales"
 --
-ALTER TABLE `sales`
-  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indexes for table "users"
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+--  for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `car_dealers`
+--  for table "car_dealers"
 --
-ALTER TABLE `car_dealers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT for table `car_documents`
+--  for table "car_documents"
 --
-ALTER TABLE `car_documents`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
--- AUTO_INCREMENT for table `cities`
+--  for table "cities"
 --
-ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
 
 --
--- AUTO_INCREMENT for table `dealer_full_payment_details`
+--  for table "dealer_full_payment_details"
 --
-ALTER TABLE `dealer_full_payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=720;
 
 --
--- AUTO_INCREMENT for table `dealer_payment_installments`
+--  for table "dealer_payment_installments"
 --
-ALTER TABLE `dealer_payment_installments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7010;
 
 --
--- AUTO_INCREMENT for table `executives`
+--  for table "executives"
 --
-ALTER TABLE `executives`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT for table `executive_branches`
+--  for table "executive_branches"
 --
-ALTER TABLE `executive_branches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
--- AUTO_INCREMENT for table `extra_charges`
+--  for table "extra_charges"
 --
-ALTER TABLE `extra_charges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 
 --
--- AUTO_INCREMENT for table `finances`
+--  for table "finances"
 --
-ALTER TABLE `finances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `full_payment_details`
+--  for table "full_payment_details"
 --
-ALTER TABLE `full_payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=440;
 
 --
--- AUTO_INCREMENT for table `hire_purchase`
+--  for table "hire_purchase"
 --
-ALTER TABLE `hire_purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
--- AUTO_INCREMENT for table `inquiries`
+--  for table "inquiries"
 --
-ALTER TABLE `inquiries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
--- AUTO_INCREMENT for table `installments`
+--  for table "installments"
 --
-ALTER TABLE `installments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
--- AUTO_INCREMENT for table `insurancedocument`
+--  for table "insurancedocument"
 --
-ALTER TABLE `insurancedocument`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1388;
 
 --
--- AUTO_INCREMENT for table `insurances`
+--  for table "insurances"
 --
-ALTER TABLE `insurances`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=359;
 
 --
--- AUTO_INCREMENT for table `insurance_companies`
+--  for table "insurance_companies"
 --
-ALTER TABLE `insurance_companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
--- AUTO_INCREMENT for table `insurance_payment`
+--  for table "insurance_payment"
 --
-ALTER TABLE `insurance_payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=472;
 
 --
--- AUTO_INCREMENT for table `loan_details`
+--  for table "loan_details"
 --
-ALTER TABLE `loan_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `manufacturers`
+--  for table "manufacturers"
 --
-ALTER TABLE `manufacturers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT for table `models`
+--  for table "models"
 --
-ALTER TABLE `models`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=273;
 
 --
--- AUTO_INCREMENT for table `new_cars`
+--  for table "new_cars"
 --
-ALTER TABLE `new_cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
 
 --
--- AUTO_INCREMENT for table `new_car_images`
+--  for table "new_car_images"
 --
-ALTER TABLE `new_car_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `old_cars`
+--  for table "old_cars"
 --
-ALTER TABLE `old_cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
--- AUTO_INCREMENT for table `old_cars_sell`
+--  for table "old_cars_sell"
 --
-ALTER TABLE `old_cars_sell`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
--- AUTO_INCREMENT for table `old_car_buyers`
+--  for table "old_car_buyers"
 --
-ALTER TABLE `old_car_buyers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `old_car_images`
+--  for table "old_car_images"
 --
-ALTER TABLE `old_car_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `payment_installments`
+--  for table "payment_installments"
 --
-ALTER TABLE `payment_installments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4190;
 
 --
--- AUTO_INCREMENT for table `remember_tokens`
+--  for table "remember_tokens"
 --
-ALTER TABLE `remember_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
--- AUTO_INCREMENT for table `rto`
+--  for table "rto"
 --
-ALTER TABLE `rto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
--- AUTO_INCREMENT for table `rto_codes`
+--  for table "rto_codes"
 --
-ALTER TABLE `rto_codes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT for table `sales`
+--  for table "sales"
 --
-ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=452;
 
 --
--- AUTO_INCREMENT for table `users`
+--  for table "users"
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `dealer_full_payment_details`
+-- Constraints for table "dealer_full_payment_details"
 --
-ALTER TABLE `dealer_full_payment_details`
-  ADD CONSTRAINT `dealer_full_payment_details_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "dealer_full_payment_details"
+  ADD CONSTRAINT "dealer_full_payment_details_ibfk_1" FOREIGN KEY ("sale_id") REFERENCES "sales" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `extra_charges`
+-- Constraints for table "extra_charges"
 --
-ALTER TABLE `extra_charges`
-  ADD CONSTRAINT `extra_charges_ibfk_1` FOREIGN KEY (`old_car_id`) REFERENCES `old_cars` (`id`) ON DELETE CASCADE;
+ALTER TABLE "extra_charges"
+  ADD CONSTRAINT "extra_charges_ibfk_1" FOREIGN KEY ("old_car_id") REFERENCES "old_cars" ("id") ON DELETE CASCADE;
 
 --
--- Constraints for table `full_payment_details`
+-- Constraints for table "full_payment_details"
 --
-ALTER TABLE `full_payment_details`
-  ADD CONSTRAINT `full_payment_details_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE;
+ALTER TABLE "full_payment_details"
+  ADD CONSTRAINT "full_payment_details_ibfk_1" FOREIGN KEY ("sale_id") REFERENCES "sales" ("id") ON DELETE CASCADE;
 
 --
--- Constraints for table `installments`
+-- Constraints for table "installments"
 --
-ALTER TABLE `installments`
-  ADD CONSTRAINT `installments_ibfk_1` FOREIGN KEY (`loan_id`) REFERENCES `loan_details` (`id`) ON DELETE CASCADE;
+ALTER TABLE "installments"
+  ADD CONSTRAINT "installments_ibfk_1" FOREIGN KEY ("loan_id") REFERENCES "loan_details" ("id") ON DELETE CASCADE;
 
 --
--- Constraints for table `loan_details`
+-- Constraints for table "loan_details"
 --
-ALTER TABLE `loan_details`
-  ADD CONSTRAINT `loan_details_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE;
+ALTER TABLE "loan_details"
+  ADD CONSTRAINT "loan_details_ibfk_1" FOREIGN KEY ("sale_id") REFERENCES "sales" ("id") ON DELETE CASCADE;
 
 --
--- Constraints for table `new_car_images`
+-- Constraints for table "new_car_images"
 --
-ALTER TABLE `new_car_images`
-  ADD CONSTRAINT `new_car_images_ibfk_1` FOREIGN KEY (`new_car_id`) REFERENCES `new_cars` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "new_car_images"
+  ADD CONSTRAINT "new_car_images_ibfk_1" FOREIGN KEY ("new_car_id") REFERENCES "new_cars" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `old_car_buyers`
+-- Constraints for table "old_car_buyers"
 --
-ALTER TABLE `old_car_buyers`
-  ADD CONSTRAINT `ibfk_buyer_sale_id` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "old_car_buyers"
+  ADD CONSTRAINT "ibfk_buyer_sale_id" FOREIGN KEY ("sale_id") REFERENCES "sales" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `old_car_images`
+-- Constraints for table "old_car_images"
 --
-ALTER TABLE `old_car_images`
-  ADD CONSTRAINT `old_car_images_ibfk_1` FOREIGN KEY (`old_car_id`) REFERENCES `old_cars` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "old_car_images"
+  ADD CONSTRAINT "old_car_images_ibfk_1" FOREIGN KEY ("old_car_id") REFERENCES "old_cars" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `payment_installments`
+-- Constraints for table "payment_installments"
 --
-ALTER TABLE `payment_installments`
-  ADD CONSTRAINT `payment_installments_ibfk_1` FOREIGN KEY (`full_payment_id`) REFERENCES `full_payment_details` (`id`) ON DELETE CASCADE;
+ALTER TABLE "payment_installments"
+  ADD CONSTRAINT "payment_installments_ibfk_1" FOREIGN KEY ("full_payment_id") REFERENCES "full_payment_details" ("id") ON DELETE CASCADE;
 
 --
--- Constraints for table `remember_tokens`
+-- Constraints for table "remember_tokens"
 --
-ALTER TABLE `remember_tokens`
-  ADD CONSTRAINT `remember_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE "remember_tokens"
+  ADD CONSTRAINT "remember_tokens_ibfk_1" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
+
+
+-- Reset sequences to max ID values
+SELECT setval(pg_get_serial_sequence('"car_dealers"', 'id'), COALESCE(MAX(id), 1), true) FROM "car_dealers";
+SELECT setval(pg_get_serial_sequence('"car_documents"', 'id'), COALESCE(MAX(id), 1), true) FROM "car_documents";
+SELECT setval(pg_get_serial_sequence('"cities"', 'id'), COALESCE(MAX(id), 1), true) FROM "cities";
+SELECT setval(pg_get_serial_sequence('"dealer_full_payment_details"', 'id'), COALESCE(MAX(id), 1), true) FROM "dealer_full_payment_details";
+SELECT setval(pg_get_serial_sequence('"dealer_payment_installments"', 'id'), COALESCE(MAX(id), 1), true) FROM "dealer_payment_installments";
+SELECT setval(pg_get_serial_sequence('"executives"', 'id'), COALESCE(MAX(id), 1), true) FROM "executives";
+SELECT setval(pg_get_serial_sequence('"executive_branches"', 'id'), COALESCE(MAX(id), 1), true) FROM "executive_branches";
+SELECT setval(pg_get_serial_sequence('"extra_charges"', 'id'), COALESCE(MAX(id), 1), true) FROM "extra_charges";
+SELECT setval(pg_get_serial_sequence('"extra_charges_Sell"', 'id'), COALESCE(MAX(id), 1), true) FROM "extra_charges_Sell";
+SELECT setval(pg_get_serial_sequence('"finances"', 'id'), COALESCE(MAX(id), 1), true) FROM "finances";
+SELECT setval(pg_get_serial_sequence('"full_payment_details"', 'id'), COALESCE(MAX(id), 1), true) FROM "full_payment_details";
+SELECT setval(pg_get_serial_sequence('"hire_purchase"', 'id'), COALESCE(MAX(id), 1), true) FROM "hire_purchase";
+SELECT setval(pg_get_serial_sequence('"inquiries"', 'id'), COALESCE(MAX(id), 1), true) FROM "inquiries";
+SELECT setval(pg_get_serial_sequence('"installments"', 'id'), COALESCE(MAX(id), 1), true) FROM "installments";
+SELECT setval(pg_get_serial_sequence('"insurancedocument"', 'id'), COALESCE(MAX(id), 1), true) FROM "insurancedocument";
+SELECT setval(pg_get_serial_sequence('"insurances"', 'id'), COALESCE(MAX(id), 1), true) FROM "insurances";
+SELECT setval(pg_get_serial_sequence('"insurance_companies"', 'id'), COALESCE(MAX(id), 1), true) FROM "insurance_companies";
+SELECT setval(pg_get_serial_sequence('"insurance_payment"', 'id'), COALESCE(MAX(id), 1), true) FROM "insurance_payment";
+SELECT setval(pg_get_serial_sequence('"loan_details"', 'id'), COALESCE(MAX(id), 1), true) FROM "loan_details";
+SELECT setval(pg_get_serial_sequence('"manufacturers"', 'id'), COALESCE(MAX(id), 1), true) FROM "manufacturers";
+SELECT setval(pg_get_serial_sequence('"models"', 'id'), COALESCE(MAX(id), 1), true) FROM "models";
+SELECT setval(pg_get_serial_sequence('"new_cars"', 'id'), COALESCE(MAX(id), 1), true) FROM "new_cars";
+SELECT setval(pg_get_serial_sequence('"new_car_images"', 'id'), COALESCE(MAX(id), 1), true) FROM "new_car_images";
+SELECT setval(pg_get_serial_sequence('"old_cars"', 'id'), COALESCE(MAX(id), 1), true) FROM "old_cars";
+SELECT setval(pg_get_serial_sequence('"old_cars_sell"', 'id'), COALESCE(MAX(id), 1), true) FROM "old_cars_sell";
+SELECT setval(pg_get_serial_sequence('"old_car_buyers"', 'id'), COALESCE(MAX(id), 1), true) FROM "old_car_buyers";
+SELECT setval(pg_get_serial_sequence('"old_car_images"', 'id'), COALESCE(MAX(id), 1), true) FROM "old_car_images";
+SELECT setval(pg_get_serial_sequence('"payment_installments"', 'id'), COALESCE(MAX(id), 1), true) FROM "payment_installments";
+SELECT setval(pg_get_serial_sequence('"remember_tokens"', 'id'), COALESCE(MAX(id), 1), true) FROM "remember_tokens";
+SELECT setval(pg_get_serial_sequence('"rto"', 'id'), COALESCE(MAX(id), 1), true) FROM "rto";
+SELECT setval(pg_get_serial_sequence('"rto_codes"', 'id'), COALESCE(MAX(id), 1), true) FROM "rto_codes";
+SELECT setval(pg_get_serial_sequence('"sales"', 'id'), COALESCE(MAX(id), 1), true) FROM "sales";
+SELECT setval(pg_get_serial_sequence('"users"', 'id'), COALESCE(MAX(id), 1), true) FROM "users";
+
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Table structure for table "inquiry" (New Feature)
+--
+
+CREATE TABLE IF NOT EXISTS "inquiry" (
+  "id" SERIAL PRIMARY KEY,
+  "customer" VARCHAR(100) NOT NULL,
+  "email" VARCHAR(120) NOT NULL,
+  "phone" VARCHAR(20) NOT NULL,
+  "vehicle_interest" VARCHAR(100),
+  "car_type" VARCHAR(20),
+  "contact_method" VARCHAR(50),
+  "notes" TEXT,
+  "source" VARCHAR(50),
+  "status" VARCHAR(50) DEFAULT 'Pending',
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

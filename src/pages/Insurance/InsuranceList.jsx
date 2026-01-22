@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Plus, Trash2, Edit, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Plus, Trash2, Edit, Search, Eye } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { Badge } from '../../components/ui/Badge';
 
 export default function InsuranceList() {
+    const navigate = useNavigate();
     const [insurances, setInsurances] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [selectedInsurance, setSelectedInsurance] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [entriesPerPage, setEntriesPerPage] = useState(10);
 
     useEffect(() => {
         fetchInsurances();
@@ -51,27 +56,26 @@ export default function InsuranceList() {
     };
 
     const filteredInsurances = insurances.filter(item =>
-        item.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.bank_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.vehicle?.model?.toLowerCase().includes(searchTerm.toLowerCase())
+        item.insurance_company?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const getDaysRemaining = (expiryDate) => {
+    // Pagination
+    const indexOfLastEntry = currentPage * entriesPerPage;
+    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+    const currentEntries = filteredInsurances.slice(indexOfFirstEntry, indexOfLastEntry);
+
+    const getExpiryStatus = (expiryDate) => {
         if (!expiryDate) return null;
         const today = new Date();
         const expiry = new Date(expiryDate);
         const diffTime = expiry - today;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
-    };
 
-    const getExpiryBadge = (expiryDate) => {
-        const days = getDaysRemaining(expiryDate);
-        if (days === null) return <Badge variant="secondary">N/A</Badge>;
-
-        if (days < 0) {
+        if (diffDays < 0) {
             return <Badge variant="destructive">Expired</Badge>;
-        } else if (days <= 30) {
+        } else if (diffDays <= 30) {
             return <Badge className="bg-yellow-500 hover:bg-yellow-600">Expiring Soon</Badge>;
         } else {
             return <Badge className="bg-green-500 hover:bg-green-600">Active</Badge>;
@@ -123,14 +127,36 @@ export default function InsuranceList() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredInsurances.length > 0 ? (
-                                    filteredInsurances.map((item) => (
+                                {currentEntries.length > 0 ? (
+                                    currentEntries.map((item) => (
                                         <tr key={item.id} className="border-b last:border-0 hover:bg-slate-50">
                                             <td className="p-4 flex gap-2">
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
+                                                    className="h-8 w-8 text-blue-600"
+                                                    title="View Details"
+                                                    onClick={() => {
+                                                        setSelectedInsurance(item);
+                                                        setIsDetailModalOpen(true);
+                                                    }}
+                                                >
+                                                    <Eye size={14} />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8 text-green-600"
+                                                    title="Edit"
+                                                    onClick={() => navigate(`/insurances/edit/${item.id}`)}
+                                                >
+                                                    <Edit size={14} />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
                                                     className="h-8 w-8 text-red-500"
+                                                    title="Delete"
                                                     onClick={() => handleDelete(item.id)}
                                                 >
                                                     <Trash2 size={14} />
@@ -146,7 +172,7 @@ export default function InsuranceList() {
                                             <td className="p-4">
                                                 <div className="flex flex-col gap-1 items-start">
                                                     <span>{item.expiry_date || "N/A"}</span>
-                                                    {getExpiryBadge(item.expiry_date)}
+                                                    {getExpiryStatus(item.expiry_date)}
                                                 </div>
                                             </td>
                                         </tr>
@@ -161,6 +187,46 @@ export default function InsuranceList() {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination Controls */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t">
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="text-slate-600">Show</span>
+                            <select
+                                value={entriesPerPage}
+                                onChange={(e) => {
+                                    setEntriesPerPage(Number(e.target.value));
+                                    setCurrentPage(1);
+                                }}
+                                className="border rounded px-2 py-1 text-sm"
+                            >
+                                <option value={10}>10</option>
+                                <option value={25}>25</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
+                            </select>
+                            <span className="text-slate-600">entries</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(prev => prev - 1)}
+                            >
+                                Previous
+                            </Button>
+                            <Button variant="outline" size="sm" className="bg-slate-100">{currentPage}</Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage * entriesPerPage >= filteredInsurances.length}
+                                onClick={() => setCurrentPage(prev => prev + 1)}
+                            >
+                                Next
+                            </Button>
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
 
@@ -170,6 +236,106 @@ export default function InsuranceList() {
                     <Plus className="h-5 w-5" /> Add Insurance
                 </Button>
             </Link>
+
+            {/* Insurance Detail Modal */}
+            {isDetailModalOpen && selectedInsurance && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setIsDetailModalOpen(false)}>
+                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                        <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                            <h2 className="text-xl font-bold text-slate-900">Insurance Details - Insurance #{selectedInsurance.id}</h2>
+                            <button onClick={() => setIsDetailModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-6">
+                            {/* Basic Information */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Bank Name</label>
+                                    <p className="text-slate-900 font-semibold">{selectedInsurance.bank_name || '-'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Branch</label>
+                                    <p className="text-slate-900">{selectedInsurance.branch || '-'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Customer Name</label>
+                                    <p className="text-slate-900 font-semibold">{selectedInsurance.customer_name}</p>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Insurance Company</label>
+                                    <p className="text-slate-900">{selectedInsurance.insurance_company || '-'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Premium Amount</label>
+                                    <p className="text-green-600 font-bold">${selectedInsurance.premium_amount?.toLocaleString() || '0'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-600">Expiry Date</label>
+                                    <p className="text-slate-900">{selectedInsurance.expiry_date || 'N/A'}</p>
+                                </div>
+                                {selectedInsurance.vehicle && (
+                                    <>
+                                        <div>
+                                            <label className="text-sm font-medium text-slate-600">Vehicle</label>
+                                            <p className="text-slate-900">{selectedInsurance.vehicle.manufacturer} {selectedInsurance.vehicle.model} ({selectedInsurance.vehicle.year})</p>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-slate-600">Registration Number</label>
+                                            <p className="text-slate-900 font-mono">{selectedInsurance.vehicle.registration_number || '-'}</p>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Manage Documents Section */}
+                            <div className="border-t border-slate-200 pt-6">
+                                <h3 className="text-lg font-semibold text-slate-900 mb-4">Manage Documents</h3>
+
+                                {/* Document Upload Sections */}
+                                <div className="space-y-4">
+                                    {/* Old Policy */}
+                                    <div className="bg-slate-50 p-4 rounded-lg">
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">OLD POLICY</label>
+                                        <div className="flex gap-2">
+                                            <input type="file" className="flex-1 text-sm" />
+                                            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm">DOWNLOAD</Button>
+                                        </div>
+                                    </div>
+
+                                    {/* New Policy */}
+                                    <div className="bg-slate-50 p-4 rounded-lg">
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">NEW POLICY</label>
+                                        <div className="flex gap-2">
+                                            <input type="file" className="flex-1 text-sm" />
+                                            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm">DOWNLOAD</Button>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-2 pt-2">
+                                        <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white">Add Document</Button>
+                                        <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white">Save Documents</Button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Close Button */}
+                            <div className="border-t border-slate-200 pt-4">
+                                <Button
+                                    onClick={() => setIsDetailModalOpen(false)}
+                                    className="w-full bg-slate-200 hover:bg-slate-300 text-slate-700"
+                                >
+                                    Close
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

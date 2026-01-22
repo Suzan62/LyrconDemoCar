@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 
 export default function AddInsurance() {
     const navigate = useNavigate();
+    const { id } = useParams();
+    const isEditMode = Boolean(id);
     const [vehicles, setVehicles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitLoading, setSubmitLoading] = useState(false);
@@ -32,7 +34,7 @@ export default function AddInsurance() {
         // Fetch vehicles for dropdown
         const fetchVehicles = async () => {
             try {
-                const res = await fetch('/api/vehicles');
+                const res = await fetch('http://127.0.0.1:5000/api/vehicles');
                 if (res.ok) {
                     const data = await res.json();
                     setVehicles(data);
@@ -45,6 +47,38 @@ export default function AddInsurance() {
         };
         fetchVehicles();
     }, []);
+
+    // Fetch existing insurance record if in edit mode
+    useEffect(() => {
+        if (isEditMode) {
+            setLoading(true);
+            fetch(`http://127.0.0.1:5000/api/insurances/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    setFormData({
+                        bank_name: data.bank_name || '',
+                        branch: data.branch || '',
+                        customer_name: data.customer_name || '',
+                        customer_phone: data.customer_phone || '',
+                        address: data.address || '',
+                        total_amount: data.total_amount || '',
+                        premium_amount: data.premium_amount || '',
+                        insurance_company: data.insurance_company || '',
+                        expiry_date: data.expiry_date || '',
+                        vehicle_id: data.vehicle_id || ''
+                    });
+                    if (data.vehicle_id) {
+                        const vehicle = vehicles.find(v => v.id.toString() === data.vehicle_id.toString());
+                        setSelectedVehicle(vehicle || null);
+                    }
+                })
+                .catch(err => {
+                    console.error("Failed to fetch insurance record", err);
+                    toast.error("Failed to load insurance record");
+                })
+                .finally(() => setLoading(false));
+        }
+    }, [id, isEditMode, vehicles]);
 
     // Handle Vehicle Selection
     const handleVehicleChange = (e) => {
@@ -71,18 +105,36 @@ export default function AddInsurance() {
         }
 
         try {
-            const res = await fetch('/api/insurances', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+            if (isEditMode) {
+                // Update existing record
+                const res = await fetch(`http://127.0.0.1:5000/api/insurances/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
 
-            if (res.ok) {
-                toast.success("Insurance record created successfully");
-                navigate('/insurances');
+                if (res.ok) {
+                    toast.success("Insurance record updated successfully");
+                    navigate('/insurances');
+                } else {
+                    const err = await res.json();
+                    toast.error(err.message || "Failed to update record");
+                }
             } else {
-                const err = await res.json();
-                toast.error(err.message || "Failed to create record");
+                // Create new record
+                const res = await fetch('http://127.0.0.1:5000/api/insurances', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (res.ok) {
+                    toast.success("Insurance record created successfully");
+                    navigate('/insurances');
+                } else {
+                    const err = await res.json();
+                    toast.error(err.message || "Failed to create record");
+                }
             }
         } catch (error) {
             toast.error("Network error");
@@ -100,8 +152,8 @@ export default function AddInsurance() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>
-                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Create Insurance Record</h2>
-                    <p className="text-muted-foreground">Add a new insurance policy for a customer.</p>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">{isEditMode ? 'Edit' : 'Create'} Insurance Record</h2>
+                    <p className="text-muted-foreground">{isEditMode ? 'Update' : 'Add a new'} insurance policy for a customer.</p>
                 </div>
             </div>
 
@@ -241,7 +293,7 @@ export default function AddInsurance() {
                         <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-100">
                             <Button type="button" variant="ghost" onClick={() => navigate('/insurances')}>Cancel</Button>
                             <Button type="submit" disabled={submitLoading} className="w-32">
-                                {submitLoading ? "Creating..." : "Create"}
+                                {submitLoading ? (isEditMode ? "Updating..." : "Creating...") : (isEditMode ? "Update" : "Create")}
                             </Button>
                         </div>
                     </form>
