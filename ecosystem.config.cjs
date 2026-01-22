@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'lyrcon-backend',
-            cwd: '/home/ubuntu/lyrcon-replica/backend',
+            cwd: '/home/ubuntu/LyrconDemoCar/backend',
             script: 'venv/bin/python',
             args: 'app.py',
             env: {
@@ -19,7 +19,7 @@ module.exports = {
         },
         {
             name: 'lyrcon-frontend',
-            cwd: '/home/ubuntu/lyrcon-replica',
+            cwd: '/home/ubuntu/LyrconDemoCar',
             script: 'npm',
             args: 'run preview -- --host 0.0.0.0 --port 5173',
             error_file: '/home/ubuntu/logs/frontend-error.log',
