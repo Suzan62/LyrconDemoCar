@@ -177,7 +177,7 @@ export default function Dashboard() {
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${dashboardStats.revenue.toLocaleString()}</div>
+                        <div className="text-2xl font-bold">${(dashboardStats?.revenue || 0).toLocaleString()}</div>
                         <p className="text-xs text-muted-foreground flex items-center text-green-600">
                             <span className="font-bold mr-1">+20.1%</span> from last month
                         </p>
@@ -189,7 +189,7 @@ export default function Dashboard() {
                         <ShoppingBag className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{dashboardStats.carsSold}</div>
+                        <div className="text-2xl font-bold">{dashboardStats?.carsSold || 0}</div>
                         <p className="text-xs text-muted-foreground flex items-center text-green-600">
                             <span className="font-bold mr-1">+15%</span> from last month
                         </p>
@@ -201,7 +201,7 @@ export default function Dashboard() {
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{dashboardStats.loansApproved}</div>
+                        <div className="text-2xl font-bold">{dashboardStats?.loansApproved || 0}</div>
                         <p className="text-xs text-muted-foreground flex items-center text-red-600">
                             <span className="font-bold mr-1">-4%</span> from last month
                         </p>
