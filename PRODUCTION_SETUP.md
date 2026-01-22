@@ -55,9 +55,17 @@ pip install gunicorn
 # Set Environment Variables
 export DATABASE_URL="postgresql://lyrcon_user:your_secure_password@localhost/LyrconCar"
 
-# Initialize DB & Create Admin User
+# --- IMPORT EXISTING DATA (PARIVAR SQL) ---
+# 1. Upload your specific SQL file to the server (Run this in PowerShell on LOCAL machine)
+# scp -i "LyrconWeb-Key.pem" "parivar_postgres_compatible (7).sql" ubuntu@YOUR_SERVER_IP:/home/ubuntu/parivar.sql
+
+# 2. Import SQL Dump (Run this on SERVER)
+# We rename it to 'parivar.sql' during upload for easier typing
+psql -U lyrcon_user -d "LyrconCar" -f /home/ubuntu/parivar.sql
+
+# 3. Create Admin User (Safe script)
 python seed_production.py
-# (Output should say: ✅ Admin created with password: password123)
+# (Output should say: ✅ Admin created or already exists)
 
 deactivate
 cd ..
@@ -86,7 +94,7 @@ SECRET_KEY=your_super_secret_key_change_this
 
 ```bash
 # Start Backend and Frontend
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Save configuration to auto-start on reboot
 pm2 save
