@@ -23,7 +23,7 @@ export default function InsuranceList() {
 
     const fetchInsurances = async () => {
         try {
-            const res = await fetch('http://127.0.0.1:5000/api/insurances');
+            const res = await fetch('/api/insurances');
             if (res.ok) {
                 const data = await res.json();
                 setInsurances(data);
@@ -41,7 +41,7 @@ export default function InsuranceList() {
         if (!window.confirm("Are you sure you want to delete this record?")) return;
 
         try {
-            const res = await fetch(`http://127.0.0.1:5000/api/insurances/${id}`, {
+            const res = await fetch(`/api/insurances/${id}`, {
                 method: 'DELETE'
             });
             if (res.ok) {

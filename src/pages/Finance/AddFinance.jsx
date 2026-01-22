@@ -60,7 +60,7 @@ export default function AddFinance() {
 
     useEffect(() => {
         // Fetch vehicles for dropdown
-        fetch('http://127.0.0.1:5000/api/vehicles')
+        fetch('/api/vehicles')
             .then(res => res.json())
             .then(data => setVehicles(data))
             .catch(err => console.error("Failed to fetch vehicles", err));
@@ -70,7 +70,7 @@ export default function AddFinance() {
     useEffect(() => {
         if (isEditMode) {
             setLoading(true);
-            fetch(`http://127.0.0.1:5000/api/finances/${id}`)
+            fetch(`/api/finances/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setFormData({
@@ -124,7 +124,7 @@ export default function AddFinance() {
         try {
             if (isEditMode) {
                 // Update existing record
-                const res = await fetch(`http://127.0.0.1:5000/api/finances/${id}`, {
+                const res = await fetch(`/api/finances/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)

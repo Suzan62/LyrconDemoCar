@@ -77,7 +77,7 @@ export default function Profile() {
         }
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/api/profile', {
+            const res = await fetch('/api/profile', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -100,7 +100,7 @@ export default function Profile() {
     const confirmDelete = async () => {
         try {
             const email = user?.email || "admin@lyrcon.com";
-            const res = await fetch(`http://127.0.0.1:5000/api/profile?email=${email}`, {
+            const res = await fetch(`/api/profile?email=${email}`, {
                 method: 'DELETE'
             });
 
@@ -134,7 +134,7 @@ export default function Profile() {
 
         try {
             const email = user?.email || "admin@lyrcon.com";
-            const res = await fetch('http://127.0.0.1:5000/api/change-password', {
+            const res = await fetch('/api/change-password', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, ...passwordData })

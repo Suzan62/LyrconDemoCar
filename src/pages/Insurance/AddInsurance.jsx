@@ -34,7 +34,7 @@ export default function AddInsurance() {
         // Fetch vehicles for dropdown
         const fetchVehicles = async () => {
             try {
-                const res = await fetch('http://127.0.0.1:5000/api/vehicles');
+                const res = await fetch('/api/vehicles');
                 if (res.ok) {
                     const data = await res.json();
                     setVehicles(data);
@@ -52,7 +52,7 @@ export default function AddInsurance() {
     useEffect(() => {
         if (isEditMode) {
             setLoading(true);
-            fetch(`http://127.0.0.1:5000/api/insurances/${id}`)
+            fetch(`/api/insurances/${id}`)
                 .then(res => res.json())
                 .then(data => {
                     setFormData({
@@ -107,7 +107,7 @@ export default function AddInsurance() {
         try {
             if (isEditMode) {
                 // Update existing record
-                const res = await fetch(`http://127.0.0.1:5000/api/insurances/${id}`, {
+                const res = await fetch(`/api/insurances/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -122,7 +122,7 @@ export default function AddInsurance() {
                 }
             } else {
                 // Create new record
-                const res = await fetch('http://127.0.0.1:5000/api/insurances', {
+                const res = await fetch('/api/insurances', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
