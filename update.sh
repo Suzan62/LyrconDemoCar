@@ -16,6 +16,9 @@ echo "Updating backend..."
 cd backend
 source venv/bin/activate
 pip install -r requirements.txt --quiet
+
+# Ensure DB is ready and Admin exists (safe to run repeatedly)
+python seed_production.py
 deactivate
 cd ..
 
