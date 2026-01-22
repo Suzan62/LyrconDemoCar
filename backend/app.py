@@ -967,9 +967,67 @@ def update_vehicle(id):
 @app.route('/api/dashboard/stats', methods=['GET'])
 def dashboard_stats():
     try:
-        # ... (all your existing stats code) ...
+        # Inventory Stats
+        total_vehicles = db.session.query(Vehicle).count()
+        sold_vehicles = db.session.query(Vehicle).filter(Vehicle.status == 'sold').count() 
+        available_vehicles = db.session.query(Vehicle).filter(Vehicle.status == 'unsold').count()
         
-        # ADD THIS: Mock sales data for the chart
+        # Revenue (Sum of price for Sold vehicles)
+        revenue_result = db.session.query(db.func.sum(Vehicle.price)).filter(Vehicle.status == 'sold').scalar()
+        total_revenue = float(revenue_result) if revenue_result else 0.0
+
+        # Inquiries
+        total_inquiries = db.session.query(Inquiry).count()
+        pending_inquiries = db.session.query(Inquiry).filter(Inquiry.status == 'pending').count()
+        
+        # Finance Stats
+        total_finances = db.session.query(FinanceRecord).count()
+        
+        # Insurance Stats
+        total_insurances = db.session.query(Insurance).count()
+        
+        # Upcoming Insurance Expiries (within 30 days)
+        from datetime import datetime, timedelta
+        today = datetime.now().date()
+        thirty_days_later = today + timedelta(days=30)
+        
+        # Fetch insurances expiring soon
+        upcoming_insurances_query = db.session.query(Insurance).all()
+        upcoming_insurances = []
+        
+        for ins in upcoming_insurances_query:
+            if ins.expiry_date:
+                try:
+                    # Parse expiry date - handle different formats
+                    if isinstance(ins.expiry_date, str):
+                        # Try different date formats
+                        expiry = None
+                        for fmt in ['%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d']:
+                            try:
+                                expiry = datetime.strptime(ins.expiry_date, fmt).date()
+                                break
+                            except:
+                                continue
+                        
+                        if expiry and today <= expiry <= thirty_days_later:
+                            # Get vehicle details if available
+                            vehicle = db.session.get(Vehicle, ins.vehicle_id) if ins.vehicle_id else None
+                            car_name = f"{vehicle.manufacturer} {vehicle.model}" if vehicle else "Unknown Vehicle"
+                            
+                            days_remaining = (expiry - today).days
+                            status = f"{days_remaining} Days Remaining" if days_remaining > 0 else "Expiring Soon"
+                            
+                            upcoming_insurances.append({
+                                "car_id": f"#CAR-{ins.vehicle_id}" if ins.vehicle_id else f"#INS-{ins.id}",
+                                "car_name": car_name,
+                                "expiry_date": expiry.strftime('%d %b %Y'),
+                                "status": status
+                            })
+                except Exception as e:
+                    print(f"Error parsing expiry date for insurance {ins.id}: {e}")
+                    continue
+
+        # Mock sales data for the chart
         sales_data = [
             {"name": "Jan", "sales": 4000, "prediction": 4200},
             {"name": "Feb", "sales": 3000, "prediction": 3200},
@@ -1011,7 +1069,7 @@ def dashboard_stats():
             "totalInsurances": total_insurances,
             "total_insurances": total_insurances,
             
-            # ADD THIS LINE - Sales data for chart
+            # Sales data for chart
             "salesData": sales_data,
             
             # Upcoming insurance expiries
