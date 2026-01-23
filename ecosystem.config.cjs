@@ -3,10 +3,13 @@ module.exports = {
         {
             name: 'lyrcon-backend',
             cwd: '/home/ubuntu/LyrconDemoCar/backend',
-            script: '/home/ubuntu/LyrconDemoCar/venv/bin/python',
+            script: '/home/ubuntu/LyrconDemoCar/backend/venv/bin/python',  // Fixed: venv is inside backend folder
             args: 'app.py',
+            interpreter: 'none',  // Added: Important for using Python directly
             env: {
                 FLASK_ENV: 'production',
+                FLASK_APP: 'app.py',  // Added: Good practice
+                PYTHONUNBUFFERED: '1',  // Added: See logs in real-time
                 DATABASE_URL: 'postgresql://lyrcon_user:your_secure_password@localhost/LyrconCar'
             },
             error_file: '/home/ubuntu/logs/backend-error.log',
