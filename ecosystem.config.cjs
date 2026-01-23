@@ -10,7 +10,7 @@ module.exports = {
                 FLASK_ENV: 'production',
                 FLASK_APP: 'app.py',  // Added: Good practice
                 PYTHONUNBUFFERED: '1',  // Added: See logs in real-time
-                DATABASE_URL: 'postgresql://lyrcon_user:root@localhost/LyrconCar'
+                DATABASE_URL: 'postgresql://lyrcon_user:root@localhost/lyrconcar'
             },
             error_file: '/home/ubuntu/logs/backend-error.log',
             out_file: '/home/ubuntu/logs/backend-out.log',
