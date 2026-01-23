@@ -36,9 +36,9 @@ export default function InquiriesList() {
 
     const filteredInquiries = inquiries.filter(item => {
         const matchesSearch =
-            item.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.vehicle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.id.toLowerCase().includes(searchTerm.toLowerCase());
+            (item.customer || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (item.vehicle || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(item.id).toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus = filterStatus === 'All' || item.status === filterStatus;
         const matchesType = filterCarType === 'All' || item.carType === filterCarType;
         return matchesSearch && matchesStatus && matchesType;

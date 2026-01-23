@@ -56,9 +56,9 @@ export default function InsuranceList() {
     };
 
     const filteredInsurances = insurances.filter(item =>
-        item.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.bank_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.insurance_company?.toLowerCase().includes(searchTerm.toLowerCase())
+        (item.customer_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.bank_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.insurance_company || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Pagination

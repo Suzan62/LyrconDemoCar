@@ -21,7 +21,7 @@ const downloadCSV = (data) => {
 };
 
 export default function Dashboard() {
-    const inventory = useSelector(state => state.inventory.items);
+    const inventory = useSelector(state => state.inventory.items) || [];
 
     const [dashboardStats, setDashboardStats] = React.useState({
         revenue: 0,
@@ -119,7 +119,7 @@ export default function Dashboard() {
     };
 
     // Get recent sales from inventory (mock logic: treating 'Sold' items as recent sales)
-    const recentSales = inventory.filter(c => c.status === 'Sold').slice(0, 5);
+    const recentSales = Array.isArray(inventory) ? inventory.filter(c => c.status === 'Sold').slice(0, 5) : [];
 
     return (
         <div className="space-y-6">
@@ -253,7 +253,7 @@ export default function Dashboard() {
                             {recentSales.length > 0 ? recentSales.map((sale, i) => (
                                 <div key={i} className="flex items-center">
                                     <div className="ml-4 space-y-1">
-                                        <p className="text-sm font-medium leading-none">{sale.year} {sale.make} {sale.model}</p>
+                                        <p className="text-sm font-medium leading-none">{sale.year} {sale.manufacturer || sale.make} {sale.model}</p>
                                         <p className="text-sm text-muted-foreground">
                                             VIN: {sale.id}
                                         </p>
