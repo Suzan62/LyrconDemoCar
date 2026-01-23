@@ -3,7 +3,7 @@ module.exports = {
         {
             name: 'lyrcon-backend',
             cwd: '/home/ubuntu/LyrconDemoCar/backend',
-            script: 'venv/bin/python',
+            script: '/home/ubuntu/LyrconDemoCar/venv/bin/python',
             args: 'app.py',
             env: {
                 FLASK_ENV: 'production',
