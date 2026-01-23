@@ -967,6 +967,18 @@ def update_vehicle(id):
 @app.route('/api/dashboard/stats', methods=['GET'])
 def dashboard_stats():
     try:
+        # Initialize defaults to prevent NameError if queries fail or logic jumps
+        total_vehicles = 0
+        sold_vehicles = 0
+        available_vehicles = 0
+        total_revenue = 0.0
+        total_inquiries = 0
+        pending_inquiries = 0
+        total_finances = 0
+        total_insurances = 0
+        sales_data = []
+        upcoming_insurances = []
+
         # Inventory Stats
         total_vehicles = db.session.query(Vehicle).count()
         sold_vehicles = db.session.query(Vehicle).filter(Vehicle.status == 'sold').count() 
