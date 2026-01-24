@@ -17,7 +17,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 # Database Configuration
 # Use DATABASE_URL env var if available (Production), else fallback to local (Dev)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://postgres:root@localhost:5432/lyrconcar")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://postgres:root@localhost:5432/LyrconCar")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -532,6 +532,316 @@ class Inquiry(db.Model):
             "date": self.created_at.strftime('%d %b %Y') if self.created_at else "N/A"
         }
 
+# ----------------- NEW MODELS ADDED -----------------
+
+class CarDealer(db.Model):
+    __tablename__ = 'car_dealers'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class City(db.Model):
+    __tablename__ = 'cities'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class Executive(db.Model):
+    __tablename__ = 'executives'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    # branch_name inferred from usage or manual fix needed if col differs
+    # SQL only shows 'name'. Branch might be separate relation or implied.
+    # We will stick to SQL schema which only has 'name'.
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class ExecutiveBranch(db.Model):
+    __tablename__ = 'executive_branches'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class Manufacturer(db.Model):
+    __tablename__ = 'manufacturers'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class CarModel(db.Model):
+    __tablename__ = 'models'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class RTO(db.Model):
+    __tablename__ = 'rto'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class RTOCode(db.Model):
+    __tablename__ = 'rto_codes'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class InsuranceCompany(db.Model):
+    __tablename__ = 'insurance_companies'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+class InsuranceDocument(db.Model):
+    __tablename__ = 'insurancedocument'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    car_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    document_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    document_path: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "car_id": self.car_id,
+            "document_name": self.document_name,
+            "document_path": self.document_path,
+            "created_at": str(self.created_at)
+        }
+
+class InsurancePayment(db.Model):
+    __tablename__ = 'insurance_payment'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    insurance_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+    payment_date: Mapped[date] = mapped_column(Date, nullable=True)
+    payment_method: Mapped[str] = mapped_column(String(50), nullable=True)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "insurance_id": self.insurance_id,
+            "amount": self.amount,
+            "payment_date": str(self.payment_date) if self.payment_date else None,
+            "payment_method": self.payment_method
+        }
+
+class FullPaymentDetail(db.Model):
+    __tablename__ = 'full_payment_details'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sale_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    total_amount: Mapped[float] = mapped_column(Float, nullable=True)
+    amount_paid: Mapped[float] = mapped_column(Float, default=0.0)
+    remaining_amount: Mapped[float] = mapped_column(Float, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "sale_id": self.sale_id,
+            "total_amount": self.total_amount,
+            "amount_paid": self.amount_paid,
+            "remaining_amount": self.remaining_amount
+        }
+
+class Installment(db.Model):
+    __tablename__ = 'installments'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    loan_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+    due_date: Mapped[date] = mapped_column(Date, nullable=True)
+    status: Mapped[str] = mapped_column(String(50), default='pending')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "loan_id": self.loan_id,
+            "amount": self.amount,
+            "due_date": str(self.due_date) if self.due_date else None,
+            "status": self.status
+        }
+
+class PaymentInstallment(db.Model):
+    __tablename__ = 'payment_installments'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    full_payment_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+    payment_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    payment_method: Mapped[str] = mapped_column(String(50), nullable=True)
+    payment_status: Mapped[str] = mapped_column(String(50), default='completed')
+    note: Mapped[str] = mapped_column(String(255), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "full_payment_id": self.full_payment_id,
+            "amount": self.amount,
+            "payment_date": str(self.payment_date) if self.payment_date else None,
+            "payment_method": self.payment_method,
+            "payment_status": self.payment_status,
+            "note": self.note
+        }
+
+class DealerFullPaymentDetail(db.Model):
+    __tablename__ = 'dealer_full_payment_details'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sale_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    car_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    old_car_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    total_amount: Mapped[float] = mapped_column(Float, nullable=True)
+    amount_paid: Mapped[float] = mapped_column(Float, default=0.0)
+    remaining_amount: Mapped[float] = mapped_column(Float, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "sale_id": self.sale_id,
+            "car_id": self.car_id,
+            "old_car_id": self.old_car_id,
+            "total_amount": self.total_amount,
+            "amount_paid": self.amount_paid,
+            "remaining_amount": self.remaining_amount
+        }
+
+class DealerPaymentInstallment(db.Model):
+    __tablename__ = 'dealer_payment_installments'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    dealer_payment_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+    payment_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    payment_method: Mapped[str] = mapped_column(String(50), nullable=True)
+    note: Mapped[str] = mapped_column(String(255), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "dealer_payment_id": self.dealer_payment_id,
+            "amount": self.amount,
+            "payment_date": str(self.payment_date) if self.payment_date else None,
+            "payment_method": self.payment_method,
+            "note": self.note
+        }
+
+class ExtraCharge(db.Model):
+    __tablename__ = 'extra_charges'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    car_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    label: Mapped[str] = mapped_column(String(255), nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+
+    def to_dict(self):
+        return {"id": self.id, "car_id": self.car_id, "label": self.label, "amount": self.amount}
+
+class ExtraChargeSell(db.Model):
+    __tablename__ = 'extra_charges_Sell'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    car_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    label: Mapped[str] = mapped_column(String(255), nullable=True)
+    amount: Mapped[float] = mapped_column(Float, nullable=True)
+
+    def to_dict(self):
+        return {"id": self.id, "car_id": self.car_id, "label": self.label, "amount": self.amount}
+
+class NewCarImage(db.Model):
+    __tablename__ = 'new_car_images'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    new_car_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    image_url: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id, "new_car_id": self.new_car_id, "image_url": self.image_url}
+
+class OldCarImage(db.Model):
+    __tablename__ = 'old_car_images'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    old_car_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    image_url: Mapped[str] = mapped_column(String(255), nullable=False)
+    old_cars_sell_id: Mapped[int] = mapped_column(Integer, nullable=True)
+
+    def to_dict(self):
+        return {"id": self.id, "old_car_id": self.old_car_id, "image_url": self.image_url, "old_cars_sell_id": self.old_cars_sell_id}
+
+class OldCarBuyer(db.Model):
+    __tablename__ = 'old_car_buyers'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sale_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    contact: Mapped[str] = mapped_column(String(15), nullable=False)
+    email: Mapped[str] = mapped_column(String(255), nullable=True)
+    address_line_1: Mapped[str] = mapped_column(String(255), nullable=False)
+    city_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    pincode: Mapped[str] = mapped_column(String(10), nullable=False)
+    pan_card: Mapped[str] = mapped_column(String(255), nullable=True)
+    aadhar_card: Mapped[str] = mapped_column(String(255), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id, "sale_id": self.sale_id, "name": self.name, 
+            "contact": self.contact, "email": self.email, "city": self.city_name
+        }
+
+class Sale(db.Model):
+    __tablename__ = 'sales'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    car_type: Mapped[str] = mapped_column(String(50), nullable=False) # new/old
+    car_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    sale_type: Mapped[str] = mapped_column(String(50), nullable=False) # full/loan
+    total_price: Mapped[float] = mapped_column(Float, nullable=True)
+    buyer_name: Mapped[str] = mapped_column(String(255), nullable=True)
+    sale_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id, "car_type": self.car_type, "car_id": self.car_id, 
+            "sale_type": self.sale_type, "total_price": self.total_price, "buyer_name": self.buyer_name
+        }
+
+class HirePurchase(db.Model):
+    __tablename__ = 'hire_purchase'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    hp_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    
+    def to_dict(self):
+        return {"id": self.id, "hp_name": self.hp_name}
+
+class LoanDetail(db.Model):
+    __tablename__ = 'loan_details'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sale_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    bank_name: Mapped[str] = mapped_column(String(255), nullable=True)
+    loan_amount: Mapped[float] = mapped_column(Float, nullable=True)
+    
+    def to_dict(self):
+        return {"id": self.id, "sale_id": self.sale_id, "bank_name": self.bank_name, "loan_amount": self.loan_amount}
+
+class RememberToken(db.Model):
+    __tablename__ = 'remember_tokens'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, nullable=True)
+    token: Mapped[str] = mapped_column(String(255), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    
+    def to_dict(self):
+        return {"id": self.id, "user_id": self.user_id, "token": self.token}
+
 # ----------------- API ENDPOINTS -----------------
 
 @app.route('/api/login', methods=['POST'])
@@ -710,16 +1020,18 @@ def get_vehicles():
 def get_vehicles_count():
     """Debug endpoint to check total count"""
     try:
-        total = db.session.query(Vehicle).count()
-        sales = db.session.query(Vehicle).filter(Vehicle.transaction_type == 'sales').count()
-        unsold = db.session.query(Vehicle).filter(Vehicle.status == 'unsold').count()
-        sold = db.session.query(Vehicle).filter(Vehicle.status == 'sold').count()
+        # Count from all tables
+        new_count = db.session.query(Vehicle).count()
+        old_count = db.session.query(OldCar).count()
+        old_sell_count = db.session.query(OldCarSell).count()
+        
+        total = new_count + old_count + old_sell_count
         
         return jsonify({
             "total": total,
-            "sales": sales,
-            "unsold": unsold,
-            "sold": sold
+            "new_cars": new_count,
+            "old_cars": old_count,
+            "old_cars_sell": old_sell_count
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
