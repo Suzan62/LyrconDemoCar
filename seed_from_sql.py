@@ -4,7 +4,7 @@ import re
 from sqlalchemy import text
 from backend.app import app, db
 
-SQL_FILE_PATH = r"c:\Users\DELL\.gemini\antigravity\scratch\lyrcon-replica\parivar_postgres_compatible (7).sql"
+SQL_FILE_PATH = os.path.join(os.path.dirname(__file__), "parivar_postgres_compatible (7).sql")
 
 def seed_data():
     if not os.path.exists(SQL_FILE_PATH):
