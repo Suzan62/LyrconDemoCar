@@ -35,18 +35,21 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[str] = mapped_column(String(50), default="user")
-    
-    # Missing columns in legacy schema: phone, location
-    # We remove them to avoid "column does not exist" errors
-    
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    last_login: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    status: Mapped[str] = mapped_column(String(50), default='active')
+
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "email": self.email,
             "role": self.role,
-            "phone": None, # Stubbed
-            "location": None # Stubbed
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "last_login": self.last_login,
+            "status": self.status
         }
 
 class Vehicle(db.Model):
