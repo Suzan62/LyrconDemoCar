@@ -135,7 +135,7 @@ export default function FinanceList() {
                                     </TableRow>
                                 ) : (
                                     currentEntries.map((item) => (
-                                        <TableRow key={item.id}>
+                                        <TableRow key={`finance-${item.id}`}>
                                             <TableCell>
                                                 <div className="flex items-center gap-1">
                                                     <Button

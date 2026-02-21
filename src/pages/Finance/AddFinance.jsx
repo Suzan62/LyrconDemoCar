@@ -33,6 +33,7 @@ export default function AddFinance() {
         disbursement_date: '',
         status: 'Received',
         emi_amount: '',
+        executive: '',
         car_type: 'New Car', // Default
         vehicle_id: ''
     });
@@ -45,6 +46,7 @@ export default function AddFinance() {
         if (!formData.customer_name) newErrors.customer_name = "Customer Name is required";
         if (!formData.account_number) newErrors.account_number = "Account Number is required";
         if (!formData.amount || formData.amount <= 0) newErrors.amount = "Valid Amount is required";
+        if (!formData.executive) newErrors.executive = "Executive Name is required";
         if (!formData.emi_amount || formData.emi_amount <= 0) newErrors.emi_amount = "Valid EMI Amount is required";
         if (!formData.starting_date) newErrors.starting_date = "Start Date is required";
         if (!formData.ending_date) newErrors.ending_date = "End Date is required";
@@ -241,11 +243,14 @@ export default function AddFinance() {
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Status</label>
                                     <select name="status" value={formData.status} onChange={handleChange} className="w-full p-2 border rounded-md bg-white">
-                                        <option>Received</option>
-                                        <option>Pending</option>
-                                        <option>Rejected</option>
-                                        <option>Approved</option>
+                                        <option value="Received">Received</option>
+                                        <option value="Not Received">Not Received</option>
                                     </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Executive</label>
+                                    <input name="executive" value={formData.executive} onChange={handleChange} className={`w-full p-2 border rounded-md ${errors.executive ? 'border-red-500' : ''}`} placeholder="Enter Executive Name" />
+                                    {errors.executive && <p className="text-xs text-red-500">{errors.executive}</p>}
                                 </div>
                             </div>
                         </section>
@@ -272,7 +277,7 @@ export default function AddFinance() {
                                         <select name="vehicle_id" value={formData.vehicle_id} onChange={handleChange} className="w-full p-2 border rounded-md bg-white">
                                             <option value="">-- Choose Vehicle --</option>
                                             {vehicles.map(v => (
-                                                <option key={v.id} value={v.id}>
+                                                <option key={`${v.transaction_type}-${v.id}`} value={v.id}>
                                                     {v.make || v.manufacturer} {v.model} ({v.year}) - {v.registration_number || v.docket_number || 'No Reg'}
                                                 </option>
                                             ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteVehicle } from '../store/slices/inventorySlice';
 import { ArrowLeft, Edit, Trash, Gauge, Camera } from 'lucide-react';
@@ -11,7 +11,11 @@ import { Modal, ModalFooter } from '../components/ui/Modal';
 export default function VehicleDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
+
+    const searchParams = new URLSearchParams(location.search);
+    const typeParam = searchParams.get('type');
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -20,7 +24,10 @@ export default function VehicleDetails() {
 
     // Find vehicle in redux store (handle type mismatch)
     const reduxCar = useSelector(state =>
-        state.inventory.items.find(item => String(item.id) === id)
+        state.inventory.items.find(item =>
+            String(item.id) === id &&
+            (!typeParam || item.transaction_type === typeParam)
+        )
     );
 
     const car = reduxCar || fetchedCar;
@@ -28,7 +35,8 @@ export default function VehicleDetails() {
     React.useEffect(() => {
         if (!reduxCar && id) {
             setLoading(true);
-            fetch(`/api/vehicles/${id}`)
+            const url = typeParam ? `/api/vehicles/${id}?type=${typeParam}` : `/api/vehicles/${id}`;
+            fetch(url)
                 .then(res => {
                     if (res.ok) return res.json();
                     throw new Error('Vehicle not found');
@@ -42,7 +50,7 @@ export default function VehicleDetails() {
                     setLoading(false);
                 });
         }
-    }, [id, reduxCar]);
+    }, [id, reduxCar, typeParam]);
 
     if (loading) {
         return <div className="p-8 text-center">Loading vehicle details...</div>;
@@ -70,7 +78,7 @@ export default function VehicleDetails() {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4">
-                <Button variant="outline" size="icon" onClick={() => navigate('/inventory')}>
+                <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
                     <ArrowLeft size={18} />
                 </Button>
                 <div>
@@ -78,7 +86,12 @@ export default function VehicleDetails() {
                     <p className="text-muted-foreground">VIN: {car.id} • {car.trim || 'Standard'}</p>
                 </div>
                 <div className="ml-auto flex gap-2">
-                    <Button variant="outline" className="gap-2" onClick={() => navigate('/add-car', { state: { car } })}>
+                    <Button variant="outline" className="gap-2" onClick={() => {
+                        const editRoute = car.transaction_type === 'New' ? 'edit-new-car' :
+                            car.transaction_type === 'Purchase' ? 'edit-purchase' :
+                                car.transaction_type === 'Sale' ? 'edit-sale' : 'edit-new-car';
+                        navigate(`/${editRoute}/${car.id}`, { state: { car } });
+                    }}>
                         <Edit size={16} /> Edit
                     </Button>
                     <Button variant="destructive" className="gap-2" onClick={() => setIsDeleteModalOpen(true)}>

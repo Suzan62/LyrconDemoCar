@@ -15,4 +15,9 @@ export const store = configureStore({
         inquiries: inquiryReducer,
         finance: financeReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,  // Disable slow serializable check (large state)
+            immutableCheck: false,     // Disable immutability check for dev performance
+        }),
 });

@@ -113,7 +113,7 @@ export default function UserList() {
                             <tbody className="divide-y divide-slate-100">
                                 {filteredUsers.length > 0 ? (
                                     filteredUsers.map((user) => (
-                                        <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
+                                        <tr key={`user-${user.id}`} className="hover:bg-slate-50/50 transition-colors">
                                             <td className="px-6 py-4 font-medium text-slate-700">
                                                 #{user.id}
                                             </td>

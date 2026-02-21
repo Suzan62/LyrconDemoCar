@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addInquiry } from '../../store/slices/inquirySlice';
+import { addInquiry, updateInquiry } from '../../store/slices/inquirySlice';
 import { Button } from '../../components/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Card, CardContent } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
-import { Save, X, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function AddInquiry() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const editInquiry = location.state?.inquiry;
+    const isEditMode = !!editInquiry;
 
     const [formData, setFormData] = useState({
         customer: '',
@@ -21,6 +24,21 @@ export default function AddInquiry() {
         notes: '',
         source: ''
     });
+
+    useEffect(() => {
+        if (editInquiry) {
+            setFormData({
+                customer: editInquiry.customer || '',
+                email: editInquiry.email || '',
+                customerPhone: editInquiry.customerPhone || '',
+                vehicle: editInquiry.vehicle || '',
+                carType: editInquiry.carType || '', // Backend might not send this back in to_dict, check if needed
+                contactMethod: editInquiry.contactMethod || '',
+                notes: editInquiry.notes || '',
+                source: editInquiry.source || ''
+            });
+        }
+    }, [editInquiry]);
 
     const [errors, setErrors] = useState({});
 
@@ -51,15 +69,24 @@ export default function AddInquiry() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validate()) {
             return;
         }
 
-        dispatch(addInquiry(formData));
-        navigate('/inquiries');
+        try {
+            if (isEditMode) {
+                await dispatch(updateInquiry({ id: editInquiry.id, ...formData })).unwrap();
+            } else {
+                await dispatch(addInquiry(formData)).unwrap();
+            }
+            navigate('/inquiries');
+        } catch (error) {
+            console.error("Failed to save inquiry:", error);
+            // Optionally set error state here to show to user
+        }
     };
 
     return (
@@ -69,7 +96,7 @@ export default function AddInquiry() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 <div>
-                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">Add New Inquiry</h2>
+                    <h2 className="text-xl md:text-3xl font-bold tracking-tight">{isEditMode ? 'Edit Inquiry' : 'Add New Inquiry'}</h2>
                     <div className="text-sm text-muted-foreground">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}</div>
                 </div>
             </div>
@@ -220,7 +247,7 @@ export default function AddInquiry() {
                                 CANCEL
                             </Button>
                             <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white min-w-[150px] shadow-sm">
-                                Record Inquiry
+                                {isEditMode ? 'Update Inquiry' : 'Record Inquiry'}
                             </Button>
                         </div>
                     </form>

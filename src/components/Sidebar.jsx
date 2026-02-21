@@ -55,6 +55,19 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
         }
     }, [collapsed]);
 
+    // Auto-expand the correct section based on current route
+    React.useEffect(() => {
+        if (!collapsed && !isMobile) {
+            if (location.pathname.startsWith('/edit-purchase') || location.pathname.startsWith('/purchase-old-car') || location.pathname.startsWith('/add-purchase-car')) {
+                setIsPurchaseOldOpen(true);
+            } else if (location.pathname.startsWith('/edit-sale') || location.pathname.startsWith('/sell-old-car') || location.pathname.startsWith('/add-sell-car')) {
+                setIsSellOldOpen(true);
+            } else if (location.pathname.startsWith('/edit-new-car') || location.pathname.startsWith('/inventory') || location.pathname.startsWith('/add-car')) {
+                setIsNewCarsOpen(true);
+            }
+        }
+    }, [location.pathname, collapsed, isMobile]);
+
     const handleLogout = async () => {
         try {
             await fetch('/api/logout', { method: 'POST' });
@@ -113,7 +126,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         onClick={() => (!collapsed || isMobile) && setIsNewCarsOpen(!isNewCarsOpen)}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                            location.pathname.startsWith('/inventory') || location.pathname.startsWith('/add-car')
+                            location.pathname.startsWith('/inventory') || location.pathname.startsWith('/add-car') || location.pathname.startsWith('/edit-new-car')
                                 ? "text-primary bg-primary/10"
                                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
                             (!isMobile && collapsed) && "justify-center px-2"
@@ -159,7 +172,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         onClick={() => (!collapsed || isMobile) && setIsPurchaseOldOpen(!isPurchaseOldOpen)}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                            location.pathname.startsWith('/purchase-old-car') || location.pathname.startsWith('/add-purchase-car')
+                            location.pathname.startsWith('/purchase-old-car') || location.pathname.startsWith('/add-purchase-car') || location.pathname.startsWith('/edit-purchase')
                                 ? "text-primary bg-primary/10"
                                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
                             (!isMobile && collapsed) && "justify-center px-2"
@@ -204,7 +217,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
                         onClick={() => (!collapsed || isMobile) && setIsSellOldOpen(!isSellOldOpen)}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 rounded-md transition-colors text-sm font-medium",
-                            location.pathname.startsWith('/sell-old-car') || location.pathname.startsWith('/add-sell-car')
+                            location.pathname.startsWith('/sell-old-car') || location.pathname.startsWith('/add-sell-car') || location.pathname.startsWith('/edit-sale')
                                 ? "text-primary bg-primary/10"
                                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
                             (!isMobile && collapsed) && "justify-center px-2"

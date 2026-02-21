@@ -5,6 +5,7 @@ import { DollarSign, ShoppingBag, Users, TrendingUp, Download } from 'lucide-rea
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from '../components/ui/Button';
 import { useSelector } from 'react-redux';
+import SalesForecastChart from '../components/dashboard/SalesForecastChart';
 
 // Utility to download CSV
 const downloadCSV = (data) => {
@@ -218,26 +219,7 @@ export default function Dashboard() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="pl-2">
-                        <ResponsiveContainer width="100%" height={350}>
-                            <AreaChart data={filteredSalesData}>
-                                <defs>
-                                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#007bff" stopOpacity={0} />
-                                    </linearGradient>
-                                    <linearGradient id="colorPred" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                <Tooltip />
-                                <Area type="monotone" dataKey="sales" stroke="#007bff" fillOpacity={1} fill="url(#colorSales)" strokeWidth={2} name="Historic Sales" />
-                                <Area type="monotone" dataKey="prediction" stroke="#82ca9d" strokeDasharray="5 5" fillOpacity={1} fill="url(#colorPred)" strokeWidth={2} name="AI Prediction" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        <SalesForecastChart />
                     </CardContent>
                 </Card>
 

@@ -21,9 +21,55 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+from flask import send_from_directory
 
 CORS(app)
+
 db.init_app(app)
+
+from ml_service import MLService
+ml_service = MLService()
+
+@app.route('/api/ml/forecast', methods=['GET'])
+def get_sales_forecast():
+    try:
+        updated_model = ml_service.train_model() # Ensure model is fresh or loaded
+        if updated_model.get('status') == 'error':
+            return jsonify({"status": "error", "message": updated_model.get('message')}), 400
+            
+        forecast_data = ml_service.forecast(months=6)
+        if not forecast_data:
+             return jsonify({"status": "error", "message": "Forecasting failed"}), 500
+             
+        return jsonify(forecast_data)
+    except Exception as e:
+        import traceback
+        error_msg = f"ML Error: {str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        with open('debug_log.txt', 'a') as f:
+            f.write(f"\n--- ML ERROR {datetime.now()} ---\n")
+            f.write(error_msg + "\n")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route('/uploads/<name>')
+def download_file(name):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+
+@app.route('/api/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        unique_filename = f"{timestamp}_{filename}"
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+        # Return URL relative to server root
+        return jsonify({'url': f"/uploads/{unique_filename}", 'filename': unique_filename}), 200
+
 
 # ----------------- MODELS -----------------
 
@@ -126,7 +172,7 @@ class Vehicle(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "transaction_type": self.transaction_type,
+            "transaction_type": "New" if self.transaction_type == 'sales' else self.transaction_type,
             "entry_type": self.transaction_type,  # Alias
             "docket_number": self.docket_number,
             "manufacturer": self.manufacturer,
@@ -194,6 +240,7 @@ class OldCar(db.Model):
     # Pricing
     original_price: Mapped[int] = mapped_column(Integer, nullable=True)
     current_price: Mapped[int] = mapped_column(Integer, nullable=True)
+    renovation_cost: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
     
     # Customer
     customer_name: Mapped[str] = mapped_column(String(100), nullable=True)
@@ -302,7 +349,8 @@ class OldCar(db.Model):
             "broker_brokerage": self.broker_brokerage,
             "broker_number": self.broker_number,
             "other_remarks": self.other_remarks,
-            "status": self.status
+            "status": self.status,
+            "renovation_cost": self.renovation_cost
         }
 
 class OldCarSell(db.Model):
@@ -314,6 +362,7 @@ class OldCarSell(db.Model):
     # Pricing
     original_price: Mapped[int] = mapped_column(Integer, nullable=True)
     current_price: Mapped[int] = mapped_column(Integer, nullable=True)
+    renovation_cost: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
     
     # Customer
     customer_name: Mapped[str] = mapped_column(String(100), nullable=True)
@@ -422,7 +471,8 @@ class OldCarSell(db.Model):
             "broker_name": self.broker_name,
             "broker_number": self.broker_number,
             "other_remarks": self.other_remarks,
-            "status": self.status
+            "status": self.status,
+            "renovation_cost": self.renovation_cost
         }
 
 class VehicleDocument(db.Model):
@@ -433,6 +483,22 @@ class VehicleDocument(db.Model):
     # file_path is 'document_path' in DB
     file_path: Mapped[str] = mapped_column("document_path", String(255), nullable=False)
     document_type: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+class OldCarDocument(db.Model):
+    __tablename__ = 'old_car_documents'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    old_car_id: Mapped[int] = mapped_column(Integer, ForeignKey('old_cars.id'), nullable=False)
+    document_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    file_path: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+class OldCarSellDocument(db.Model):
+    __tablename__ = 'old_car_sell_documents'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sell_id: Mapped[int] = mapped_column(Integer, ForeignKey('old_cars_sell.id'), nullable=False)
+    document_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    file_path: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
 class FinanceRecord(db.Model):
@@ -455,6 +521,7 @@ class FinanceRecord(db.Model):
     loan_protection: Mapped[str] = mapped_column(String(255), nullable=True) # varchar in DB
     disbursement_amount: Mapped[float] = mapped_column(Float, nullable=True)
     disbursement_date: Mapped[date] = mapped_column("DATE", Date, nullable=True) # 'DATE' column name
+    payment_out: Mapped[float] = mapped_column(Float, default=0.0)
     
     status: Mapped[str] = mapped_column(String(50), nullable=True) # Received/Not Received
     emi_amount: Mapped[float] = mapped_column(Float, nullable=True)
@@ -479,6 +546,7 @@ class FinanceRecord(db.Model):
             "disbursement_amount": self.disbursement_amount,
             "disbursement_date": str(self.disbursement_date) if self.disbursement_date else None,
             "DATE": str(self.disbursement_date) if self.disbursement_date else None,  # Alias
+            "payment_out": self.payment_out,
             "status": self.status,
             "emi_amount": self.emi_amount,
             "executive": self.executive
@@ -498,6 +566,8 @@ class Insurance(db.Model):
     premium_amount = db.Column(db.Float, default=0.0)
     insurance_company = db.Column("insurance_company_name", db.String(100))
     expiry_date = db.Column(db.String(20))
+    old_policy_url = db.Column(db.String(255), nullable=True)
+    new_policy_url = db.Column(db.String(255), nullable=True)
     
     def to_dict(self):
         return {
@@ -505,7 +575,9 @@ class Insurance(db.Model):
             "bank_name": self.bank_name,
             "customer_name": self.customer_name,
             "amount": self.total_amount,
-            "expiry_date": self.expiry_date
+            "expiry_date": self.expiry_date,
+            "old_policy_url": self.old_policy_url,
+            "new_policy_url": self.new_policy_url
         }
 
 class Inquiry(db.Model):
@@ -1049,76 +1121,295 @@ def create_vehicle():
             data = request.get_json()
             files = {}
 
-        # Default to 'sales' if not provided (Legacy DB constraint)
+        # Default to 'sales' if not provided
         entry_type = data.get('transaction_type', 'sales').lower()
-        if entry_type == 'sale': entry_type = 'sales' # Normalize
+        if entry_type == 'sale': entry_type = 'sales'
 
-        new_vehicle = Vehicle(
-            transaction_type=entry_type,
-            docket_number=data.get('docket_number'),
-            manufacturer=data.get('manufacturer'),
-            model=data.get('model'),
-            year=str(data.get('year')) if data.get('year') else None,
-            color=data.get('color'),
-            fuel_type=data.get('fuel_type'),
-            chassis_number=data.get('vin') or data.get('chassis_number'),
-            engine_number=data.get('engine_number'),
-            registration_number=data.get('registration_number'),
-            running_km=int(data.get('running_km', 0)),
-            rto_passing_status=data.get('rto_passing_status'),
-            plate_type=data.get('plate_type'),
-            executive_name=data.get('executive_name'),
-            price=float(data.get('price', 0)) if data.get('price') else 0.0,
-            status='sold' if entry_type == 'sales' else 'unsold',
+        # Explicitly handle Old Car Sell (transaction_type='Sale')
+        if data.get('transaction_type') == 'Sale':
+             new_vehicle = OldCarSell(
+                docket_number=data.get('docket_number'),
+                original_price=int(float(data.get('buying_price', 0))) if data.get('buying_price') else 0,
+                current_price=int(float(data.get('price', 0))) if data.get('price') else 0,
+                renovation_cost=int(data.get('renovation_cost', 0)) if data.get('renovation_cost') else 0,
+                status='sold',
+                
+                # Customer
+                customer_name=data.get('customer_name') or data.get('buyer_name'),
+                customer_phone=data.get('customer_phone'),
+                customer_address1=data.get('customer_address_line1'),
+                customer_address2=data.get('customer_address_line2'),
+                city_name=data.get('customer_city'),
+                pincode=data.get('customer_pincode'),
+                email=data.get('customer_email') or data.get('buyer_email'),
+                
+                # Vehicle
+                manufacturer_name=data.get('manufacturer'),
+                model_name=data.get('model'),
+                manufacture_year=str(data.get('year')) if data.get('year') else None,
+                color=data.get('color'),
+                fuel_type=data.get('fuel_type'),
+                registration_no=data.get('registration_number'),
+                chassis_no=data.get('vin') or data.get('chassis_number'),
+                engine_no=data.get('engine_number'),
+                running_kilometer=int(data.get('running_km', 0)),
+                
+                # Others
+                insurance_company_name=data.get('insurance_company'),
+                executive_branch_name=data.get('executive_branch'),
+                executive_name=data.get('executive_name'),
+                executive_number=int(data.get('executive_number')) if data.get('executive_number') else None,
+                rto_name=data.get('rto_name'),
+                rto_code=data.get('rto_code'),
+                parsing_status=data.get('rto_passing_status') or 'Pending',
+                number_plate=data.get('plate_type') or 'Normal',
+                
+                scheme=data.get('scheme'),
+                broker_name=data.get('broker_name'),
+                broker_number=int(data.get('broker_number')) if data.get('broker_number') else None,
+                other_remarks=data.get('other_remarks')
+             )
+             
+             def parse_date(d_str):
+                if d_str: 
+                    try: return datetime.strptime(d_str, '%Y-%m-%d')
+                    except: return None
+                return None
+
+             if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
+             if data.get('insurance_expiry'): new_vehicle.insurance_expiry_date = parse_date(data.get('insurance_expiry'))
+
+        elif entry_type == 'purchase':
+            # Create Old Car
+            new_vehicle = OldCar(
+                docket_number=data.get('docket_number'),
+                manufacturer_name=data.get('manufacturer'),
+                model_name=data.get('model'),
+                manufacture_year=str(data.get('year')) if data.get('year') else None,
+                color=data.get('color'),
+                fuel_type=data.get('fuel_type'),
+                chassis_no=data.get('vin') or data.get('chassis_number'),
+                engine_no=data.get('engine_number'),
+                registration_no=data.get('registration_number'),
+                running_kilometer=int(data.get('running_km', 0)),
+                parsing_status=data.get('rto_passing_status') or 'Pending',  # Default strict
+                number_plate=data.get('plate_type') or 'Normal',
+                executive_name=data.get('executive_name'),
+                current_price=int(float(data.get('price', 0))),
+                renovation_cost=int(data.get('renovation_cost', 0)),
+                status='unsold',
+                
+                # Customer/Seller
+                customer_name=data.get('buyer_name'),
+                customer_phone=data.get('customer_phone'),
+                city_name=data.get('customer_city'),
+                pincode=data.get('customer_pincode'),
+                customer_address1=data.get('customer_address_line1'),
+                customer_address2=data.get('customer_address_line2'),
+                
+                broker_name=data.get('broker_name'),
+                scheme=data.get('scheme'),
+                other_remarks=data.get('other_remarks'),
+                # hp_name not in OldCar model
+                email=data.get('buyer_email')
+            )
+            # Date mappings
+            def parse_date(d_str):
+                if d_str: 
+                    try: return datetime.strptime(d_str, '%Y-%m-%d')
+                    except: return None
+                return None
             
-            # Additional Fields
-            buyer_name=data.get('buyer_name'),
-            buyer_email=data.get('buyer_email'),
-            customer_phone=data.get('customer_phone'),
-            city=data.get('customer_city'),
-            pincode=data.get('customer_pincode'),
-            address_line_1=data.get('customer_address_line1'),
-            address_line_2=data.get('customer_address_line2'),
-            broker_name=data.get('broker_name'),
-            scheme=data.get('scheme'),
-            other_remarks=data.get('other_remarks'),
-            hp_name=data.get('hp') or data.get('hp_name'),
-            nominee_name=data.get('nominee_name'),
-            nominee_relation=data.get('nominee_relation')
-        )
-        
-        # Date parsing helper
-        def parse_date(d_str):
-            if d_str: 
-                try: return datetime.strptime(d_str, '%Y-%m-%d')
-                except: return None
-            return None
+            if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
+            if data.get('insurance_expiry'): new_vehicle.insurance_expiry_date = parse_date(data.get('insurance_expiry'))
 
-        if data.get('delivery_date'): new_vehicle.delivery_date = parse_date(data.get('delivery_date'))
-        if data.get('booking_date'): new_vehicle.booking_date = parse_date(data.get('booking_date'))
-        if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
-        if data.get('nominee_dob'): new_vehicle.nominee_dob = parse_date(data.get('nominee_dob'))
+        elif entry_type == 'sales' and data.get('is_old_car_sale'): 
+             # Logic for Old Car Sell - assuming 'is_old_car_sale' flag or derived from somewhere
+             # But AddCar uses 'Sale' type.
+             # If type is 'sales' AND it's an old car...
+             # Actually key is 'transaction_type'. AddCar sends 'Sale'. 
+             # My normalization turns 'Sale' -> 'sales'.
+             # I should check if it's Old Car Sale.
+             pass 
+             # For now, let's stick to New Car logic for 'sales' unless I'm sure.
+             # BUT I need to handle 'OldCarSell' creation if intent is explicitly Old Car Sale.
+             # The existing logic creates a 'Vehicle' (New Car).
+             
+             # Fallback to Vehicle (New Car) creation for now as it handles 'sales'
+             # I will modify the 'else' block
+             new_vehicle = Vehicle(
+                transaction_type=entry_type,
+                docket_number=data.get('docket_number'),
+                manufacturer=data.get('manufacturer'),
+                model=data.get('model'),
+                year=str(data.get('year')) if data.get('year') else None,
+                color=data.get('color'),
+                fuel_type=data.get('fuel_type'),
+                chassis_number=data.get('vin') or data.get('chassis_number'),
+                engine_number=data.get('engine_number'),
+                registration_number=data.get('registration_number'),
+                running_km=int(data.get('running_km', 0)),
+                rto_passing_status=data.get('rto_passing_status'),
+                plate_type=data.get('plate_type'),
+                executive_name=data.get('executive_name'),
+                price=float(data.get('price', 0)) if data.get('price') else 0.0,
+                status='sold' if entry_type == 'sales' else 'unsold',
+                
+                buyer_name=data.get('buyer_name'),
+                buyer_email=data.get('buyer_email'),
+                customer_phone=data.get('customer_phone'),
+                city=data.get('customer_city'),
+                pincode=data.get('customer_pincode'),
+                address_line_1=data.get('customer_address_line1'),
+                address_line_2=data.get('customer_address_line2'),
+                broker_name=data.get('broker_name'),
+                scheme=data.get('scheme'),
+                other_remarks=data.get('other_remarks'),
+                hp_name=data.get('hp') or data.get('hp_name'),
+                nominee_name=data.get('nominee_name'),
+                nominee_relation=data.get('nominee_relation')
+            )
+             
+             # Date parsing helper
+             def parse_date(d_str):
+                if d_str: 
+                    try: return datetime.strptime(d_str, '%Y-%m-%d')
+                    except: return None
+                return None
+
+             if data.get('delivery_date'): new_vehicle.delivery_date = parse_date(data.get('delivery_date'))
+             if data.get('booking_date'): new_vehicle.booking_date = parse_date(data.get('booking_date'))
+             if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
+             if data.get('nominee_dob'): new_vehicle.nominee_dob = parse_date(data.get('nominee_dob'))
+
+        else:
+             # Default New Car Logic (duplicate of above 'elif' body for safety)
+             # Wait, I can't put duplicate code in 'pass' block.
+             # I'll just use the block above.
+             new_vehicle = Vehicle(
+                transaction_type=entry_type,
+                docket_number=data.get('docket_number'),
+                manufacturer=data.get('manufacturer'),
+                model=data.get('model'),
+                year=str(data.get('year')) if data.get('year') else None,
+                color=data.get('color'),
+                fuel_type=data.get('fuel_type'),
+                chassis_number=data.get('vin') or data.get('chassis_number'),
+                engine_number=data.get('engine_number'),
+                registration_number=data.get('registration_number'),
+                running_km=int(data.get('running_km', 0)),
+                rto_passing_status=data.get('rto_passing_status'),
+                plate_type=data.get('plate_type'),
+                executive_name=data.get('executive_name'),
+                price=float(data.get('price', 0)) if data.get('price') else 0.0,
+                status='sold' if entry_type == 'sales' else 'unsold',
+                
+                buyer_name=data.get('buyer_name'),
+                buyer_email=data.get('buyer_email'),
+                customer_phone=data.get('customer_phone'),
+                city=data.get('customer_city'),
+                pincode=data.get('customer_pincode'),
+                address_line_1=data.get('customer_address_line1'),
+                address_line_2=data.get('customer_address_line2'),
+                broker_name=data.get('broker_name'),
+                scheme=data.get('scheme'),
+                other_remarks=data.get('other_remarks'),
+                hp_name=data.get('hp') or data.get('hp_name'),
+                nominee_name=data.get('nominee_name'),
+                nominee_relation=data.get('nominee_relation')
+            )
+             
+             # Date parsing helper (re-defined or shared)
+             def parse_date(d_str):
+                if d_str: 
+                    try: return datetime.strptime(d_str, '%Y-%m-%d')
+                    except: return None
+                return None
+
+             if data.get('delivery_date'): new_vehicle.delivery_date = parse_date(data.get('delivery_date'))
+             if data.get('booking_date'): new_vehicle.booking_date = parse_date(data.get('booking_date'))
+             if data.get('customer_dob'): new_vehicle.customer_dob = parse_date(data.get('customer_dob'))
+             if data.get('nominee_dob'): new_vehicle.nominee_dob = parse_date(data.get('nominee_dob'))
 
         db.session.add(new_vehicle)
         db.session.flush()
 
         # Handle Files
+        # 1. Standard Static Files (Legacy or 'New Car' specific if any)
         for key, file in files.items():
+            # Skip dynamic doc keys
+            if key.startswith('doc_file_'): continue 
+            
             if file and file.filename:
                 safe_filename = secure_filename(f"{new_vehicle.id}_{key}_{file.filename}")
                 save_path = os.path.join(app.config['UPLOAD_FOLDER'], safe_filename)
                 file.save(save_path)
 
-                new_doc = VehicleDocument(
-                    vehicle_id=new_vehicle.id,
-                    document_name=key, # or file.filename
-                    file_path=safe_filename,
-                    document_type=key # using key as type
-                )
-                db.session.add(new_doc)
+        # 2. Dynamic Documents (New System)
+        # Format: doc_file_0, doc_name_0, ...
+        i = 0
+        while True:
+            file_key = f'doc_file_{i}'
+            name_key = f'doc_name_{i}'
+            
+            # Check if file key exists (even if empty file, the key might be there in FormData)
+            if file_key not in request.files:
+                # Break if sequence breaks? Or check next? 
+                # FormData usually comes in order.
+                # But to be safe, maybe check up to 20? 
+                # Actually, standard is loop until break.
+                break
+                
+            file = request.files[file_key]
+            doc_name = request.form.get(name_key, f"Document {i+1}")
+            
+            if file and file.filename:
+                ts = int(datetime.now().timestamp())
+                safe_filename = secure_filename(f"{new_vehicle.id}_doc_{ts}_{i}_{file.filename}")
+                save_path = os.path.join(app.config['UPLOAD_FOLDER'], safe_filename)
+                file.save(save_path)
+                
+                file_url = f"/uploads/{safe_filename}"
+                
+                if entry_type == 'sales':
+                    if data.get('transaction_type') == 'Sale':
+                        # Old Car Sell -> OldCarSellDocument
+                        doc = OldCarSellDocument(
+                            sell_id=new_vehicle.id,
+                            document_name=doc_name,
+                            file_path=file_url
+                        )
+                        db.session.add(doc)
+                    else:
+                        # New Car -> VehicleDocument
+                        doc = VehicleDocument(
+                            vehicle_id=new_vehicle.id,
+                            document_name=doc_name,
+                            file_path=file_url,
+                            document_type=file.content_type or 'application/octet-stream'
+                        )
+                        db.session.add(doc)
+                
+                elif entry_type == 'purchase':
+                    # Old Car -> OldCarDocument
+                    doc = OldCarDocument(
+                        old_car_id=new_vehicle.id,
+                        document_name=doc_name,
+                        file_path=file_url
+                    )
+                    db.session.add(doc)
 
+            i += 1
+            
         db.session.commit()
-        return jsonify({"success": True, "id": new_vehicle.id, "vehicle": new_vehicle.to_dict()}), 201
+            
+        return jsonify({
+            "success": True,
+            "message": "Vehicle created successfully",
+            "id": new_vehicle.id,
+            "vehicle": new_vehicle.to_dict()
+        }), 201
+
 
     except Exception as e:
         db.session.rollback()
@@ -1127,17 +1418,92 @@ def create_vehicle():
 
 @app.route('/api/vehicles/<int:id>', methods=['GET'])
 def get_vehicle_detail(id):
-    vehicle = db.session.get(Vehicle, id)
-    if not vehicle: return jsonify({"error": "Not found"}), 404
-    return jsonify(vehicle.to_dict()), 200
-
-@app.route('/api/vehicles/<int:id>', methods=['PUT'])
-def update_vehicle(id):
-    try:
+    tx_type = request.args.get('type')
+    
+    # Priority Search based on Type Hint
+    if tx_type == 'Purchase':
+        old_car = db.session.get(OldCar, id)
+        if old_car:
+            d = old_car.to_dict()
+            d['transaction_type'] = 'Purchase'
+            return jsonify(d), 200
+    elif tx_type == 'Sale':
+        old_sell = db.session.get(OldCarSell, id)
+        if old_sell:
+            d = old_sell.to_dict()
+            d['transaction_type'] = 'Sale'
+            return jsonify(d), 200
+        # If not found in Sell, check OldCar (maybe verifying stock to sell)
+        old_car = db.session.get(OldCar, id)
+        if old_car:
+            d = old_car.to_dict()
+            d['transaction_type'] = 'Purchase' # or Sale? Keep as source type
+            return jsonify(d), 200
+    elif tx_type == 'New':
         vehicle = db.session.get(Vehicle, id)
-        if not vehicle: 
-            return jsonify({"error": "Vehicle not found"}), 404
-        
+        if vehicle:
+            d = vehicle.to_dict()
+            if not d.get('transaction_type'): d['transaction_type'] = 'New'
+            return jsonify(d), 200
+
+    # Fallback to existing search order
+    # Try New Car
+    vehicle = db.session.get(Vehicle, id)
+    if vehicle: 
+        d = vehicle.to_dict()
+        # Ensure transaction structure matches frontend expectation
+        if not d.get('transaction_type'): d['transaction_type'] = 'New'
+        return jsonify(d), 200
+    
+    # Try Old Car
+    old_car = db.session.get(OldCar, id)
+    if old_car:
+        d = old_car.to_dict()
+        d['transaction_type'] = 'Purchase'
+        return jsonify(d), 200
+
+    # Try Old Car Sell
+    old_sell = db.session.get(OldCarSell, id)
+    if old_sell:
+        d = old_sell.to_dict()
+        d['transaction_type'] = 'Sale'
+        return jsonify(d), 200
+
+    return jsonify({"error": "Not found"}), 404
+
+@app.route('/api/vehicles/<int:id>', methods=['PUT', 'DELETE'])
+def update_delete_vehicle(id):
+    if request.method == 'DELETE':
+        try:
+            deleted = False
+            # Try finding in all tables
+            v = db.session.get(Vehicle, id)
+            if v:
+                db.session.delete(v)
+                deleted = True
+            
+            if not deleted:
+                oc = db.session.get(OldCar, id)
+                if oc:
+                    db.session.delete(oc)
+                    deleted = True
+            
+            if not deleted:
+                ocs = db.session.get(OldCarSell, id)
+                if ocs:
+                    db.session.delete(ocs)
+                    deleted = True
+            
+            if deleted:
+                db.session.commit()
+                return jsonify({"success": True, "message": "Vehicle deleted"}), 200
+            else:
+                 return jsonify({"error": "Vehicle not found"}), 404
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"success": False, "message": str(e)}), 500
+
+    try:
         # Handle both JSON and multipart form data
         if request.content_type and 'multipart/form-data' in request.content_type:
             data = request.form.to_dict()
@@ -1149,125 +1515,203 @@ def update_vehicle(id):
         # Date parsing helper
         def parse_date(d_str):
             if d_str: 
-                try: 
-                    return datetime.strptime(d_str, '%Y-%m-%d').date()
-                except: 
-                    return None
+                try: return datetime.strptime(d_str, '%Y-%m-%d').date()
+                except: return None
             return None
+
+        # Helper to update common fields
+        def update_common_fields(obj, d):
+            # Safe int converter
+            def safe_int(val):
+                if val is None or val == '': return 0
+                try: return int(float(val)) # Handle "100.0" strings too
+                except: return 0
+
+            if d.get('docket_number') is not None: obj.docket_number = d.get('docket_number')
+            if d.get('manufacturer'): 
+                if hasattr(obj, 'manufacturer'): obj.manufacturer = d.get('manufacturer')
+                elif hasattr(obj, 'manufacturer_name'): obj.manufacturer_name = d.get('manufacturer')
+            if d.get('model'):
+                if hasattr(obj, 'model'): obj.model = d.get('model')
+                elif hasattr(obj, 'model_name'): obj.model_name = d.get('model')
+            if d.get('year'):
+                if hasattr(obj, 'year'): obj.year = str(d.get('year'))
+                elif hasattr(obj, 'manufacture_year'): obj.manufacture_year = str(d.get('year'))
+            if d.get('color'): obj.color = d.get('color')
+            if d.get('fuel_type'): obj.fuel_type = d.get('fuel_type')
+            
+            # VIN/Chassis/Engine
+            vin = d.get('vin') or d.get('chassis_number')
+            if vin:
+               if hasattr(obj, 'chassis_number'): obj.chassis_number = vin
+               elif hasattr(obj, 'chassis_no'): obj.chassis_no = vin
+            
+            if d.get('engine_number'):
+                if hasattr(obj, 'engine_number'): obj.engine_number = d.get('engine_number')
+                elif hasattr(obj, 'engine_no'): obj.engine_no = d.get('engine_number')
+
+            if d.get('registration_number'):
+                if hasattr(obj, 'registration_number'): obj.registration_number = d.get('registration_number')
+                elif hasattr(obj, 'registration_no'): obj.registration_no = d.get('registration_number')
+            
+            if d.get('running_km') is not None:
+                val = safe_int(d.get('running_km'))
+                if hasattr(obj, 'running_km'): obj.running_km = val
+                elif hasattr(obj, 'running_kilometer'): obj.running_kilometer = val
+            
+            # Price
+            if d.get('price') is not None:
+                val = float(d.get('price', 0)) if d.get('price') else 0.0
+                if hasattr(obj, 'price'): obj.price = val
+                elif hasattr(obj, 'current_price'): obj.current_price = int(val)
+            
+            # Renovation Cost (Old Cars only)
+            if d.get('renovation_cost') is not None and hasattr(obj, 'renovation_cost'):
+                obj.renovation_cost = safe_int(d.get('renovation_cost'))
+
+            # Status
+            if d.get('status'): obj.status = d.get('status')
+            
+            # Customer fields
+            # Fix: Prioritize 'customer_name' (form input) over 'buyer_name' (potential stale alias)
+            buyer = d.get('customer_name') or d.get('buyer_name')
+            if buyer:
+                if hasattr(obj, 'buyer_name'): obj.buyer_name = buyer
+                elif hasattr(obj, 'customer_name'): obj.customer_name = buyer
+            
+            # Fix: Prioritize 'customer_email' over 'buyer_email'
+            email = d.get('customer_email') or d.get('buyer_email')
+            if email:
+                if hasattr(obj, 'buyer_email'): obj.buyer_email = email
+                elif hasattr(obj, 'email'): obj.email = email
+            
+            if d.get('customer_phone'): obj.customer_phone = d.get('customer_phone')
+            
+            # Address/Location
+            city = d.get('customer_city') or d.get('city')
+            if city:
+                if hasattr(obj, 'city'): obj.city = city
+                elif hasattr(obj, 'city_name'): obj.city_name = city
+                
+            pincode = d.get('customer_pincode') or d.get('pincode')
+            if pincode: obj.pincode = pincode
+            
+            # Fix: Prioritize 'customer_address_line1' if sent that way, but here we see 'customer_address_line1' vs 'address_line_1'
+            # The form likely sends 'customer_address_line1'
+            addr1 = d.get('customer_address_line1') or d.get('address_line_1')
+            if addr1:
+                 if hasattr(obj, 'address_line_1'): obj.address_line_1 = addr1
+                 elif hasattr(obj, 'customer_address1'): obj.customer_address1 = addr1
+            
+            addr2 = d.get('customer_address_line2') or d.get('address_line_2')
+            if addr2:
+                 if hasattr(obj, 'address_line_2'): obj.address_line_2 = addr2
+                 elif hasattr(obj, 'customer_address2'): obj.customer_address2 = addr2
+
+            if d.get('executive_name'): obj.executive_name = d.get('executive_name')
+            if d.get('other_remarks'): obj.other_remarks = d.get('other_remarks')
+
+            # RTO & Plate Mappings (critical for OldCarSell)
+            if d.get('rto_passing_status'):
+                if hasattr(obj, 'rto_passing_status'): obj.rto_passing_status = d.get('rto_passing_status')
+                elif hasattr(obj, 'parsing_status'): obj.parsing_status = d.get('rto_passing_status')
+
+            if d.get('plate_type'):
+                if hasattr(obj, 'plate_type'): obj.plate_type = d.get('plate_type')
+                elif hasattr(obj, 'number_plate'): obj.number_plate = d.get('plate_type')
+                
+            if d.get('hp'):
+                if hasattr(obj, 'hp_name'): obj.hp_name = d.get('hp')
+
+            # --- DATE FIELDS (critical for Customer Details modal) ---
+            if d.get('booking_date') and hasattr(obj, 'booking_date'):
+                obj.booking_date = parse_date(d.get('booking_date'))
+            if d.get('delivery_date') and hasattr(obj, 'delivery_date'):
+                obj.delivery_date = parse_date(d.get('delivery_date'))
+            # buyer_dob from modal maps to customer_dob on Vehicle
+            dob = d.get('buyer_dob') or d.get('customer_dob')
+            if dob:
+                if hasattr(obj, 'customer_dob'): obj.customer_dob = parse_date(dob)
+                elif hasattr(obj, 'buyer_dob'): obj.buyer_dob = parse_date(dob)
+
+            # --- PRICING BREAKDOWN (stored as JSON text) ---
+            if d.get('vehicle_pricing_breakdown') and hasattr(obj, 'vehicle_pricing_breakdown'):
+                obj.vehicle_pricing_breakdown = d.get('vehicle_pricing_breakdown')
+
+            # --- DELIVERY STATUS / STATUS from modal dropdown ---
+            if d.get('delivery_status'):
+                if hasattr(obj, 'delivery_status'): obj.delivery_status = d.get('delivery_status')
+
+
+        # IDENTIFY TARGET
+        target = None
+        tx_type = data.get('transaction_type')
         
-        # Update fields if provided
-        if data.get('docket_number') is not None:
-            vehicle.docket_number = data.get('docket_number')
-        if data.get('transaction_type'):
-            entry_type = data.get('transaction_type', 'sales').lower()
-            if entry_type == 'sale': entry_type = 'sales'
-            vehicle.transaction_type = entry_type
-        if data.get('manufacturer'):
-            vehicle.manufacturer = data.get('manufacturer')
-        if data.get('model'):
-            vehicle.model = data.get('model')
-        if data.get('year'):
-            vehicle.year = str(data.get('year'))
-        if data.get('color'):
-            vehicle.color = data.get('color')
-        if data.get('fuel_type'):
-            vehicle.fuel_type = data.get('fuel_type')
-        if data.get('vin') or data.get('chassis_number'):
-            vehicle.chassis_number = data.get('vin') or data.get('chassis_number')
-        if data.get('engine_number'):
-            vehicle.engine_number = data.get('engine_number')
-        if data.get('registration_number'):
-            vehicle.registration_number = data.get('registration_number')
-        if data.get('running_km') is not None:
-            vehicle.running_km = int(data.get('running_km', 0))
-        if data.get('rto_passing_status'):
-            vehicle.rto_passing_status = data.get('rto_passing_status')
-        if data.get('plate_type'):
-            vehicle.plate_type = data.get('plate_type')
-        if data.get('rto_name'):
-            vehicle.rto_name = data.get('rto_name')
-        if data.get('rto_code'):
-            vehicle.rto_code = data.get('rto_code')
-        if data.get('choice_number'):
-            vehicle.choice_number = data.get('choice_number')
-        if data.get('executive_name'):
-            vehicle.executive_name = data.get('executive_name')
-        if data.get('location'):
-            vehicle.location = data.get('location')
-        if data.get('dealer') or data.get('dealer_name'):
-            vehicle.dealer = data.get('dealer') or data.get('dealer_name')
-        if data.get('price') is not None:
-            vehicle.price = float(data.get('price', 0)) if data.get('price') else 0.0
-        if data.get('status'):
-            vehicle.status = data.get('status')
+        if not tx_type:
+             return jsonify({"error": "transaction_type is required"}), 400
+
+        if tx_type == 'New':
+            target = db.session.get(Vehicle, id)
+        elif tx_type == 'Purchase':
+            target = db.session.get(OldCar, id)
+        elif tx_type == 'Sale':
+            target = db.session.get(OldCarSell, id)
+        else:
+            return jsonify({"error": f"Invalid transaction_type: {tx_type}"}), 400
         
-        # Customer fields
-        if data.get('buyer_name') or data.get('customer_name'):
-            vehicle.buyer_name = data.get('buyer_name') or data.get('customer_name')
-        if data.get('buyer_email') or data.get('customer_email'):
-            vehicle.buyer_email = data.get('buyer_email') or data.get('customer_email')
-        if data.get('customer_phone'):
-            vehicle.customer_phone = data.get('customer_phone')
-        if data.get('customer_city') or data.get('city'):
-            vehicle.city = data.get('customer_city') or data.get('city')
-        if data.get('customer_pincode') or data.get('pincode'):
-            vehicle.pincode = data.get('customer_pincode') or data.get('pincode')
-        if data.get('customer_address_line1') or data.get('address_line_1'):
-            vehicle.address_line_1 = data.get('customer_address_line1') or data.get('address_line_1')
-        if data.get('customer_address_line2') or data.get('address_line_2'):
-            vehicle.address_line_2 = data.get('customer_address_line2') or data.get('address_line_2')
+        if not target:
+            return jsonify({"error": f"Vehicle not found in {tx_type} table"}), 404
         
-        # Broker fields
-        if data.get('broker_name'):
-            vehicle.broker_name = data.get('broker_name')
-        if data.get('scheme'):
-            vehicle.scheme = data.get('scheme')
-        if data.get('other_remarks'):
-            vehicle.other_remarks = data.get('other_remarks')
-        if data.get('hp') or data.get('hp_name'):
-            vehicle.hp_name = data.get('hp') or data.get('hp_name')
+        # UPDATE
+        update_common_fields(target, data)
         
-        # Nominee fields
-        if data.get('nominee_name'):
-            vehicle.nominee_name = data.get('nominee_name')
-        if data.get('nominee_relation') or data.get('nominee_relationship'):
-            vehicle.nominee_relation = data.get('nominee_relation') or data.get('nominee_relationship')
-        
-        # Date fields
-        if data.get('delivery_date'):
-            vehicle.delivery_date = parse_date(data.get('delivery_date'))
-        if data.get('booking_date'):
-            vehicle.booking_date = parse_date(data.get('booking_date'))
-        if data.get('customer_dob'):
-            vehicle.customer_dob = parse_date(data.get('customer_dob'))
-        if data.get('nominee_dob'):
-            vehicle.nominee_dob = parse_date(data.get('nominee_dob'))
-        
-        # Handle file uploads if present
-        for key, file in files.items():
+        # Handle New Documents (Append)
+        # Dynamic Documents
+        i = 0
+        while True:
+            file_key = f'doc_file_{i}'
+            name_key = f'doc_name_{i}'
+            if file_key not in request.files: break
+            
+            file = request.files[file_key]
+            doc_name = request.form.get(name_key, f"Document {i+1}")
+            
             if file and file.filename:
-                safe_filename = secure_filename(f"{vehicle.id}_{key}_{file.filename}")
+                ts = int(datetime.now().timestamp())
+                safe_filename = secure_filename(f"{target.id}_doc_{ts}_{i}_{file.filename}")
                 save_path = os.path.join(app.config['UPLOAD_FOLDER'], safe_filename)
-                file.save(save_path)
-                
-                # Check if document already exists, update or create
-                existing_doc = db.session.execute(
-                    db.select(VehicleDocument).filter_by(vehicle_id=vehicle.id, document_name=key)
-                ).scalar_one_or_none()
-                
-                if existing_doc:
-                    existing_doc.file_path = safe_filename
-                else:
-                    new_doc = VehicleDocument(
-                        vehicle_id=vehicle.id,
-                        document_name=key,
-                        file_path=safe_filename,
-                        document_type=key
-                    )
-                    db.session.add(new_doc)
-        
+                try:
+                    file.save(save_path)
+                    file_url = f"/uploads/{safe_filename}"
+                    
+                    if tx_type == 'New':
+                        doc = VehicleDocument(
+                            vehicle_id=target.id,
+                            document_name=doc_name,
+                            file_path=file_url,
+                            document_type=file.content_type or 'application/octet-stream'
+                        )
+                        db.session.add(doc)
+                    elif tx_type == 'Purchase':
+                        doc = OldCarDocument(
+                            old_car_id=target.id,
+                            document_name=doc_name,
+                            file_path=file_url
+                        )
+                        db.session.add(doc)
+                    elif tx_type == 'Sale':
+                        doc = OldCarSellDocument(
+                            sell_id=target.id,
+                            document_name=doc_name,
+                            file_path=file_url
+                        )
+                        db.session.add(doc)
+                except Exception as doc_err:
+                    print(f"Error adding document during update: {doc_err}")
+            i += 1
+
         db.session.commit()
-        return jsonify({"success": True, "vehicle": vehicle.to_dict()}), 200
+        return jsonify({"success": True, "vehicle": target.to_dict()}), 200
         
     except Exception as e:
         db.session.rollback()
@@ -1313,43 +1757,57 @@ def dashboard_stats():
         # Insurance Stats
         total_insurances = db.session.query(Insurance).count()
         
-        # Upcoming Insurance Expiries (within 30 days)
+        if True: # Indentation hack
+            import sys
+            print("--- DASHBOARD STATS CALLED ---", file=sys.stderr)
+        
+        # Upcoming Insurance Expiries (within 10 days)
         from datetime import datetime, timedelta
         today = datetime.now().date()
-        thirty_days_later = today + timedelta(days=30)
+        ten_days_later = today + timedelta(days=10)
         
         # Fetch insurances expiring soon
         upcoming_insurances_query = db.session.query(Insurance).all()
+        print(f"Found {len(upcoming_insurances_query)} insurances", file=sys.stderr)
         upcoming_insurances = []
         
         for ins in upcoming_insurances_query:
             if ins.expiry_date:
                 try:
-                    # Parse expiry date - handle different formats
-                    if isinstance(ins.expiry_date, str):
+                    expiry = None
+                    # Parse expiry date - handle different formats or types
+                    if isinstance(ins.expiry_date, (datetime, date)):
+                         expiry = ins.expiry_date if isinstance(ins.expiry_date, date) else ins.expiry_date.date()
+                    elif isinstance(ins.expiry_date, str):
                         # Try different date formats
-                        expiry = None
-                        for fmt in ['%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d']:
+                        date_str = ins.expiry_date.strip()
+                        # Add formats: 'Fri, 27 Feb 2026', '27 Feb 2026', ISO
+                        formats = [
+                            '%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d',
+                            '%a, %d %b %Y', '%d %b %Y', 
+                            '%Y-%m-%d %H:%M:%S', '%Y-%m-%dT%H:%M:%S'
+                        ]
+                        for fmt in formats:
                             try:
-                                expiry = datetime.strptime(ins.expiry_date, fmt).date()
+                                expiry = datetime.strptime(date_str, fmt).date()
                                 break
                             except:
                                 continue
+                    
+                    if expiry and today <= expiry <= ten_days_later:
+                        # Get vehicle details if available
+                        vehicle = db.session.get(Vehicle, ins.vehicle_id) if ins.vehicle_id else None
+                        car_name = f"{vehicle.manufacturer} {vehicle.model}" if vehicle else "Unknown Vehicle"
                         
-                        if expiry and today <= expiry <= thirty_days_later:
-                            # Get vehicle details if available
-                            vehicle = db.session.get(Vehicle, ins.vehicle_id) if ins.vehicle_id else None
-                            car_name = f"{vehicle.manufacturer} {vehicle.model}" if vehicle else "Unknown Vehicle"
-                            
-                            days_remaining = (expiry - today).days
-                            status = f"{days_remaining} Days Remaining" if days_remaining > 0 else "Expiring Soon"
-                            
-                            upcoming_insurances.append({
-                                "car_id": f"#CAR-{ins.vehicle_id}" if ins.vehicle_id else f"#INS-{ins.id}",
-                                "car_name": car_name,
-                                "expiry_date": expiry.strftime('%d %b %Y'),
-                                "status": status
-                            })
+                        days_remaining = (expiry - today).days
+                        status = f"{days_remaining} Days Remaining" if days_remaining > 0 else "Expiring Soon"
+                        
+                        upcoming_insurances.append({
+                            "car_id": f"#CAR-{ins.vehicle_id}" if ins.vehicle_id else f"#INS-{ins.id}",
+                            "car_name": car_name,
+                            "expiry_date": expiry.strftime('%d %b %Y'),
+                            "status": status
+                        })
                 except Exception as e:
                     print(f"Error parsing expiry date for insurance {ins.id}: {e}")
                     continue
@@ -1415,15 +1873,25 @@ def inquiries_handler():
 
     if request.method == 'POST':
         data = request.get_json()
+        print(f"Received inquiry data: {data}") # Debug log
         try:
+            # Saniitze inputs to prevent DB constraints/Enum crashes
+            source = data.get('source')
+            if not source:
+                source = 'walk-in'
+            
+            contact = data.get('contactMethod')
+            if contact:
+                contact = contact.lower()
+
             new_inquiry = Inquiry(
                 customer_name=data.get('customer'),
                 customer_email=data.get('email'),
                 customer_phone=data.get('customerPhone'),
                 vehicle_of_interest=data.get('vehicle'),
-                preferred_contact_method=data.get('contactMethod'),
+                preferred_contact_method=contact,
                 additional_notes=data.get('notes'),
-                inquiry_source=data.get('source'),
+                inquiry_source=source,
                 status='pending'
             )
             db.session.add(new_inquiry)
@@ -1431,6 +1899,9 @@ def inquiries_handler():
             return jsonify({"success": True, "inquiry": new_inquiry.to_dict()}), 201
         except Exception as e:
             db.session.rollback()
+            print(f"Error creating inquiry: {e}") # Debug log
+            import traceback
+            traceback.print_exc()
             return jsonify({"error": str(e)}), 400
 
 @app.route('/api/inquiries/<int:id>', methods=['GET'])
@@ -1529,7 +2000,9 @@ def get_insurances():
                 "expiry_date": ins.expiry_date,
                 "vehicle_id": ins.vehicle_id,
                 "car": vehicle.model if vehicle else None,
-                "registration_number": vehicle.registration_number if vehicle else None
+                "registration_number": vehicle.registration_number if vehicle else None,
+                "old_policy_url": ins.old_policy_url,
+                "new_policy_url": ins.new_policy_url
             })
         
         return jsonify(result), 200
@@ -1593,7 +2066,9 @@ def get_insurance(id):
         "expiry_date": insurance.expiry_date,
         "vehicle_id": insurance.vehicle_id,
         "car": vehicle.model if vehicle else None,
-        "registration_number": vehicle.registration_number if vehicle else None
+        "registration_number": vehicle.registration_number if vehicle else None,
+        "old_policy_url": insurance.old_policy_url,
+        "new_policy_url": insurance.new_policy_url
     }
     
     return jsonify(result), 200
@@ -1625,6 +2100,10 @@ def update_insurance(id):
             insurance.insurance_company = data.get('insurance_company')
         if data.get('expiry_date'):
             insurance.expiry_date = data.get('expiry_date')
+        if data.get('old_policy_url'):
+            insurance.old_policy_url = data.get('old_policy_url')
+        if data.get('new_policy_url'):
+            insurance.new_policy_url = data.get('new_policy_url')
         
         db.session.commit()
         
@@ -1717,7 +2196,8 @@ def create_finance():
             disbursement_date=parse_date(data.get('disbursement_date')),
             status=data.get('status'),
             emi_amount=float(data.get('emi_amount')) if data.get('emi_amount') else None,
-            executive=data.get('executive')
+            executive=data.get('executive'),
+            payment_out=0.0
         )
         
         db.session.add(new_finance)
@@ -1845,6 +2325,17 @@ def delete_finance(id):
 @app.route('/')
 def index():
     return "Lyrcon API Backend (Schema Aligned) is Running."
+
+
+@app.route('/api/decode-vin/<vin>', methods=['GET'])
+def decode_vin(vin):
+    # Mock response for VIN decoding
+    return jsonify({
+        "Make": "Demo Manufacturer",
+        "Model": "Demo Model",
+        "ModelYear": "2024",
+        "FuelTypePrimary": "Petrol"
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

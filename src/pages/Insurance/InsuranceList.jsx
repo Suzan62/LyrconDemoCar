@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
+import { Modal } from '../../components/ui/Modal';
 import { Plus, Trash2, Edit, Search, Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -15,7 +16,11 @@ export default function InsuranceList() {
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedInsurance, setSelectedInsurance] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [oldPolicyFile, setOldPolicyFile] = useState(null);
+    const [newPolicyFile, setNewPolicyFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
     const [entriesPerPage, setEntriesPerPage] = useState(10);
+    const [deleteId, setDeleteId] = useState(null);
 
     useEffect(() => {
         fetchInsurances();
@@ -26,7 +31,9 @@ export default function InsuranceList() {
             const res = await fetch('/api/insurances');
             if (res.ok) {
                 const data = await res.json();
-                setInsurances(data);
+                // Dedup data to fix duplicate key warnings
+                const uniqueData = Array.from(new Map(data.map(item => [item.id, item])).values());
+                setInsurances(uniqueData);
             } else {
                 toast.error("Failed to fetch insurances");
             }
@@ -37,21 +44,96 @@ export default function InsuranceList() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this record?")) return;
+    const handleDelete = (id) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteId) return;
 
         try {
-            const res = await fetch(`/api/insurances/${id}`, {
+            const res = await fetch(`/api/insurances/${deleteId}`, {
                 method: 'DELETE'
             });
             if (res.ok) {
                 toast.success("Record deleted");
-                setInsurances(insurances.filter(i => i.id !== id));
+                setInsurances(insurances.filter(i => i.id !== deleteId));
+                setDeleteId(null);
             } else {
                 toast.error("Failed to delete");
             }
         } catch (err) {
             toast.error("Network error");
+        }
+    };
+
+    const handleFileChange = (e, type) => {
+        const file = e.target.files[0];
+        if (type === 'old') setOldPolicyFile(file);
+        if (type === 'new') setNewPolicyFile(file);
+    };
+
+    const handleSaveDocuments = async () => {
+        if (!oldPolicyFile && !newPolicyFile) {
+            toast.error("No files selected");
+            return;
+        }
+
+        setUploading(true);
+        const formData = new FormData();
+        const updateData = {};
+
+        try {
+            // 1. Upload Files
+            if (oldPolicyFile) {
+                const oldData = new FormData();
+                oldData.append('file', oldPolicyFile);
+                const res = await fetch('/api/upload', { method: 'POST', body: oldData });
+                if (res.ok) {
+                    const data = await res.json();
+                    updateData.old_policy_url = data.url;
+                }
+            }
+            if (newPolicyFile) {
+                const newData = new FormData();
+                newData.append('file', newPolicyFile);
+                const res = await fetch('/api/upload', { method: 'POST', body: newData });
+                if (res.ok) {
+                    const data = await res.json();
+                    updateData.new_policy_url = data.url;
+                }
+            }
+
+            // 2. Update Insurance Record
+            if (Object.keys(updateData).length > 0) {
+                const res = await fetch(`/api/insurances/${selectedInsurance.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+
+                if (res.ok) {
+                    const updatedIns = await res.json();
+                    // Update local state
+                    setInsurances(prev => prev.map(i => i.id === selectedInsurance.id ? updatedIns.insurance : i));
+                    setSelectedInsurance(updatedIns.insurance);
+                    toast.success("Documents saved successfully!");
+                    setOldPolicyFile(null);
+                    setNewPolicyFile(null);
+                    // Clear file inputs? Hard to do without ref. 
+                    // But state is cleared.
+                } else {
+                    toast.error("Failed to update record");
+                }
+            } else {
+                toast.warning("Upload failed or no files");
+            }
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Upload error");
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -129,7 +211,7 @@ export default function InsuranceList() {
                             <tbody>
                                 {currentEntries.length > 0 ? (
                                     currentEntries.map((item) => (
-                                        <tr key={item.id} className="border-b last:border-0 hover:bg-slate-50">
+                                        <tr key={`insurance-${item.id}`} className="border-b last:border-0 hover:bg-slate-50">
                                             <td className="p-4 flex gap-2">
                                                 <Button
                                                     variant="ghost"
@@ -300,25 +382,60 @@ export default function InsuranceList() {
                                     {/* Old Policy */}
                                     <div className="bg-slate-50 p-4 rounded-lg">
                                         <label className="block text-sm font-medium text-slate-700 mb-2">OLD POLICY</label>
-                                        <div className="flex gap-2">
-                                            <input type="file" className="flex-1 text-sm" />
-                                            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm">DOWNLOAD</Button>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                type="file"
+                                                className="flex-1 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                                onChange={(e) => handleFileChange(e, 'old')}
+                                            />
+                                            {selectedInsurance.old_policy_url && !oldPolicyFile ? (
+                                                <Button
+                                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm"
+                                                    onClick={() => window.open(selectedInsurance.old_policy_url, '_blank')}
+                                                >
+                                                    VIEW
+                                                </Button>
+                                            ) : (
+                                                <Button disabled className="bg-slate-300 text-white px-4 py-2 text-sm">
+                                                    {oldPolicyFile ? "SAVE TO VIEW" : "VIEW"}
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
 
                                     {/* New Policy */}
                                     <div className="bg-slate-50 p-4 rounded-lg">
                                         <label className="block text-sm font-medium text-slate-700 mb-2">NEW POLICY</label>
-                                        <div className="flex gap-2">
-                                            <input type="file" className="flex-1 text-sm" />
-                                            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 text-sm">DOWNLOAD</Button>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                type="file"
+                                                className="flex-1 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                                onChange={(e) => handleFileChange(e, 'new')}
+                                            />
+                                            {selectedInsurance.new_policy_url && !newPolicyFile ? (
+                                                <Button
+                                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm"
+                                                    onClick={() => window.open(selectedInsurance.new_policy_url, '_blank')}
+                                                >
+                                                    VIEW
+                                                </Button>
+                                            ) : (
+                                                <Button disabled className="bg-slate-300 text-white px-4 py-2 text-sm">
+                                                    {newPolicyFile ? "SAVE TO VIEW" : "VIEW"}
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
 
                                     {/* Action Buttons */}
                                     <div className="flex gap-2 pt-2">
-                                        <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white">Add Document</Button>
-                                        <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white">Save Documents</Button>
+                                        <Button
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                            onClick={handleSaveDocuments}
+                                            disabled={uploading}
+                                        >
+                                            {uploading ? "Uploading..." : "Save Documents"}
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -335,6 +452,19 @@ export default function InsuranceList() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {deleteId && (
+                <Modal isOpen={!!deleteId} onClose={() => setDeleteId(null)} title="Confirm Delete">
+                    <div className="p-4 text-center">
+                        <p>Are you sure you want to delete this insurance record?</p>
+                        <div className="mt-6 flex justify-center gap-2">
+                            <Button variant="outline" onClick={() => setDeleteId(null)}>Cancel</Button>
+                            <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
+                        </div>
+                    </div>
+                </Modal>
             )}
         </div>
     );

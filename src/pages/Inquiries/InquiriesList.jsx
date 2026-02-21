@@ -194,7 +194,7 @@ export default function InquiriesList() {
                             <TableBody>
                                 {currentEntries.length > 0 ? (
                                     currentEntries.map((item) => (
-                                        <TableRow key={item.id}>
+                                        <TableRow key={`inquiry-${item.id}`}>
                                             <TableCell>
                                                 <div className="flex gap-1">
                                                     <Button
@@ -238,7 +238,7 @@ export default function InquiriesList() {
                                             <TableCell className="font-medium">{item.id}</TableCell>
                                             <TableCell>{item.customer}</TableCell>
                                             <TableCell>{item.customerPhone}</TableCell>
-                                            <TableCell>-</TableCell> {/* Followed Up Date placeholder */}
+                                            <TableCell>-</TableCell>
                                             <TableCell>{item.vehicle}</TableCell>
                                             <TableCell>{item.carType}</TableCell>
                                             <TableCell>{item.date}</TableCell>

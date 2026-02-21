@@ -227,7 +227,7 @@ export default function AddInsurance() {
                                         >
                                             <option value="">-- Select a Vehicle --</option>
                                             {vehicles.map(v => (
-                                                <option key={v.id} value={v.id}>
+                                                <option key={`${v.transaction_type}-${v.id}`} value={v.id}>
                                                     {v.manufacturer} {v.model} ({v.year}) - {v.registration_number || v.chassis_number}
                                                 </option>
                                             ))}

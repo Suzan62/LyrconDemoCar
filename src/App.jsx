@@ -16,6 +16,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import InquiriesList from './pages/Inquiries/InquiriesList';
 import AddInquiry from './pages/Inquiries/AddInquiry';
+import ViewInquiry from './pages/Inquiries/ViewInquiry';
 import InsuranceList from './pages/Insurance/InsuranceList';
 import AddInsurance from './pages/Insurance/AddInsurance';
 import UserList from './pages/Users/UserList';
@@ -41,9 +42,9 @@ function App() {
               <Route index element={IS_DEMO_RESTRICTED ? <></> : <Dashboard />} />
 
               <Route path="inventory" element={IS_DEMO_RESTRICTED ? <></> : <Inventory />} />
-              <Route path="inventory/:id/edit-new" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" hideTypeSwitcher={true} />} />
-              <Route path="inventory/:id/edit-purchase" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Purchase" hideTypeSwitcher={true} />} />
-              <Route path="inventory/:id/edit-sale" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Sale" hideTypeSwitcher={true} />} />
+              <Route path="edit-new-car/:id" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" hideTypeSwitcher={true} />} />
+              <Route path="edit-purchase/:id" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Purchase" hideTypeSwitcher={true} />} />
+              <Route path="edit-sale/:id" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="Sale" hideTypeSwitcher={true} />} />
               <Route path="add-car" element={IS_DEMO_RESTRICTED ? <></> : <AddCar initialMode="New" hideTypeSwitcher={true} />} />
 
               <Route path="purchase-old-car" element={IS_DEMO_RESTRICTED ? <></> : <Inventory />} />
@@ -56,6 +57,7 @@ function App() {
 
               <Route path="inquiries" element={IS_DEMO_RESTRICTED ? <></> : <InquiriesList />} />
               <Route path="inquiries/create" element={IS_DEMO_RESTRICTED ? <></> : <AddInquiry />} />
+              <Route path="inquiries/:id" element={IS_DEMO_RESTRICTED ? <></> : <ViewInquiry />} />
 
               <Route path="finance" element={IS_DEMO_RESTRICTED ? <></> : <FinanceList />} />
               <Route path="finance/create" element={IS_DEMO_RESTRICTED ? <></> : <AddFinance />} />

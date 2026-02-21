@@ -5,7 +5,11 @@ import { Input } from '../ui/Input';
 import { toast } from 'sonner';
 
 export function UpdateDeliveryInfoModal({ isOpen, onClose, vehicle, onSave }) {
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        booking_date: '',
+        delivery_date: '',
+        delivery_status: 'Pending'
+    });
     const [payments, setPayments] = useState([]);
     const [newPayment, setNewPayment] = useState({ receipt: '', amount: '', method: 'Cash', date: new Date().toISOString().split('T')[0] });
 
@@ -94,17 +98,17 @@ export function UpdateDeliveryInfoModal({ isOpen, onClose, vehicle, onSave }) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-md border border-slate-100">
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Booking Date</label>
-                            <Input type="date" name="booking_date" value={formData.booking_date} onChange={handleChange} className="bg-white h-9" />
+                            <Input type="date" name="booking_date" value={formData.booking_date || ''} onChange={handleChange} className="bg-white h-9" />
                         </div>
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Delivery Date</label>
-                            <Input type="date" name="delivery_date" value={formData.delivery_date} onChange={handleChange} className="bg-white h-9" />
+                            <Input type="date" name="delivery_date" value={formData.delivery_date || ''} onChange={handleChange} className="bg-white h-9" />
                         </div>
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Delivery Status</label>
                             <select
                                 name="delivery_status"
-                                value={formData.delivery_status}
+                                value={formData.delivery_status || 'Pending'}
                                 onChange={handleChange}
                                 className="w-full h-9 rounded-md border border-slate-200 bg-white px-3 text-sm focus:outline-none"
                             >
@@ -192,11 +196,11 @@ export function UpdateDeliveryInfoModal({ isOpen, onClose, vehicle, onSave }) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Base Price</label>
-                            <Input type="number" name="basePrice" value={pricing.basePrice} onChange={handlePriceChange} className="bg-slate-50 text-right font-mono" />
+                            <Input type="number" name="basePrice" value={pricing.basePrice ?? ''} onChange={handlePriceChange} className="bg-slate-50 text-right font-mono" />
                         </div>
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Extra Charges</label>
-                            <Input type="number" name="extraCharges" value={pricing.extraCharges} onChange={handlePriceChange} className="bg-slate-50 text-right font-mono" />
+                            <Input type="number" name="extraCharges" value={pricing.extraCharges ?? ''} onChange={handlePriceChange} className="bg-slate-50 text-right font-mono" />
                         </div>
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold uppercase text-slate-500">Total Price</label>

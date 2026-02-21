@@ -59,6 +59,18 @@ export default function Inventory() {
         }
     };
 
+    // Sync Tab with Route
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.includes('purchase-old-car')) {
+            setActiveTab('Purchase');
+        } else if (path.includes('sell-old-car')) {
+            setActiveTab('Sale');
+        } else {
+            setActiveTab('New'); // Default or for /inventory
+        }
+    }, [location.pathname]);
+
     useEffect(() => {
         fetchInventory();
     }, [dispatch]);
@@ -104,15 +116,17 @@ export default function Inventory() {
     });
 
     // Save Handlers
-    const handleSaveVehicle = async (updatedVehicle, silent = false) => {
+    const handleSaveVehicle = async (updatedVehicle, skipBackend = false) => {
         try {
-            // Optimistic update
-            dispatch(updateVehicle(updatedVehicle));
-
-            // Sync selected vehicle if it's the one being edited - use loose equality
-            if (selectedVehicle && selectedVehicle.id == updatedVehicle.id) {
-                setSelectedVehicle(updatedVehicle);
+            if (skipBackend) {
+                // Modal already did the API call — just refresh list from server
+                // so the table reflects actual DB values (field names may differ)
+                fetchInventory();
+                return;
             }
+
+            // Optimistic update for non-modal saves
+            dispatch(updateVehicle(updatedVehicle));
 
             const res = await fetch(`/api/vehicles/${updatedVehicle.id}`, {
                 method: 'PUT',
@@ -122,16 +136,11 @@ export default function Inventory() {
 
             if (res.ok) {
                 const refreshed = await res.json();
-                if (!silent) toast.success("Updated successfully");
-                // Final sync with server data - pick up the 'vehicle' key from the response
                 const vehicleData = refreshed.vehicle || refreshed;
                 dispatch(updateVehicle(vehicleData));
-                if (selectedVehicle && selectedVehicle.id == vehicleData.id) {
-                    setSelectedVehicle(vehicleData);
-                }
             } else {
                 toast.error("Failed to save changes");
-                fetchInventory(); // Revert
+                fetchInventory(); // Revert on error
             }
         } catch (e) {
             console.error(e);
@@ -295,20 +304,36 @@ export default function Inventory() {
                                 {filteredItems
                                     .slice((currentPage - 1) * filters.entries, currentPage * filters.entries)
                                     .map((item) => (
-                                        <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                                        <tr key={`${item.transaction_type}-${item.id}`} className="hover:bg-slate-50 transition-colors">
                                             <td className="p-2">
                                                 <div className="flex items-center justify-start gap-1">
-                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-500" title="View" onClick={() => navigate(`/vehicle/${item.id}`)}><Eye size={14} /></Button>
+                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-500" title="View" onClick={() => navigate(`/vehicle/${item.id}?type=${item.transaction_type}`)}><Eye size={14} /></Button>
                                                     <Button
                                                         size="icon"
                                                         variant="ghost"
                                                         className="h-7 w-7 text-green-600"
                                                         title="Edit"
-                                                        onClick={() => {
-                                                            const editRoute = item.transaction_type === 'New' ? 'edit-new' :
-                                                                item.transaction_type === 'Purchase' ? 'edit-purchase' :
-                                                                    item.transaction_type === 'Sale' ? 'edit-sale' : 'edit-new';
-                                                            navigate(`/inventory/${item.id}/${editRoute}`);
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            // Robust detection logic
+                                                            let type = 'New';
+                                                            const path = window.location.pathname.toLowerCase();
+                                                            const txType = item.transaction_type || '';
+
+                                                            // 1. URL Check
+                                                            if (path.includes('purchase')) type = 'Purchase';
+                                                            else if (path.includes('sell') || path.includes('sold')) type = 'Sale';
+                                                            // 2. Tab State Fallback
+                                                            else if (activeTab === 'Purchase') type = 'Purchase';
+                                                            else if (activeTab === 'Sale') type = 'Sale';
+                                                            // 3. Data Fallback
+                                                            else if (txType === 'Purchase' || txType.toLowerCase() === 'purchase') type = 'Purchase';
+                                                            else if (txType === 'Sale' || txType.toLowerCase() === 'sale') type = 'Sale';
+
+                                                            const editRoute = type === 'Purchase' ? 'edit-purchase' :
+                                                                type === 'Sale' ? 'edit-sale' : 'edit-new-car';
+
+                                                            navigate(`/${editRoute}/${item.id}`, { state: { car: item } });
                                                         }}
                                                     >
                                                         <Edit size={14} />

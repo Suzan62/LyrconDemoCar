@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 
 // Async Thunks
 export const fetchFinances = createAsyncThunk(
@@ -113,10 +113,11 @@ const financeSlice = createSlice({
 });
 
 export const selectFinances = (state) => state.finance.items;
-export const selectFinanceStats = (state) => {
-    return {
-        total: state.finance.items.length,
-    };
-};
+export const selectFinanceStats = createSelector(
+    [selectFinances],
+    (items) => ({
+        total: items.length,
+    })
+);
 
 export default financeSlice.reducer;

@@ -62,6 +62,12 @@ export default function TopBar({ onMenuClick, isMobile }) {
                 return [{ label: 'Dashboard', path: '/' }];
             case 'inventory':
                 return [{ label: 'Inventory', path: null }, { label: 'All New Cars', path: '/inventory' }];
+            case 'edit-new-car':
+                return [{ label: 'Inventory', path: null }, { label: 'Edit New Car', path: pathname }];
+            case 'edit-purchase':
+                return [{ label: 'Inventory', path: null }, { label: 'Edit Purchase Car', path: pathname }];
+            case 'edit-sale':
+                return [{ label: 'Inventory', path: null }, { label: 'Edit Sell Car', path: pathname }];
             case 'add-car':
                 return [{ label: 'Inventory', path: null }, { label: 'Add New Car', path: '/add-car' }];
             case 'purchase-old-car':
@@ -174,7 +180,7 @@ export default function TopBar({ onMenuClick, isMobile }) {
                             <div className="max-h-[300px] overflow-y-auto">
                                 {notifications.length > 0 ? notifications.map(n => (
                                     <div
-                                        key={n.id}
+                                        key={`notif-${n.id}`}
                                         className={`p-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 cursor-pointer transition-colors ${!n.read ? 'bg-blue-50/50' : ''}`}
                                         onClick={() => {
                                             markAsRead(n.id);

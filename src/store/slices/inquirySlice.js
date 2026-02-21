@@ -37,11 +37,11 @@ export const deleteInquiry = createAsyncThunk(
 
 export const updateInquiry = createAsyncThunk(
     'inquiries/updateInquiry',
-    async ({ id, status, notes }) => {
+    async ({ id, ...updates }) => {
         const response = await fetch(`/api/inquiries/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status, notes })
+            body: JSON.stringify(updates)
         });
         if (!response.ok) throw new Error('Failed to update inquiry');
         const data = await response.json();
@@ -95,15 +95,18 @@ const inquirySlice = createSlice({
     }
 });
 
+import { createSelector } from 'reselect';
+
 // Selectors
 export const selectInquiries = (state) => state.inquiries.items;
-export const selectInquiryStats = (state) => {
-    const items = state.inquiries.items;
-    return {
+
+export const selectInquiryStats = createSelector(
+    [selectInquiries],
+    (items) => ({
         total: items.length,
         completed: items.filter(i => i.status === 'completed' || i.status === 'Completed').length,
         pending: items.filter(i => i.status === 'pending' || i.status === 'Pending').length
-    };
-};
+    })
+);
 
 export default inquirySlice.reducer;

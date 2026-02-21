@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft, FilePlus, Eye } from 'lucide-react';
+import { Wand2, Save, Upload, Car, FileText, UserCheck, DollarSign, CheckCircle, Search, ArrowLeft, FilePlus, Eye, Camera, Trash } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/Button';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,13 @@ export default function AddCar(props) {
     const [existingVehicles, setExistingVehicles] = useState([]);
     const [isEditMode, setIsEditMode] = useState(!!id || !!carToEdit || !!location.state?.car);
     const [initialCarData, setInitialCarData] = useState(carToEdit || location.state?.car || null);
+
+    // Sync transactionType with initialCarData if present
+    useEffect(() => {
+        if (initialCarData?.transaction_type) {
+            setTransactionType(initialCarData.transaction_type);
+        }
+    }, [initialCarData]);
 
     // Main Form State
     const [formData, setFormData] = useState({
@@ -55,6 +62,7 @@ export default function AddCar(props) {
         engine_number: '',
         hp: '',
         running_km: '',
+        renovation_cost: '',
 
         // Additional Details
         dealer: '',
@@ -82,12 +90,34 @@ export default function AddCar(props) {
         buyer_dob: '',
 
         // Pricing
-        price: ''
+        price: '',
+        buying_price: '' // Added for Profit Calculation
     });
 
     const [files, setFiles] = useState({});
     const [errors, setErrors] = useState({});
     const [multipartDocs, setMultipartDocs] = useState({});
+
+    // Dynamic Documents State
+    const [customDocs, setCustomDocs] = useState([]);
+    const [newDocName, setNewDocName] = useState('');
+    const [newDocFile, setNewDocFile] = useState(null);
+
+    const handleAddCustomDoc = () => {
+        console.log("Adding Custom Doc:", newDocName, newDocFile);
+        if (newDocName && newDocFile) {
+            setCustomDocs([...customDocs, { name: newDocName, file: newDocFile }]);
+            setNewDocName('');
+            setNewDocFile(null);
+            toast.success("Document added to list (don't forget to Save!)");
+        } else {
+            toast.error("Please enter a name and select a file");
+        }
+    };
+
+    const handleRemoveCustomDoc = (index) => {
+        setCustomDocs(customDocs.filter((_, i) => i !== index));
+    };
 
     // Configuration for Documents - New Cars
     const NEW_CAR_DOCUMENTS = [
@@ -116,7 +146,8 @@ export default function AddCar(props) {
             if (id && !initialCarData) {
                 setLoading(true);
                 try {
-                    const res = await fetch(`/api/vehicles/${id}`);
+                    const typeParam = initialMode === 'Purchase' ? 'Purchase' : initialMode === 'Sale' ? 'Sale' : 'New';
+                    const res = await fetch(`/api/vehicles/${id}?type=${typeParam}`);
                     if (res.ok) {
                         const data = await res.json();
                         setInitialCarData(data);
@@ -146,7 +177,12 @@ export default function AddCar(props) {
                             docket_number: safeData.docket_number || '',
                             running_km: safeData.running_km || safeData.mileage || '',
                             vin: safeData.chassis_number || safeData.id || safeData.vin || '',
-                            transaction_type: initialMode === 'New' ? (safeData.transaction_type || 'New') : initialMode
+                            transaction_type: initialMode === 'New' ? (safeData.transaction_type || 'New') : initialMode,
+
+                            // Map Pricing for Profit Calc
+                            buying_price: safeData.current_price || safeData.buying_price || '',
+                            price: initialMode === 'Sale' ? (safeData.price || '') : (safeData.current_price || safeData.price || ''),
+                            renovation_cost: safeData.renovation_cost || ''
                         }));
                         setTransactionType(initialMode === 'New' ? (safeData.transaction_type || 'New') : initialMode);
                     } else {
@@ -215,14 +251,7 @@ export default function AddCar(props) {
         if (onClose) {
             onClose();
         } else {
-            // Redirect based on transaction type for better navigation flow
-            if (transactionType === 'Purchase') {
-                navigate('/purchase-old-car');
-            } else if (transactionType === 'Sale') {
-                navigate('/sell-old-car');
-            } else {
-                navigate('/inventory');
-            }
+            navigate(-1);
         }
     };
 
@@ -412,6 +441,97 @@ export default function AddCar(props) {
         }
     };
 
+
+
+    const handlePartialSave = async (section) => {
+        console.log(`Partial Save Initiated for section: ${section}`);
+        setLoading(true);
+        const data = new FormData();
+
+        console.log("Form Data Keys being appended:");
+
+        // Append IDs and Type (Always needed)
+        data.append('transaction_type', transactionType);
+        if (id) data.append('id', id);
+
+        // STRATEGY CHANGE: 
+        // Instead of partial data, we send ALL data available in formData.
+        // This ensures that if it's a new Create request, we don't fail validation due to missing fields 
+        // that might be in other sections (e.g. VIN, Dealer, etc. if user filled them).
+        // The backend `update_common_fields` only updates what is sent, so sending extra empty fields is fine usually,
+        // (as long as we don't wipe existing data with empty strings - but formData has current state).
+        // Actually, safer to send everything non-null/non-undefined.
+
+        Object.keys(formData).forEach(key => {
+            if (formData[key] !== null && formData[key] !== undefined) {
+                // console.log(`Key: ${key}, Value: ${formData[key]}`);
+                data.append(key, formData[key]);
+            }
+        });
+
+        console.log(`Appending ${customDocs.length} custom docs`);
+        // Append Custom Docs (Crucial for "Add Doc" per user request)
+        // If user added a doc then clicked "Save Pricing", we want that doc saved too.
+        customDocs.forEach((doc, index) => {
+            data.append(`doc_name_${index}`, doc.name);
+            data.append(`doc_file_${index}`, doc.file);
+        });
+
+        // Append Static Files (KYC) if any new ones selected
+        Object.keys(files).forEach(key => {
+            if (files[key]) data.append(key, files[key]);
+        });
+
+        // Use ID if available, regardless of isEditMode state to prevent duplicates
+        const targetId = initialCarData?.id || id;
+
+        try {
+            // IF creating new (no ID), we must validate minimal required fields generally
+            // OR we just create a "Draft" vehicle? 
+            // For now, assuming user might be editing or creating.
+            // If creating, we need at least some mandatory fields for DB?
+            // Backend `create_vehicle` might fail if required fields missing?
+            // Let's rely on backend optionality or existing validation if full submit.
+            // But for partial save, we might need to bypass strict validation?
+            // Our backend `Vehicle` model has many nullable=True, but some False?
+            // status default 'unsold', created_at default.
+            // Mapped columns: everything seems Nullable=True except Pks?
+            // Let's check `app.py`.
+            // Ah, checked `app.py` earlier: almost everything is nullable=True except IDs and some status.
+
+            const url = targetId ? `/api/vehicles/${targetId}` : '/api/vehicles';
+            const method = targetId ? 'PUT' : 'POST';
+
+            const response = await fetch(url, { method: method, body: data });
+            const result = await response.json();
+
+            if (response.ok) {
+                const vehiclePayload = result.vehicle || { ...formData, id: result.id };
+
+                if (targetId) {
+                    dispatch(updateVehicle(vehiclePayload));
+                    toast.success(`${section === 'customer' ? 'Customer' : 'Pricing'} details updated!`);
+                } else {
+                    dispatch(addVehicle(vehiclePayload));
+                    toast.success(`Vehicle created with ${section === 'customer' ? 'customer' : 'pricing'} details!`);
+                    // Update URL to edit mode to prevent duplicate creation on next save
+                    navigate(`/edit-new-car/${result.id}`, { state: { car: vehiclePayload }, replace: true });
+                    // Also update local state
+                    setIsEditMode(true);
+                    setInitialCarData(vehiclePayload);
+                }
+            } else {
+                console.error("Save Error Response:", result);
+                toast.error(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            console.error("Partial save failed EXCEPTION:", error);
+            toast.error("Save failed. check console.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleSubmit = async () => {
         if (!validateForm()) {
             toast.error("Please fix the errors in the form");
@@ -429,7 +549,17 @@ export default function AddCar(props) {
             data.append(key, files[key]);
         });
 
-        const targetId = isEditMode ? (initialCarData?.id || id) : null;
+        // Append Custom Docs
+        customDocs.forEach((doc, index) => {
+            data.append(`doc_name_${index}`, doc.name);
+            data.append(`doc_file_${index}`, doc.file);
+        });
+
+        // Explicitly append transaction_type as it's not in formData
+        data.append('transaction_type', transactionType);
+
+        // Use ID if available, regardless of isEditMode state to prevent duplicates
+        const targetId = initialCarData?.id || id;
 
         try {
             const url = targetId ? `/api/vehicles/${targetId}` : '/api/vehicles';
@@ -523,7 +653,7 @@ export default function AddCar(props) {
                         <select onChange={handleAutoFill} className="w-full p-3 border border-indigo-200 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
                             <option value="">-- Select a Vehicle to Sell --</option>
                             {existingVehicles.map(v => (
-                                <option key={v.id} value={v.id}>
+                                <option key={`${v.transaction_type}-${v.id}`} value={v.id}>
                                     {v.year} {v.make} {v.model} - {v.id || 'No VIN'}
                                 </option>
                             ))}
@@ -570,7 +700,7 @@ export default function AddCar(props) {
                                     <input
                                         name="booking_date"
                                         type="date"
-                                        value={formData.booking_date}
+                                        value={formData.booking_date || ''}
                                         onChange={handleChange}
                                         className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
@@ -580,7 +710,7 @@ export default function AddCar(props) {
                                     <input
                                         name="delivery_date"
                                         type="date"
-                                        value={formData.delivery_date}
+                                        value={formData.delivery_date || ''}
                                         onChange={handleChange}
                                         className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
@@ -678,6 +808,16 @@ export default function AddCar(props) {
                                             className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                         />
                                     </div>
+                                    <div className="md:col-span-2 flex justify-end">
+                                        <Button
+                                            type="button"
+                                            onClick={() => handlePartialSave('customer')}
+                                            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                                            disabled={loading}
+                                        >
+                                            <Save size={16} /> Save Customer Details
+                                        </Button>
+                                    </div>
                                 </div>
                             </section>
 
@@ -691,7 +831,7 @@ export default function AddCar(props) {
                                         <label className="text-sm font-semibold text-slate-700">Nominee Relation *</label>
                                         <select
                                             name="nominee_relation"
-                                            value={formData.nominee_relation}
+                                            value={formData.nominee_relation || ''}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 outline-none"
                                         >
@@ -710,7 +850,7 @@ export default function AddCar(props) {
                                         <label className="text-sm font-semibold text-slate-700">Nominee Name *</label>
                                         <input
                                             name="nominee_name"
-                                            value={formData.nominee_name}
+                                            value={formData.nominee_name || ''}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                             placeholder="Enter Nominee Name"
@@ -721,7 +861,7 @@ export default function AddCar(props) {
                                         <input
                                             name="nominee_dob"
                                             type="date"
-                                            value={formData.nominee_dob}
+                                            value={formData.nominee_dob || ''}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                         />
@@ -1310,19 +1450,21 @@ export default function AddCar(props) {
                                             name="manufacturer"
                                             value={formData.manufacturer}
                                             onChange={handleChange}
-                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.manufacturer ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                                             placeholder="Enter Manufacturer Name"
                                         />
+                                        {errors.manufacturer && <p className="text-xs text-red-500 ml-1">{errors.manufacturer}</p>}
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-700">Model</label>
+                                        <label className="text-sm font-semibold text-slate-700">Model *</label>
                                         <input
                                             name="model"
                                             value={formData.model}
                                             onChange={handleChange}
-                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.model ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                                             placeholder="Enter Model Name"
                                         />
+                                        {errors.model && <p className="text-xs text-red-500 ml-1">{errors.model}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-semibold text-slate-700">Color</label>
@@ -1362,9 +1504,10 @@ export default function AddCar(props) {
                                             name="registration_number"
                                             value={formData.registration_number}
                                             onChange={handleChange}
-                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.registration_number ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                                             placeholder="Enter Registration Number"
                                         />
+                                        {errors.registration_number && <p className="text-xs text-red-500 ml-1">{errors.registration_number}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
@@ -1373,7 +1516,7 @@ export default function AddCar(props) {
                                                 name="vin"
                                                 value={formData.vin}
                                                 onChange={handleChange}
-                                                className="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.vin ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                                                 placeholder="Enter Chassis Number"
                                             />
                                             <button
@@ -1384,6 +1527,7 @@ export default function AddCar(props) {
                                                 Auto-Fill
                                             </button>
                                         </div>
+                                        {errors.vin && <p className="text-xs text-red-500 ml-1">{errors.vin}</p>}
                                     </div>
                                     {/* <div className="space-y-2">
                                         <label className="text-sm font-semibold text-slate-700">Chassis Number</label>
@@ -1441,12 +1585,67 @@ export default function AddCar(props) {
                                         <input
                                             name="price"
                                             type="number"
-                                            value={formData.price}
+                                            value={formData.price || ''}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                             placeholder="Enter Vehicle Price"
                                         />
                                     </div>
+                                    <div className="md:col-span-2 flex justify-end">
+                                        <Button
+                                            type="button"
+                                            onClick={() => handlePartialSave('pricing')}
+                                            className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2"
+                                            disabled={loading}
+                                        >
+                                            <Save size={16} /> Save Pricing Detail
+                                        </Button>
+                                    </div>
+
+                                    {(transactionType === 'Purchase' || transactionType === 'Sale') && (
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-slate-700">Renovation Cost</label>
+                                            <input
+                                                name="renovation_cost"
+                                                type="number"
+                                                value={formData.renovation_cost || ''}
+                                                onChange={handleChange}
+                                                className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Enter Renovation Cost"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* Profit Calculation Display */}
+                                    {transactionType === 'Sale' && (
+                                        <div className="md:col-span-2 p-4 bg-green-50 rounded-xl border border-green-200 mt-4">
+                                            <h4 className="font-bold text-green-800 mb-2 flex items-center gap-2">
+                                                <DollarSign size={18} /> Profit Calculation
+                                            </h4>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                                <div>
+                                                    <span className="text-slate-500 block">Buying Price</span>
+                                                    <span className="font-mono font-bold">₹{Number(formData.buying_price || 0).toLocaleString()}</span>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-500 block">Renovation</span>
+                                                    <span className="font-mono font-bold text-orange-600">+ ₹{Number(formData.renovation_cost || 0).toLocaleString()}</span>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-500 block">Selling Price</span>
+                                                    <span className="font-mono font-bold text-blue-600">₹{Number(formData.price || 0).toLocaleString()}</span>
+                                                </div>
+                                                <div className="bg-white p-2 rounded shadow-sm">
+                                                    <span className="text-slate-500 block font-bold">Net Profit</span>
+                                                    <span className={`font-mono font-bold text-lg ${(Number(formData.price || 0) - (Number(formData.buying_price || 0) + Number(formData.renovation_cost || 0))) >= 0
+                                                        ? 'text-green-600' : 'text-red-500'
+                                                        }`}>
+                                                        ₹{(Number(formData.price || 0) - (Number(formData.buying_price || 0) + Number(formData.renovation_cost || 0))).toLocaleString()}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </section>
 
@@ -1603,8 +1802,147 @@ export default function AddCar(props) {
                             </section>
 
                             <div className="border-t border-slate-100"></div>
+
+                            {/* Documents Section for New Cars */}
+                            <section className="bg-blue-50/30 p-6 rounded-lg border border-blue-100">
+                                <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+                                    <FileText className="text-blue-600" /> Documents (KYC)
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {DOCUMENT_CONFIG.map((doc) => {
+                                        if (doc.dualSided) {
+                                            return (
+                                                <div key={doc.key} className={`space-y-4 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-blue-200'} transition-all hover:shadow-md md:col-span-2 lg:col-span-3`}>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <label className="text-sm font-bold text-slate-700">{doc.label} (Front & Back)</label>
+                                                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Merged to PDF</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            {files[doc.key] && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handlePreview(files[doc.key])}
+                                                                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                                                                    title="Preview Merged PDF"
+                                                                >
+                                                                    <Eye size={20} />
+                                                                </button>
+                                                            )}
+                                                            {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <div className="space-y-2">
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-semibold text-slate-500 uppercase">Front Side</span>
+                                                                <Camera className="w-4 h-4 text-slate-400" />
+                                                            </div>
+                                                            <input type="file" accept="image/*" capture="environment" onChange={(e) => handleMultipartChange(e, doc.key, 'front')} className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors" />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <div className="flex items-center justify-between">
+                                                                <span className="text-xs font-semibold text-slate-500 uppercase">Back Side</span>
+                                                                <Camera className="w-4 h-4 text-slate-400" />
+                                                            </div>
+                                                            <input type="file" accept="image/*" capture="environment" onChange={(e) => handleMultipartChange(e, doc.key, 'back')} className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={doc.key} className={`space-y-2 p-4 border rounded-xl bg-white ${files[doc.key] ? 'border-green-500 ring-2 ring-green-100' : 'border-blue-200'} transition-all hover:shadow-md`}>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <label className="text-sm font-bold text-slate-700">{doc.label}</label>
+                                                        {files[doc.key] && <CheckCircle className="text-green-500 h-5 w-5" />}
+                                                    </div>
+                                                    <div className="relative">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*,application/pdf"
+                                                            capture="environment"
+                                                            onChange={(e) => handleFileChange(e, doc.key)}
+                                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors pr-8"
+                                                        />
+                                                        <Camera className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
+                            </section>
                         </>
                     )}
+
+                    {/* MANAGE DOCUMENTS (Dynamic - All Types) */}
+                    <section className="bg-slate-50 p-6 rounded-lg border border-slate-200 mt-6">
+                        <h3 className="text-xl font-bold text-slate-900 mb-6 uppercase">MANAGE DOCUMENTS</h3>
+
+                        <div className="space-y-4">
+                            {/* Input Area */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold text-slate-500 uppercase">Document Name</label>
+                                    <input
+                                        type="text"
+                                        value={newDocName}
+                                        onChange={(e) => setNewDocName(e.target.value)}
+                                        className="w-full p-2 border rounded-md text-sm outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500 transition-all"
+                                        placeholder="Enter document name"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold text-slate-500 uppercase">Upload Document</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="file"
+                                            onChange={(e) => setNewDocFile(e.target.files[0])}
+                                            className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors bg-white border border-slate-200 rounded-md p-1"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <Button
+                                type="button"
+                                onClick={handleAddCustomDoc}
+                                className="w-full bg-blue-500 hover:bg-blue-600 text-white shadow-sm"
+                            >
+                                Add Document
+                            </Button>
+
+                            {/* List of Added Documents */}
+                            {customDocs.length > 0 && (
+                                <div className="mt-4 space-y-2">
+                                    <h4 className="text-sm font-semibold text-slate-700">Added Documents:</h4>
+                                    {customDocs.map((doc, idx) => (
+                                        <div key={idx} className="flex justify-between items-center p-3 bg-white border rounded-md shadow-sm">
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-2 bg-blue-50 rounded-full">
+                                                    <FileText className="text-blue-500 w-4 h-4" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-medium text-slate-900 uppercase">{doc.name}</span>
+                                                    <span className="text-xs text-slate-500">{doc.file?.name}</span>
+                                                </div>
+                                            </div>
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                onClick={() => handleRemoveCustomDoc(idx)}
+                                            >
+                                                <Trash className="w-4 h-4" />
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </section>
 
                     {transactionType === 'Purchase' && (
                         <>
@@ -1795,9 +2133,10 @@ export default function AddCar(props) {
                                             type="email"
                                             value={formData.customer_email}
                                             onChange={handleChange}
-                                            className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${errors.customer_email ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                                             placeholder="Enter Email"
                                         />
+                                        {errors.customer_email && <p className="text-xs text-red-500 ml-1">{errors.customer_email}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-semibold text-slate-700">Date of Birth</label>
