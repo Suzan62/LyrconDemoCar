@@ -215,7 +215,7 @@ export default function Dashboard() {
                     <CardHeader>
                         <CardTitle>Sales Forecasting</CardTitle>
                         <CardDescription>
-                            AI-powered sales prediction for Q3 2024.
+                            Multi-Year Ridge Regression Forecast
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="pl-2">
