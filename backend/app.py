@@ -24,7 +24,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 # Database Configuration
 # Use DATABASE_URL env var if available (Production), else fallback to local (Dev)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://lyrcon_user:lyrcon_pass@localhost/lyrconcar")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///lyrcon.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

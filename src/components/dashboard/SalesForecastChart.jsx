@@ -75,7 +75,7 @@ const SalesForecastChart = () => {
             <div className="flex flex-col items-center justify-center h-[350px] border rounded-lg bg-slate-50 text-slate-500">
                 <AlertCircle className="h-10 w-10 mb-2 opacity-50" />
                 <p className="font-medium">Insufficient Data for Forecasting</p>
-                <p className="text-xs max-w-[250px] text-center mt-1">We need at least 10 months of sales history to generate AI predictions.</p>
+                <p className="text-xs max-w-[250px] text-center mt-1">We need at least 8 months of sales history to generate AI predictions.</p>
             </div>
         );
     }

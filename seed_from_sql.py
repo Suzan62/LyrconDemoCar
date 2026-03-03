@@ -4,15 +4,15 @@ import re
 from sqlalchemy import text
 from backend.app import app, db
 
-SQL_FILE_PATH = os.path.join(os.path.dirname(__file__), "parivar_postgres_compatible (7).sql")
+SQL_FILE = os.path.join(os.path.dirname(__file__), 'db.sql')
 
 def seed_data():
-    if not os.path.exists(SQL_FILE_PATH):
-        print(f"File not found: {SQL_FILE_PATH}")
+    if not os.path.exists(SQL_FILE):
+        print(f"File not found: {SQL_FILE}")
         return
 
     print("Reading SQL file...")
-    with open(SQL_FILE_PATH, 'r', encoding='utf-8') as f:
+    with open(SQL_FILE, 'r', encoding='utf-8') as f:
         sql_content = f.read()
 
     # Extract INSERT statements
